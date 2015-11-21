@@ -29,6 +29,7 @@
 
 with Interfaces;
 with Ada.Streams;
+with System;
 
 --  <description>
 --     RIFF information for wavefile parsing.
@@ -96,10 +97,7 @@ package RIFF is
 
    type Channel_Mask_Bit is new Boolean with Size => 1;
 
-   type Channel_Mask_Array is array (0 .. 31) of Channel_Mask_Bit;
-
-   for Channel_Mask_Array'Size use 32;
-   pragma Pack (Channel_Mask_Array);
+   Channel_Mask_Type_Size : constant Integer := 32;
 
    type Channel_Mask_Type is
       record
@@ -121,14 +119,20 @@ package RIFF is
          Speaker_Top_Back_Left         : Channel_Mask_Bit;
          Speaker_Top_Back_Center       : Channel_Mask_Bit;
          Speaker_Top_Back_Right        : Channel_Mask_Bit;
-      end record with Pack, Size => 32, Read => Read, Write => Write;
+      end record
+     with
+       Pack, Size => Channel_Mask_Type_Size,
+       Read       => Read,
+       Write      => Write,
+       Bit_Order  => System.Low_Order_First;
 
-   procedure Read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-                   Item   : out Channel_Mask_Type);
+   procedure Read
+     (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+      Item   : out Channel_Mask_Type);
 
-   procedure Write (Stream : not null access
-                      Ada.Streams.Root_Stream_Type'Class;
-                    Item   : Channel_Mask_Type);
+   procedure Write
+     (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+      Item   : Channel_Mask_Type);
 
    type Wave_Format_16 is tagged
       record

@@ -31,26 +31,30 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body RIFF is
 
+   type Channel_Mask_Integer is mod 2**Channel_Mask_Type_Size;
 
-   procedure Read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-                   Item   : out Channel_Mask_Type) is
-      V : Unsigned_32;
+   procedure Read
+     (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+      Item   : out Channel_Mask_Type)
+   is
+      V : Channel_Mask_Integer;
       X : Channel_Mask_Type;
       for X'Address use V'Address;
    begin
-      Unsigned_32'Read (Stream, V);
+      Channel_Mask_Integer'Read (Stream, V);
       Item := X;
    end Read;
 
-   procedure Write (Stream : not null access
-                      Ada.Streams.Root_Stream_Type'Class;
-                    Item   : Channel_Mask_Type) is
-      V : Unsigned_32;
+   procedure Write
+     (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+      Item   : Channel_Mask_Type)
+   is
+      V : Channel_Mask_Integer;
       X : Channel_Mask_Type;
       for X'Address use V'Address;
    begin
       X := Item;
-      Unsigned_32'Write (Stream, V);
+      Channel_Mask_Integer'Write (Stream, V);
    end Write;
 
    procedure Print (W : Wave_Format_Extensible) is
