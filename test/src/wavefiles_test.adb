@@ -41,8 +41,13 @@ procedure Wavefiles_Test is
    Command_Line_OK : Boolean := False;
 
    Fixed_Depth : constant Positive := 32;
+
+   pragma Warnings (Off, "declared high bound of type");
+
    type Fixed_Long is delta 1.0 / 2.0 ** (Fixed_Depth - 1) range -1.0 .. 1.0
      with Size => Fixed_Depth;
+
+   pragma Warnings (On, "declared high bound of type");
 
    Channels    : constant Positive := 6;
    Samples     : constant Positive := 2048;
