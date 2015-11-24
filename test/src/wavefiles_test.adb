@@ -33,8 +33,8 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Wavefiles;
 with Wavefiles.Read;
 with Wavefiles.Write;
-with Wavefiles.PCM_Buffers.IO;
-with Wavefiles.PCM_Buffers.Operators;
+with Wavefiles.Fixed_PCM;
+--  with Wavefiles.Float_PCM;
 with RIFF;
 
 procedure Wavefiles_Test is
@@ -81,9 +81,13 @@ procedure Wavefiles_Test is
       Channels    : constant Positive := 6;
       Samples     : constant Positive := 2048;
 
-      package PCM_Buf is new Wavefiles.PCM_Buffers (Samples, Fixed_Long);
-      package PCM_IO  is new PCM_Buf.IO;
-      package PCM_Op  is new PCM_Buf.Operators;
+      package PCM is new Wavefiles.Fixed_PCM
+        (Samples  => Samples,
+         PCM_Type => Fixed_Long);
+
+--        package PCM is new Wavefiles.Float_PCM
+--          (Samples  => Samples,
+--           PCM_Type => Float);
 
       package Wav_Read  renames  Wavefiles.Read;
       package Wav_Write renames  Wavefiles.Write;
@@ -103,7 +107,7 @@ procedure Wavefiles_Test is
                            File_Out : String) is
          WF_In       : Wavefiles.Wavefile;
          WF_Out      : Wavefiles.Wavefile;
-         PCM         : PCM_Buf.PCM_Buffer (Channels);
+         PCM_Buf     : PCM.Buffers.PCM_Buffer (Channels);
          Wave_Format : RIFF.Wave_Format_Extensible;
          EOF         : Boolean;
          Frame       : Integer := 0;
@@ -126,8 +130,8 @@ procedure Wavefiles_Test is
             if Verbose then
                Put ("[" & Integer'Image (Frame) & "]");
             end if;
-            PCM_IO.Read (WF_In, PCM, EOF);
-            PCM_IO.Write (WF_Out, PCM);
+            PCM.IO.Read (WF_In, PCM_Buf, EOF);
+            PCM.IO.Write (WF_Out, PCM_Buf);
             exit when EOF;
          end loop;
          Wav_Read.Close (WF_In);
@@ -139,8 +143,8 @@ procedure Wavefiles_Test is
                                File_DUT  : String) is
          WF_Ref           : Wavefiles.Wavefile;
          WF_DUT           : Wavefiles.Wavefile;
-         PCM_Ref          : PCM_Buf.PCM_Buffer (Channels);
-         PCM_DUT          : PCM_Buf.PCM_Buffer (Channels);
+         PCM_Ref          : PCM.Buffers.PCM_Buffer (Channels);
+         PCM_DUT          : PCM.Buffers.PCM_Buffer (Channels);
          Wave_Format      : RIFF.Wave_Format_Extensible;
          EOF_Ref, EOF_DUT : Boolean;
          Diff_Frames      : Natural := 0;
@@ -152,9 +156,9 @@ procedure Wavefiles_Test is
          Wav_Read.Open (WF_DUT, File_DUT);
          loop
             Frame := Frame + 1;
-            PCM_IO.Read (WF_Ref, PCM_Ref, EOF_Ref);
-            PCM_IO.Read (WF_DUT, PCM_DUT, EOF_DUT);
-            if not PCM_Buf."=" (PCM_Ref, PCM_DUT) then
+            PCM.IO.Read (WF_Ref, PCM_Ref, EOF_Ref);
+            PCM.IO.Read (WF_DUT, PCM_DUT, EOF_DUT);
+            if not PCM.Buffers."=" (PCM_Ref, PCM_DUT) then
                Diff_Frames := Diff_Frames + 1;
                Put_Line ("Difference found at frame " & Integer'Image (Frame));
             end if;
@@ -177,9 +181,9 @@ procedure Wavefiles_Test is
          WF_Ref           : Wavefiles.Wavefile;
          WF_DUT           : Wavefiles.Wavefile;
          WF_Diff          : Wavefiles.Wavefile;
-         PCM_Ref          : PCM_Buf.PCM_Buffer (Channels);
-         PCM_DUT          : PCM_Buf.PCM_Buffer (Channels);
-         PCM_Diff         : PCM_Buf.PCM_Buffer (Channels);
+         PCM_Ref          : PCM.Buffers.PCM_Buffer (Channels);
+         PCM_DUT          : PCM.Buffers.PCM_Buffer (Channels);
+         PCM_Diff         : PCM.Buffers.PCM_Buffer (Channels);
          Wave_Format      : RIFF.Wave_Format_Extensible;
          EOF_Ref, EOF_DUT : Boolean;
       begin
@@ -189,10 +193,10 @@ procedure Wavefiles_Test is
          Wav_Read.Open (WF_DUT, File_DUT);
          Wav_Write.Open (WF_Diff, File_Diff, Wave_Format);
          loop
-            PCM_IO.Read (WF_Ref, PCM_Ref, EOF_Ref);
-            PCM_IO.Read (WF_DUT, PCM_DUT, EOF_DUT);
-            PCM_Diff := PCM_Op."-" (PCM_Ref, PCM_DUT);
-            PCM_IO.Write (WF_Diff, PCM_Diff);
+            PCM.IO.Read (WF_Ref, PCM_Ref, EOF_Ref);
+            PCM.IO.Read (WF_DUT, PCM_DUT, EOF_DUT);
+            PCM_Diff := PCM.Operators."-" (PCM_Ref, PCM_DUT);
+            PCM.IO.Write (WF_Diff, PCM_Diff);
             exit when EOF_Ref or EOF_DUT;
          end loop;
          Wav_Read.Close (WF_Ref);
@@ -206,9 +210,9 @@ procedure Wavefiles_Test is
          WF_Ref           : Wavefiles.Wavefile;
          WF_DUT           : Wavefiles.Wavefile;
          WF_Mix           : Wavefiles.Wavefile;
-         PCM_Ref          : PCM_Buf.PCM_Buffer (Channels);
-         PCM_DUT          : PCM_Buf.PCM_Buffer (Channels);
-         PCM_Mix          : PCM_Buf.PCM_Buffer (Channels);
+         PCM_Ref          : PCM.Buffers.PCM_Buffer (Channels);
+         PCM_DUT          : PCM.Buffers.PCM_Buffer (Channels);
+         PCM_Mix          : PCM.Buffers.PCM_Buffer (Channels);
          Wave_Format      : RIFF.Wave_Format_Extensible;
          EOF_Ref, EOF_DUT : Boolean;
       begin
@@ -218,10 +222,10 @@ procedure Wavefiles_Test is
          Wav_Read.Open (WF_DUT, File_DUT);
          Wav_Write.Open (WF_Mix, File_Mix, Wave_Format);
          loop
-            PCM_IO.Read (WF_Ref, PCM_Ref, EOF_Ref);
-            PCM_IO.Read (WF_DUT, PCM_DUT, EOF_DUT);
-            PCM_Mix := PCM_Op."+" (PCM_Ref, PCM_DUT);
-            PCM_IO.Write (WF_Mix, PCM_Mix);
+            PCM.IO.Read (WF_Ref, PCM_Ref, EOF_Ref);
+            PCM.IO.Read (WF_DUT, PCM_DUT, EOF_DUT);
+            PCM_Mix := PCM.Operators."+" (PCM_Ref, PCM_DUT);
+            PCM.IO.Write (WF_Mix, PCM_Mix);
             exit when EOF_Ref or EOF_DUT;
          end loop;
          Wav_Read.Close (WF_Ref);

@@ -29,7 +29,8 @@
 
 generic
    Samples : Positive;
-   type PCM_Type is delta <>;
+   type PCM_Type is private;
+   with procedure Reset (A : out PCM_Type) is <>;
    with function "=" (A, B : PCM_Type) return Boolean is <>;
 
 package Wavefiles.PCM_Buffers is

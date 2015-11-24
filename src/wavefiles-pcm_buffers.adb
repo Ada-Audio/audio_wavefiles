@@ -101,7 +101,7 @@ package body Wavefiles.PCM_Buffers is
          if Left.Info.Active (I) or Right.Info.Active (I) then
             PCM_Out.Info.Active (I) := True;
             for J in 1 .. PCM_Out.Info.Samples_Valid loop
-               PCM_Out.Audio_Data (I) (J) := 0.0;
+               Reset (PCM_Out.Audio_Data (I) (J));
             end loop;
 
             if Left.Info.Active (I) then

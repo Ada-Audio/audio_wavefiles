@@ -38,9 +38,20 @@ package body Wavefiles.PCM_Buffers.IO is
    package Int     is new Wavefiles.Internals;
 
    use Interfaces;
-   package Data_16 is new Wavefiles.PCM_Buffers.Data (Integer_16);
-   package Data_24 is new Wavefiles.PCM_Buffers.Data (Int.Integer_24);
-   package Data_32 is new Wavefiles.PCM_Buffers.Data (Integer_32);
+
+   package Fixed_Data_16 is new Wavefiles.PCM_Buffers.Data
+     (Integer_16, PCM_Float_Type_Support => False);
+   package Fixed_Data_24 is new Wavefiles.PCM_Buffers.Data
+     (Int.Integer_24, PCM_Float_Type_Support => False);
+   package Fixed_Data_32 is new Wavefiles.PCM_Buffers.Data
+     (Integer_32, PCM_Float_Type_Support => False);
+
+   package Float_Data_16 is new Wavefiles.PCM_Buffers.Data
+     (Integer_16, PCM_Float_Type_Support => True);
+   package Float_Data_24 is new Wavefiles.PCM_Buffers.Data
+     (Int.Integer_24, PCM_Float_Type_Support => True);
+   package Float_Data_32 is new Wavefiles.PCM_Buffers.Data
+     (Integer_32, PCM_Float_Type_Support => True);
 
    function Is_Supported_Format (W : Wave_Format_Extensible) return Boolean;
 
@@ -68,18 +79,33 @@ package body Wavefiles.PCM_Buffers.IO is
 
       Buf.Info.Samples_Valid := 0;
 
-      case WF.Wave_Format.Bits_Per_Sample is
+      if Float_Type_Support then
+         case WF.Wave_Format.Bits_Per_Sample is
          when 8 =>
             raise Wavefile_Unsupported;
          when 16 =>
-            Data_16.Read_Data (WF, Buf);
+            Float_Data_16.Read_Data (WF, Buf);
          when 24 =>
-            Data_24.Read_Data (WF, Buf);
+            Float_Data_24.Read_Data (WF, Buf);
          when 32 =>
-            Data_32.Read_Data (WF, Buf);
+            Float_Data_32.Read_Data (WF, Buf);
          when others =>
             raise Wavefile_Unsupported;
-      end case;
+         end case;
+      else
+         case WF.Wave_Format.Bits_Per_Sample is
+         when 8 =>
+            raise Wavefile_Unsupported;
+         when 16 =>
+            Fixed_Data_16.Read_Data (WF, Buf);
+         when 24 =>
+            Fixed_Data_24.Read_Data (WF, Buf);
+         when 32 =>
+            Fixed_Data_32.Read_Data (WF, Buf);
+         when others =>
+            raise Wavefile_Unsupported;
+         end case;
+      end if;
 
       if WF.Samples_Read >= WF.Samples or
         Ada.Streams.Stream_IO.End_Of_File (WF.File)
@@ -100,16 +126,29 @@ package body Wavefiles.PCM_Buffers.IO is
          raise Wavefile_Unsupported;
       end if;
 
-      case WF.Wave_Format.Bits_Per_Sample is
+      if Float_Type_Support then
+         case WF.Wave_Format.Bits_Per_Sample is
          when 16 =>
-            Data_16.Write_Data (WF, Buf);
+            Float_Data_16.Write_Data (WF, Buf);
          when 24 =>
-            Data_24.Write_Data (WF, Buf);
+            Float_Data_24.Write_Data (WF, Buf);
          when 32 =>
-            Data_32.Write_Data (WF, Buf);
+            Float_Data_32.Write_Data (WF, Buf);
          when others =>
             raise Wavefile_Unsupported;
-      end case;
+         end case;
+      else
+         case WF.Wave_Format.Bits_Per_Sample is
+         when 16 =>
+            Fixed_Data_16.Write_Data (WF, Buf);
+         when 24 =>
+            Fixed_Data_24.Write_Data (WF, Buf);
+         when 32 =>
+            Fixed_Data_32.Write_Data (WF, Buf);
+         when others =>
+            raise Wavefile_Unsupported;
+         end case;
+      end if;
 
    end Write;
 

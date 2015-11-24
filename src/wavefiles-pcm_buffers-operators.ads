@@ -28,6 +28,7 @@
 -------------------------------------------------------------------------------
 
 generic
+   with function "*" (A, B : PCM_Type) return PCM_Type is <>;
    with function "+" (A, B : PCM_Type) return PCM_Type is <>;
    with function "-" (A, B : PCM_Type) return PCM_Type is <>;
 

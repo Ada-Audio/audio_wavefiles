@@ -39,7 +39,7 @@ package body Wavefiles.PCM_Buffers.Operators is
          if Left.Info.Active (I) or Right.Info.Active (I) then
             PCM_Mix.Info.Active (I) := True;
             for J in 1 .. PCM_Mix.Info.Samples_Valid loop
-               PCM_Mix.Audio_Data (I) (J) := 0.0;
+               Reset (PCM_Mix.Audio_Data (I) (J));
             end loop;
 
             if Left.Info.Active (I) then
@@ -72,7 +72,7 @@ package body Wavefiles.PCM_Buffers.Operators is
          if Left.Info.Active (I) or Right.Info.Active (I) then
             PCM_Mix.Info.Active (I) := True;
             for J in 1 .. PCM_Mix.Info.Samples_Valid loop
-               PCM_Mix.Audio_Data (I) (J) := 0.0;
+               Reset (PCM_Mix.Audio_Data (I) (J));
             end loop;
 
             if Left.Info.Active (I) then

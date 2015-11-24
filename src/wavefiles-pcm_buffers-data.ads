@@ -29,6 +29,9 @@
 
 private generic
    type Audio_Res is range <>;
+   PCM_Float_Type_Support : in Boolean;
+   with function To_Long_Float (A : PCM_Type)   return Long_Float is <>;
+   with function To_PCM_Type   (A : Long_Float) return PCM_Type   is <>;
 package Wavefiles.PCM_Buffers.Data is
 
    procedure Read_Data (WF  : in out Wavefile;

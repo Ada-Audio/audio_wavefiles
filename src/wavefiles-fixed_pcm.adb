@@ -2,7 +2,8 @@
 --
 --                                WAVEFILES
 --
---                   Wavefile I/O operations for PCM buffers
+--                 PCM buffers / operators / wavefile I/O
+--                       Using fixed-point data type
 --
 -- The MIT License (MIT)
 --
@@ -27,18 +28,26 @@
 -- IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-generic
-   Float_Type_Support : in Boolean;
-   with function To_Long_Float (A : PCM_Type)   return Long_Float is <>;
-   with function To_PCM_Type   (A : Long_Float) return PCM_Type   is <>;
-package Wavefiles.PCM_Buffers.IO is
+package body Wavefiles.Fixed_PCM is
 
-   procedure Read (WF   : in out Wavefile;
-                   Buf  : out    PCM_Buffer;
-                   EOF  : out    Boolean);
+   procedure Reset (A : out PCM_Type) is
+   begin
+      A := 0.0;
+   end Reset;
 
-   procedure Write (WF  : in out Wavefile;
-                    Buf : in     PCM_Buffer);
+   function Mult (A, B : PCM_Type) return PCM_Type is
+   begin
+      return A * B;
+   end Mult;
 
+   function To_Long_Float (A : PCM_Type) return Long_Float is
+   begin
+      return Long_Float (A);
+   end To_Long_Float;
 
-end Wavefiles.PCM_Buffers.IO;
+   function To_PCM_Type (A : Long_Float) return PCM_Type is
+   begin
+      return PCM_Type (A);
+   end To_PCM_Type;
+
+end Wavefiles.Fixed_PCM;
