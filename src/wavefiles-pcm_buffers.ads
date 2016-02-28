@@ -50,15 +50,17 @@ package Wavefiles.PCM_Buffers is
 
    type PCM_Buffer_Op is access function (A, B : PCM_Type) return PCM_Type;
 
-   function Is_Channel_Active (PCM_Buf : PCM_Buffer;
-                               Channel : Positive) return Boolean;
+   function Is_Channel_Active
+     (PCM_Buf : PCM_Buffer;
+      Channel : Positive) return Boolean;
 
    function Get_Number_Valid_Samples (PCM_Buf : PCM_Buffer) return Natural;
 
    function "=" (Left, Right : PCM_Buffer) return Boolean;
 
-   function Perform (Left, Right : PCM_Buffer;
-                     Op          : PCM_Buffer_Op) return PCM_Buffer;
+   function Perform
+     (Left, Right : PCM_Buffer;
+      Op          : PCM_Buffer_Op) return PCM_Buffer;
 
 private
    type Audio_Active_Type is array (Positive range <>) of Boolean;

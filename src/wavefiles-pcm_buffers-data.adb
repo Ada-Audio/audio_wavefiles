@@ -35,13 +35,14 @@ package body Wavefiles.PCM_Buffers.Data is
    package Audio_Types is new Wavefiles.PCM_Buffers.Types
      (Audio_Res, PCM_Float_Type_Support, To_Long_Float);
 
-   procedure Read_Data (WF  : in out Wavefile;
-                        Buf : in out PCM_Buffer) is
+   procedure Read_Data
+     (WF  : in out Wavefile;
+      Buf : in out PCM_Buffer)
+   is
       Ch : constant Positive := Positive (WF.Wave_Format.Channels);
       type Audio_Sample is array (1 .. Ch) of Audio_Res;
       B  : Audio_Sample;
       BB : Audio_Res;
-
    begin
       Ada.Assertions.Assert (Ch <= Buf.Channels,
                              "Unsufficient number of channel in buffer");
@@ -78,8 +79,10 @@ package body Wavefiles.PCM_Buffers.Data is
    end Read_Data;
 
 
-   procedure Write_Data (WF  : in out Wavefile;
-                         Buf : in PCM_Buffer) is
+   procedure Write_Data
+     (WF  : in out Wavefile;
+      Buf : in PCM_Buffer)
+   is
       Ch : constant Positive := Positive (WF.Wave_Format.Channels);
       type Audio_Sample is array (1 .. Ch) of Audio_Res;
       B  : Audio_Sample;

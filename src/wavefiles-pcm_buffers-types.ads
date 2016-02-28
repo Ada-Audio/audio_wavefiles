@@ -43,11 +43,13 @@ package Wavefiles.PCM_Buffers.Types is
    Bool_Image  : constant array (Boolean'Range) of Character := ('0', '1');
    Convert_Sample_Debug : constant Boolean := False;
 
-   procedure Print_Sample_Read (Sample_In     : Audio_Res;
-                                Sample_Out    : PCM_Type);
+   procedure Print_Sample_Read
+     (Sample_In     : Audio_Res;
+      Sample_Out    : PCM_Type);
 
-   procedure Print_Sample_Write (Sample_In     : PCM_Type;
-                                 Sample_Out    : Audio_Res);
+   procedure Print_Sample_Write
+     (Sample_In     : PCM_Type;
+      Sample_Out    : Audio_Res);
 
    function Convert_Sample (Sample : Audio_Res) return PCM_Type;
 

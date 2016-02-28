@@ -103,8 +103,10 @@ procedure Wavefiles_Test is
          Wav_Read.Close (WF_In);
       end Display_Info_File;
 
-      procedure Copy_File (File_In  : String;
-                           File_Out : String) is
+      procedure Copy_File
+        (File_In  : String;
+         File_Out : String)
+      is
          WF_In       : Wavefiles.Wavefile;
          WF_Out      : Wavefiles.Wavefile;
          PCM_Buf     : PCM.Buffers.PCM_Buffer (Channels);
@@ -139,8 +141,10 @@ procedure Wavefiles_Test is
 
       end Copy_File;
 
-      procedure Compare_Files (File_Ref  : String;
-                               File_DUT  : String) is
+      procedure Compare_Files
+        (File_Ref  : String;
+         File_DUT  : String)
+      is
          WF_Ref           : Wavefiles.Wavefile;
          WF_DUT           : Wavefiles.Wavefile;
          PCM_Ref          : PCM.Buffers.PCM_Buffer (Channels);
@@ -175,9 +179,11 @@ procedure Wavefiles_Test is
          end if;
       end Compare_Files;
 
-      procedure Diff_Files (File_Ref  : String;
-                            File_DUT  : String;
-                            File_Diff : String) is
+      procedure Diff_Files
+        (File_Ref  : String;
+         File_DUT  : String;
+         File_Diff : String)
+      is
          WF_Ref           : Wavefiles.Wavefile;
          WF_DUT           : Wavefiles.Wavefile;
          WF_Diff          : Wavefiles.Wavefile;
@@ -204,9 +210,11 @@ procedure Wavefiles_Test is
          Wav_Write.Close (WF_Diff);
       end Diff_Files;
 
-      procedure Mix_Files (File_Ref  : String;
-                           File_DUT  : String;
-                           File_Mix  : String) is
+      procedure Mix_Files
+        (File_Ref  : String;
+         File_DUT  : String;
+         File_Mix  : String)
+      is
          WF_Ref           : Wavefiles.Wavefile;
          WF_DUT           : Wavefiles.Wavefile;
          WF_Mix           : Wavefiles.Wavefile;

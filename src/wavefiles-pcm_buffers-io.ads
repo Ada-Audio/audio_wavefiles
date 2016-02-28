@@ -33,12 +33,14 @@ generic
    with function To_PCM_Type   (A : Long_Float) return PCM_Type   is <>;
 package Wavefiles.PCM_Buffers.IO is
 
-   procedure Read (WF   : in out Wavefile;
-                   Buf  : out    PCM_Buffer;
-                   EOF  : out    Boolean);
+   procedure Read
+     (WF   : in out Wavefile;
+      Buf  : out    PCM_Buffer;
+      EOF  : out    Boolean);
 
-   procedure Write (WF  : in out Wavefile;
-                    Buf : in     PCM_Buffer);
+   procedure Write
+     (WF  : in out Wavefile;
+      Buf : in     PCM_Buffer);
 
 
 end Wavefiles.PCM_Buffers.IO;

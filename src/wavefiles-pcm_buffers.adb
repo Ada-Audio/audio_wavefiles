@@ -31,8 +31,9 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Wavefiles.PCM_Buffers is
 
-   function Is_Channel_Active (PCM_Buf : PCM_Buffer;
-                               Channel : Positive) return Boolean is
+   function Is_Channel_Active
+     (PCM_Buf : PCM_Buffer;
+      Channel : Positive) return Boolean is
    begin
       return PCM_Buf.Info.Active (Channel);
    end Is_Channel_Active;
@@ -90,8 +91,11 @@ package body Wavefiles.PCM_Buffers is
       return True;
    end "=";
 
-   function Perform (Left, Right : PCM_Buffer;
-                     Op          : PCM_Buffer_Op) return PCM_Buffer is
+   function Perform
+     (Left, Right : PCM_Buffer;
+      Op          : PCM_Buffer_Op)
+      return PCM_Buffer
+   is
       PCM_Out : PCM_Buffer (Positive'Max (Left.Channels, Right.Channels));
    begin
       PCM_Out.Info.Samples_Valid := Natural'Max (Left.Info.Samples_Valid,

@@ -29,8 +29,9 @@
 
 package Wavefiles.Read is
 
-   procedure Open (WF         : in out Wavefile;
-                   File_Name  : String);
+   procedure Open
+     (WF         : in out Wavefile;
+      File_Name  : String);
 
    procedure Display_Info (WF : in Wavefile);
 

@@ -95,8 +95,11 @@ package body Wavefiles.PCM_Buffers.Operators is
       return PCM_Mix;
    end "-";
 
-   function "*" (Left  : PCM_Buffer;
-                 Right : PCM_Type) return PCM_Buffer is
+   function "*"
+     (Left  : PCM_Buffer;
+      Right : PCM_Type)
+      return PCM_Buffer
+   is
       PCM_Out : PCM_Buffer (Left.Channels);
    begin
       PCM_Out.Info.Samples_Valid := Left.Info.Samples_Valid;

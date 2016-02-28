@@ -50,13 +50,15 @@ package RIFF is
          FOURCC  : String (1 .. 4);
       end record;
 
-   type Wave_Format_Chunk_Size is (Wave_Format_16_Size,
-                                   Wave_Format_18_Size,
-                                   Wave_Format_Extensible_Size);
+   type Wave_Format_Chunk_Size is
+     (Wave_Format_16_Size,
+      Wave_Format_18_Size,
+      Wave_Format_Extensible_Size);
 
-   for Wave_Format_Chunk_Size use (Wave_Format_16_Size         => 16,
-                                   Wave_Format_18_Size         => 18,
-                                   Wave_Format_Extensible_Size => 40);
+   for Wave_Format_Chunk_Size use
+     (Wave_Format_16_Size         => 16,
+      Wave_Format_18_Size         => 18,
+      Wave_Format_Extensible_Size => 40);
 
    type Sub_GUID is array (1 .. 8) of Unsigned_8;
 
@@ -68,31 +70,34 @@ package RIFF is
          Data_4 : Sub_GUID;
       end record;
 
-   GUID_Undefined : constant GUID := (16#00000000#,
-                                      16#0000#,
-                                      16#0000#,
-                                      (16#00#, 16#00#,
-                                       16#00#, 16#00#,
-                                       16#00#, 16#00#,
-                                       16#00#, 16#00#));
+   GUID_Undefined : constant GUID :=
+                      (16#00000000#,
+                       16#0000#,
+                       16#0000#,
+                       (16#00#, 16#00#,
+                        16#00#, 16#00#,
+                        16#00#, 16#00#,
+                        16#00#, 16#00#));
    --  Undefined GUID
 
-   GUID_PCM : constant GUID := (16#00000001#,
-                                16#0000#,
-                                16#0010#,
-                                (16#80#, 16#00#,
-                                 16#00#, 16#aa#,
-                                 16#00#, 16#38#,
-                                 16#9b#, 16#71#));
+   GUID_PCM       : constant GUID :=
+                      (16#00000001#,
+                       16#0000#,
+                       16#0010#,
+                       (16#80#, 16#00#,
+                        16#00#, 16#aa#,
+                        16#00#, 16#38#,
+                        16#9b#, 16#71#));
    --  CEA 861 0x01: KSDATAFORMAT_SUBTYPE_PCM (IEC 60958 PCM)
 
-   GUID_IEEE_Float : constant GUID := (16#00000003#,
-                                16#0000#,
-                                16#0010#,
-                                (16#80#, 16#00#,
-                                 16#00#, 16#aa#,
-                                 16#00#, 16#38#,
-                                 16#9b#, 16#71#));
+   GUID_IEEE_Float : constant GUID :=
+                       (16#00000003#,
+                        16#0000#,
+                        16#0010#,
+                        (16#80#, 16#00#,
+                         16#00#, 16#aa#,
+                         16#00#, 16#38#,
+                         16#9b#, 16#71#));
    --  CEA 861 0x01: KSDATAFORMAT_SUBTYPE_IEEE_FLOAT (IEEE Floating-Point PCM)
 
    type Channel_Mask_Bit is new Boolean with Size => 1;

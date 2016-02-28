@@ -36,7 +36,8 @@ package Wavefiles.Internals is
    type Integer_24 is range -2 ** (24 - 1) .. 2 ** (24 - 1) - 1;
    for Integer_24'Size use 24;
 
-   procedure Skip_Bytes (F     : in out Ada.Streams.Stream_IO.File_Type;
-                         Bytes : in Unsigned_32);
+   procedure Skip_Bytes
+     (F     : in out Ada.Streams.Stream_IO.File_Type;
+      Bytes : in Unsigned_32);
 
 end Wavefiles.Internals;

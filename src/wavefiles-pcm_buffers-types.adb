@@ -31,8 +31,10 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Wavefiles.PCM_Buffers.Types is
 
-   procedure Print_Sample_Read (Sample_In     : Audio_Res;
-                                Sample_Out    : PCM_Type) is
+   procedure Print_Sample_Read
+     (Sample_In     : Audio_Res;
+      Sample_Out    : PCM_Type)
+   is
       Bits_In     : Audio_Res_Bit_Array;
       Bits_Out    : PCM_Bit_Array;
       for Bits_In'Address  use Sample_In'Address;
@@ -52,8 +54,10 @@ package body Wavefiles.PCM_Buffers.Types is
    end Print_Sample_Read;
 
 
-   procedure Print_Sample_Write (Sample_In     : PCM_Type;
-                                 Sample_Out    : Audio_Res) is
+   procedure Print_Sample_Write
+     (Sample_In     : PCM_Type;
+      Sample_Out    : Audio_Res)
+   is
       Bits_In     : PCM_Bit_Array;
       Bits_Out    : Audio_Res_Bit_Array;
       for Bits_In'Address  use Sample_In'Address;
@@ -74,7 +78,6 @@ package body Wavefiles.PCM_Buffers.Types is
 
 
    function Convert_Sample (Sample : Audio_Res) return PCM_Type is
-
       Sample_In   : Audio_Res := Sample;
       Sample_Out  : PCM_Type;
       Bits_In     : Audio_Res_Bit_Array;
@@ -110,7 +113,6 @@ package body Wavefiles.PCM_Buffers.Types is
 
 
    function Convert_Sample (Sample : PCM_Type) return Audio_Res is
-
       Sample_In   : PCM_Type := Sample;
       Sample_Out  : Audio_Res := 0;
       Bits_In     : PCM_Bit_Array;

@@ -29,8 +29,8 @@
 
 package body Wavefiles is
 
-   function Get_Wave_Format (W : Wavefile)
-                             return  RIFF.Wave_Format_Extensible is
+   function Get_Wave_Format
+     (W : Wavefile) return  RIFF.Wave_Format_Extensible is
    begin
       return W.Wave_Format;
    end Get_Wave_Format;

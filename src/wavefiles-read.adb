@@ -39,8 +39,10 @@ package body Wavefiles.Read is
 
    use Ada.Streams.Stream_IO;
    use Interfaces;
-   procedure Open (WF        : in out Wavefile;
-                   File_Name : String) is
+   procedure Open
+     (WF        : in out Wavefile;
+      File_Name : String)
+   is
       RIFF_Tag    : RIFF_Tag_Type;
       RIFF_Chunk  : RIFF_Chunk_Type;
       Verbose     : constant Boolean := False;

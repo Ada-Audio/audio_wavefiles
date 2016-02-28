@@ -35,9 +35,11 @@ package body Wavefiles.Write is
    use Ada.Streams.Stream_IO;
    use Interfaces;
 
-   procedure Open (WF          : in out Wavefile;
-                   File_Name   : String;
-                   Wave_Format : RIFF.Wave_Format_Extensible) is
+   procedure Open
+     (WF          : in out Wavefile;
+      File_Name   : String;
+      Wave_Format : RIFF.Wave_Format_Extensible)
+   is
       RIFF_Tag    : RIFF_Tag_Type;
       RIFF_Chunk  : RIFF_Chunk_Type;
    begin

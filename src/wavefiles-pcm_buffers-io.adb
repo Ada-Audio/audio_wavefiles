@@ -66,9 +66,10 @@ package body Wavefiles.PCM_Buffers.IO is
    end Is_Supported_Format;
 
 
-   procedure Read (WF  : in out Wavefile;
-                   Buf : out    PCM_Buffer;
-                   EOF : out    Boolean) is
+   procedure Read
+     (WF  : in out Wavefile;
+      Buf : out    PCM_Buffer;
+      EOF : out    Boolean) is
    begin
       if not WF.Is_Opened then
          raise Wavefile_Error;
@@ -116,8 +117,9 @@ package body Wavefiles.PCM_Buffers.IO is
       end if;
    end Read;
 
-   procedure Write (WF  : in out Wavefile;
-                    Buf : in     PCM_Buffer) is
+   procedure Write
+     (WF  : in out Wavefile;
+      Buf : in     PCM_Buffer) is
    begin
       if not WF.Is_Opened then
          raise Wavefile_Error;

@@ -36,7 +36,8 @@ package Wavefiles.PCM_Buffers.Operators is
 
    function "+" (Left, Right : PCM_Buffer) return PCM_Buffer;
    function "-" (Left, Right : PCM_Buffer) return PCM_Buffer;
-   function "*" (Left  : PCM_Buffer;
-                 Right : PCM_Type) return PCM_Buffer;
+   function "*"
+     (Left  : PCM_Buffer;
+      Right : PCM_Type) return PCM_Buffer;
 
 end Wavefiles.PCM_Buffers.Operators;
