@@ -1,0 +1,21 @@
+global:
+    - TOOLS_DIR=$HOME/build_tools
+    - GNAT_INSTALLER_PATH=$TOOLS_DIR/gnat-2020-20200818-x86_64-linux-bin
+    - GNAT_PATH=$TOOLS_DIR/gnat-2020-x86_64-linux-bin
+
+os:
+  - linux
+
+dist: focal
+
+cache:
+  directories:
+  - $HOME/build_tools
+
+install: ./.github/gnat_community_install.sh
+
+jobs:
+  include:
+    - stage: "Build test for Wavefile Library"
+      script:
+        - gprbuild -j0 -p -P test/wavefiles_test.gpr
