@@ -1,4 +1,4 @@
-with "../wavefiles.gpr";
+with "../wavefiles_lib.gpr";
 
 project Wavefiles_Test is
 
@@ -25,4 +25,3 @@ project Wavefiles_Test is
    end Builder;
 
 end Wavefiles_Test;
-
