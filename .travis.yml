@@ -23,4 +23,4 @@ jobs:
   include:
     - stage: "Build test for Wavefile Library"
       script:
-        - gprbuild -j0 -p -P test/wavefiles_test.gpr
+        - PATH=$GNAT_PATH/bin:$PATH gprbuild -j0 -p -P test/wavefiles_test.gpr
