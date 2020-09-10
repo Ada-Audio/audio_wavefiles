@@ -1,0 +1,20 @@
+name: GNAT on Ubuntu (latest)
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up GNAT toolchain
+      run: >
+        sudo apt-get update &&
+        sudo apt-get install gnat gprbuild
+    - name: Build
+      run: gprbuild -P test/wavefiles_test.gpr
