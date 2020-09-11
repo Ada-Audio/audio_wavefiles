@@ -17,7 +17,7 @@ cache:
   directories:
   - $HOME/build_tools
 
-install: ./.github/gnat_community_install.sh
+install: ./.travis/gnat_community_install.sh
 
 jobs:
   include:
