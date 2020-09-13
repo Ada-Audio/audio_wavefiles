@@ -28,7 +28,7 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body Wavefiles.Float_PCM is
+package body Audio.Wavefiles.Float_PCM is
 
    procedure Reset (A : out PCM_Type) is
    begin
@@ -50,4 +50,4 @@ package body Wavefiles.Float_PCM is
       return PCM_Type (A);
    end To_PCM_Type;
 
-end Wavefiles.Float_PCM;
+end Audio.Wavefiles.Float_PCM;

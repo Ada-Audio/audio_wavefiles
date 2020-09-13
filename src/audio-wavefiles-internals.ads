@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                          Operators for PCM buffers
+--                           Internal information
 --
 --  The MIT License (MIT)
 --
@@ -27,17 +27,17 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-generic
-   with function "*" (A, B : PCM_Type) return PCM_Type is <>;
-   with function "+" (A, B : PCM_Type) return PCM_Type is <>;
-   with function "-" (A, B : PCM_Type) return PCM_Type is <>;
+with Interfaces; use Interfaces;
+with Ada.Streams.Stream_IO;
 
-package Wavefiles.PCM_Buffers.Operators is
+private generic
+package Audio.Wavefiles.Internals is
 
-   function "+" (Left, Right : PCM_Buffer) return PCM_Buffer;
-   function "-" (Left, Right : PCM_Buffer) return PCM_Buffer;
-   function "*"
-     (Left  : PCM_Buffer;
-      Right : PCM_Type) return PCM_Buffer;
+   type Integer_24 is range -2 ** (24 - 1) .. 2 ** (24 - 1) - 1;
+   for Integer_24'Size use 24;
 
-end Wavefiles.PCM_Buffers.Operators;
+   procedure Skip_Bytes
+     (F     : in out Ada.Streams.Stream_IO.File_Type;
+      Bytes : in Unsigned_32);
+
+end Audio.Wavefiles.Internals;

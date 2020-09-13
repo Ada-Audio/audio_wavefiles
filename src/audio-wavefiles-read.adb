@@ -30,12 +30,12 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces;
 
-with RIFF;        use RIFF;
-with Wavefiles.Internals;
+with Audio.RIFF;                use Audio.RIFF;
+with Audio.Wavefiles.Internals;
 
-package body Wavefiles.Read is
+package body Audio.Wavefiles.Read is
 
-   package Int     is new Wavefiles.Internals;
+   package Int is new Audio.Wavefiles.Internals;
 
    use Ada.Streams.Stream_IO;
    use Interfaces;
@@ -170,4 +170,4 @@ package body Wavefiles.Read is
       WF.Is_Opened := False;
    end Close;
 
-end Wavefiles.Read;
+end Audio.Wavefiles.Read;

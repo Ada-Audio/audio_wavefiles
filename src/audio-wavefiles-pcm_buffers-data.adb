@@ -28,9 +28,9 @@
 -------------------------------------------------------------------------------
 
 with Ada.Assertions;
-with Wavefiles.PCM_Buffers.Types;
+with Audio.Wavefiles.PCM_Buffers.Types;
 
-package body Wavefiles.PCM_Buffers.Data is
+package body Audio.Wavefiles.PCM_Buffers.Data is
 
    package Audio_Types is new Wavefiles.PCM_Buffers.Types
      (Audio_Res, PCM_Float_Type_Support, To_Long_Float);
@@ -100,4 +100,4 @@ package body Wavefiles.PCM_Buffers.Data is
 
    end Write_Data;
 
-end Wavefiles.PCM_Buffers.Data;
+end Audio.Wavefiles.PCM_Buffers.Data;

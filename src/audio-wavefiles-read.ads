@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                              Main package
+--                            Wavefile reading
 --
 --  The MIT License (MIT)
 --
@@ -25,14 +25,16 @@
 --  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
-package body Wavefiles is
+package Audio.Wavefiles.Read is
 
-   function Get_Wave_Format
-     (W : Wavefile) return  RIFF.Wave_Format_Extensible is
-   begin
-      return W.Wave_Format;
-   end Get_Wave_Format;
+   procedure Open
+     (WF         : in out Wavefile;
+      File_Name  : String);
 
-end Wavefiles;
+   procedure Display_Info (WF : in Wavefile);
+
+   procedure Close (WF        : in out Wavefile);
+
+end Audio.Wavefiles.Read;

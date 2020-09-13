@@ -29,7 +29,7 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 
-package body Wavefiles.PCM_Buffers is
+package body Audio.Wavefiles.PCM_Buffers is
 
    function Is_Channel_Active
      (PCM_Buf : PCM_Buffer;
@@ -128,4 +128,4 @@ package body Wavefiles.PCM_Buffers is
       return PCM_Out;
    end Perform;
 
-end Wavefiles.PCM_Buffers;
+end Audio.Wavefiles.PCM_Buffers;

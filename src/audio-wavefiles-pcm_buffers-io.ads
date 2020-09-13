@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                   Internal I/O operations for PCM buffers
+--                   Wavefile I/O operations for PCM buffers
 --
 --  The MIT License (MIT)
 --
@@ -27,19 +27,20 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-private generic
-   type Audio_Res is range <>;
-   PCM_Float_Type_Support : in Boolean;
+generic
+   Float_Type_Support : in Boolean;
    with function To_Long_Float (A : PCM_Type)   return Long_Float is <>;
    with function To_PCM_Type   (A : Long_Float) return PCM_Type   is <>;
-package Wavefiles.PCM_Buffers.Data is
+package Audio.Wavefiles.PCM_Buffers.IO is
 
-   procedure Read_Data
+   procedure Read
+     (WF   : in out Wavefile;
+      Buf  : out    PCM_Buffer;
+      EOF  : out    Boolean);
+
+   procedure Write
      (WF  : in out Wavefile;
-      Buf : in out PCM_Buffer);
+      Buf : in     PCM_Buffer);
 
-   procedure Write_Data
-     (WF  : in out Wavefile;
-      Buf : in PCM_Buffer);
 
-end Wavefiles.PCM_Buffers.Data;
+end Audio.Wavefiles.PCM_Buffers.IO;

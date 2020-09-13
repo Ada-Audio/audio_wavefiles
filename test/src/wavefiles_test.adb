@@ -30,12 +30,12 @@
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Wavefiles;
-with Wavefiles.Read;
-with Wavefiles.Write;
-with Wavefiles.Fixed_PCM;
---  with Wavefiles.Float_PCM;
-with RIFF;
+with Audio.Wavefiles;
+with Audio.Wavefiles.Read;
+with Audio.Wavefiles.Write;
+with Audio.Wavefiles.Fixed_PCM;
+--  with Audio.Wavefiles.Float_PCM;
+with Audio.RIFF;
 
 procedure Wavefiles_Test is
    Command_Line_OK : Boolean := False;
@@ -81,22 +81,22 @@ procedure Wavefiles_Test is
       Channels    : constant Positive := 6;
       Samples     : constant Positive := 2048;
 
-      package PCM is new Wavefiles.Fixed_PCM
+      package PCM is new Audio.Wavefiles.Fixed_PCM
         (Samples  => Samples,
          PCM_Type => Fixed_Long);
 
---        package PCM is new Wavefiles.Float_PCM
+--        package PCM is new Audio.Wavefiles.Float_PCM
 --          (Samples  => Samples,
 --           PCM_Type => Float);
 
-      package Wav_Read  renames  Wavefiles.Read;
-      package Wav_Write renames  Wavefiles.Write;
+      package Wav_Read  renames  Audio.Wavefiles.Read;
+      package Wav_Write renames  Audio.Wavefiles.Write;
 
       Verbose     : constant Boolean := False;
 
 
       procedure Display_Info_File (File_In  : String) is
-         WF_In       : Wavefiles.Wavefile;
+         WF_In       : Audio.Wavefiles.Wavefile;
       begin
          Wav_Read.Open (WF_In, File_In);
          Wav_Read.Display_Info (WF_In);
@@ -107,16 +107,16 @@ procedure Wavefiles_Test is
         (File_In  : String;
          File_Out : String)
       is
-         WF_In       : Wavefiles.Wavefile;
-         WF_Out      : Wavefiles.Wavefile;
+         WF_In       : Audio.Wavefiles.Wavefile;
+         WF_Out      : Audio.Wavefiles.Wavefile;
          PCM_Buf     : PCM.Buffers.PCM_Buffer (Channels);
-         Wave_Format : RIFF.Wave_Format_Extensible;
+         Wave_Format : Audio.RIFF.Wave_Format_Extensible;
          EOF         : Boolean;
          Frame       : Integer := 0;
       begin
          Wav_Read.Open (WF_In, File_In);
 
-         Wave_Format := Wavefiles.Get_Wave_Format (WF_In);
+         Wave_Format := Audio.Wavefiles.Get_Wave_Format (WF_In);
 
          Wav_Write.Open (WF_Out, File_Out, Wave_Format);
 
@@ -145,11 +145,11 @@ procedure Wavefiles_Test is
         (File_Ref  : String;
          File_DUT  : String)
       is
-         WF_Ref           : Wavefiles.Wavefile;
-         WF_DUT           : Wavefiles.Wavefile;
+         WF_Ref           : Audio.Wavefiles.Wavefile;
+         WF_DUT           : Audio.Wavefiles.Wavefile;
          PCM_Ref          : PCM.Buffers.PCM_Buffer (Channels);
          PCM_DUT          : PCM.Buffers.PCM_Buffer (Channels);
-         Wave_Format      : RIFF.Wave_Format_Extensible;
+         Wave_Format      : Audio.RIFF.Wave_Format_Extensible;
          EOF_Ref, EOF_DUT : Boolean;
          Diff_Frames      : Natural := 0;
          Frame            : Integer := 0;
@@ -184,16 +184,16 @@ procedure Wavefiles_Test is
          File_DUT  : String;
          File_Diff : String)
       is
-         WF_Ref           : Wavefiles.Wavefile;
-         WF_DUT           : Wavefiles.Wavefile;
-         WF_Diff          : Wavefiles.Wavefile;
+         WF_Ref           : Audio.Wavefiles.Wavefile;
+         WF_DUT           : Audio.Wavefiles.Wavefile;
+         WF_Diff          : Audio.Wavefiles.Wavefile;
          PCM_Ref          : PCM.Buffers.PCM_Buffer (Channels);
          PCM_DUT          : PCM.Buffers.PCM_Buffer (Channels);
          PCM_Diff         : PCM.Buffers.PCM_Buffer (Channels);
-         Wave_Format      : RIFF.Wave_Format_Extensible;
+         Wave_Format      : Audio.RIFF.Wave_Format_Extensible;
          EOF_Ref, EOF_DUT : Boolean;
       begin
-         RIFF.Set_Default (Wave_Format);
+         Audio.RIFF.Set_Default (Wave_Format);
 
          Wav_Read.Open (WF_Ref, File_Ref);
          Wav_Read.Open (WF_DUT, File_DUT);
@@ -215,16 +215,16 @@ procedure Wavefiles_Test is
          File_DUT  : String;
          File_Mix  : String)
       is
-         WF_Ref           : Wavefiles.Wavefile;
-         WF_DUT           : Wavefiles.Wavefile;
-         WF_Mix           : Wavefiles.Wavefile;
+         WF_Ref           : Audio.Wavefiles.Wavefile;
+         WF_DUT           : Audio.Wavefiles.Wavefile;
+         WF_Mix           : Audio.Wavefiles.Wavefile;
          PCM_Ref          : PCM.Buffers.PCM_Buffer (Channels);
          PCM_DUT          : PCM.Buffers.PCM_Buffer (Channels);
          PCM_Mix          : PCM.Buffers.PCM_Buffer (Channels);
-         Wave_Format      : RIFF.Wave_Format_Extensible;
+         Wave_Format      : Audio.RIFF.Wave_Format_Extensible;
          EOF_Ref, EOF_DUT : Boolean;
       begin
-         RIFF.Set_Default (Wave_Format);
+         Audio.RIFF.Set_Default (Wave_Format);
 
          Wav_Read.Open (WF_Ref, File_Ref);
          Wav_Read.Open (WF_DUT, File_DUT);

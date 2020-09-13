@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                              Main package
+--                       PCM buffers for wavefile I/O
 --
 --  The MIT License (MIT)
 --
@@ -27,33 +27,48 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Streams.Stream_IO;
-with RIFF;
+generic
+   Samples : Positive;
+   type PCM_Type is private;
+   with procedure Reset (A : out PCM_Type) is <>;
+   with function "=" (A, B : PCM_Type) return Boolean is <>;
 
---  <description>
---     Main package for WAVE file reading / writing
---  </description>
+package Audio.Wavefiles.PCM_Buffers is
 
-package Wavefiles is
-   type Wavefile is limited private;
+   type PCM_Channel_Buffer_Type is array (1 .. Samples) of PCM_Type;
 
-   Wavefile_Error       : exception;
-   Wavefile_Unsupported : exception;
+   type Audio_Data_Type is array (Positive range <>)
+     of PCM_Channel_Buffer_Type;
 
-   function Get_Wave_Format
-     (W : Wavefile) return  RIFF.Wave_Format_Extensible;
+   type PCM_Buffer_Info (Channels : Positive) is private;
 
-private
-
-   type Wavefile is limited
+   type PCM_Buffer (Channels : Positive) is
       record
-         Is_Opened        : Boolean      := False;
-         File             : Ada.Streams.Stream_IO.File_Type;
-         File_Access      : Ada.Streams.Stream_IO.Stream_Access;
-         File_Index       : Ada.Streams.Stream_IO.Positive_Count;
-         Wave_Format      : RIFF.Wave_Format_Extensible;
-         Samples          : Long_Integer;
-         Samples_Read     : Long_Integer := 0;
+         Audio_Data      : Audio_Data_Type (1 .. Channels);
+         Info            : PCM_Buffer_Info (Channels);
       end record;
 
-end Wavefiles;
+   type PCM_Buffer_Op is access function (A, B : PCM_Type) return PCM_Type;
+
+   function Is_Channel_Active
+     (PCM_Buf : PCM_Buffer;
+      Channel : Positive) return Boolean;
+
+   function Get_Number_Valid_Samples (PCM_Buf : PCM_Buffer) return Natural;
+
+   function "=" (Left, Right : PCM_Buffer) return Boolean;
+
+   function Perform
+     (Left, Right : PCM_Buffer;
+      Op          : PCM_Buffer_Op) return PCM_Buffer;
+
+private
+   type Audio_Active_Type is array (Positive range <>) of Boolean;
+
+   type PCM_Buffer_Info (Channels : Positive) is
+      record
+         Active          : Audio_Active_Type (1 .. Channels);
+         Samples_Valid   : Natural := 0;
+      end record;
+
+end Audio.Wavefiles.PCM_Buffers;

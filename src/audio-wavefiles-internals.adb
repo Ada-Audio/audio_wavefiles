@@ -27,7 +27,7 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body Wavefiles.Internals is
+package body Audio.Wavefiles.Internals is
 
    use Ada.Streams.Stream_IO;
    procedure Skip_Bytes
@@ -39,4 +39,4 @@ package body Wavefiles.Internals is
                  + Ada.Streams.Stream_IO.Count (Bytes));
    end Skip_Bytes;
 
-end Wavefiles.Internals;
+end Audio.Wavefiles.Internals;

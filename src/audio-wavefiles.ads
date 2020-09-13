@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                            Wavefile reading
+--                              Main package
 --
 --  The MIT License (MIT)
 --
@@ -27,14 +27,33 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package Wavefiles.Read is
+with Ada.Streams.Stream_IO;
+with Audio.RIFF;
 
-   procedure Open
-     (WF         : in out Wavefile;
-      File_Name  : String);
+--  <description>
+--     Main package for WAVE file reading / writing
+--  </description>
 
-   procedure Display_Info (WF : in Wavefile);
+package Audio.Wavefiles is
+   type Wavefile is limited private;
 
-   procedure Close (WF        : in out Wavefile);
+   Wavefile_Error       : exception;
+   Wavefile_Unsupported : exception;
 
-end Wavefiles.Read;
+   function Get_Wave_Format
+     (W : Wavefile) return  Audio.RIFF.Wave_Format_Extensible;
+
+private
+
+   type Wavefile is limited
+      record
+         Is_Opened        : Boolean      := False;
+         File             : Ada.Streams.Stream_IO.File_Type;
+         File_Access      : Ada.Streams.Stream_IO.Stream_Access;
+         File_Index       : Ada.Streams.Stream_IO.Positive_Count;
+         Wave_Format      : Audio.RIFF.Wave_Format_Extensible;
+         Samples          : Long_Integer;
+         Samples_Read     : Long_Integer := 0;
+      end record;
+
+end Audio.Wavefiles;

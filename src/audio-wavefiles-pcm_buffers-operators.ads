@@ -2,8 +2,7 @@
 --
 --                                WAVEFILES
 --
---                 PCM buffers / operators / wavefile I/O
---                       Using fixed-point data type
+--                          Operators for PCM buffers
 --
 --  The MIT License (MIT)
 --
@@ -28,26 +27,17 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body Wavefiles.Fixed_PCM is
+generic
+   with function "*" (A, B : PCM_Type) return PCM_Type is <>;
+   with function "+" (A, B : PCM_Type) return PCM_Type is <>;
+   with function "-" (A, B : PCM_Type) return PCM_Type is <>;
 
-   procedure Reset (A : out PCM_Type) is
-   begin
-      A := 0.0;
-   end Reset;
+package Audio.Wavefiles.PCM_Buffers.Operators is
 
-   function Mult (A, B : PCM_Type) return PCM_Type is
-   begin
-      return A * B;
-   end Mult;
+   function "+" (Left, Right : PCM_Buffer) return PCM_Buffer;
+   function "-" (Left, Right : PCM_Buffer) return PCM_Buffer;
+   function "*"
+     (Left  : PCM_Buffer;
+      Right : PCM_Type) return PCM_Buffer;
 
-   function To_Long_Float (A : PCM_Type) return Long_Float is
-   begin
-      return Long_Float (A);
-   end To_Long_Float;
-
-   function To_PCM_Type (A : Long_Float) return PCM_Type is
-   begin
-      return PCM_Type (A);
-   end To_PCM_Type;
-
-end Wavefiles.Fixed_PCM;
+end Audio.Wavefiles.PCM_Buffers.Operators;

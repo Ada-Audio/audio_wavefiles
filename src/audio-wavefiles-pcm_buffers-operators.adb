@@ -27,7 +27,7 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body Wavefiles.PCM_Buffers.Operators is
+package body Audio.Wavefiles.PCM_Buffers.Operators is
 
    function "+" (Left, Right : PCM_Buffer) return PCM_Buffer is
       PCM_Mix : PCM_Buffer (Positive'Max (Left.Channels, Right.Channels));
@@ -116,4 +116,4 @@ package body Wavefiles.PCM_Buffers.Operators is
       return PCM_Out;
    end "*";
 
-end Wavefiles.PCM_Buffers.Operators;
+end Audio.Wavefiles.PCM_Buffers.Operators;

@@ -35,7 +35,7 @@ with System;
 --     RIFF information for wavefile parsing.
 --     This implementation partially supports WAVE_FORMAT_EXTENSIBLE.
 --  </description>
-package RIFF is
+package Audio.RIFF is
 
    use Interfaces;
 
@@ -169,4 +169,4 @@ package RIFF is
 
    procedure Print (W : Wave_Format_Extensible);
 
-end RIFF;
+end Audio.RIFF;

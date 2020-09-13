@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                            Wavefile writing
+--                   Internal I/O operations for PCM buffers
 --
 --  The MIT License (MIT)
 --
@@ -27,15 +27,19 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with RIFF;
+private generic
+   type Audio_Res is range <>;
+   PCM_Float_Type_Support : in Boolean;
+   with function To_Long_Float (A : PCM_Type)   return Long_Float is <>;
+   with function To_PCM_Type   (A : Long_Float) return PCM_Type   is <>;
+package Audio.Wavefiles.PCM_Buffers.Data is
 
-package Wavefiles.Write is
+   procedure Read_Data
+     (WF  : in out Wavefile;
+      Buf : in out PCM_Buffer);
 
-   procedure Open
-     (WF          : in out Wavefile;
-      File_Name   : String;
-      Wave_Format : RIFF.Wave_Format_Extensible);
+   procedure Write_Data
+     (WF  : in out Wavefile;
+      Buf : in PCM_Buffer);
 
-   procedure Close (WF         : in out Wavefile);
-
-end Wavefiles.Write;
+end Audio.Wavefiles.PCM_Buffers.Data;

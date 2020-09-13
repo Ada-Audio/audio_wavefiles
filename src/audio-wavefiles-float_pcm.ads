@@ -2,7 +2,8 @@
 --
 --                                WAVEFILES
 --
---                           Internal information
+--                 PCM buffers / operators / wavefile I/O
+--                     Using floating-point data type
 --
 --  The MIT License (MIT)
 --
@@ -27,17 +28,32 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Interfaces; use Interfaces;
-with Ada.Streams.Stream_IO;
+with Audio.Wavefiles.PCM_Buffers;
+with Audio.Wavefiles.PCM_Buffers.IO;
+with Audio.Wavefiles.PCM_Buffers.Operators;
 
-private generic
-package Wavefiles.Internals is
+generic
+   Samples : Positive;
+   type PCM_Type is digits <>;
+package Audio.Wavefiles.Float_PCM is
 
-   type Integer_24 is range -2 ** (24 - 1) .. 2 ** (24 - 1) - 1;
-   for Integer_24'Size use 24;
+   procedure Reset (A : out PCM_Type)
+     with Inline;
 
-   procedure Skip_Bytes
-     (F     : in out Ada.Streams.Stream_IO.File_Type;
-      Bytes : in Unsigned_32);
+   function Mult (A, B : PCM_Type) return PCM_Type
+     with Inline;
 
-end Wavefiles.Internals;
+   function To_Long_Float (A : PCM_Type) return Long_Float
+     with Inline;
+
+   function To_PCM_Type (A : Long_Float) return PCM_Type
+     with Inline;
+
+   package Buffers is new Audio.Wavefiles.PCM_Buffers
+     (Samples, PCM_Type, Reset);
+
+   package IO is new Buffers.IO (Float_Type_Support => True);
+
+   package Operators is new  Buffers.Operators (Mult);
+
+end Audio.Wavefiles.Float_PCM;

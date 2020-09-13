@@ -2,8 +2,7 @@
 --
 --                                WAVEFILES
 --
---                 PCM buffers / operators / wavefile I/O
---                     Using floating-point data type
+--                            Wavefile writing
 --
 --  The MIT License (MIT)
 --
@@ -28,32 +27,15 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Wavefiles.PCM_Buffers;
-with Wavefiles.PCM_Buffers.IO;
-with Wavefiles.PCM_Buffers.Operators;
+with Audio.RIFF;
 
-generic
-   Samples : Positive;
-   type PCM_Type is digits <>;
-package Wavefiles.Float_PCM is
+package Audio.Wavefiles.Write is
 
-   procedure Reset (A : out PCM_Type)
-     with Inline;
+   procedure Open
+     (WF          : in out Wavefile;
+      File_Name   : String;
+      Wave_Format : RIFF.Wave_Format_Extensible);
 
-   function Mult (A, B : PCM_Type) return PCM_Type
-     with Inline;
+   procedure Close (WF         : in out Wavefile);
 
-   function To_Long_Float (A : PCM_Type) return Long_Float
-     with Inline;
-
-   function To_PCM_Type (A : Long_Float) return PCM_Type
-     with Inline;
-
-   package Buffers is new Wavefiles.PCM_Buffers
-     (Samples, PCM_Type, Reset);
-
-   package IO is new Buffers.IO (Float_Type_Support => True);
-
-   package Operators is new  Buffers.Operators (Mult);
-
-end Wavefiles.Float_PCM;
+end Audio.Wavefiles.Write;

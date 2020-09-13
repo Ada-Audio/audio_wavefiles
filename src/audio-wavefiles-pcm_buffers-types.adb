@@ -29,7 +29,7 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 
-package body Wavefiles.PCM_Buffers.Types is
+package body Audio.Wavefiles.PCM_Buffers.Types is
 
    procedure Print_Sample_Read
      (Sample_In     : Audio_Res;
@@ -143,4 +143,4 @@ package body Wavefiles.PCM_Buffers.Types is
       return Sample_Out;
    end Convert_Sample;
 
-end Wavefiles.PCM_Buffers.Types;
+end Audio.Wavefiles.PCM_Buffers.Types;

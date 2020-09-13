@@ -28,9 +28,9 @@
 -------------------------------------------------------------------------------
 
 with Interfaces;
-with RIFF; use RIFF;
+with Audio.RIFF; use Audio.RIFF;
 
-package body Wavefiles.Write is
+package body Audio.Wavefiles.Write is
 
    use Ada.Streams.Stream_IO;
    use Interfaces;
@@ -129,4 +129,4 @@ package body Wavefiles.Write is
    end Close;
 
 
-end Wavefiles.Write;
+end Audio.Wavefiles.Write;

@@ -29,7 +29,7 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 
-package body RIFF is
+package body Audio.RIFF is
 
    type Channel_Mask_Integer is mod 2**Channel_Mask_Type_Size;
 
@@ -168,4 +168,4 @@ package body RIFF is
       null;
    end Set_Default;
 
-end RIFF;
+end Audio.RIFF;

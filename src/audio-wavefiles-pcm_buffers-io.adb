@@ -29,28 +29,28 @@
 
 with Interfaces;
 
-with Wavefiles.Internals;
-with Wavefiles.PCM_Buffers.Data;
-with RIFF; use RIFF;
+with Audio.Wavefiles.Internals;
+with Audio.Wavefiles.PCM_Buffers.Data;
+with Audio.RIFF;                       use Audio.RIFF;
 
-package body Wavefiles.PCM_Buffers.IO is
+package body Audio.Wavefiles.PCM_Buffers.IO is
 
-   package Int     is new Wavefiles.Internals;
+   package Int is new Audio.Wavefiles.Internals;
 
    use Interfaces;
 
-   package Fixed_Data_16 is new Wavefiles.PCM_Buffers.Data
+   package Fixed_Data_16 is new Audio.Wavefiles.PCM_Buffers.Data
      (Integer_16, PCM_Float_Type_Support => False);
-   package Fixed_Data_24 is new Wavefiles.PCM_Buffers.Data
+   package Fixed_Data_24 is new Audio.Wavefiles.PCM_Buffers.Data
      (Int.Integer_24, PCM_Float_Type_Support => False);
-   package Fixed_Data_32 is new Wavefiles.PCM_Buffers.Data
+   package Fixed_Data_32 is new Audio.Wavefiles.PCM_Buffers.Data
      (Integer_32, PCM_Float_Type_Support => False);
 
-   package Float_Data_16 is new Wavefiles.PCM_Buffers.Data
+   package Float_Data_16 is new Audio.Wavefiles.PCM_Buffers.Data
      (Integer_16, PCM_Float_Type_Support => True);
-   package Float_Data_24 is new Wavefiles.PCM_Buffers.Data
+   package Float_Data_24 is new Audio.Wavefiles.PCM_Buffers.Data
      (Int.Integer_24, PCM_Float_Type_Support => True);
-   package Float_Data_32 is new Wavefiles.PCM_Buffers.Data
+   package Float_Data_32 is new Audio.Wavefiles.PCM_Buffers.Data
      (Integer_32, PCM_Float_Type_Support => True);
 
    function Is_Supported_Format (W : Wave_Format_Extensible) return Boolean;
@@ -155,4 +155,4 @@ package body Wavefiles.PCM_Buffers.IO is
    end Write;
 
 
-end Wavefiles.PCM_Buffers.IO;
+end Audio.Wavefiles.PCM_Buffers.IO;

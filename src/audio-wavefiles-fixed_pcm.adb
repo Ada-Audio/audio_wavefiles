@@ -2,7 +2,8 @@
 --
 --                                WAVEFILES
 --
---                       PCM buffers for wavefile I/O
+--                 PCM buffers / operators / wavefile I/O
+--                       Using fixed-point data type
 --
 --  The MIT License (MIT)
 --
@@ -27,48 +28,26 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-generic
-   Samples : Positive;
-   type PCM_Type is private;
-   with procedure Reset (A : out PCM_Type) is <>;
-   with function "=" (A, B : PCM_Type) return Boolean is <>;
+package body Audio.Wavefiles.Fixed_PCM is
 
-package Wavefiles.PCM_Buffers is
+   procedure Reset (A : out PCM_Type) is
+   begin
+      A := 0.0;
+   end Reset;
 
-   type PCM_Channel_Buffer_Type is array (1 .. Samples) of PCM_Type;
+   function Mult (A, B : PCM_Type) return PCM_Type is
+   begin
+      return A * B;
+   end Mult;
 
-   type Audio_Data_Type is array (Positive range <>)
-     of PCM_Channel_Buffer_Type;
+   function To_Long_Float (A : PCM_Type) return Long_Float is
+   begin
+      return Long_Float (A);
+   end To_Long_Float;
 
-   type PCM_Buffer_Info (Channels : Positive) is private;
+   function To_PCM_Type (A : Long_Float) return PCM_Type is
+   begin
+      return PCM_Type (A);
+   end To_PCM_Type;
 
-   type PCM_Buffer (Channels : Positive) is
-      record
-         Audio_Data      : Audio_Data_Type (1 .. Channels);
-         Info            : PCM_Buffer_Info (Channels);
-      end record;
-
-   type PCM_Buffer_Op is access function (A, B : PCM_Type) return PCM_Type;
-
-   function Is_Channel_Active
-     (PCM_Buf : PCM_Buffer;
-      Channel : Positive) return Boolean;
-
-   function Get_Number_Valid_Samples (PCM_Buf : PCM_Buffer) return Natural;
-
-   function "=" (Left, Right : PCM_Buffer) return Boolean;
-
-   function Perform
-     (Left, Right : PCM_Buffer;
-      Op          : PCM_Buffer_Op) return PCM_Buffer;
-
-private
-   type Audio_Active_Type is array (Positive range <>) of Boolean;
-
-   type PCM_Buffer_Info (Channels : Positive) is
-      record
-         Active          : Audio_Active_Type (1 .. Channels);
-         Samples_Valid   : Natural := 0;
-      end record;
-
-end Wavefiles.PCM_Buffers;
+end Audio.Wavefiles.Fixed_PCM;

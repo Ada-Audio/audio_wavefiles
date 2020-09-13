@@ -2,8 +2,7 @@
 --
 --                                WAVEFILES
 --
---                 PCM buffers / operators / wavefile I/O
---                       Using fixed-point data type
+--                              Main package
 --
 --  The MIT License (MIT)
 --
@@ -26,34 +25,14 @@
 --  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
--------------------------------------------------------------------------------
+------------------------------------------------------------------------------
 
-with Wavefiles.PCM_Buffers;
-with Wavefiles.PCM_Buffers.IO;
-with Wavefiles.PCM_Buffers.Operators;
+package body Audio.Wavefiles is
 
-generic
-   Samples : Positive;
-   type PCM_Type is delta <>;
-package Wavefiles.Fixed_PCM is
+   function Get_Wave_Format
+     (W : Wavefile) return  RIFF.Wave_Format_Extensible is
+   begin
+      return W.Wave_Format;
+   end Get_Wave_Format;
 
-   procedure Reset (A : out PCM_Type)
-     with Inline;
-
-   function Mult (A, B : PCM_Type) return PCM_Type
-     with Inline;
-
-   function To_Long_Float (A : PCM_Type) return Long_Float
-     with Inline;
-
-   function To_PCM_Type (A : Long_Float) return PCM_Type
-     with Inline;
-
-   package Buffers is new Wavefiles.PCM_Buffers
-     (Samples, PCM_Type, Reset);
-
-   package IO is new Buffers.IO (Float_Type_Support => False);
-
-   package Operators is new  Buffers.Operators (Mult);
-
-end Wavefiles.Fixed_PCM;
+end Audio.Wavefiles;
