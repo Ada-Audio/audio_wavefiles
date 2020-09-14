@@ -27,13 +27,12 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
+with Audio.Wavefiles; use Audio.Wavefiles;
+
 generic
    Samples : Positive;
-   type PCM_Type is private;
-   with procedure Reset (A : out PCM_Type) is <>;
-   with function "=" (A, B : PCM_Type) return Boolean is <>;
-
-package Audio.Wavefiles.PCM_Buffers is
+   type PCM_Type is delta <>;
+package Audio.Fixed_PCM_Buffers is
 
    type PCM_Channel_Buffer_Type is array (1 .. Samples) of PCM_Type;
 
@@ -48,6 +47,13 @@ package Audio.Wavefiles.PCM_Buffers is
          Info            : PCM_Buffer_Info (Channels);
       end record;
 
+   function "=" (Left, Right : PCM_Buffer) return Boolean;
+   function "+" (Left, Right : PCM_Buffer) return PCM_Buffer;
+   function "-" (Left, Right : PCM_Buffer) return PCM_Buffer;
+   function "*"
+     (Left  : PCM_Buffer;
+      Right : PCM_Type) return PCM_Buffer;
+
    type PCM_Buffer_Op is access function (A, B : PCM_Type) return PCM_Type;
 
    function Is_Channel_Active
@@ -56,11 +62,18 @@ package Audio.Wavefiles.PCM_Buffers is
 
    function Get_Number_Valid_Samples (PCM_Buf : PCM_Buffer) return Natural;
 
-   function "=" (Left, Right : PCM_Buffer) return Boolean;
-
    function Perform
      (Left, Right : PCM_Buffer;
       Op          : PCM_Buffer_Op) return PCM_Buffer;
+
+   procedure Get
+     (WF  : in out Wavefile;
+      Buf : in out PCM_Buffer;
+      EOF : out    Boolean);
+
+   procedure Put
+     (WF  : in out Wavefile;
+      Buf : in PCM_Buffer);
 
 private
    type Audio_Active_Type is array (Positive range <>) of Boolean;
@@ -71,4 +84,4 @@ private
          Samples_Valid   : Natural := 0;
       end record;
 
-end Audio.Wavefiles.PCM_Buffers;
+end Audio.Fixed_PCM_Buffers;

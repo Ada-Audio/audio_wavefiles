@@ -29,15 +29,27 @@
 
 with Interfaces; use Interfaces;
 with Ada.Streams.Stream_IO;
+with Audio.RIFF; use Audio.RIFF;
 
-private generic
+private
 package Audio.Wavefiles.Internals is
 
-   type Integer_24 is range -2 ** (24 - 1) .. 2 ** (24 - 1) - 1;
-   for Integer_24'Size use 24;
+   type Wav_Int_8 is range -2 ** (8 - 1) .. 2 ** (8 - 1) - 1
+     with Size => 8;
+
+   type Wav_Int_16 is range -2 ** (16 - 1) .. 2 ** (16 - 1) - 1
+     with Size => 16;
+
+   type Wav_Int_24 is range -2 ** (24 - 1) .. 2 ** (24 - 1) - 1
+     with Size => 24;
+
+   type Wav_Int_32 is range -2 ** (32 - 1) .. 2 ** (32 - 1) - 1
+     with Size => 32;
 
    procedure Skip_Bytes
      (F     : in out Ada.Streams.Stream_IO.File_Type;
       Bytes : in Unsigned_32);
+
+   function Is_Supported_Format (W : Wave_Format_Extensible) return Boolean;
 
 end Audio.Wavefiles.Internals;

@@ -43,6 +43,9 @@ package Audio.Wavefiles is
    function Get_Wave_Format
      (W : Wavefile) return  Audio.RIFF.Wave_Format_Extensible;
 
+   function Get_Channels
+     (W : Wavefile) return Positive;
+
 private
 
    type Wavefile is limited

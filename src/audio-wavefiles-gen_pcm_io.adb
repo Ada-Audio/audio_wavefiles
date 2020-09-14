@@ -2,11 +2,11 @@
 --
 --                                WAVEFILES
 --
---                          Operators for PCM buffers
+--                           Generic Wavefile I/O
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -27,17 +27,34 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-generic
-   with function "*" (A, B : PCM_Type) return PCM_Type is <>;
-   with function "+" (A, B : PCM_Type) return PCM_Type is <>;
-   with function "-" (A, B : PCM_Type) return PCM_Type is <>;
+package body Audio.Wavefiles.Gen_PCM_IO is
 
-package Audio.Wavefiles.PCM_Buffers.Operators is
+   function Get (WF  : in out Wavefile) return Audio_Samples
+   is
+      Ch : constant Positive := Positive (WF.Wave_Format.Channels);
+      BB : Audio_Res;
+   begin
+      return B  : Audio_Samples (1 .. Ch) do
+         for J in 1 .. Ch loop
 
-   function "+" (Left, Right : PCM_Buffer) return PCM_Buffer;
-   function "-" (Left, Right : PCM_Buffer) return PCM_Buffer;
-   function "*"
-     (Left  : PCM_Buffer;
-      Right : PCM_Type) return PCM_Buffer;
+            Audio_Res'Read (WF.File_Access, BB);
+            B (J) := BB;
+            if Ada.Streams.Stream_IO.End_Of_File (WF.File) and then
+              J < Ch
+            then
+               --  Cannot read data for all channels
+               raise Wavefile_Error;
+            end if;
+         end loop;
+      end return;
+   end Get;
 
-end Audio.Wavefiles.PCM_Buffers.Operators;
+   procedure Put (WF : in out Wavefile;
+                    B  :        Audio_Samples) is
+      Ch : constant Positive := Positive (WF.Wave_Format.Channels);
+   begin
+      Audio_Samples'Write (WF.File_Access, B);
+      WF.Samples := WF.Samples + Long_Integer (Ch);
+   end Put;
+
+end Audio.Wavefiles.Gen_PCM_IO;

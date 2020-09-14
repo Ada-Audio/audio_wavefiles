@@ -2,8 +2,7 @@
 --
 --                                WAVEFILES
 --
---                 PCM buffers / operators / wavefile I/O
---                     Using floating-point data type
+--               Type conversion for wavefile I/O operations
 --
 --  The MIT License (MIT)
 --
@@ -28,32 +27,30 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Audio.Wavefiles.PCM_Buffers;
-with Audio.Wavefiles.PCM_Buffers.IO;
-with Audio.Wavefiles.PCM_Buffers.Operators;
-
-generic
-   Samples : Positive;
+private generic
+   type Audio_Res is range <>;
    type PCM_Type is digits <>;
-package Audio.Wavefiles.Float_PCM is
+package Audio.Wavefiles.Float_Types is
 
-   procedure Reset (A : out PCM_Type)
-     with Inline;
+   type PCM_Bit_Array is array (0 .. PCM_Type'Size - 1) of Boolean;
+   pragma Pack (PCM_Bit_Array);
 
-   function Mult (A, B : PCM_Type) return PCM_Type
-     with Inline;
+   type Audio_Res_Bit_Array is array (0 .. Audio_Res'Size - 1) of Boolean;
+   pragma Pack (Audio_Res_Bit_Array);
 
-   function To_Long_Float (A : PCM_Type) return Long_Float
-     with Inline;
+   Bool_Image  : constant array (Boolean'Range) of Character := ('0', '1');
+   Convert_Sample_Debug : constant Boolean := False;
 
-   function To_PCM_Type (A : Long_Float) return PCM_Type
-     with Inline;
+   procedure Print_Sample_Read
+     (Sample_In     : Audio_Res;
+      Sample_Out    : PCM_Type);
 
-   package Buffers is new Audio.Wavefiles.PCM_Buffers
-     (Samples, PCM_Type, Reset);
+   procedure Print_Sample_Write
+     (Sample_In     : PCM_Type;
+      Sample_Out    : Audio_Res);
 
-   package IO is new Buffers.IO (Float_Type_Support => True);
+   function Convert_Sample (Sample : Audio_Res) return PCM_Type;
 
-   package Operators is new  Buffers.Operators (Mult);
+   function Convert_Sample (Sample : PCM_Type) return Audio_Res;
 
-end Audio.Wavefiles.Float_PCM;
+end Audio.Wavefiles.Float_Types;

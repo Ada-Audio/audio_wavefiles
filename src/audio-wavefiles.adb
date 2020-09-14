@@ -35,4 +35,7 @@ package body Audio.Wavefiles is
       return W.Wave_Format;
    end Get_Wave_Format;
 
+   function Get_Channels
+     (W : Wavefile) return Positive is (Positive (W.Wave_Format.Channels));
+
 end Audio.Wavefiles;

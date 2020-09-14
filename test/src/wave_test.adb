@@ -3,8 +3,8 @@ with Ada.Text_IO;                   use Ada.Text_IO;
 with Audio.Wavefiles;
 with Audio.Wavefiles.Read;
 with Audio.Wavefiles.Write;
-with Audio.Wavefiles.Fixed_PCM;
---  with Audio.Wavefiles.Float_PCM;
+with Audio.Fixed_PCM_Buffers;
+--  with Audio.Float_PCM_Buffers;
 with Audio.RIFF;
 
 package body Wave_Test is
@@ -21,13 +21,9 @@ package body Wave_Test is
    Channels    : constant Positive := 6;
    Samples     : constant Positive := 2048;
 
-   package PCM is new Audio.Wavefiles.Fixed_PCM
+   package PCM is new Audio.Fixed_PCM_Buffers
      (Samples  => Samples,
       PCM_Type => Fixed_Long);
-
-   --        package PCM is new Audio.Wavefiles.Float_PCM
-   --          (Samples  => Samples,
-   --           PCM_Type => Float);
 
    package Wav_Read  renames  Audio.Wavefiles.Read;
    package Wav_Write renames  Audio.Wavefiles.Write;
@@ -49,7 +45,7 @@ package body Wave_Test is
    is
       WF_In       : Audio.Wavefiles.Wavefile;
       WF_Out      : Audio.Wavefiles.Wavefile;
-      PCM_Buf     : PCM.Buffers.PCM_Buffer (Channels);
+      PCM_Buf     : PCM.PCM_Buffer (Channels);
       Wave_Format : Audio.RIFF.Wave_Format_Extensible;
       EOF         : Boolean;
       Frame       : Integer := 0;
@@ -72,8 +68,8 @@ package body Wave_Test is
          if Verbose then
             Put ("[" & Integer'Image (Frame) & "]");
          end if;
-         PCM.IO.Read (WF_In, PCM_Buf, EOF);
-         PCM.IO.Write (WF_Out, PCM_Buf);
+         PCM.Get (WF_In, PCM_Buf, EOF);
+         PCM.Put (WF_Out, PCM_Buf);
          exit when EOF;
       end loop;
       Wav_Read.Close (WF_In);
@@ -87,8 +83,8 @@ package body Wave_Test is
    is
       WF_Ref           : Audio.Wavefiles.Wavefile;
       WF_DUT           : Audio.Wavefiles.Wavefile;
-      PCM_Ref          : PCM.Buffers.PCM_Buffer (Channels);
-      PCM_DUT          : PCM.Buffers.PCM_Buffer (Channels);
+      PCM_Ref          : PCM.PCM_Buffer (Channels);
+      PCM_DUT          : PCM.PCM_Buffer (Channels);
       Wave_Format      : Audio.RIFF.Wave_Format_Extensible;
       EOF_Ref, EOF_DUT : Boolean;
       Diff_Frames      : Natural := 0;
@@ -100,9 +96,9 @@ package body Wave_Test is
       Wav_Read.Open (WF_DUT, File_DUT);
       loop
          Frame := Frame + 1;
-         PCM.IO.Read (WF_Ref, PCM_Ref, EOF_Ref);
-         PCM.IO.Read (WF_DUT, PCM_DUT, EOF_DUT);
-         if not PCM.Buffers."=" (PCM_Ref, PCM_DUT) then
+         PCM.Get (WF_Ref, PCM_Ref, EOF_Ref);
+         PCM.Get (WF_DUT, PCM_DUT, EOF_DUT);
+         if not PCM."=" (PCM_Ref, PCM_DUT) then
             Diff_Frames := Diff_Frames + 1;
             Put_Line ("Difference found at frame " & Integer'Image (Frame));
          end if;
@@ -124,12 +120,14 @@ package body Wave_Test is
       File_DUT  : String;
       File_Diff : String)
    is
+      use type PCM.PCM_Buffer;
+
       WF_Ref           : Audio.Wavefiles.Wavefile;
       WF_DUT           : Audio.Wavefiles.Wavefile;
       WF_Diff          : Audio.Wavefiles.Wavefile;
-      PCM_Ref          : PCM.Buffers.PCM_Buffer (Channels);
-      PCM_DUT          : PCM.Buffers.PCM_Buffer (Channels);
-      PCM_Diff         : PCM.Buffers.PCM_Buffer (Channels);
+      PCM_Ref          : PCM.PCM_Buffer (Channels);
+      PCM_DUT          : PCM.PCM_Buffer (Channels);
+      PCM_Diff         : PCM.PCM_Buffer (Channels);
       Wave_Format      : Audio.RIFF.Wave_Format_Extensible;
       EOF_Ref, EOF_DUT : Boolean;
    begin
@@ -139,10 +137,10 @@ package body Wave_Test is
       Wav_Read.Open (WF_DUT, File_DUT);
       Wav_Write.Open (WF_Diff, File_Diff, Wave_Format);
       loop
-         PCM.IO.Read (WF_Ref, PCM_Ref, EOF_Ref);
-         PCM.IO.Read (WF_DUT, PCM_DUT, EOF_DUT);
-         PCM_Diff := PCM.Operators."-" (PCM_Ref, PCM_DUT);
-         PCM.IO.Write (WF_Diff, PCM_Diff);
+         PCM.Get (WF_Ref, PCM_Ref, EOF_Ref);
+         PCM.Get (WF_DUT, PCM_DUT, EOF_DUT);
+         PCM_Diff := PCM_Ref - PCM_DUT;
+         PCM.Put (WF_Diff, PCM_Diff);
          exit when EOF_Ref or EOF_DUT;
       end loop;
       Wav_Read.Close (WF_Ref);
@@ -155,12 +153,14 @@ package body Wave_Test is
       File_DUT  : String;
       File_Mix  : String)
    is
+      use type PCM.PCM_Buffer;
+
       WF_Ref           : Audio.Wavefiles.Wavefile;
       WF_DUT           : Audio.Wavefiles.Wavefile;
       WF_Mix           : Audio.Wavefiles.Wavefile;
-      PCM_Ref          : PCM.Buffers.PCM_Buffer (Channels);
-      PCM_DUT          : PCM.Buffers.PCM_Buffer (Channels);
-      PCM_Mix          : PCM.Buffers.PCM_Buffer (Channels);
+      PCM_Ref          : PCM.PCM_Buffer (Channels);
+      PCM_DUT          : PCM.PCM_Buffer (Channels);
+      PCM_Mix          : PCM.PCM_Buffer (Channels);
       Wave_Format      : Audio.RIFF.Wave_Format_Extensible;
       EOF_Ref, EOF_DUT : Boolean;
    begin
@@ -170,10 +170,10 @@ package body Wave_Test is
       Wav_Read.Open (WF_DUT, File_DUT);
       Wav_Write.Open (WF_Mix, File_Mix, Wave_Format);
       loop
-         PCM.IO.Read (WF_Ref, PCM_Ref, EOF_Ref);
-         PCM.IO.Read (WF_DUT, PCM_DUT, EOF_DUT);
-         PCM_Mix := PCM.Operators."+" (PCM_Ref, PCM_DUT);
-         PCM.IO.Write (WF_Mix, PCM_Mix);
+         PCM.Get (WF_Ref, PCM_Ref, EOF_Ref);
+         PCM.Get (WF_DUT, PCM_DUT, EOF_DUT);
+         PCM_Mix := PCM_Ref + PCM_DUT;
+         PCM.Put (WF_Mix, PCM_Mix);
          exit when EOF_Ref or EOF_DUT;
       end loop;
       Wav_Read.Close (WF_Ref);

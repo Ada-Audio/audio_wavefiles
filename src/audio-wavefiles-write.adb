@@ -27,13 +27,16 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Interfaces;
-with Audio.RIFF; use Audio.RIFF;
+with Interfaces;                   use Interfaces;
+
+with Audio.RIFF;                   use Audio.RIFF;
+with Audio.Wavefiles.Internals;    use Audio.Wavefiles.Internals;
+with Audio.Wavefiles.Gen_Float_IO;
+with Audio.Wavefiles.Gen_Fixed_IO;
 
 package body Audio.Wavefiles.Write is
 
    use Ada.Streams.Stream_IO;
-   use Interfaces;
 
    procedure Open
      (WF          : in out Wavefile;
@@ -98,6 +101,85 @@ package body Audio.Wavefiles.Write is
       WF.Samples := 0;
    end Open;
 
+   procedure Put_Float
+     (WF   : in out Wavefile;
+      PCM  :        MC_Samples)
+   is
+      package Float_Data_16 is new Audio.Wavefiles.Gen_Float_IO
+        (Audio_Res     => Wav_Int_16,
+         PCM_Type      => PCM_Type,
+         MC_Samples    => MC_Samples);
+
+      package Float_Data_24 is new Audio.Wavefiles.Gen_Float_IO
+        (Audio_Res     => Wav_Int_24,
+         PCM_Type      => PCM_Type,
+         MC_Samples    => MC_Samples);
+
+      package Float_Data_32 is new Audio.Wavefiles.Gen_Float_IO
+        (Audio_Res     => Wav_Int_32,
+         PCM_Type      => PCM_Type,
+         MC_Samples    => MC_Samples);
+   begin
+      if not WF.Is_Opened then
+         raise Wavefile_Error;
+      end if;
+
+      if not Is_Supported_Format (WF.Wave_Format) then
+         raise Wavefile_Unsupported;
+      end if;
+
+      case WF.Wave_Format.Bits_Per_Sample is
+         when 16 =>
+            Float_Data_16.Put (WF, PCM);
+         when 24 =>
+            Float_Data_24.Put (WF, PCM);
+         when 32 =>
+            Float_Data_32.Put (WF, PCM);
+         when others =>
+            raise Wavefile_Unsupported;
+      end case;
+   end Put_Float;
+
+
+   procedure Put_Fixed
+     (WF   : in out Wavefile;
+      PCM  :        MC_Samples)
+   is
+      package Fixed_Data_16 is new Audio.Wavefiles.Gen_Fixed_IO
+        (Audio_Res     => Wav_Int_16,
+         PCM_Type      => PCM_Type,
+         MC_Samples    => MC_Samples);
+
+      package Fixed_Data_24 is new Audio.Wavefiles.Gen_Fixed_IO
+        (Audio_Res     => Wav_Int_24,
+         PCM_Type      => PCM_Type,
+         MC_Samples    => MC_Samples);
+
+      package Fixed_Data_32 is new Audio.Wavefiles.Gen_Fixed_IO
+        (Audio_Res     => Wav_Int_32,
+         PCM_Type      => PCM_Type,
+         MC_Samples    => MC_Samples);
+   begin
+      if not WF.Is_Opened then
+         raise Wavefile_Error;
+      end if;
+
+      if not Is_Supported_Format (WF.Wave_Format) then
+         raise Wavefile_Unsupported;
+      end if;
+
+      case WF.Wave_Format.Bits_Per_Sample is
+         when 16 =>
+            Fixed_Data_16.Put (WF, PCM);
+         when 24 =>
+            Fixed_Data_24.Put (WF, PCM);
+         when 32 =>
+            Fixed_Data_32.Put (WF, PCM);
+         when others =>
+            raise Wavefile_Unsupported;
+      end case;
+   end Put_Fixed;
+
    procedure Close (WF  : in out Wavefile) is
       RIFF_Tag    : RIFF_Tag_Type;
       Size        : Unsigned_32;
@@ -127,6 +209,5 @@ package body Audio.Wavefiles.Write is
 
       WF.Is_Opened := False;
    end Close;
-
 
 end Audio.Wavefiles.Write;

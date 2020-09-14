@@ -29,7 +29,7 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 
-package body Audio.Wavefiles.PCM_Buffers.Types is
+package body Audio.Wavefiles.Float_Types is
 
    procedure Print_Sample_Read
      (Sample_In     : Audio_Res;
@@ -46,7 +46,7 @@ package body Audio.Wavefiles.PCM_Buffers.Types is
       end loop;
       New_Line;
 
-      Put_Line ("Out (Buf): " & Long_Float'Image (To_Long_Float (Sample_Out)));
+      Put_Line ("Out (Buf): " & Long_Float'Image (Long_Float (Sample_Out)));
       for K in reverse PCM_Bit_Array'Range loop
          Put (Bool_Image (Bits_Out (K)));
       end loop;
@@ -63,7 +63,7 @@ package body Audio.Wavefiles.PCM_Buffers.Types is
       for Bits_In'Address  use Sample_In'Address;
       for Bits_Out'Address use Sample_Out'Address;
    begin
-      Put_Line ("In (Buf):  " & Long_Float'Image (To_Long_Float (Sample_In)));
+      Put_Line ("In (Buf):  " & Long_Float'Image (Long_Float (Sample_In)));
       for K in reverse PCM_Bit_Array'Range loop
          Put (Bool_Image (Bits_In (K)));
       end loop;
@@ -86,23 +86,10 @@ package body Audio.Wavefiles.PCM_Buffers.Types is
       for Bits_Out'Address use Sample_Out'Address;
 
    begin
-      Reset (Sample_Out);
+      Sample_Out := 0.0;
 
-      if PCM_Float_Type_Support then
-         Sample_Out := To_PCM_Type (Long_Float (Sample_In)
-                                    / Long_Float (Audio_Res'Last));
-      else
-         if Audio_Res'Size <= PCM_Type'Size then
-            for B in 0 .. Audio_Res'Size - 1 loop
-               --  Todo: better handling of small negative values
-               Bits_Out (B + PCM_Type'Size - Audio_Res'Size) := Bits_In (B);
-            end loop;
-         else
-            for B in 0 .. PCM_Type'Size - 1 loop
-               Bits_Out (B) := Bits_In (B + Audio_Res'Size - PCM_Type'Size);
-            end loop;
-         end if;
-      end if;
+      Sample_Out := PCM_Type (Long_Float (Sample_In)
+                              / Long_Float (Audio_Res'Last));
 
       if Convert_Sample_Debug then
          Print_Sample_Read (Sample_In, Sample_Out);
@@ -120,21 +107,8 @@ package body Audio.Wavefiles.PCM_Buffers.Types is
       for Bits_In'Address  use Sample_In'Address;
       for Bits_Out'Address use Sample_Out'Address;
    begin
-      if PCM_Float_Type_Support then
-         Sample_Out := Audio_Res (To_Long_Float (Sample_In)
-                                  * Long_Float (Audio_Res'Last));
-      else
-         if PCM_Type'Size <= Audio_Res'Size then
-            for B in 0 .. PCM_Type'Size - 1 loop
-               --  Todo: better handling of small negative values
-               Bits_Out (B + Audio_Res'Size - PCM_Type'Size) := Bits_In (B);
-            end loop;
-         else
-            for B in 0 .. Audio_Res'Size - 1 loop
-               Bits_Out (B) := Bits_In (B + PCM_Type'Size - Audio_Res'Size);
-            end loop;
-         end if;
-      end if;
+      Sample_Out := Audio_Res (Long_Float (Sample_In)
+                               * Long_Float (Audio_Res'Last));
 
       if Convert_Sample_Debug then
          Print_Sample_Write (Sample_In, Sample_Out);
@@ -143,4 +117,4 @@ package body Audio.Wavefiles.PCM_Buffers.Types is
       return Sample_Out;
    end Convert_Sample;
 
-end Audio.Wavefiles.PCM_Buffers.Types;
+end Audio.Wavefiles.Float_Types;

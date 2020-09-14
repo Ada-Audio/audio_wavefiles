@@ -2,12 +2,11 @@
 --
 --                                WAVEFILES
 --
---                 PCM buffers / operators / wavefile I/O
---                     Using floating-point data type
+--                           Generic Wavefile I/O
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -28,26 +27,16 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body Audio.Wavefiles.Float_PCM is
+private generic
+   type Audio_Res is range <>;
+   type Audio_Samples is array (Positive range <>) of Audio_Res;
+package Audio.Wavefiles.Gen_PCM_IO is
 
-   procedure Reset (A : out PCM_Type) is
-   begin
-      A := 0.0;
-   end Reset;
+   function Get (WF  : in out Wavefile) return Audio_Samples
+     with Inline;
 
-   function Mult (A, B : PCM_Type) return PCM_Type is
-   begin
-      return A * B;
-   end Mult;
+   procedure Put (WF : in out Wavefile;
+                  B  :        Audio_Samples)
+     with Inline;
 
-   function To_Long_Float (A : PCM_Type) return Long_Float is
-   begin
-      return Long_Float (A);
-   end To_Long_Float;
-
-   function To_PCM_Type (A : Long_Float) return PCM_Type is
-   begin
-      return PCM_Type (A);
-   end To_PCM_Type;
-
-end Audio.Wavefiles.Float_PCM;
+end Audio.Wavefiles.Gen_PCM_IO;

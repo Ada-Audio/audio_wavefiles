@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                   Wavefile I/O operations for PCM buffers
+--               Type conversion for wavefile I/O operations
 --
 --  The MIT License (MIT)
 --
@@ -27,20 +27,30 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-generic
-   Float_Type_Support : in Boolean;
-   with function To_Long_Float (A : PCM_Type)   return Long_Float is <>;
-   with function To_PCM_Type   (A : Long_Float) return PCM_Type   is <>;
-package Audio.Wavefiles.PCM_Buffers.IO is
+private generic
+   type Audio_Res is range <>;
+   type PCM_Type is delta <>;
+package Audio.Wavefiles.Fixed_Types is
 
-   procedure Read
-     (WF   : in out Wavefile;
-      Buf  : out    PCM_Buffer;
-      EOF  : out    Boolean);
+   type PCM_Bit_Array is array (0 .. PCM_Type'Size - 1) of Boolean;
+   pragma Pack (PCM_Bit_Array);
 
-   procedure Write
-     (WF  : in out Wavefile;
-      Buf : in     PCM_Buffer);
+   type Audio_Res_Bit_Array is array (0 .. Audio_Res'Size - 1) of Boolean;
+   pragma Pack (Audio_Res_Bit_Array);
 
+   Bool_Image  : constant array (Boolean'Range) of Character := ('0', '1');
+   Convert_Sample_Debug : constant Boolean := False;
 
-end Audio.Wavefiles.PCM_Buffers.IO;
+   procedure Print_Sample_Read
+     (Sample_In     : Audio_Res;
+      Sample_Out    : PCM_Type);
+
+   procedure Print_Sample_Write
+     (Sample_In     : PCM_Type;
+      Sample_Out    : Audio_Res);
+
+   function Convert_Sample (Sample : Audio_Res) return PCM_Type;
+
+   function Convert_Sample (Sample : PCM_Type) return Audio_Res;
+
+end Audio.Wavefiles.Fixed_Types;

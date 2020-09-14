@@ -36,6 +36,20 @@ package Audio.Wavefiles.Write is
       File_Name   : String;
       Wave_Format : RIFF.Wave_Format_Extensible);
 
+   generic
+      type PCM_Type is digits <>;
+      type MC_Samples is array (Positive range <>) of PCM_Type;
+   procedure Put_Float
+     (WF   : in out Wavefile;
+      PCM  :        MC_Samples);
+
+   generic
+      type PCM_Type is delta <>;
+      type MC_Samples is array (Positive range <>) of PCM_Type;
+   procedure Put_Fixed
+     (WF   : in out Wavefile;
+      PCM  :        MC_Samples);
+
    procedure Close (WF         : in out Wavefile);
 
 end Audio.Wavefiles.Write;
