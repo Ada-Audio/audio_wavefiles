@@ -45,7 +45,7 @@ package body Audio.Wavefiles.Gen_Fixed_IO is
    end Get;
 
    procedure Put (WF : in out Wavefile;
-                         P  :        MC_Samples) is
+                  P  :        MC_Samples) is
       Ch : constant Positive := Positive (WF.Wave_Format.Channels);
       B  : constant Audio_Samples := Convert_Samples (P);
    begin
