@@ -27,35 +27,17 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package Wave_Test_Instances is
+generic
+   type PCM_Type is digits <>;
+   type MC_Samples is array (Positive range <>) of PCM_Type;
+package Gen_Float_PCM_Buffer_Ops is
 
-   procedure Display_Info_File (File_In : String);
+   function "+" (PCM_Ref : MC_Samples;
+                 PCM_DUT : MC_Samples)
+                    return MC_Samples;
 
-   procedure Copy_File
-     (File_In         : String;
-      File_Out        : String);
+   function "-" (PCM_Ref : MC_Samples;
+                 PCM_DUT : MC_Samples)
+                    return MC_Samples;
 
-   procedure Compare_Files
-     (File_Ref    : String;
-      File_DUT    : String);
-
-   procedure Diff_Files
-     (File_Ref       : String;
-      File_DUT       : String;
-      File_Diff      : String);
-
-   procedure Mix_Files
-     (File_Ref        : String;
-      File_DUT        : String;
-      File_Mix        : String);
-
-   procedure Set_Test_Procedures (Bits   : Positive;
-                                  Fixed  : Boolean;
-                                  Status : out Boolean);
-
-   function Get_Bits return Positive;
-
-   function Is_Fixed return Boolean;
-
-
-end Wave_Test_Instances;
+end Gen_Float_PCM_Buffer_Ops;

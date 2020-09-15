@@ -6,7 +6,7 @@
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2020 Gustavo A. Hoffmann
+--  Copyright (c) 2015 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -27,9 +27,13 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package Wave_Test_Instances is
+generic
+   type PCM_Type is digits <>;
+   type MC_Samples is array (Positive range <>) of PCM_Type;
+package Gen_Float_Wave_Test is
 
-   procedure Display_Info_File (File_In : String);
+   procedure Display_Info_File
+     (File_In : String);
 
    procedure Copy_File
      (File_In         : String;
@@ -49,13 +53,4 @@ package Wave_Test_Instances is
       File_DUT        : String;
       File_Mix        : String);
 
-   procedure Set_Test_Procedures (Bits   : Positive;
-                                  Fixed  : Boolean;
-                                  Status : out Boolean);
-
-   function Get_Bits return Positive;
-
-   function Is_Fixed return Boolean;
-
-
-end Wave_Test_Instances;
+end Gen_Float_Wave_Test;

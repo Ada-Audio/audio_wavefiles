@@ -28,10 +28,12 @@
 -------------------------------------------------------------------------------
 
 with Gen_Fixed_Wave_Test;
+with Gen_Float_Wave_Test;
 
 package body Wave_Test_Instances is
 
-   PCM_Bits : Positive := 32;
+   PCM_Bits  : Positive := 32;
+   PCM_Fixed : Boolean  := True;
 
    D_8      : constant := 1.0 / 2.0 ** (8  - 1);
    D_16     : constant := 1.0 / 2.0 ** (16 - 1);
@@ -43,6 +45,17 @@ package body Wave_Test_Instances is
      with Size => 16;
    type Fixed_32_PCM is delta D_32 range -1.0 .. 1.0 - D_32
      with Size => 32;
+
+   type Float_32_PCM is digits 6
+     with Size => 32;
+   type Float_64_PCM is digits 15
+     with Size => 64;
+   type Float_128_PCM is digits 18
+     with Size => 128;
+
+   type Float_32_PCM_Buffer is array (Positive range <>) of Float_32_PCM;
+   type Float_64_PCM_Buffer is array (Positive range <>) of Float_64_PCM;
+   type Float_128_PCM_Buffer is array (Positive range <>) of Float_128_PCM;
 
    type Fixed_8_PCM_Buffer is array (Positive range <>) of Fixed_8_PCM;
    type Fixed_16_PCM_Buffer is array (Positive range <>) of Fixed_16_PCM;
@@ -57,6 +70,16 @@ package body Wave_Test_Instances is
    package Wave_Test_Fixed_32 is new Gen_Fixed_Wave_Test
      (PCM_Type   => Fixed_32_PCM,
       MC_Samples => Fixed_32_PCM_Buffer);
+
+   package Wave_Test_Float_32 is new Gen_Float_Wave_Test
+     (PCM_Type   => Float_32_PCM,
+      MC_Samples => Float_32_PCM_Buffer);
+   package Wave_Test_Float_64 is new Gen_Float_Wave_Test
+     (PCM_Type   => Float_64_PCM,
+      MC_Samples => Float_64_PCM_Buffer);
+   package Wave_Test_Float_128 is new Gen_Float_Wave_Test
+     (PCM_Type   => Float_128_PCM,
+      MC_Samples => Float_128_PCM_Buffer);
 
    Proc_Display_Info_File : access procedure (File_In : String)
      := Wave_Test_Fixed_32.Display_Info_File'Access;
@@ -115,60 +138,109 @@ package body Wave_Test_Instances is
    end Mix_Files;
 
    procedure Set_Test_Procedures (Bits   : Positive;
+                                  Fixed  : Boolean;
                                   Status : out Boolean)
    is
       procedure Set_It;
 
       procedure Set_It is
       begin
-         Status := True;
-         PCM_Bits := Bits;
+         Status    := True;
+         PCM_Bits  := Bits;
+         PCM_Fixed := Fixed;
       end Set_It;
    begin
       Status := False;
 
-      case Bits is
-         when 8 =>
-            Proc_Display_Info_File
-              := Wave_Test_Fixed_8.Display_Info_File'Access;
-            Proc_Copy_File
-              := Wave_Test_Fixed_8.Copy_File'Access;
-            Proc_Compare_Files
-              := Wave_Test_Fixed_8.Compare_Files'Access;
-            Proc_Diff_Files
-              := Wave_Test_Fixed_8.Diff_Files'Access;
-            Proc_Mix_Files
-              := Wave_Test_Fixed_8.Mix_Files'Access;
-            Set_It;
-         when 16 =>
-            Proc_Display_Info_File
-              := Wave_Test_Fixed_16.Display_Info_File'Access;
-            Proc_Copy_File
-              := Wave_Test_Fixed_16.Copy_File'Access;
-            Proc_Compare_Files
-              := Wave_Test_Fixed_16.Compare_Files'Access;
-            Proc_Diff_Files
-              := Wave_Test_Fixed_16.Diff_Files'Access;
-            Proc_Mix_Files
-              := Wave_Test_Fixed_16.Mix_Files'Access;
-            Set_It;
-         when 32 =>
-            Proc_Display_Info_File
-              := Wave_Test_Fixed_32.Display_Info_File'Access;
-            Proc_Copy_File
-              := Wave_Test_Fixed_32.Copy_File'Access;
-            Proc_Compare_Files
-              := Wave_Test_Fixed_32.Compare_Files'Access;
-            Proc_Diff_Files
-              := Wave_Test_Fixed_32.Diff_Files'Access;
-            Proc_Mix_Files
-              := Wave_Test_Fixed_32.Mix_Files'Access;
-            Set_It;
-         when others =>
-            null;
+
+      case Fixed is
+         when False =>  -- Floating-point PCM buffer
+            case Bits is
+            when 32 =>
+               Proc_Display_Info_File
+                 := Wave_Test_Float_32.Display_Info_File'Access;
+               Proc_Copy_File
+                 := Wave_Test_Float_32.Copy_File'Access;
+               Proc_Compare_Files
+                 := Wave_Test_Float_32.Compare_Files'Access;
+               Proc_Diff_Files
+                 := Wave_Test_Float_32.Diff_Files'Access;
+               Proc_Mix_Files
+                 := Wave_Test_Float_32.Mix_Files'Access;
+               Set_It;
+            when 64 =>
+               Proc_Display_Info_File
+                 := Wave_Test_Float_64.Display_Info_File'Access;
+               Proc_Copy_File
+                 := Wave_Test_Float_64.Copy_File'Access;
+               Proc_Compare_Files
+                 := Wave_Test_Float_64.Compare_Files'Access;
+               Proc_Diff_Files
+                 := Wave_Test_Float_64.Diff_Files'Access;
+               Proc_Mix_Files
+                 := Wave_Test_Float_64.Mix_Files'Access;
+               Set_It;
+            when 128 =>
+               Proc_Display_Info_File
+                 := Wave_Test_Float_128.Display_Info_File'Access;
+               Proc_Copy_File
+                 := Wave_Test_Float_128.Copy_File'Access;
+               Proc_Compare_Files
+                 := Wave_Test_Float_128.Compare_Files'Access;
+               Proc_Diff_Files
+                 := Wave_Test_Float_128.Diff_Files'Access;
+               Proc_Mix_Files
+                 := Wave_Test_Float_128.Mix_Files'Access;
+               Set_It;
+            when others =>
+               null;
+            end case;
+         when True =>   -- Fixed-point PCM buffer
+            case Bits is
+            when 8 =>
+               Proc_Display_Info_File
+                 := Wave_Test_Fixed_8.Display_Info_File'Access;
+               Proc_Copy_File
+                 := Wave_Test_Fixed_8.Copy_File'Access;
+               Proc_Compare_Files
+                 := Wave_Test_Fixed_8.Compare_Files'Access;
+               Proc_Diff_Files
+                 := Wave_Test_Fixed_8.Diff_Files'Access;
+               Proc_Mix_Files
+                 := Wave_Test_Fixed_8.Mix_Files'Access;
+               Set_It;
+            when 16 =>
+               Proc_Display_Info_File
+                 := Wave_Test_Fixed_16.Display_Info_File'Access;
+               Proc_Copy_File
+                 := Wave_Test_Fixed_16.Copy_File'Access;
+               Proc_Compare_Files
+                 := Wave_Test_Fixed_16.Compare_Files'Access;
+               Proc_Diff_Files
+                 := Wave_Test_Fixed_16.Diff_Files'Access;
+               Proc_Mix_Files
+                 := Wave_Test_Fixed_16.Mix_Files'Access;
+               Set_It;
+            when 32 =>
+               Proc_Display_Info_File
+                 := Wave_Test_Fixed_32.Display_Info_File'Access;
+               Proc_Copy_File
+                 := Wave_Test_Fixed_32.Copy_File'Access;
+               Proc_Compare_Files
+                 := Wave_Test_Fixed_32.Compare_Files'Access;
+               Proc_Diff_Files
+                 := Wave_Test_Fixed_32.Diff_Files'Access;
+               Proc_Mix_Files
+                 := Wave_Test_Fixed_32.Mix_Files'Access;
+               Set_It;
+            when others =>
+               null;
+            end case;
       end case;
    end Set_Test_Procedures;
 
    function Get_Bits return Positive is (PCM_Bits);
+
+   function Is_Fixed return Boolean is (PCM_Fixed);
 
 end Wave_Test_Instances;
