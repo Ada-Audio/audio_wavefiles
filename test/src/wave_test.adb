@@ -3,33 +3,38 @@ with Ada.Text_IO;                   use Ada.Text_IO;
 with Audio.Wavefiles;
 with Audio.Wavefiles.Read;
 with Audio.Wavefiles.Write;
-with Audio.Fixed_PCM_Buffers;
---  with Audio.Float_PCM_Buffers;
 with Audio.RIFF;
+
+with Fixed_PCM_Buffer_Ops;
 
 package body Wave_Test is
 
-   Fixed_Depth : constant Positive := 32;
-
    pragma Warnings (Off, "declared high bound of type");
 
-   type Fixed_Long is delta 1.0 / 2.0 ** (Fixed_Depth - 1) range -1.0 .. 1.0
-     with Size => Fixed_Depth;
+   type Fixed_32_PCM is delta 1.0 / 2.0 ** (32 - 1) range -1.0 .. 1.0
+     with Size => 32;
 
    pragma Warnings (On, "declared high bound of type");
 
-   Channels    : constant Positive := 6;
-   Samples     : constant Positive := 2048;
-
-   package PCM is new Audio.Fixed_PCM_Buffers
-     (Samples  => Samples,
-      PCM_Type => Fixed_Long);
+   type Fixed_32_PCM_Buffer is array (Positive range <>) of Fixed_32_PCM;
 
    package Wav_Read  renames  Audio.Wavefiles.Read;
    package Wav_Write renames  Audio.Wavefiles.Write;
 
-   Verbose     : constant Boolean := False;
+   function Get is new Wav_Read.Get_Fixed
+     (PCM_Type   => Fixed_32_PCM,
+      MC_Samples => Fixed_32_PCM_Buffer);
 
+   procedure Put is new Wav_Write.Put_Fixed
+     (PCM_Type   => Fixed_32_PCM,
+      MC_Samples => Fixed_32_PCM_Buffer);
+
+   package Fixed_32_PCM_Buffer_Ops is new Fixed_PCM_Buffer_Ops
+     (PCM_Type   => Fixed_32_PCM,
+      MC_Samples => Fixed_32_PCM_Buffer);
+   use Fixed_32_PCM_Buffer_Ops;
+
+   Verbose     : constant Boolean := False;
 
    procedure Display_Info_File (File_In  : String) is
       WF_In       : Audio.Wavefiles.Wavefile;
@@ -45,10 +50,19 @@ package body Wave_Test is
    is
       WF_In       : Audio.Wavefiles.Wavefile;
       WF_Out      : Audio.Wavefiles.Wavefile;
-      PCM_Buf     : PCM.PCM_Buffer (Channels);
       Wave_Format : Audio.RIFF.Wave_Format_Extensible;
       EOF         : Boolean;
-      Frame       : Integer := 0;
+      Samples     : Integer := 0;
+
+      procedure Copy_MC_Sample;
+
+      procedure Copy_MC_Sample is
+         PCM_Buf : constant Fixed_32_PCM_Buffer := Get (WF_In);
+      begin
+         EOF := Wav_Read.Is_EOF (WF_In);
+         Put (WF_Out, PCM_Buf);
+      end Copy_MC_Sample;
+
    begin
       Wav_Read.Open (WF_In, File_In);
 
@@ -64,12 +78,12 @@ package body Wave_Test is
       end if;
 
       loop
-         Frame := Frame + 1;
+         Samples := Samples + 1;
          if Verbose then
-            Put ("[" & Integer'Image (Frame) & "]");
+            Put ("[" & Integer'Image (Samples) & "]");
          end if;
-         PCM.Get (WF_In, PCM_Buf, EOF);
-         PCM.Put (WF_Out, PCM_Buf);
+
+         Copy_MC_Sample;
          exit when EOF;
       end loop;
       Wav_Read.Close (WF_In);
@@ -83,36 +97,52 @@ package body Wave_Test is
    is
       WF_Ref           : Audio.Wavefiles.Wavefile;
       WF_DUT           : Audio.Wavefiles.Wavefile;
-      PCM_Ref          : PCM.PCM_Buffer (Channels);
-      PCM_DUT          : PCM.PCM_Buffer (Channels);
       Wave_Format      : Audio.RIFF.Wave_Format_Extensible;
       EOF_Ref, EOF_DUT : Boolean;
-      Diff_Frames      : Natural := 0;
-      Frame            : Integer := 0;
+      Diff_Sample      : Natural := 0;
+      Samples          : Integer := 0;
+
+      procedure Compare_MC_Sample;
+      procedure Report_Comparison;
+
+      procedure Compare_MC_Sample is
+         PCM_Ref : constant Fixed_32_PCM_Buffer := Get (WF_Ref);
+         PCM_DUT : constant Fixed_32_PCM_Buffer := Get (WF_DUT);
+      begin
+         EOF_Ref := Wav_Read.Is_EOF (WF_Ref);
+         EOF_DUT := Wav_Read.Is_EOF (WF_DUT);
+
+         if PCM_Ref /= PCM_DUT then
+            Diff_Sample := Diff_Sample + 1;
+         end if;
+      end Compare_MC_Sample;
+
+      procedure Report_Comparison is
+      begin
+         Put_Line ("Compared " & Samples'Image & " samples");
+         if Diff_Sample > 0 then
+            Put_Line ("Differences have been found in "
+                      & Natural'Image (Diff_Sample)
+                      & " samples");
+         else
+            Put_Line ("No differences have been found");
+         end if;
+      end Report_Comparison;
+
    begin
       Wave_Format.Set_Default;
 
       Wav_Read.Open (WF_Ref, File_Ref);
       Wav_Read.Open (WF_DUT, File_DUT);
       loop
-         Frame := Frame + 1;
-         PCM.Get (WF_Ref, PCM_Ref, EOF_Ref);
-         PCM.Get (WF_DUT, PCM_DUT, EOF_DUT);
-         if not PCM."=" (PCM_Ref, PCM_DUT) then
-            Diff_Frames := Diff_Frames + 1;
-            Put_Line ("Difference found at frame " & Integer'Image (Frame));
-         end if;
+         Samples := Samples + 1;
+         Compare_MC_Sample;
          exit when EOF_Ref or EOF_DUT;
       end loop;
       Wav_Read.Close (WF_Ref);
       Wav_Read.Close (WF_DUT);
-      if Diff_Frames > 0 then
-         Put_Line ("Differences have been found in "
-                   & Natural'Image (Diff_Frames)
-                   & " frames");
-      else
-         Put_Line ("No differences have been found");
-      end if;
+
+      Report_Comparison;
    end Compare_Files;
 
    procedure Diff_Files
@@ -120,16 +150,26 @@ package body Wave_Test is
       File_DUT  : String;
       File_Diff : String)
    is
-      use type PCM.PCM_Buffer;
-
       WF_Ref           : Audio.Wavefiles.Wavefile;
       WF_DUT           : Audio.Wavefiles.Wavefile;
       WF_Diff          : Audio.Wavefiles.Wavefile;
-      PCM_Ref          : PCM.PCM_Buffer (Channels);
-      PCM_DUT          : PCM.PCM_Buffer (Channels);
-      PCM_Diff         : PCM.PCM_Buffer (Channels);
       Wave_Format      : Audio.RIFF.Wave_Format_Extensible;
       EOF_Ref, EOF_DUT : Boolean;
+
+      procedure Diff_MC_Sample;
+
+      procedure Diff_MC_Sample is
+         PCM_Ref  : constant Fixed_32_PCM_Buffer := Get (WF_Ref);
+         PCM_DUT  : constant Fixed_32_PCM_Buffer := Get (WF_DUT);
+         PCM_Diff : constant Fixed_32_PCM_Buffer :=
+                      PCM_Ref - PCM_DUT;
+      begin
+         EOF_Ref := Wav_Read.Is_EOF (WF_Ref);
+         EOF_DUT := Wav_Read.Is_EOF (WF_DUT);
+
+         Put (WF_Diff, PCM_Diff);
+      end Diff_MC_Sample;
+
    begin
       Audio.RIFF.Set_Default (Wave_Format);
 
@@ -137,10 +177,7 @@ package body Wave_Test is
       Wav_Read.Open (WF_DUT, File_DUT);
       Wav_Write.Open (WF_Diff, File_Diff, Wave_Format);
       loop
-         PCM.Get (WF_Ref, PCM_Ref, EOF_Ref);
-         PCM.Get (WF_DUT, PCM_DUT, EOF_DUT);
-         PCM_Diff := PCM_Ref - PCM_DUT;
-         PCM.Put (WF_Diff, PCM_Diff);
+         Diff_MC_Sample;
          exit when EOF_Ref or EOF_DUT;
       end loop;
       Wav_Read.Close (WF_Ref);
@@ -153,16 +190,25 @@ package body Wave_Test is
       File_DUT  : String;
       File_Mix  : String)
    is
-      use type PCM.PCM_Buffer;
-
       WF_Ref           : Audio.Wavefiles.Wavefile;
       WF_DUT           : Audio.Wavefiles.Wavefile;
       WF_Mix           : Audio.Wavefiles.Wavefile;
-      PCM_Ref          : PCM.PCM_Buffer (Channels);
-      PCM_DUT          : PCM.PCM_Buffer (Channels);
-      PCM_Mix          : PCM.PCM_Buffer (Channels);
       Wave_Format      : Audio.RIFF.Wave_Format_Extensible;
       EOF_Ref, EOF_DUT : Boolean;
+
+      procedure Mix_MC_Sample;
+
+      procedure Mix_MC_Sample is
+         PCM_Ref : constant Fixed_32_PCM_Buffer := Get (WF_Ref);
+         PCM_DUT : constant Fixed_32_PCM_Buffer := Get (WF_DUT);
+         PCM_Mix : constant Fixed_32_PCM_Buffer :=
+                     PCM_Ref + PCM_DUT;
+      begin
+         EOF_Ref := Wav_Read.Is_EOF (WF_Ref);
+         EOF_DUT := Wav_Read.Is_EOF (WF_DUT);
+         Put (WF_Mix, PCM_Mix);
+      end Mix_MC_Sample;
+
    begin
       Audio.RIFF.Set_Default (Wave_Format);
 
@@ -170,10 +216,7 @@ package body Wave_Test is
       Wav_Read.Open (WF_DUT, File_DUT);
       Wav_Write.Open (WF_Mix, File_Mix, Wave_Format);
       loop
-         PCM.Get (WF_Ref, PCM_Ref, EOF_Ref);
-         PCM.Get (WF_DUT, PCM_DUT, EOF_DUT);
-         PCM_Mix := PCM_Ref + PCM_DUT;
-         PCM.Put (WF_Mix, PCM_Mix);
+         Mix_MC_Sample;
          exit when EOF_Ref or EOF_DUT;
       end loop;
       Wav_Read.Close (WF_Ref);
