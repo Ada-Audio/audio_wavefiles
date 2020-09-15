@@ -50,7 +50,7 @@ package body Audio.Wavefiles.Gen_PCM_IO is
    end Get;
 
    procedure Put (WF : in out Wavefile;
-                    B  :        Audio_Samples) is
+                  B  :        Audio_Samples) is
       Ch : constant Positive := Positive (WF.Wave_Format.Channels);
    begin
       Audio_Samples'Write (WF.File_Access, B);
