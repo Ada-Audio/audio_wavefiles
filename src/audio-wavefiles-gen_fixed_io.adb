@@ -15,9 +15,8 @@ package body Audio.Wavefiles.Gen_Fixed_IO is
       Audio_Samples => Audio_Samples);
    use PCM_IO;
 
-   function Convert_Samples (B : Audio_Samples) return MC_Samples;
-
-   function Convert_Samples (PCM : MC_Samples) return Audio_Samples;
+   function Convert_Samples (B   : Audio_Samples) return MC_Samples;
+   function Convert_Samples (PCM : MC_Samples)    return Audio_Samples;
 
    function Convert_Samples (B : Audio_Samples) return MC_Samples is
    begin
