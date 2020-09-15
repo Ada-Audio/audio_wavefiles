@@ -6,7 +6,7 @@
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 Gustavo A. Hoffmann
+--  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -42,6 +42,9 @@ package Audio.Wavefiles is
 
    function Get_Wave_Format
      (W : Wavefile) return  Audio.RIFF.Wave_Format_Extensible;
+
+   function Get_Channels
+     (W : Wavefile) return Positive;
 
 private
 

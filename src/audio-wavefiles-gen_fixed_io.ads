@@ -2,12 +2,11 @@
 --
 --                                WAVEFILES
 --
---                 PCM buffers / operators / wavefile I/O
---                       Using fixed-point data type
+--               Type conversion for wavefile I/O operations
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 Gustavo A. Hoffmann
+--  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -28,32 +27,15 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Audio.Wavefiles.PCM_Buffers;
-with Audio.Wavefiles.PCM_Buffers.IO;
-with Audio.Wavefiles.PCM_Buffers.Operators;
-
-generic
-   Samples : Positive;
+private generic
+   type Audio_Res is range <>;
    type PCM_Type is delta <>;
-package Audio.Wavefiles.Fixed_PCM is
+   type MC_Samples is array (Positive range <>) of PCM_Type;
+package Audio.Wavefiles.Gen_Fixed_IO is
 
-   procedure Reset (A : out PCM_Type)
-     with Inline;
+   function Get (WF  : in out Wavefile) return MC_Samples;
 
-   function Mult (A, B : PCM_Type) return PCM_Type
-     with Inline;
+   procedure Put (WF : in out Wavefile;
+                  P  :        MC_Samples);
 
-   function To_Long_Float (A : PCM_Type) return Long_Float
-     with Inline;
-
-   function To_PCM_Type (A : Long_Float) return PCM_Type
-     with Inline;
-
-   package Buffers is new Audio.Wavefiles.PCM_Buffers
-     (Samples, PCM_Type, Reset);
-
-   package IO is new Buffers.IO (Float_Type_Support => False);
-
-   package Operators is new  Buffers.Operators (Mult);
-
-end Audio.Wavefiles.Fixed_PCM;
+end Audio.Wavefiles.Gen_Fixed_IO;

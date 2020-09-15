@@ -2,11 +2,11 @@
 --
 --                                WAVEFILES
 --
---                           Internal information
+--                             Test application
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -27,29 +27,35 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Interfaces; use Interfaces;
-with Ada.Streams.Stream_IO;
-with Audio.RIFF; use Audio.RIFF;
+package Wave_Test_Instances is
 
-private
-package Audio.Wavefiles.Internals is
+   procedure Display_Info_File (File_In : String);
 
-   type Wav_Int_8 is range -2 ** (8 - 1) .. 2 ** (8 - 1) - 1
-     with Size => 8;
+   procedure Copy_File
+     (File_In         : String;
+      File_Out        : String);
 
-   type Wav_Int_16 is range -2 ** (16 - 1) .. 2 ** (16 - 1) - 1
-     with Size => 16;
+   procedure Compare_Files
+     (File_Ref    : String;
+      File_DUT    : String);
 
-   type Wav_Int_24 is range -2 ** (24 - 1) .. 2 ** (24 - 1) - 1
-     with Size => 24;
+   procedure Diff_Files
+     (File_Ref       : String;
+      File_DUT       : String;
+      File_Diff      : String);
 
-   type Wav_Int_32 is range -2 ** (32 - 1) .. 2 ** (32 - 1) - 1
-     with Size => 32;
+   procedure Mix_Files
+     (File_Ref        : String;
+      File_DUT        : String;
+      File_Mix        : String);
 
-   procedure Skip_Bytes
-     (F     : in out Ada.Streams.Stream_IO.File_Type;
-      Bytes : in Unsigned_32);
+   procedure Set_Test_Procedures (Bits   : Positive;
+                                  Fixed  : Boolean;
+                                  Status : out Boolean);
 
-   function Is_Supported_Format (W : Wave_Format_Extensible) return Boolean;
+   function Get_Bits return Positive;
 
-end Audio.Wavefiles.Internals;
+   function Is_Fixed return Boolean;
+
+
+end Wave_Test_Instances;

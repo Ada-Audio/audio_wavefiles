@@ -6,7 +6,7 @@
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 Gustavo A. Hoffmann
+--  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -35,6 +35,20 @@ package Audio.Wavefiles.Write is
      (WF          : in out Wavefile;
       File_Name   : String;
       Wave_Format : RIFF.Wave_Format_Extensible);
+
+   generic
+      type PCM_Type is digits <>;
+      type MC_Samples is array (Positive range <>) of PCM_Type;
+   procedure Put_Float
+     (WF   : in out Wavefile;
+      PCM  :        MC_Samples);
+
+   generic
+      type PCM_Type is delta <>;
+      type MC_Samples is array (Positive range <>) of PCM_Type;
+   procedure Put_Fixed
+     (WF   : in out Wavefile;
+      PCM  :        MC_Samples);
 
    procedure Close (WF         : in out Wavefile);
 

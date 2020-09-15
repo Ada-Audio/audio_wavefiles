@@ -2,12 +2,11 @@
 --
 --                                WAVEFILES
 --
---                 PCM buffers / operators / wavefile I/O
---                     Using floating-point data type
+--                             Test application
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -28,32 +27,34 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Audio.Wavefiles.PCM_Buffers;
-with Audio.Wavefiles.PCM_Buffers.IO;
-with Audio.Wavefiles.PCM_Buffers.Operators;
+package body Gen_Float_PCM_Buffer_Ops is
 
-generic
-   Samples : Positive;
-   type PCM_Type is digits <>;
-package Audio.Wavefiles.Float_PCM is
+   function "+" (PCM_Ref : MC_Samples;
+                 PCM_DUT : MC_Samples)
+                    return MC_Samples
+   is
+      Max_Last : constant Positive :=
+                   Positive'Max (PCM_Ref'Last, PCM_DUT'Last);
+      PCM_Sum  :          MC_Samples (1 .. Max_Last);
+   begin
+      for I in 1 .. Max_Last loop
+         PCM_Sum (I) := PCM_Ref (I) + PCM_DUT (I);
+      end loop;
+      return PCM_Sum;
+   end "+";
 
-   procedure Reset (A : out PCM_Type)
-     with Inline;
+   function "-" (PCM_Ref : MC_Samples;
+                 PCM_DUT : MC_Samples)
+                    return MC_Samples
+   is
+      Max_Last : constant Positive :=
+                   Positive'Max (PCM_Ref'Last, PCM_DUT'Last);
+      PCM_Diff :          MC_Samples (1 .. Max_Last);
+   begin
+      for I in 1 .. Max_Last loop
+         PCM_Diff (I) := PCM_Ref (I) - PCM_DUT (I);
+      end loop;
+      return PCM_Diff;
+   end "-";
 
-   function Mult (A, B : PCM_Type) return PCM_Type
-     with Inline;
-
-   function To_Long_Float (A : PCM_Type) return Long_Float
-     with Inline;
-
-   function To_PCM_Type (A : Long_Float) return PCM_Type
-     with Inline;
-
-   package Buffers is new Audio.Wavefiles.PCM_Buffers
-     (Samples, PCM_Type, Reset);
-
-   package IO is new Buffers.IO (Float_Type_Support => True);
-
-   package Operators is new  Buffers.Operators (Mult);
-
-end Audio.Wavefiles.Float_PCM;
+end Gen_Float_PCM_Buffer_Ops;

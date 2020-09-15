@@ -2,11 +2,11 @@
 --
 --                                WAVEFILES
 --
---               Type conversion for wavefile I/O operations
+--                           Generic Wavefile I/O
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -27,32 +27,34 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-private generic
-   type Audio_Res is range <>;
-   PCM_Float_Type_Support : in Boolean;
-   with function To_Long_Float (A : PCM_Type)   return Long_Float is <>;
-   with function To_PCM_Type   (A : Long_Float) return PCM_Type   is <>;
-package Audio.Wavefiles.PCM_Buffers.Types is
+package body Audio.Wavefiles.Gen_PCM_IO is
 
-   type PCM_Bit_Array is array (0 .. PCM_Type'Size - 1) of Boolean;
-   pragma Pack (PCM_Bit_Array);
+   function Get (WF  : in out Wavefile) return Audio_Samples
+   is
+      Ch : constant Positive := Positive (WF.Wave_Format.Channels);
+      BB : Audio_Res;
+   begin
+      return B  : Audio_Samples (1 .. Ch) do
+         for J in 1 .. Ch loop
 
-   type Audio_Res_Bit_Array is array (0 .. Audio_Res'Size - 1) of Boolean;
-   pragma Pack (Audio_Res_Bit_Array);
+            Audio_Res'Read (WF.File_Access, BB);
+            B (J) := BB;
+            if Ada.Streams.Stream_IO.End_Of_File (WF.File) and then
+              J < Ch
+            then
+               --  Cannot read data for all channels
+               raise Wavefile_Error;
+            end if;
+         end loop;
+      end return;
+   end Get;
 
-   Bool_Image  : constant array (Boolean'Range) of Character := ('0', '1');
-   Convert_Sample_Debug : constant Boolean := False;
+   procedure Put (WF : in out Wavefile;
+                    B  :        Audio_Samples) is
+      Ch : constant Positive := Positive (WF.Wave_Format.Channels);
+   begin
+      Audio_Samples'Write (WF.File_Access, B);
+      WF.Samples := WF.Samples + Long_Integer (Ch);
+   end Put;
 
-   procedure Print_Sample_Read
-     (Sample_In     : Audio_Res;
-      Sample_Out    : PCM_Type);
-
-   procedure Print_Sample_Write
-     (Sample_In     : PCM_Type;
-      Sample_Out    : Audio_Res);
-
-   function Convert_Sample (Sample : Audio_Res) return PCM_Type;
-
-   function Convert_Sample (Sample : PCM_Type) return Audio_Res;
-
-end Audio.Wavefiles.PCM_Buffers.Types;
+end Audio.Wavefiles.Gen_PCM_IO;

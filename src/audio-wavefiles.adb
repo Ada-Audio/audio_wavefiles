@@ -6,7 +6,7 @@
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 Gustavo A. Hoffmann
+--  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -34,5 +34,8 @@ package body Audio.Wavefiles is
    begin
       return W.Wave_Format;
    end Get_Wave_Format;
+
+   function Get_Channels
+     (W : Wavefile) return Positive is (Positive (W.Wave_Format.Channels));
 
 end Audio.Wavefiles;

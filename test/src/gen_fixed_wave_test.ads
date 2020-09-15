@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                           Internal information
+--                             Test application
 --
 --  The MIT License (MIT)
 --
@@ -27,29 +27,30 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Interfaces; use Interfaces;
-with Ada.Streams.Stream_IO;
-with Audio.RIFF; use Audio.RIFF;
+generic
+   type PCM_Type is delta <>;
+   type MC_Samples is array (Positive range <>) of PCM_Type;
+package Gen_Fixed_Wave_Test is
 
-private
-package Audio.Wavefiles.Internals is
+   procedure Display_Info_File
+     (File_In : String);
 
-   type Wav_Int_8 is range -2 ** (8 - 1) .. 2 ** (8 - 1) - 1
-     with Size => 8;
+   procedure Copy_File
+     (File_In         : String;
+      File_Out        : String);
 
-   type Wav_Int_16 is range -2 ** (16 - 1) .. 2 ** (16 - 1) - 1
-     with Size => 16;
+   procedure Compare_Files
+     (File_Ref    : String;
+      File_DUT    : String);
 
-   type Wav_Int_24 is range -2 ** (24 - 1) .. 2 ** (24 - 1) - 1
-     with Size => 24;
+   procedure Diff_Files
+     (File_Ref       : String;
+      File_DUT       : String;
+      File_Diff      : String);
 
-   type Wav_Int_32 is range -2 ** (32 - 1) .. 2 ** (32 - 1) - 1
-     with Size => 32;
+   procedure Mix_Files
+     (File_Ref        : String;
+      File_DUT        : String;
+      File_Mix        : String);
 
-   procedure Skip_Bytes
-     (F     : in out Ada.Streams.Stream_IO.File_Type;
-      Bytes : in Unsigned_32);
-
-   function Is_Supported_Format (W : Wave_Format_Extensible) return Boolean;
-
-end Audio.Wavefiles.Internals;
+end Gen_Fixed_Wave_Test;

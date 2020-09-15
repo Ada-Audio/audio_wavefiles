@@ -6,7 +6,7 @@
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 Gustavo A. Hoffmann
+--  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -38,5 +38,16 @@ package body Audio.Wavefiles.Internals is
                  Ada.Streams.Stream_IO.Index (F)
                  + Ada.Streams.Stream_IO.Count (Bytes));
    end Skip_Bytes;
+
+   function Is_Supported_Format (W : Wave_Format_Extensible) return Boolean is
+   begin
+      if not (W.Sub_Format = GUID_Undefined or W.Sub_Format = GUID_PCM)
+      then
+         return False;
+      end if;
+
+      return True;
+   end Is_Supported_Format;
+
 
 end Audio.Wavefiles.Internals;

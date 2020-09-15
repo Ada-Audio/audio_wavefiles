@@ -6,7 +6,7 @@
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 Gustavo A. Hoffmann
+--  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -32,6 +32,24 @@ package Audio.Wavefiles.Read is
    procedure Open
      (WF         : in out Wavefile;
       File_Name  : String);
+
+   generic
+      type PCM_Type is digits <>;
+      type MC_Samples is array (Positive range <>) of PCM_Type;
+   function Get_Float
+     (WF   : in out Wavefile) return MC_Samples
+     with Inline;
+
+   generic
+      type PCM_Type is delta <>;
+      type MC_Samples is array (Positive range <>) of PCM_Type;
+   function Get_Fixed
+     (WF   : in out Wavefile) return MC_Samples
+     with Inline;
+
+   function Is_EOF
+     (WF   : in out Wavefile) return Boolean
+     with Inline;
 
    procedure Display_Info (WF : in Wavefile);
 

@@ -2,11 +2,11 @@
 --
 --                                WAVEFILES
 --
---                   Wavefile I/O operations for PCM buffers
+--                             Test application
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 Gustavo A. Hoffmann
+--  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -28,19 +28,29 @@
 -------------------------------------------------------------------------------
 
 generic
-   Float_Type_Support : in Boolean;
-   with function To_Long_Float (A : PCM_Type)   return Long_Float is <>;
-   with function To_PCM_Type   (A : Long_Float) return PCM_Type   is <>;
-package Audio.Wavefiles.PCM_Buffers.IO is
+   type PCM_Type is digits <>;
+   type MC_Samples is array (Positive range <>) of PCM_Type;
+package Gen_Float_Wave_Test is
 
-   procedure Read
-     (WF   : in out Wavefile;
-      Buf  : out    PCM_Buffer;
-      EOF  : out    Boolean);
+   procedure Display_Info_File
+     (File_In : String);
 
-   procedure Write
-     (WF  : in out Wavefile;
-      Buf : in     PCM_Buffer);
+   procedure Copy_File
+     (File_In         : String;
+      File_Out        : String);
 
+   procedure Compare_Files
+     (File_Ref    : String;
+      File_DUT    : String);
 
-end Audio.Wavefiles.PCM_Buffers.IO;
+   procedure Diff_Files
+     (File_Ref       : String;
+      File_DUT       : String;
+      File_Diff      : String);
+
+   procedure Mix_Files
+     (File_Ref        : String;
+      File_DUT        : String;
+      File_Mix        : String);
+
+end Gen_Float_Wave_Test;

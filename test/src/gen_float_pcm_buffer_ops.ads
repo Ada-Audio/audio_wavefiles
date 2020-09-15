@@ -2,11 +2,11 @@
 --
 --                                WAVEFILES
 --
---                          Operators for PCM buffers
+--                             Test application
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -28,16 +28,16 @@
 -------------------------------------------------------------------------------
 
 generic
-   with function "*" (A, B : PCM_Type) return PCM_Type is <>;
-   with function "+" (A, B : PCM_Type) return PCM_Type is <>;
-   with function "-" (A, B : PCM_Type) return PCM_Type is <>;
+   type PCM_Type is digits <>;
+   type MC_Samples is array (Positive range <>) of PCM_Type;
+package Gen_Float_PCM_Buffer_Ops is
 
-package Audio.Wavefiles.PCM_Buffers.Operators is
+   function "+" (PCM_Ref : MC_Samples;
+                 PCM_DUT : MC_Samples)
+                    return MC_Samples;
 
-   function "+" (Left, Right : PCM_Buffer) return PCM_Buffer;
-   function "-" (Left, Right : PCM_Buffer) return PCM_Buffer;
-   function "*"
-     (Left  : PCM_Buffer;
-      Right : PCM_Type) return PCM_Buffer;
+   function "-" (PCM_Ref : MC_Samples;
+                 PCM_DUT : MC_Samples)
+                    return MC_Samples;
 
-end Audio.Wavefiles.PCM_Buffers.Operators;
+end Gen_Float_PCM_Buffer_Ops;

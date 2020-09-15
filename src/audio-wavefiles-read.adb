@@ -6,7 +6,7 @@
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 Gustavo A. Hoffmann
+--  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -27,18 +27,18 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO; use Ada.Text_IO;
-with Interfaces;
+with Ada.Text_IO;                  use Ada.Text_IO;
+with Interfaces;                   use Interfaces;
 
-with Audio.RIFF;                use Audio.RIFF;
-with Audio.Wavefiles.Internals;
+with Audio.RIFF;                   use Audio.RIFF;
+with Audio.Wavefiles.Internals;    use Audio.Wavefiles.Internals;
+with Audio.Wavefiles.Gen_Float_IO;
+with Audio.Wavefiles.Gen_Fixed_IO;
 
 package body Audio.Wavefiles.Read is
 
-   package Int is new Audio.Wavefiles.Internals;
-
    use Ada.Streams.Stream_IO;
-   use Interfaces;
+
    procedure Open
      (WF        : in out Wavefile;
       File_Name : String)
@@ -84,7 +84,7 @@ package body Audio.Wavefiles.Read is
             Put_Line ("RIFF Tag: " & RIFF_Tag.FOURCC);
          end if;
          exit when RIFF_Tag.FOURCC = "fmt ";
-         Int.Skip_Bytes (WF.File, RIFF_Tag.Size);
+         Skip_Bytes (WF.File, RIFF_Tag.Size);
       end loop;
 
       case RIFF_Tag.Size is
@@ -136,7 +136,7 @@ package body Audio.Wavefiles.Read is
             Put_Line ("RIFF Tag: " & RIFF_Tag.FOURCC);
          end if;
          exit when RIFF_Tag.FOURCC = "data";
-         Int.Skip_Bytes (WF.File, RIFF_Tag.Size);
+         Skip_Bytes (WF.File, RIFF_Tag.Size);
       end loop;
 
       WF.Samples := Long_Integer (RIFF_Tag.Size)
@@ -151,13 +151,110 @@ package body Audio.Wavefiles.Read is
 
    end Open;
 
+   function Is_EOF
+     (WF   : in out Wavefile) return Boolean is
+   begin
+      if WF.Samples_Read >= WF.Samples or
+        Ada.Streams.Stream_IO.End_Of_File (WF.File)
+      then
+         return True;
+      else
+         return False;
+      end if;
+   end Is_EOF;
+
+
+   function Get_Float
+     (WF   : in out Wavefile) return MC_Samples
+   is
+      package Float_Data_16 is new Audio.Wavefiles.Gen_Float_IO
+        (Audio_Res     => Wav_Int_16,
+         PCM_Type      => PCM_Type,
+         MC_Samples    => MC_Samples);
+
+      package Float_Data_24 is new Audio.Wavefiles.Gen_Float_IO
+        (Audio_Res     => Wav_Int_24,
+         PCM_Type      => PCM_Type,
+         MC_Samples    => MC_Samples);
+
+      package Float_Data_32 is new Audio.Wavefiles.Gen_Float_IO
+        (Audio_Res     => Wav_Int_32,
+         PCM_Type      => PCM_Type,
+         MC_Samples    => MC_Samples);
+
+      Ch : constant Positive := Positive (WF.Wave_Format.Channels);
+   begin
+      if not WF.Is_Opened then
+         raise Wavefile_Error;
+      end if;
+      if not Is_Supported_Format (WF.Wave_Format) then
+         raise Wavefile_Unsupported;
+      end if;
+
+      WF.Samples_Read := WF.Samples_Read + Long_Integer (Ch);
+
+      case WF.Wave_Format.Bits_Per_Sample is
+         when 8 =>
+            raise Wavefile_Unsupported;
+         when 16 =>
+            return Float_Data_16.Get (WF);
+         when 24 =>
+            return Float_Data_24.Get (WF);
+         when 32 =>
+            return Float_Data_32.Get (WF);
+         when others =>
+            raise Wavefile_Unsupported;
+      end case;
+   end Get_Float;
+
+   function Get_Fixed
+     (WF   : in out Wavefile) return MC_Samples
+   is
+      package Fixed_Data_16 is new Audio.Wavefiles.Gen_Fixed_IO
+        (Audio_Res     => Wav_Int_16,
+         PCM_Type      => PCM_Type,
+         MC_Samples    => MC_Samples);
+
+      package Fixed_Data_24 is new Audio.Wavefiles.Gen_Fixed_IO
+        (Audio_Res     => Wav_Int_24,
+         PCM_Type      => PCM_Type,
+         MC_Samples    => MC_Samples);
+
+      package Fixed_Data_32 is new Audio.Wavefiles.Gen_Fixed_IO
+        (Audio_Res     => Wav_Int_32,
+         PCM_Type      => PCM_Type,
+         MC_Samples    => MC_Samples);
+
+      Ch : constant Positive := Positive (WF.Wave_Format.Channels);
+   begin
+      if not WF.Is_Opened then
+         raise Wavefile_Error;
+      end if;
+      if not Is_Supported_Format (WF.Wave_Format) then
+         raise Wavefile_Unsupported;
+      end if;
+
+      WF.Samples_Read := WF.Samples_Read + Long_Integer (Ch);
+
+      case WF.Wave_Format.Bits_Per_Sample is
+         when 8 =>
+            raise Wavefile_Unsupported;
+         when 16 =>
+            return Fixed_Data_16.Get (WF);
+         when 24 =>
+            return Fixed_Data_24.Get (WF);
+         when 32 =>
+            return Fixed_Data_32.Get (WF);
+         when others =>
+            raise Wavefile_Unsupported;
+      end case;
+   end Get_Fixed;
 
    procedure Display_Info (WF : in Wavefile) is
    begin
       Print (WF.Wave_Format);
 
    end Display_Info;
-
 
    procedure Close (WF  : in out Wavefile) is
    begin

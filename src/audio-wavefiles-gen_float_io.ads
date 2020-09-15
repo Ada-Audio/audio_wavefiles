@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                           Internal information
+--               Type conversion for wavefile I/O operations
 --
 --  The MIT License (MIT)
 --
@@ -27,29 +27,15 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Interfaces; use Interfaces;
-with Ada.Streams.Stream_IO;
-with Audio.RIFF; use Audio.RIFF;
+private generic
+   type Audio_Res is range <>;
+   type PCM_Type is digits <>;
+   type MC_Samples is array (Positive range <>) of PCM_Type;
+package Audio.Wavefiles.Gen_Float_IO is
 
-private
-package Audio.Wavefiles.Internals is
+   function Get (WF  : in out Wavefile) return MC_Samples;
 
-   type Wav_Int_8 is range -2 ** (8 - 1) .. 2 ** (8 - 1) - 1
-     with Size => 8;
+   procedure Put (WF : in out Wavefile;
+                  P  :        MC_Samples);
 
-   type Wav_Int_16 is range -2 ** (16 - 1) .. 2 ** (16 - 1) - 1
-     with Size => 16;
-
-   type Wav_Int_24 is range -2 ** (24 - 1) .. 2 ** (24 - 1) - 1
-     with Size => 24;
-
-   type Wav_Int_32 is range -2 ** (32 - 1) .. 2 ** (32 - 1) - 1
-     with Size => 32;
-
-   procedure Skip_Bytes
-     (F     : in out Ada.Streams.Stream_IO.File_Type;
-      Bytes : in Unsigned_32);
-
-   function Is_Supported_Format (W : Wave_Format_Extensible) return Boolean;
-
-end Audio.Wavefiles.Internals;
+end Audio.Wavefiles.Gen_Float_IO;
