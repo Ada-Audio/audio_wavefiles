@@ -1,0 +1,174 @@
+-------------------------------------------------------------------------------
+--
+--                                WAVEFILES
+--
+--                             Test application
+--
+--  The MIT License (MIT)
+--
+--  Copyright (c) 2020 Gustavo A. Hoffmann
+--
+--  Permission is hereby granted, free of charge, to any person obtaining a
+--  copy of this software and associated documentation files (the "Software"),
+--  to deal in the Software without restriction, including without limitation
+--  the rights to use, copy, modify, merge, publish, distribute, sublicense,
+--  and / or sell copies of the Software, and to permit persons to whom the
+--  Software is furnished to do so, subject to the following conditions:
+--
+--  The above copyright notice and this permission notice shall be included in
+--  all copies or substantial portions of the Software.
+--
+--  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+--  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+--  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+--  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+--  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+--  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+--  DEALINGS IN THE SOFTWARE.
+-------------------------------------------------------------------------------
+
+with Gen_Fixed_Wave_Test;
+
+package body Wave_Test_Instances is
+
+   PCM_Bits : Positive := 32;
+
+   D_8      : constant := 1.0 / 2.0 ** (8  - 1);
+   D_16     : constant := 1.0 / 2.0 ** (16 - 1);
+   D_32     : constant := 1.0 / 2.0 ** (32 - 1);
+
+   type Fixed_8_PCM is delta D_8 range -1.0 .. 1.0 - D_8
+     with Size => 8;
+   type Fixed_16_PCM is delta D_16 range -1.0 .. 1.0 - D_16
+     with Size => 16;
+   type Fixed_32_PCM is delta D_32 range -1.0 .. 1.0 - D_32
+     with Size => 32;
+
+   type Fixed_8_PCM_Buffer is array (Positive range <>) of Fixed_8_PCM;
+   type Fixed_16_PCM_Buffer is array (Positive range <>) of Fixed_16_PCM;
+   type Fixed_32_PCM_Buffer is array (Positive range <>) of Fixed_32_PCM;
+
+   package Wave_Test_Fixed_8 is new Gen_Fixed_Wave_Test
+     (PCM_Type   => Fixed_8_PCM,
+      MC_Samples => Fixed_8_PCM_Buffer);
+   package Wave_Test_Fixed_16 is new Gen_Fixed_Wave_Test
+     (PCM_Type   => Fixed_16_PCM,
+      MC_Samples => Fixed_16_PCM_Buffer);
+   package Wave_Test_Fixed_32 is new Gen_Fixed_Wave_Test
+     (PCM_Type   => Fixed_32_PCM,
+      MC_Samples => Fixed_32_PCM_Buffer);
+
+   Proc_Display_Info_File : access procedure (File_In : String)
+     := Wave_Test_Fixed_32.Display_Info_File'Access;
+
+   Proc_Copy_File : access procedure
+     (File_In        : String;
+      File_Out       : String) := Wave_Test_Fixed_32.Copy_File'Access;
+
+   Proc_Compare_Files : access procedure
+     (File_Ref    : String;
+      File_DUT    : String) := Wave_Test_Fixed_32.Compare_Files'Access;
+
+   Proc_Diff_Files : access procedure
+     (File_Ref       : String;
+      File_DUT       : String;
+      File_Diff      : String) := Wave_Test_Fixed_32.Diff_Files'Access;
+
+   Proc_Mix_Files : access procedure
+     (File_Ref        : String;
+      File_DUT        : String;
+      File_Mix        : String) := Wave_Test_Fixed_32.Mix_Files'Access;
+
+   procedure Display_Info_File (File_In : String) is
+   begin
+      Proc_Display_Info_File (File_In);
+   end Display_Info_File;
+
+   procedure Copy_File
+     (File_In         : String;
+      File_Out        : String) is
+   begin
+      Proc_Copy_File (File_In, File_Out);
+   end Copy_File;
+
+   procedure Compare_Files
+     (File_Ref    : String;
+      File_DUT    : String) is
+   begin
+      Proc_Compare_Files (File_Ref, File_DUT);
+   end Compare_Files;
+
+   procedure Diff_Files
+     (File_Ref       : String;
+      File_DUT       : String;
+      File_Diff      : String) is
+   begin
+      Proc_Diff_Files (File_Ref, File_DUT, File_Diff);
+   end Diff_Files;
+
+   procedure Mix_Files
+     (File_Ref        : String;
+      File_DUT        : String;
+      File_Mix        : String) is
+   begin
+      Proc_Mix_Files (File_Ref, File_DUT, File_Mix);
+   end Mix_Files;
+
+   procedure Set_Test_Procedures (Bits   : Positive;
+                                  Status : out Boolean)
+   is
+      procedure Set_It;
+
+      procedure Set_It is
+      begin
+         Status := True;
+         PCM_Bits := Bits;
+      end Set_It;
+   begin
+      Status := False;
+
+      case Bits is
+         when 8 =>
+            Proc_Display_Info_File
+              := Wave_Test_Fixed_8.Display_Info_File'Access;
+            Proc_Copy_File
+              := Wave_Test_Fixed_8.Copy_File'Access;
+            Proc_Compare_Files
+              := Wave_Test_Fixed_8.Compare_Files'Access;
+            Proc_Diff_Files
+              := Wave_Test_Fixed_8.Diff_Files'Access;
+            Proc_Mix_Files
+              := Wave_Test_Fixed_8.Mix_Files'Access;
+            Set_It;
+         when 16 =>
+            Proc_Display_Info_File
+              := Wave_Test_Fixed_16.Display_Info_File'Access;
+            Proc_Copy_File
+              := Wave_Test_Fixed_16.Copy_File'Access;
+            Proc_Compare_Files
+              := Wave_Test_Fixed_16.Compare_Files'Access;
+            Proc_Diff_Files
+              := Wave_Test_Fixed_16.Diff_Files'Access;
+            Proc_Mix_Files
+              := Wave_Test_Fixed_16.Mix_Files'Access;
+            Set_It;
+         when 32 =>
+            Proc_Display_Info_File
+              := Wave_Test_Fixed_32.Display_Info_File'Access;
+            Proc_Copy_File
+              := Wave_Test_Fixed_32.Copy_File'Access;
+            Proc_Compare_Files
+              := Wave_Test_Fixed_32.Compare_Files'Access;
+            Proc_Diff_Files
+              := Wave_Test_Fixed_32.Diff_Files'Access;
+            Proc_Mix_Files
+              := Wave_Test_Fixed_32.Mix_Files'Access;
+            Set_It;
+         when others =>
+            null;
+      end case;
+   end Set_Test_Procedures;
+
+   function Get_Bits return Positive is (PCM_Bits);
+
+end Wave_Test_Instances;

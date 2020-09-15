@@ -30,7 +30,7 @@
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Wave_Test;
+with Wave_Test_Instances;  use Wave_Test_Instances;
 
 procedure Wavefiles_Test is
    Command_Line_OK : Boolean := False;
@@ -51,34 +51,33 @@ procedure Wavefiles_Test is
    end Print_Usage;
 
 begin
-
    if Argument_Count >= 1 then
       if Argument (1) = "info" and then Argument_Count = 2 then
          Command_Line_OK := True;
          Put_Line ("Information from: " & Argument (2));
-         Wave_Test.Display_Info_File (Argument (2));
+         Display_Info_File (Argument (2));
       elsif Argument (1) = "copy" and then Argument_Count = 3 then
          Command_Line_OK := True;
          Put_Line ("Copying from: " & Argument (2));
          Put_Line ("Copying to:   " & Argument (3));
-         Wave_Test.Copy_File (Argument (2), Argument (3));
+         Copy_File (Argument (2), Argument (3));
       elsif Argument (1) = "compare" and then Argument_Count = 3 then
          Command_Line_OK := True;
          Put_Line ("Reference: " & Argument (2));
          Put_Line ("DUT:       " & Argument (3));
-         Wave_Test.Compare_Files (Argument (2), Argument (3));
+         Compare_Files (Argument (2), Argument (3));
       elsif Argument (1) = "diff" and then Argument_Count = 4 then
          Command_Line_OK := True;
          Put_Line ("Reference: " & Argument (2));
          Put_Line ("DUT:       " & Argument (3));
          Put_Line ("Diff:      " & Argument (4));
-         Wave_Test.Diff_Files (Argument (2), Argument (3), Argument (4));
+         Diff_Files (Argument (2), Argument (3), Argument (4));
       elsif Argument (1) = "mix" and then Argument_Count = 4 then
          Command_Line_OK := True;
          Put_Line ("Wavefile #1: " & Argument (2));
          Put_Line ("Wavefile #2: " & Argument (3));
          Put_Line ("Mix file:    " & Argument (4));
-         Wave_Test.Mix_Files (Argument (2), Argument (3), Argument (4));
+         Mix_Files (Argument (2), Argument (3), Argument (4));
       end if;
    end if;
 

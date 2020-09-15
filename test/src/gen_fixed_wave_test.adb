@@ -1,3 +1,32 @@
+-------------------------------------------------------------------------------
+--
+--                                WAVEFILES
+--
+--                             Test application
+--
+--  The MIT License (MIT)
+--
+--  Copyright (c) 2015 Gustavo A. Hoffmann
+--
+--  Permission is hereby granted, free of charge, to any person obtaining a
+--  copy of this software and associated documentation files (the "Software"),
+--  to deal in the Software without restriction, including without limitation
+--  the rights to use, copy, modify, merge, publish, distribute, sublicense,
+--  and / or sell copies of the Software, and to permit persons to whom the
+--  Software is furnished to do so, subject to the following conditions:
+--
+--  The above copyright notice and this permission notice shall be included in
+--  all copies or substantial portions of the Software.
+--
+--  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+--  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+--  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+--  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+--  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+--  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+--  DEALINGS IN THE SOFTWARE.
+-------------------------------------------------------------------------------
+
 with Ada.Text_IO;                   use Ada.Text_IO;
 
 with Audio.Wavefiles;
@@ -5,34 +34,25 @@ with Audio.Wavefiles.Read;
 with Audio.Wavefiles.Write;
 with Audio.RIFF;
 
-with Fixed_PCM_Buffer_Ops;
+with Gen_Fixed_PCM_Buffer_Ops;
 
-package body Wave_Test is
-
-   pragma Warnings (Off, "declared high bound of type");
-
-   type Fixed_32_PCM is delta 1.0 / 2.0 ** (32 - 1) range -1.0 .. 1.0
-     with Size => 32;
-
-   pragma Warnings (On, "declared high bound of type");
-
-   type Fixed_32_PCM_Buffer is array (Positive range <>) of Fixed_32_PCM;
+package body Gen_Fixed_Wave_Test is
 
    package Wav_Read  renames  Audio.Wavefiles.Read;
    package Wav_Write renames  Audio.Wavefiles.Write;
 
    function Get is new Wav_Read.Get_Fixed
-     (PCM_Type   => Fixed_32_PCM,
-      MC_Samples => Fixed_32_PCM_Buffer);
+     (PCM_Type   => PCM_Type,
+      MC_Samples => MC_Samples);
 
    procedure Put is new Wav_Write.Put_Fixed
-     (PCM_Type   => Fixed_32_PCM,
-      MC_Samples => Fixed_32_PCM_Buffer);
+     (PCM_Type   => PCM_Type,
+      MC_Samples => MC_Samples);
 
-   package Fixed_32_PCM_Buffer_Ops is new Fixed_PCM_Buffer_Ops
-     (PCM_Type   => Fixed_32_PCM,
-      MC_Samples => Fixed_32_PCM_Buffer);
-   use Fixed_32_PCM_Buffer_Ops;
+   package Fixed_PCM_Buffer_Ops is new Gen_Fixed_PCM_Buffer_Ops
+     (PCM_Type   => PCM_Type,
+      MC_Samples => MC_Samples);
+   use Fixed_PCM_Buffer_Ops;
 
    Verbose     : constant Boolean := False;
 
@@ -57,7 +77,7 @@ package body Wave_Test is
       procedure Copy_MC_Sample;
 
       procedure Copy_MC_Sample is
-         PCM_Buf : constant Fixed_32_PCM_Buffer := Get (WF_In);
+         PCM_Buf : constant MC_Samples := Get (WF_In);
       begin
          EOF := Wav_Read.Is_EOF (WF_In);
          Put (WF_Out, PCM_Buf);
@@ -106,8 +126,8 @@ package body Wave_Test is
       procedure Report_Comparison;
 
       procedure Compare_MC_Sample is
-         PCM_Ref : constant Fixed_32_PCM_Buffer := Get (WF_Ref);
-         PCM_DUT : constant Fixed_32_PCM_Buffer := Get (WF_DUT);
+         PCM_Ref : constant MC_Samples := Get (WF_Ref);
+         PCM_DUT : constant MC_Samples := Get (WF_DUT);
       begin
          EOF_Ref := Wav_Read.Is_EOF (WF_Ref);
          EOF_DUT := Wav_Read.Is_EOF (WF_DUT);
@@ -159,9 +179,9 @@ package body Wave_Test is
       procedure Diff_MC_Sample;
 
       procedure Diff_MC_Sample is
-         PCM_Ref  : constant Fixed_32_PCM_Buffer := Get (WF_Ref);
-         PCM_DUT  : constant Fixed_32_PCM_Buffer := Get (WF_DUT);
-         PCM_Diff : constant Fixed_32_PCM_Buffer :=
+         PCM_Ref  : constant MC_Samples := Get (WF_Ref);
+         PCM_DUT  : constant MC_Samples := Get (WF_DUT);
+         PCM_Diff : constant MC_Samples :=
                       PCM_Ref - PCM_DUT;
       begin
          EOF_Ref := Wav_Read.Is_EOF (WF_Ref);
@@ -199,9 +219,9 @@ package body Wave_Test is
       procedure Mix_MC_Sample;
 
       procedure Mix_MC_Sample is
-         PCM_Ref : constant Fixed_32_PCM_Buffer := Get (WF_Ref);
-         PCM_DUT : constant Fixed_32_PCM_Buffer := Get (WF_DUT);
-         PCM_Mix : constant Fixed_32_PCM_Buffer :=
+         PCM_Ref : constant MC_Samples := Get (WF_Ref);
+         PCM_DUT : constant MC_Samples := Get (WF_DUT);
+         PCM_Mix : constant MC_Samples :=
                      PCM_Ref + PCM_DUT;
       begin
          EOF_Ref := Wav_Read.Is_EOF (WF_Ref);
@@ -224,4 +244,4 @@ package body Wave_Test is
       Wav_Write.Close (WF_Mix);
    end Mix_Files;
 
-end Wave_Test;
+end Gen_Fixed_Wave_Test;
