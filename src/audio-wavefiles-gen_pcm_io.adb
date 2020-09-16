@@ -29,16 +29,16 @@
 
 package body Audio.Wavefiles.Gen_PCM_IO is
 
-   function Get (WF  : in out Wavefile) return Audio_Samples
+   function Get (WF  : in out Wavefile) return Wav_Data
    is
-      Ch : constant Positive := Positive (WF.Wave_Format.Channels);
-      BB : Audio_Res;
+      Ch         : constant Positive := Positive (WF.Wave_Format.Channels);
+      Wav_Sample : Wav_Data_Type;
    begin
-      return B  : Audio_Samples (1 .. Ch) do
+      return Wav : Wav_Data (1 .. Ch) do
          for J in 1 .. Ch loop
 
-            Audio_Res'Read (WF.File_Access, BB);
-            B (J) := BB;
+            Wav_Data_Type'Read (WF.File_Access, Wav_Sample);
+            Wav (J) := Wav_Sample;
             if Ada.Streams.Stream_IO.End_Of_File (WF.File) and then
               J < Ch
             then
@@ -49,11 +49,11 @@ package body Audio.Wavefiles.Gen_PCM_IO is
       end return;
    end Get;
 
-   procedure Put (WF : in out Wavefile;
-                  B  :        Audio_Samples) is
+   procedure Put (WF  : in out Wavefile;
+                  Wav :        Wav_Data) is
       Ch : constant Positive := Positive (WF.Wave_Format.Channels);
    begin
-      Audio_Samples'Write (WF.File_Access, B);
+      Wav_Data'Write (WF.File_Access, Wav);
       WF.Samples := WF.Samples + Long_Integer (Ch);
    end Put;
 

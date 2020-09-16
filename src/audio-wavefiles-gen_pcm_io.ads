@@ -28,15 +28,15 @@
 -------------------------------------------------------------------------------
 
 private generic
-   type Audio_Res is range <>;
-   type Audio_Samples is array (Positive range <>) of Audio_Res;
+   type Wav_Data_Type is range <>;
+   type Wav_Data is array (Positive range <>) of Wav_Data_Type;
 package Audio.Wavefiles.Gen_PCM_IO is
 
-   function Get (WF  : in out Wavefile) return Audio_Samples
+   function Get (WF  : in out Wavefile) return Wav_Data
      with Inline;
 
-   procedure Put (WF : in out Wavefile;
-                  B  :        Audio_Samples)
+   procedure Put (WF  : in out Wavefile;
+                  Wav :        Wav_Data)
      with Inline;
 
 end Audio.Wavefiles.Gen_PCM_IO;

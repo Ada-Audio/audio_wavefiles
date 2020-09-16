@@ -34,52 +34,52 @@ with Audio.Wavefiles.Gen_PCM_IO;
 
 package body Audio.Wavefiles.Gen_Fixed_IO is
 
-   package Audio_Types is new Audio.Wavefiles.Fixed_Types
-     (Fixed, Audio_Res, PCM_Type);
+   package Wav_Data_Types is new Audio.Wavefiles.Fixed_Types
+     (Fixed, Wav_Data_Type, PCM_Type);
 
-   type Audio_Samples is array (Positive range <>) of Audio_Res;
+   type Wav_Data is array (Positive range <>) of Wav_Data_Type;
 
    package PCM_IO is new Audio.Wavefiles.Gen_PCM_IO
-     (Audio_Res     => Audio_Res,
-      Audio_Samples => Audio_Samples);
+     (Wav_Data_Type => Wav_Data_Type,
+      Wav_Data      => Wav_Data);
    use PCM_IO;
 
-   function Convert_Samples (B   : Audio_Samples) return MC_Samples;
-   function Convert_Samples (PCM : MC_Samples)    return Audio_Samples;
+   function Convert_Samples (Wav : Wav_Data)   return MC_Samples;
+   function Convert_Samples (PCM : MC_Samples) return Wav_Data;
 
-   function Convert_Samples (B : Audio_Samples) return MC_Samples is
+   function Convert_Samples (Wav : Wav_Data) return MC_Samples is
    begin
-      return PCM : MC_Samples (B'Range) do
+      return PCM : MC_Samples (Wav'Range) do
          for I in PCM'Range loop
-            PCM (I) := Audio_Types.Convert_Sample (B (I));
+            PCM (I) := Wav_Data_Types.Convert_Sample (Wav (I));
          end loop;
       end return;
    end Convert_Samples;
 
-   function Convert_Samples (PCM : MC_Samples) return Audio_Samples is
+   function Convert_Samples (PCM : MC_Samples) return Wav_Data is
    begin
-      return B : Audio_Samples (PCM'Range) do
-         for I in B'Range loop
-            B (I) := Audio_Types.Convert_Sample (PCM (I));
+      return Wav : Wav_Data (PCM'Range) do
+         for I in Wav'Range loop
+            Wav (I) := Wav_Data_Types.Convert_Sample (PCM (I));
          end loop;
       end return;
    end Convert_Samples;
 
    function Get (WF  : in out Wavefile) return MC_Samples is
-      B : constant Audio_Samples := Get (WF);
-      P : constant MC_Samples   := Convert_Samples (B);
+      Wav : constant Wav_Data   := Get (WF);
+      PCM : constant MC_Samples := Convert_Samples (Wav);
    begin
-      return P;
+      return PCM;
    end Get;
 
-   procedure Put (WF : in out Wavefile;
-                  P  :        MC_Samples) is
-      Ch : constant Positive := Positive (WF.Wave_Format.Channels);
-      B  : constant Audio_Samples := Convert_Samples (P);
+   procedure Put (WF  : in out Wavefile;
+                  PCM :        MC_Samples) is
+      Ch  : constant Positive := Positive (WF.Wave_Format.Channels);
+      Wav : constant Wav_Data := Convert_Samples (PCM);
    begin
-      Ada.Assertions.Assert (Ch = P'Length,
+      Ada.Assertions.Assert (Ch = PCM'Length,
                              "Wrong number of channels in buffer");
-      Put (WF, B);
+      Put (WF, Wav);
    end Put;
 
 end Audio.Wavefiles.Gen_Fixed_IO;
