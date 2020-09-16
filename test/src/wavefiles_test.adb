@@ -50,40 +50,7 @@ procedure Wavefiles_Test is
                 & "<mix_wavefile>");
    end Print_Usage;
 
-   procedure Set_PCM_Bits (Bits : Positive;
-                           Fixed : Boolean);
-   procedure Set_PCM_Bits (Bits : Positive;
-                           Fixed : Boolean) is
-      OK : Boolean;
-
-      procedure Report_Operation;
-      procedure Report_Operation is
-
-         function Get_Fixed_Str return String is
-           (if Fixed then "fixed-point" else "floating-point");
-
-
-      begin
-         Put_Line ("---- PCM Buffer Configuration ----");
-         if not OK then
-            Put_Line ("Cannot change configuration");
-            Put_Line ("Currently set to " & Get_Bits'Image & " bits");
-            Put_Line ("Currently using " & Get_Fixed_Str);
-         else
-            Put_Line ("Setting to " & Bits'Image & " bits");
-            Put_Line ("Now using " & Get_Fixed_Str);
-         end if;
-      end Report_Operation;
-   begin
-      Set_Test_Procedures (Bits   => Bits,
-                           Fixed  => Fixed,
-                           Status => OK);
-      Report_Operation;
-   end Set_PCM_Bits;
-
 begin
-   Set_PCM_Bits (16, True);
-
    if Argument_Count >= 1 then
       if Argument (1) = "info" and then Argument_Count = 2 then
          Command_Line_OK := True;
