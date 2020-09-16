@@ -78,21 +78,14 @@ package body Audio.Wavefiles.Float_Types is
 
 
    function Convert_Sample (Sample : Audio_Res) return PCM_Type is
-      Sample_In   : Audio_Res := Sample;
+      Sample_In   : constant Audio_Res := Sample;
       Sample_Out  : PCM_Type;
-      Bits_In     : Audio_Res_Bit_Array;
-      Bits_Out    : PCM_Bit_Array;
-      for Bits_In'Address  use Sample_In'Address;
-      for Bits_Out'Address use Sample_Out'Address;
-
    begin
       if Fixed then
-         Sample_Out := 0.0;
-
          Sample_Out := PCM_Type (Long_Float (Sample_In)
                                  / Long_Float (Audio_Res'Last));
       else
-         null;
+         Sample_Out := PCM_Type (Sample_In);
       end if;
 
       if Convert_Sample_Debug then
@@ -104,18 +97,14 @@ package body Audio.Wavefiles.Float_Types is
 
 
    function Convert_Sample (Sample : PCM_Type) return Audio_Res is
-      Sample_In   : PCM_Type := Sample;
-      Sample_Out  : Audio_Res := 0;
-      Bits_In     : PCM_Bit_Array;
-      Bits_Out    : Audio_Res_Bit_Array;
-      for Bits_In'Address  use Sample_In'Address;
-      for Bits_Out'Address use Sample_Out'Address;
+      Sample_In   : constant PCM_Type := Sample;
+      Sample_Out  : Audio_Res;
    begin
       if Fixed then
          Sample_Out := Audio_Res (Long_Float (Sample_In)
                                   * Long_Float (Audio_Res'Last));
       else
-         null;
+         Sample_Out := Audio_Res (Sample_In);
       end if;
 
       if Convert_Sample_Debug then

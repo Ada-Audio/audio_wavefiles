@@ -41,7 +41,9 @@ package body Audio.Wavefiles.Internals is
 
    function Is_Supported_Format (W : Wave_Format_Extensible) return Boolean is
    begin
-      if not (W.Sub_Format = GUID_Undefined or W.Sub_Format = GUID_PCM)
+      if not (W.Sub_Format = GUID_Undefined
+              or W.Sub_Format = GUID_PCM
+              or W.Sub_Format = GUID_IEEE_Float)
       then
          return False;
       end if;

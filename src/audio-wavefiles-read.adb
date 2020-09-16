@@ -167,21 +167,33 @@ package body Audio.Wavefiles.Read is
    function Get_Float
      (WF   : in out Wavefile) return MC_Samples
    is
-      package Float_Data_16 is new Audio.Wavefiles.Gen_Float_IO
+      package Float_Data_Raw_Fixed_16 is new Audio.Wavefiles.Gen_Float_IO
         (Fixed         => True,
          Audio_Res     => Wav_Int_16,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
-      package Float_Data_24 is new Audio.Wavefiles.Gen_Float_IO
+      package Float_Data_Raw_Fixed_24 is new Audio.Wavefiles.Gen_Float_IO
         (Fixed         => True,
          Audio_Res     => Wav_Int_24,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
-      package Float_Data_32 is new Audio.Wavefiles.Gen_Float_IO
+      package Float_Data_Raw_Fixed_32 is new Audio.Wavefiles.Gen_Float_IO
         (Fixed         => True,
          Audio_Res     => Wav_Int_32,
+         PCM_Type      => PCM_Type,
+         MC_Samples    => MC_Samples);
+
+      package Float_Data_Raw_Float_32 is new Audio.Wavefiles.Gen_Float_IO
+        (Fixed         => False,
+         Audio_Res     => Wav_Int_32,
+         PCM_Type      => PCM_Type,
+         MC_Samples    => MC_Samples);
+
+      package Float_Data_Raw_Float_64 is new Audio.Wavefiles.Gen_Float_IO
+        (Fixed         => False,
+         Audio_Res     => Wav_Int_64,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
@@ -196,38 +208,63 @@ package body Audio.Wavefiles.Read is
 
       WF.Samples_Read := WF.Samples_Read + Long_Integer (Ch);
 
-      case WF.Wave_Format.Bits_Per_Sample is
-         when 8 =>
-            raise Wavefile_Unsupported;
-         when 16 =>
-            return Float_Data_16.Get (WF);
-         when 24 =>
-            return Float_Data_24.Get (WF);
-         when 32 =>
-            return Float_Data_32.Get (WF);
-         when others =>
-            raise Wavefile_Unsupported;
-      end case;
+      if WF.Wave_Format.Sub_Format = GUID_IEEE_Float then
+         case WF.Wave_Format.Bits_Per_Sample is
+            when 32 =>
+               return Float_Data_Raw_Float_32.Get (WF);
+            when 64 =>
+               return Float_Data_Raw_Float_64.Get (WF);
+            when others =>
+               raise Wavefile_Unsupported;
+         end case;
+      else
+         --  Always assume WF.Wave_Format.Sub_Format = GUID_PCM
+         case WF.Wave_Format.Bits_Per_Sample is
+            when 8 =>
+               raise Wavefile_Unsupported;
+            when 16 =>
+               return Float_Data_Raw_Fixed_16.Get (WF);
+            when 24 =>
+               return Float_Data_Raw_Fixed_24.Get (WF);
+            when 32 =>
+               return Float_Data_Raw_Fixed_32.Get (WF);
+            when others =>
+               raise Wavefile_Unsupported;
+         end case;
+      end if;
+
    end Get_Float;
 
    function Get_Fixed
      (WF   : in out Wavefile) return MC_Samples
    is
-      package Fixed_Data_16 is new Audio.Wavefiles.Gen_Fixed_IO
+      package Fixed_Data_Raw_Fixed_16 is new Audio.Wavefiles.Gen_Fixed_IO
         (Fixed         => True,
          Audio_Res     => Wav_Int_16,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
-      package Fixed_Data_24 is new Audio.Wavefiles.Gen_Fixed_IO
+      package Fixed_Data_Raw_Fixed_24 is new Audio.Wavefiles.Gen_Fixed_IO
         (Fixed         => True,
          Audio_Res     => Wav_Int_24,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
-      package Fixed_Data_32 is new Audio.Wavefiles.Gen_Fixed_IO
+      package Fixed_Data_Raw_Fixed_32 is new Audio.Wavefiles.Gen_Fixed_IO
         (Fixed         => True,
          Audio_Res     => Wav_Int_32,
+         PCM_Type      => PCM_Type,
+         MC_Samples    => MC_Samples);
+
+      package Fixed_Data_Raw_Float_32 is new Audio.Wavefiles.Gen_Fixed_IO
+        (Fixed         => False,
+         Audio_Res     => Wav_Int_32,
+         PCM_Type      => PCM_Type,
+         MC_Samples    => MC_Samples);
+
+      package Fixed_Data_Raw_Float_64 is new Audio.Wavefiles.Gen_Fixed_IO
+        (Fixed         => False,
+         Audio_Res     => Wav_Int_64,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
@@ -242,18 +279,31 @@ package body Audio.Wavefiles.Read is
 
       WF.Samples_Read := WF.Samples_Read + Long_Integer (Ch);
 
-      case WF.Wave_Format.Bits_Per_Sample is
-         when 8 =>
-            raise Wavefile_Unsupported;
-         when 16 =>
-            return Fixed_Data_16.Get (WF);
-         when 24 =>
-            return Fixed_Data_24.Get (WF);
-         when 32 =>
-            return Fixed_Data_32.Get (WF);
-         when others =>
-            raise Wavefile_Unsupported;
-      end case;
+      if WF.Wave_Format.Sub_Format = GUID_IEEE_Float then
+         case WF.Wave_Format.Bits_Per_Sample is
+            when 32 =>
+               return Fixed_Data_Raw_Float_32.Get (WF);
+            when 64 =>
+               return Fixed_Data_Raw_Float_64.Get (WF);
+            when others =>
+               raise Wavefile_Unsupported;
+         end case;
+      else
+         --  Always assume WF.Wave_Format.Sub_Format = GUID_PCM
+         case WF.Wave_Format.Bits_Per_Sample is
+            when 8 =>
+               raise Wavefile_Unsupported;
+            when 16 =>
+               return Fixed_Data_Raw_Fixed_16.Get (WF);
+            when 24 =>
+               return Fixed_Data_Raw_Fixed_24.Get (WF);
+            when 32 =>
+               return Fixed_Data_Raw_Fixed_32.Get (WF);
+            when others =>
+               raise Wavefile_Unsupported;
+         end case;
+      end if;
+
    end Get_Fixed;
 
    procedure Display_Info (WF : in Wavefile) is
