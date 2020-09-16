@@ -42,12 +42,12 @@ package body Gen_Float_Wave_Test is
    package Wav_Write renames  Audio.Wavefiles.Write;
 
    function Get is new Wav_Read.Get_Float
-     (PCM_Type   => PCM_Type,
-      MC_Samples => MC_Samples);
+     (PCM_Type      => PCM_Type,
+      PCM_MC_Sample => MC_Samples);
 
    procedure Put is new Wav_Write.Put_Float
-     (PCM_Type   => PCM_Type,
-      MC_Samples => MC_Samples);
+     (PCM_Type      => PCM_Type,
+      PCM_MC_Sample => MC_Samples);
 
    package Float_PCM_Buffer_Ops is new Gen_Float_PCM_Buffer_Ops
      (PCM_Type   => PCM_Type,

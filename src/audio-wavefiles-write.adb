@@ -103,37 +103,37 @@ package body Audio.Wavefiles.Write is
 
    procedure Put_Float
      (WF   : in out Wavefile;
-      PCM  :        MC_Samples)
+      PCM  :        PCM_MC_Sample)
    is
-      package Float_Data_Raw_Fixed_16 is new Audio.Wavefiles.Gen_Float_IO
-        (Fixed         => True,
-         Audio_Res     => Wav_Int_16,
+      package Float_PCM_Fixed_Wav_16 is new Audio.Wavefiles.Gen_Float_IO
+        (Wav_Num_Type  => Wav_Fixed_Data,
+         Wav_Data_Type => Wav_Data_16_Type,
          PCM_Type      => PCM_Type,
-         MC_Samples    => MC_Samples);
+         PCM_MC_Sample    => PCM_MC_Sample);
 
-      package Float_Data_Raw_Fixed_24 is new Audio.Wavefiles.Gen_Float_IO
-        (Fixed         => True,
-         Audio_Res     => Wav_Int_24,
+      package Float_PCM_Fixed_Wav_24 is new Audio.Wavefiles.Gen_Float_IO
+        (Wav_Num_Type  => Wav_Fixed_Data,
+         Wav_Data_Type => Wav_Data_24_Type,
          PCM_Type      => PCM_Type,
-         MC_Samples    => MC_Samples);
+         PCM_MC_Sample    => PCM_MC_Sample);
 
-      package Float_Data_Raw_Fixed_32 is new Audio.Wavefiles.Gen_Float_IO
-        (Fixed         => True,
-         Audio_Res     => Wav_Int_32,
+      package Float_PCM_Fixed_Wav_32 is new Audio.Wavefiles.Gen_Float_IO
+        (Wav_Num_Type  => Wav_Fixed_Data,
+         Wav_Data_Type => Wav_Data_32_Type,
          PCM_Type      => PCM_Type,
-         MC_Samples    => MC_Samples);
+         PCM_MC_Sample    => PCM_MC_Sample);
 
-      package Float_Data_Raw_Float_32 is new Audio.Wavefiles.Gen_Float_IO
-        (Fixed         => False,
-         Audio_Res     => Wav_Int_32,
+      package Float_PCM_Float_Wav_32 is new Audio.Wavefiles.Gen_Float_IO
+        (Wav_Num_Type  => Wav_Float_Data,
+         Wav_Data_Type => Wav_Data_32_Type,
          PCM_Type      => PCM_Type,
-         MC_Samples    => MC_Samples);
+         PCM_MC_Sample    => PCM_MC_Sample);
 
-      package Float_Data_Raw_Float_64 is new Audio.Wavefiles.Gen_Float_IO
-        (Fixed         => False,
-         Audio_Res     => Wav_Int_64,
+      package Float_PCM_Float_Wav_64 is new Audio.Wavefiles.Gen_Float_IO
+        (Wav_Num_Type  => Wav_Float_Data,
+         Wav_Data_Type => Wav_Data_64_Type,
          PCM_Type      => PCM_Type,
-         MC_Samples    => MC_Samples);
+         PCM_MC_Sample    => PCM_MC_Sample);
    begin
       if not WF.Is_Opened then
          raise Wavefile_Error;
@@ -146,9 +146,9 @@ package body Audio.Wavefiles.Write is
       if WF.Wave_Format.Sub_Format = GUID_IEEE_Float then
          case WF.Wave_Format.Bits_Per_Sample is
             when 32 =>
-               Float_Data_Raw_Float_32.Put (WF, PCM);
+               Float_PCM_Float_Wav_32.Put (WF, PCM);
             when 64 =>
-               Float_Data_Raw_Float_64.Put (WF, PCM);
+               Float_PCM_Float_Wav_64.Put (WF, PCM);
             when others =>
                raise Wavefile_Unsupported;
          end case;
@@ -158,11 +158,11 @@ package body Audio.Wavefiles.Write is
             when 8 =>
                raise Wavefile_Unsupported;
             when 16 =>
-               Float_Data_Raw_Fixed_16.Put (WF, PCM);
+               Float_PCM_Fixed_Wav_16.Put (WF, PCM);
             when 24 =>
-               Float_Data_Raw_Fixed_24.Put (WF, PCM);
+               Float_PCM_Fixed_Wav_24.Put (WF, PCM);
             when 32 =>
-               Float_Data_Raw_Fixed_32.Put (WF, PCM);
+               Float_PCM_Fixed_Wav_32.Put (WF, PCM);
             when others =>
                raise Wavefile_Unsupported;
          end case;
@@ -173,37 +173,37 @@ package body Audio.Wavefiles.Write is
 
    procedure Put_Fixed
      (WF   : in out Wavefile;
-      PCM  :        MC_Samples)
+      PCM  :        PCM_MC_Sample)
    is
-      package Fixed_Data_Raw_Fixed_16 is new Audio.Wavefiles.Gen_Fixed_IO
-        (Fixed         => True,
-         Audio_Res     => Wav_Int_16,
+      package Fixed_PCM_Fixed_Wav_16 is new Audio.Wavefiles.Gen_Fixed_IO
+        (Wav_Num_Type  => Wav_Fixed_Data,
+         Wav_Data_Type => Wav_Data_16_Type,
          PCM_Type      => PCM_Type,
-         MC_Samples    => MC_Samples);
+         PCM_MC_Sample    => PCM_MC_Sample);
 
-      package Fixed_Data_Raw_Fixed_24 is new Audio.Wavefiles.Gen_Fixed_IO
-        (Fixed         => True,
-         Audio_Res     => Wav_Int_24,
+      package Fixed_PCM_Fixed_Wav_24 is new Audio.Wavefiles.Gen_Fixed_IO
+        (Wav_Num_Type  => Wav_Fixed_Data,
+         Wav_Data_Type => Wav_Data_24_Type,
          PCM_Type      => PCM_Type,
-         MC_Samples    => MC_Samples);
+         PCM_MC_Sample    => PCM_MC_Sample);
 
-      package Fixed_Data_Raw_Fixed_32 is new Audio.Wavefiles.Gen_Fixed_IO
-        (Fixed         => True,
-         Audio_Res     => Wav_Int_32,
+      package Fixed_PCM_Fixed_Wav_32 is new Audio.Wavefiles.Gen_Fixed_IO
+        (Wav_Num_Type  => Wav_Fixed_Data,
+         Wav_Data_Type => Wav_Data_32_Type,
          PCM_Type      => PCM_Type,
-         MC_Samples    => MC_Samples);
+         PCM_MC_Sample    => PCM_MC_Sample);
 
-      package Fixed_Data_Raw_Float_32 is new Audio.Wavefiles.Gen_Fixed_IO
-        (Fixed         => False,
-         Audio_Res     => Wav_Int_32,
+      package Fixed_PCM_Float_Wav_32 is new Audio.Wavefiles.Gen_Fixed_IO
+        (Wav_Num_Type  => Wav_Float_Data,
+         Wav_Data_Type => Wav_Data_32_Type,
          PCM_Type      => PCM_Type,
-         MC_Samples    => MC_Samples);
+         PCM_MC_Sample    => PCM_MC_Sample);
 
-      package Fixed_Data_Raw_Float_64 is new Audio.Wavefiles.Gen_Fixed_IO
-        (Fixed         => False,
-         Audio_Res     => Wav_Int_64,
+      package Fixed_PCM_Float_Wav_64 is new Audio.Wavefiles.Gen_Fixed_IO
+        (Wav_Num_Type  => Wav_Float_Data,
+         Wav_Data_Type => Wav_Data_64_Type,
          PCM_Type      => PCM_Type,
-         MC_Samples    => MC_Samples);
+         PCM_MC_Sample    => PCM_MC_Sample);
 
    begin
       if not WF.Is_Opened then
@@ -217,9 +217,9 @@ package body Audio.Wavefiles.Write is
       if WF.Wave_Format.Sub_Format = GUID_IEEE_Float then
          case WF.Wave_Format.Bits_Per_Sample is
             when 32 =>
-               Fixed_Data_Raw_Float_32.Put (WF, PCM);
+               Fixed_PCM_Float_Wav_32.Put (WF, PCM);
             when 64 =>
-               Fixed_Data_Raw_Float_64.Put (WF, PCM);
+               Fixed_PCM_Float_Wav_64.Put (WF, PCM);
             when others =>
                raise Wavefile_Unsupported;
          end case;
@@ -229,11 +229,11 @@ package body Audio.Wavefiles.Write is
             when 8 =>
                raise Wavefile_Unsupported;
             when 16 =>
-               Fixed_Data_Raw_Fixed_16.Put (WF, PCM);
+               Fixed_PCM_Fixed_Wav_16.Put (WF, PCM);
             when 24 =>
-               Fixed_Data_Raw_Fixed_24.Put (WF, PCM);
+               Fixed_PCM_Fixed_Wav_24.Put (WF, PCM);
             when 32 =>
-               Fixed_Data_Raw_Fixed_32.Put (WF, PCM);
+               Fixed_PCM_Fixed_Wav_32.Put (WF, PCM);
             when others =>
                raise Wavefile_Unsupported;
          end case;

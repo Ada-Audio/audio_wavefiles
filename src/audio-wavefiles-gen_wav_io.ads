@@ -27,34 +27,16 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body Audio.Wavefiles.Gen_PCM_IO is
+private generic
+   type Wav_Data_Type is range <>;
+   type Wav_Data is array (Positive range <>) of Wav_Data_Type;
+package Audio.Wavefiles.Gen_Wav_IO is
 
-   function Get (WF  : in out Wavefile) return Audio_Samples
-   is
-      Ch : constant Positive := Positive (WF.Wave_Format.Channels);
-      BB : Audio_Res;
-   begin
-      return B  : Audio_Samples (1 .. Ch) do
-         for J in 1 .. Ch loop
+   function Get (WF  : in out Wavefile) return Wav_Data
+     with Inline;
 
-            Audio_Res'Read (WF.File_Access, BB);
-            B (J) := BB;
-            if Ada.Streams.Stream_IO.End_Of_File (WF.File) and then
-              J < Ch
-            then
-               --  Cannot read data for all channels
-               raise Wavefile_Error;
-            end if;
-         end loop;
-      end return;
-   end Get;
+   procedure Put (WF  : in out Wavefile;
+                  Wav :        Wav_Data)
+     with Inline;
 
-   procedure Put (WF : in out Wavefile;
-                  B  :        Audio_Samples) is
-      Ch : constant Positive := Positive (WF.Wave_Format.Channels);
-   begin
-      Audio_Samples'Write (WF.File_Access, B);
-      WF.Samples := WF.Samples + Long_Integer (Ch);
-   end Put;
-
-end Audio.Wavefiles.Gen_PCM_IO;
+end Audio.Wavefiles.Gen_Wav_IO;

@@ -31,87 +31,97 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Audio.Wavefiles.Float_Types is
 
+   type PCM_Bits_Type is array (0 .. PCM_Type'Size - 1) of Boolean
+     with Pack;
+
+   type Wav_Data_Bits_Type is array (0 .. Wav_Data_Type'Size - 1) of Boolean
+     with Pack;
+
+   Bool_Image  : constant array (Boolean'Range) of Character := ('0', '1');
+
    procedure Print_Sample_Read
-     (Sample_In     : Audio_Res;
-      Sample_Out    : PCM_Type)
+     (Wav_Sample : Wav_Data_Type;
+      PCM_Sample : PCM_Type)
    is
-      Bits_In     : Audio_Res_Bit_Array;
-      Bits_Out    : PCM_Bit_Array;
-      for Bits_In'Address  use Sample_In'Address;
-      for Bits_Out'Address use Sample_Out'Address;
+      Wav_Sample_Bits : Wav_Data_Bits_Type;
+      PCM_Sample_Bits : PCM_Bits_Type;
+      for Wav_Sample_Bits'Address use Wav_Sample'Address;
+      for PCM_Sample_Bits'Address use PCM_Sample'Address;
    begin
-      Put_Line ("In (Wav):  " & Integer'Image (Integer (Sample_In)));
-      for K in reverse Audio_Res_Bit_Array'Range loop
-         Put (Bool_Image (Bits_In (K)));
+      Put_Line ("In (Wav):  " & Integer'Image (Integer (Wav_Sample)));
+      for K in reverse Wav_Data_Bits_Type'Range loop
+         Put (Bool_Image (Wav_Sample_Bits (K)));
       end loop;
       New_Line;
 
-      Put_Line ("Out (Buf): " & Long_Float'Image (Long_Float (Sample_Out)));
-      for K in reverse PCM_Bit_Array'Range loop
-         Put (Bool_Image (Bits_Out (K)));
+      Put_Line ("Out (Buf): " & Long_Float'Image (Long_Float (PCM_Sample)));
+      for K in reverse PCM_Bits_Type'Range loop
+         Put (Bool_Image (PCM_Sample_Bits (K)));
       end loop;
       New_Line;
    end Print_Sample_Read;
 
 
    procedure Print_Sample_Write
-     (Sample_In     : PCM_Type;
-      Sample_Out    : Audio_Res)
+     (PCM_Sample : PCM_Type;
+      Wav_Sample : Wav_Data_Type)
    is
-      Bits_In     : PCM_Bit_Array;
-      Bits_Out    : Audio_Res_Bit_Array;
-      for Bits_In'Address  use Sample_In'Address;
-      for Bits_Out'Address use Sample_Out'Address;
+      PCM_Sample_Bits : PCM_Bits_Type;
+      Wav_Sample_Bits : Wav_Data_Bits_Type;
+      for PCM_Sample_Bits'Address use PCM_Sample'Address;
+      for Wav_Sample_Bits'Address use Wav_Sample'Address;
    begin
-      Put_Line ("In (Buf):  " & Long_Float'Image (Long_Float (Sample_In)));
-      for K in reverse PCM_Bit_Array'Range loop
-         Put (Bool_Image (Bits_In (K)));
+      Put_Line ("In (Buf):  " & Long_Float'Image (Long_Float (PCM_Sample)));
+      for K in reverse PCM_Bits_Type'Range loop
+         Put (Bool_Image (PCM_Sample_Bits (K)));
       end loop;
       New_Line;
 
-      Put_Line ("Out (Wav): " & Integer'Image (Integer (Sample_Out)));
-      for K in reverse Audio_Res_Bit_Array'Range loop
-         Put (Bool_Image (Bits_Out (K)));
+      Put_Line ("Out (Wav): " & Integer'Image (Integer (Wav_Sample)));
+      for K in reverse Wav_Data_Bits_Type'Range loop
+         Put (Bool_Image (Wav_Sample_Bits (K)));
       end loop;
       New_Line;
    end Print_Sample_Write;
 
 
-   function Convert_Sample (Sample : Audio_Res) return PCM_Type is
-      Sample_In   : constant Audio_Res := Sample;
-      Sample_Out  : PCM_Type;
+   function Convert_Sample (Wav_Sample : Wav_Data_Type) return PCM_Type is
+      Wav_Sample_In  : constant Wav_Data_Type := Wav_Sample;
+      PCM_Sample_Out : PCM_Type;
    begin
-      if Fixed then
-         Sample_Out := PCM_Type (Long_Float (Sample_In)
-                                 / Long_Float (Audio_Res'Last));
-      else
-         Sample_Out := PCM_Type (Sample_In);
-      end if;
+      case Wav_Num_Type is
+      when Wav_Fixed_Data =>
+         PCM_Sample_Out := PCM_Type (Long_Float (Wav_Sample_In)
+                                     / Long_Float (Wav_Data_Type'Last));
+      when Wav_Float_Data =>
+         PCM_Sample_Out := PCM_Type (Wav_Sample_In);
+      end case;
 
       if Convert_Sample_Debug then
-         Print_Sample_Read (Sample_In, Sample_Out);
+         Print_Sample_Read (Wav_Sample_In, PCM_Sample_Out);
       end if;
 
-      return Sample_Out;
+      return PCM_Sample_Out;
    end Convert_Sample;
 
 
-   function Convert_Sample (Sample : PCM_Type) return Audio_Res is
-      Sample_In   : constant PCM_Type := Sample;
-      Sample_Out  : Audio_Res;
+   function Convert_Sample (PCM_Sample : PCM_Type) return Wav_Data_Type is
+      PCM_Sample_In   : constant PCM_Type := PCM_Sample;
+      Wav_Sample_Out  : Wav_Data_Type;
    begin
-      if Fixed then
-         Sample_Out := Audio_Res (Long_Float (Sample_In)
-                                  * Long_Float (Audio_Res'Last));
-      else
-         Sample_Out := Audio_Res (Sample_In);
-      end if;
+      case Wav_Num_Type is
+      when Wav_Fixed_Data =>
+         Wav_Sample_Out := Wav_Data_Type (Long_Float (PCM_Sample_In)
+                                          * Long_Float (Wav_Data_Type'Last));
+      when Wav_Float_Data =>
+         Wav_Sample_Out := Wav_Data_Type (PCM_Sample_In);
+      end case;
 
       if Convert_Sample_Debug then
-         Print_Sample_Write (Sample_In, Sample_Out);
+         Print_Sample_Write (PCM_Sample_In, Wav_Sample_Out);
       end if;
 
-      return Sample_Out;
+      return Wav_Sample_Out;
    end Convert_Sample;
 
 end Audio.Wavefiles.Float_Types;

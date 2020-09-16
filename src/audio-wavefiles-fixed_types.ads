@@ -28,30 +28,23 @@
 -------------------------------------------------------------------------------
 
 private generic
-   Fixed : Boolean;
-   type Audio_Res is range <>;
+   Wav_Num_Type : Wav_Numeric_Data_Type;
+   type Wav_Data_Type is range <>;
    type PCM_Type is delta <>;
 package Audio.Wavefiles.Fixed_Types is
 
-   type PCM_Bit_Array is array (0 .. PCM_Type'Size - 1) of Boolean;
-   pragma Pack (PCM_Bit_Array);
-
-   type Audio_Res_Bit_Array is array (0 .. Audio_Res'Size - 1) of Boolean;
-   pragma Pack (Audio_Res_Bit_Array);
-
-   Bool_Image  : constant array (Boolean'Range) of Character := ('0', '1');
    Convert_Sample_Debug : constant Boolean := False;
 
    procedure Print_Sample_Read
-     (Sample_In     : Audio_Res;
-      Sample_Out    : PCM_Type);
+     (Wav_Sample : Wav_Data_Type;
+      PCM_Sample : PCM_Type);
 
    procedure Print_Sample_Write
-     (Sample_In     : PCM_Type;
-      Sample_Out    : Audio_Res);
+     (PCM_Sample : PCM_Type;
+      Wav_Sample : Wav_Data_Type);
 
-   function Convert_Sample (Sample : Audio_Res) return PCM_Type;
+   function Convert_Sample (Wav_Sample : Wav_Data_Type) return PCM_Type;
 
-   function Convert_Sample (Sample : PCM_Type) return Audio_Res;
+   function Convert_Sample (PCM_Sample : PCM_Type) return Wav_Data_Type;
 
 end Audio.Wavefiles.Fixed_Types;
