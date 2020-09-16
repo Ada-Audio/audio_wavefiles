@@ -88,15 +88,19 @@ package body Audio.Wavefiles.Fixed_Types is
    begin
       Sample_Out := 0.0;
 
-      if Audio_Res'Size <= PCM_Type'Size then
-         for B in 0 .. Audio_Res'Size - 1 loop
-            --  Todo: better handling of small negative values
-            Bits_Out (B + PCM_Type'Size - Audio_Res'Size) := Bits_In (B);
-         end loop;
+      if Fixed then
+         if Audio_Res'Size <= PCM_Type'Size then
+            for B in 0 .. Audio_Res'Size - 1 loop
+               --  Todo: better handling of small negative values
+               Bits_Out (B + PCM_Type'Size - Audio_Res'Size) := Bits_In (B);
+            end loop;
+         else
+            for B in 0 .. PCM_Type'Size - 1 loop
+               Bits_Out (B) := Bits_In (B + Audio_Res'Size - PCM_Type'Size);
+            end loop;
+         end if;
       else
-         for B in 0 .. PCM_Type'Size - 1 loop
-            Bits_Out (B) := Bits_In (B + Audio_Res'Size - PCM_Type'Size);
-         end loop;
+         null;
       end if;
 
       if Convert_Sample_Debug then
@@ -115,15 +119,19 @@ package body Audio.Wavefiles.Fixed_Types is
       for Bits_In'Address  use Sample_In'Address;
       for Bits_Out'Address use Sample_Out'Address;
    begin
-      if PCM_Type'Size <= Audio_Res'Size then
-         for B in 0 .. PCM_Type'Size - 1 loop
-            --  Todo: better handling of small negative values
-            Bits_Out (B + Audio_Res'Size - PCM_Type'Size) := Bits_In (B);
-         end loop;
+      if Fixed then
+         if PCM_Type'Size <= Audio_Res'Size then
+            for B in 0 .. PCM_Type'Size - 1 loop
+               --  Todo: better handling of small negative values
+               Bits_Out (B + Audio_Res'Size - PCM_Type'Size) := Bits_In (B);
+            end loop;
+         else
+            for B in 0 .. Audio_Res'Size - 1 loop
+               Bits_Out (B) := Bits_In (B + PCM_Type'Size - Audio_Res'Size);
+            end loop;
+         end if;
       else
-         for B in 0 .. Audio_Res'Size - 1 loop
-            Bits_Out (B) := Bits_In (B + PCM_Type'Size - Audio_Res'Size);
-         end loop;
+         null;
       end if;
 
       if Convert_Sample_Debug then

@@ -86,10 +86,14 @@ package body Audio.Wavefiles.Float_Types is
       for Bits_Out'Address use Sample_Out'Address;
 
    begin
-      Sample_Out := 0.0;
+      if Fixed then
+         Sample_Out := 0.0;
 
-      Sample_Out := PCM_Type (Long_Float (Sample_In)
-                              / Long_Float (Audio_Res'Last));
+         Sample_Out := PCM_Type (Long_Float (Sample_In)
+                                 / Long_Float (Audio_Res'Last));
+      else
+         null;
+      end if;
 
       if Convert_Sample_Debug then
          Print_Sample_Read (Sample_In, Sample_Out);
@@ -107,8 +111,12 @@ package body Audio.Wavefiles.Float_Types is
       for Bits_In'Address  use Sample_In'Address;
       for Bits_Out'Address use Sample_Out'Address;
    begin
-      Sample_Out := Audio_Res (Long_Float (Sample_In)
-                               * Long_Float (Audio_Res'Last));
+      if Fixed then
+         Sample_Out := Audio_Res (Long_Float (Sample_In)
+                                  * Long_Float (Audio_Res'Last));
+      else
+         null;
+      end if;
 
       if Convert_Sample_Debug then
          Print_Sample_Write (Sample_In, Sample_Out);

@@ -168,17 +168,20 @@ package body Audio.Wavefiles.Read is
      (WF   : in out Wavefile) return MC_Samples
    is
       package Float_Data_16 is new Audio.Wavefiles.Gen_Float_IO
-        (Audio_Res     => Wav_Int_16,
+        (Fixed         => True,
+         Audio_Res     => Wav_Int_16,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
       package Float_Data_24 is new Audio.Wavefiles.Gen_Float_IO
-        (Audio_Res     => Wav_Int_24,
+        (Fixed         => True,
+         Audio_Res     => Wav_Int_24,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
       package Float_Data_32 is new Audio.Wavefiles.Gen_Float_IO
-        (Audio_Res     => Wav_Int_32,
+        (Fixed         => True,
+         Audio_Res     => Wav_Int_32,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
@@ -211,17 +214,20 @@ package body Audio.Wavefiles.Read is
      (WF   : in out Wavefile) return MC_Samples
    is
       package Fixed_Data_16 is new Audio.Wavefiles.Gen_Fixed_IO
-        (Audio_Res     => Wav_Int_16,
+        (Fixed         => True,
+         Audio_Res     => Wav_Int_16,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
       package Fixed_Data_24 is new Audio.Wavefiles.Gen_Fixed_IO
-        (Audio_Res     => Wav_Int_24,
+        (Fixed         => True,
+         Audio_Res     => Wav_Int_24,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
       package Fixed_Data_32 is new Audio.Wavefiles.Gen_Fixed_IO
-        (Audio_Res     => Wav_Int_32,
+        (Fixed         => True,
+         Audio_Res     => Wav_Int_32,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
