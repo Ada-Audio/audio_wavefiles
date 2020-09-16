@@ -60,7 +60,7 @@ package body Audio.Wavefiles.Fixed_Types is
    is
       PCM_Sample_Bits : PCM_Bits_Type;
       Wav_Sample_Bits : Wav_Data_Bits_Type;
-      for PCM_Sample_Bits'Address  use PCM_Sample'Address;
+      for PCM_Sample_Bits'Address use PCM_Sample'Address;
       for Wav_Sample_Bits'Address use Wav_Sample'Address;
    begin
       Put_Line ("In (Buf):  " & Long_Float'Image (Long_Float (PCM_Sample)));
@@ -78,9 +78,8 @@ package body Audio.Wavefiles.Fixed_Types is
 
 
    function Convert_Sample (Wav_Sample : Wav_Data_Type) return PCM_Type is
-      Wav_Sample_In  : Wav_Data_Type := Wav_Sample;
+      Wav_Sample_In  : constant Wav_Data_Type := Wav_Sample;
       PCM_Sample_Out : PCM_Type;
-
    begin
       case Wav_Num_Type is
       when Wav_Fixed_Data =>
@@ -152,7 +151,7 @@ package body Audio.Wavefiles.Fixed_Types is
 
 
    function Convert_Sample (PCM_Sample : PCM_Type) return Wav_Data_Type is
-      PCM_Sample_In   : PCM_Type := PCM_Sample;
+      PCM_Sample_In   : constant PCM_Type := PCM_Sample;
       Wav_Sample_Out  : Wav_Data_Type;
       PCM_Sample_Bits : PCM_Bits_Type;
       Wav_Sample_Bits : Wav_Data_Bits_Type;

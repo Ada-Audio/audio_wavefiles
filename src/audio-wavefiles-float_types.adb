@@ -32,8 +32,8 @@ with Ada.Text_IO; use Ada.Text_IO;
 package body Audio.Wavefiles.Float_Types is
 
    procedure Print_Sample_Read
-     (Wav_Sample     : Wav_Data_Type;
-      PCM_Sample    : PCM_Type)
+     (Wav_Sample : Wav_Data_Type;
+      PCM_Sample : PCM_Type)
    is
       Wav_Sample_Bits : Wav_Data_Bits_Type;
       PCM_Sample_Bits : PCM_Bits_Type;
@@ -98,8 +98,8 @@ package body Audio.Wavefiles.Float_Types is
 
 
    function Convert_Sample (PCM_Sample : PCM_Type) return Wav_Data_Type is
-      PCM_Sample_In  : constant PCM_Type := PCM_Sample;
-      Wav_Sample_Out : Wav_Data_Type;
+      PCM_Sample_In   : constant PCM_Type := PCM_Sample;
+      Wav_Sample_Out  : Wav_Data_Type;
    begin
       case Wav_Num_Type is
       when Wav_Fixed_Data =>
