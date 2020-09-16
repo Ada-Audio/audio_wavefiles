@@ -106,31 +106,31 @@ package body Audio.Wavefiles.Write is
       PCM  :        MC_Samples)
    is
       package Float_PCM_Fixed_Wav_16 is new Audio.Wavefiles.Gen_Float_IO
-        (Fixed         => True,
+        (Wav_Num_Type  => Wav_Fixed_Data,
          Wav_Data_Type => Wav_Data_16_Type,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
       package Float_PCM_Fixed_Wav_24 is new Audio.Wavefiles.Gen_Float_IO
-        (Fixed         => True,
+        (Wav_Num_Type  => Wav_Fixed_Data,
          Wav_Data_Type => Wav_Data_24_Type,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
       package Float_PCM_Fixed_Wav_32 is new Audio.Wavefiles.Gen_Float_IO
-        (Fixed         => True,
+        (Wav_Num_Type  => Wav_Fixed_Data,
          Wav_Data_Type => Wav_Data_32_Type,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
       package Float_PCM_Float_Wav_32 is new Audio.Wavefiles.Gen_Float_IO
-        (Fixed         => False,
+        (Wav_Num_Type  => Wav_Float_Data,
          Wav_Data_Type => Wav_Data_32_Type,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
       package Float_PCM_Float_Wav_64 is new Audio.Wavefiles.Gen_Float_IO
-        (Fixed         => False,
+        (Wav_Num_Type  => Wav_Float_Data,
          Wav_Data_Type => Wav_Data_64_Type,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
@@ -176,31 +176,31 @@ package body Audio.Wavefiles.Write is
       PCM  :        MC_Samples)
    is
       package Fixed_PCM_Fixed_Wav_16 is new Audio.Wavefiles.Gen_Fixed_IO
-        (Fixed         => True,
+        (Wav_Num_Type  => Wav_Fixed_Data,
          Wav_Data_Type => Wav_Data_16_Type,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
       package Fixed_PCM_Fixed_Wav_24 is new Audio.Wavefiles.Gen_Fixed_IO
-        (Fixed         => True,
+        (Wav_Num_Type  => Wav_Fixed_Data,
          Wav_Data_Type => Wav_Data_24_Type,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
       package Fixed_PCM_Fixed_Wav_32 is new Audio.Wavefiles.Gen_Fixed_IO
-        (Fixed         => True,
+        (Wav_Num_Type  => Wav_Fixed_Data,
          Wav_Data_Type => Wav_Data_32_Type,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
       package Fixed_PCM_Float_Wav_32 is new Audio.Wavefiles.Gen_Fixed_IO
-        (Fixed         => False,
+        (Wav_Num_Type  => Wav_Float_Data,
          Wav_Data_Type => Wav_Data_32_Type,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);
 
       package Fixed_PCM_Float_Wav_64 is new Audio.Wavefiles.Gen_Fixed_IO
-        (Fixed         => False,
+        (Wav_Num_Type  => Wav_Float_Data,
          Wav_Data_Type => Wav_Data_64_Type,
          PCM_Type      => PCM_Type,
          MC_Samples    => MC_Samples);

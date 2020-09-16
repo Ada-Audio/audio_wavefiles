@@ -34,8 +34,8 @@ with Audio.Wavefiles.Gen_PCM_IO;
 
 package body Audio.Wavefiles.Gen_Float_IO is
 
-   package Audio_Types is new Audio.Wavefiles.Float_Types
-     (Fixed, Wav_Data_Type, PCM_Type);
+   package Wav_Data_Types is new Audio.Wavefiles.Float_Types
+     (Wav_Num_Type, Wav_Data_Type, PCM_Type);
 
    type Wav_Data is array (Positive range <>) of Wav_Data_Type;
 
@@ -51,7 +51,7 @@ package body Audio.Wavefiles.Gen_Float_IO is
    begin
       return PCM : MC_Samples (Wav'Range) do
          for I in PCM'Range loop
-            PCM (I) := Audio_Types.Convert_Sample (Wav (I));
+            PCM (I) := Wav_Data_Types.Convert_Sample (Wav (I));
          end loop;
       end return;
    end Convert_Samples;
@@ -60,7 +60,7 @@ package body Audio.Wavefiles.Gen_Float_IO is
    begin
       return Wav : Wav_Data (PCM'Range) do
          for I in Wav'Range loop
-            Wav (I) := Audio_Types.Convert_Sample (PCM (I));
+            Wav (I) := Wav_Data_Types.Convert_Sample (PCM (I));
          end loop;
       end return;
    end Convert_Samples;

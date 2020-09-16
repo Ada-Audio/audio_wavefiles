@@ -28,7 +28,7 @@
 -------------------------------------------------------------------------------
 
 private generic
-   Fixed : Boolean;
+   Wav_Num_Type : Wav_Numeric_Data_Type;
    type Wav_Data_Type is range <>;
    type PCM_Type is delta <>;
    type MC_Samples is array (Positive range <>) of PCM_Type;

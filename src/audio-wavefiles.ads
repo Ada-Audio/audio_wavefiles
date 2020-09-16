@@ -48,6 +48,8 @@ package Audio.Wavefiles is
 
 private
 
+   type Wav_Numeric_Data_Type is (Wav_Fixed_Data, Wav_Float_Data);
+
    type Wavefile is limited
       record
          Is_Opened        : Boolean      := False;

@@ -81,12 +81,13 @@ package body Audio.Wavefiles.Float_Types is
       Wav_Sample_In  : constant Wav_Data_Type := Wav_Sample;
       PCM_Sample_Out : PCM_Type;
    begin
-      if Fixed then
+      case Wav_Num_Type is
+      when Wav_Fixed_Data =>
          PCM_Sample_Out := PCM_Type (Long_Float (Wav_Sample_In)
                                      / Long_Float (Wav_Data_Type'Last));
-      else
+      when Wav_Float_Data =>
          PCM_Sample_Out := PCM_Type (Wav_Sample_In);
-      end if;
+      end case;
 
       if Convert_Sample_Debug then
          Print_Sample_Read (Wav_Sample_In, PCM_Sample_Out);
@@ -100,12 +101,13 @@ package body Audio.Wavefiles.Float_Types is
       PCM_Sample_In  : constant PCM_Type := PCM_Sample;
       Wav_Sample_Out : Wav_Data_Type;
    begin
-      if Fixed then
+      case Wav_Num_Type is
+      when Wav_Fixed_Data =>
          Wav_Sample_Out := Wav_Data_Type (Long_Float (PCM_Sample_In)
                                           * Long_Float (Wav_Data_Type'Last));
-      else
+      when Wav_Float_Data =>
          Wav_Sample_Out := Wav_Data_Type (PCM_Sample_In);
-      end if;
+      end case;
 
       if Convert_Sample_Debug then
          Print_Sample_Write (PCM_Sample_In, Wav_Sample_Out);

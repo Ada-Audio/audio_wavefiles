@@ -82,7 +82,8 @@ package body Audio.Wavefiles.Fixed_Types is
       PCM_Sample_Out : PCM_Type;
 
    begin
-      if Fixed then
+      case Wav_Num_Type is
+      when Wav_Fixed_Data =>
          declare
             Wav_Sample_Bits : Wav_Data_Bits_Type;
             PCM_Sample_Bits : PCM_Bits_Type;
@@ -104,7 +105,7 @@ package body Audio.Wavefiles.Fixed_Types is
                end loop;
             end if;
          end;
-      else
+      when Wav_Float_Data =>
          case Wav_Data_Type'Size is
 
          when 32 =>
@@ -140,7 +141,7 @@ package body Audio.Wavefiles.Fixed_Types is
          when others =>
             PCM_Sample_Out := 0.0;
          end case;
-      end if;
+      end case;
 
       if Convert_Sample_Debug then
          Print_Sample_Read (Wav_Sample_In, PCM_Sample_Out);
@@ -158,7 +159,8 @@ package body Audio.Wavefiles.Fixed_Types is
       for PCM_Sample_Bits'Address use PCM_Sample_In'Address;
       for Wav_Sample_Bits'Address use Wav_Sample_Out'Address;
    begin
-      if Fixed then
+      case Wav_Num_Type is
+      when Wav_Fixed_Data =>
          Wav_Sample_Out := 0;
          if PCM_Type'Size <= Wav_Data_Type'Size then
             for B in 0 .. PCM_Type'Size - 1 loop
@@ -172,7 +174,7 @@ package body Audio.Wavefiles.Fixed_Types is
                  PCM_Sample_Bits (B + PCM_Type'Size - Wav_Data_Type'Size);
             end loop;
          end if;
-      else
+      when Wav_Float_Data =>
          case Wav_Data_Type'Size is
          when 32 =>
             declare
@@ -194,7 +196,7 @@ package body Audio.Wavefiles.Fixed_Types is
          when others =>
             Wav_Sample_Out := 0;
          end case;
-      end if;
+      end case;
 
       if Convert_Sample_Debug then
          Print_Sample_Write (PCM_Sample_In, Wav_Sample_Out);

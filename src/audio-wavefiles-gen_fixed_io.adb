@@ -35,7 +35,7 @@ with Audio.Wavefiles.Gen_PCM_IO;
 package body Audio.Wavefiles.Gen_Fixed_IO is
 
    package Wav_Data_Types is new Audio.Wavefiles.Fixed_Types
-     (Fixed, Wav_Data_Type, PCM_Type);
+     (Wav_Num_Type, Wav_Data_Type, PCM_Type);
 
    type Wav_Data is array (Positive range <>) of Wav_Data_Type;
 

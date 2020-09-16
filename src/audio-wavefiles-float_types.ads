@@ -28,7 +28,7 @@
 -------------------------------------------------------------------------------
 
 private generic
-   Fixed : Boolean;
+   Wav_Num_Type : Wav_Numeric_Data_Type;
    type Wav_Data_Type is range <>;
    type PCM_Type is digits <>;
 package Audio.Wavefiles.Float_Types is
