@@ -35,16 +35,16 @@ package Audio.Wavefiles.Read is
 
    generic
       type PCM_Type is digits <>;
-      type MC_Samples is array (Positive range <>) of PCM_Type;
+      type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
    function Get_Float
-     (WF   : in out Wavefile) return MC_Samples
+     (WF   : in out Wavefile) return PCM_MC_Sample
      with Inline;
 
    generic
       type PCM_Type is delta <>;
-      type MC_Samples is array (Positive range <>) of PCM_Type;
+      type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
    function Get_Fixed
-     (WF   : in out Wavefile) return MC_Samples
+     (WF   : in out Wavefile) return PCM_MC_Sample
      with Inline;
 
    function Is_EOF

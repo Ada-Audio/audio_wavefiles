@@ -44,19 +44,19 @@ package body Audio.Wavefiles.Gen_Float_IO is
       Wav_Data      => Wav_Data);
    use Wav_IO;
 
-   function Convert_Samples (Wav : Wav_Data)   return MC_Samples;
-   function Convert_Samples (PCM : MC_Samples) return Wav_Data;
+   function Convert_Samples (Wav : Wav_Data)      return PCM_MC_Sample;
+   function Convert_Samples (PCM : PCM_MC_Sample) return Wav_Data;
 
-   function Convert_Samples (Wav : Wav_Data) return MC_Samples is
+   function Convert_Samples (Wav : Wav_Data) return PCM_MC_Sample is
    begin
-      return PCM : MC_Samples (Wav'Range) do
+      return PCM : PCM_MC_Sample (Wav'Range) do
          for I in PCM'Range loop
             PCM (I) := Wav_Data_Types.Convert_Sample (Wav (I));
          end loop;
       end return;
    end Convert_Samples;
 
-   function Convert_Samples (PCM : MC_Samples) return Wav_Data is
+   function Convert_Samples (PCM : PCM_MC_Sample) return Wav_Data is
    begin
       return Wav : Wav_Data (PCM'Range) do
          for I in Wav'Range loop
@@ -65,15 +65,15 @@ package body Audio.Wavefiles.Gen_Float_IO is
       end return;
    end Convert_Samples;
 
-   function Get (WF  : in out Wavefile) return MC_Samples is
-      Wav : constant Wav_Data   := Get (WF);
-      PCM : constant MC_Samples := Convert_Samples (Wav);
+   function Get (WF  : in out Wavefile) return PCM_MC_Sample is
+      Wav : constant Wav_Data      := Get (WF);
+      PCM : constant PCM_MC_Sample := Convert_Samples (Wav);
    begin
       return PCM;
    end Get;
 
    procedure Put (WF  : in out Wavefile;
-                  PCM :        MC_Samples) is
+                  PCM :        PCM_MC_Sample) is
       Ch  : constant Positive := Positive (WF.Wave_Format.Channels);
       Wav : constant Wav_Data := Convert_Samples (PCM);
    begin

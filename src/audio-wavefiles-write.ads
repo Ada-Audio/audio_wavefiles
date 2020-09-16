@@ -38,17 +38,17 @@ package Audio.Wavefiles.Write is
 
    generic
       type PCM_Type is digits <>;
-      type MC_Samples is array (Positive range <>) of PCM_Type;
+      type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
    procedure Put_Float
      (WF   : in out Wavefile;
-      PCM  :        MC_Samples);
+      PCM  :        PCM_MC_Sample);
 
    generic
       type PCM_Type is delta <>;
-      type MC_Samples is array (Positive range <>) of PCM_Type;
+      type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
    procedure Put_Fixed
      (WF   : in out Wavefile;
-      PCM  :        MC_Samples);
+      PCM  :        PCM_MC_Sample);
 
    procedure Close (WF         : in out Wavefile);
 

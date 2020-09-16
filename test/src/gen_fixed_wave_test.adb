@@ -42,12 +42,12 @@ package body Gen_Fixed_Wave_Test is
    package Wav_Write renames  Audio.Wavefiles.Write;
 
    function Get is new Wav_Read.Get_Fixed
-     (PCM_Type   => PCM_Type,
-      MC_Samples => MC_Samples);
+     (PCM_Type      => PCM_Type,
+      PCM_MC_Sample => MC_Samples);
 
    procedure Put is new Wav_Write.Put_Fixed
-     (PCM_Type   => PCM_Type,
-      MC_Samples => MC_Samples);
+     (PCM_Type      => PCM_Type,
+      PCM_MC_Sample => MC_Samples);
 
    package Fixed_PCM_Buffer_Ops is new Gen_Fixed_PCM_Buffer_Ops
      (PCM_Type   => PCM_Type,
