@@ -28,6 +28,7 @@
 -------------------------------------------------------------------------------
 
 private generic
+   Fixed : Boolean;
    type Audio_Res is range <>;
    type PCM_Type is delta <>;
    type MC_Samples is array (Positive range <>) of PCM_Type;

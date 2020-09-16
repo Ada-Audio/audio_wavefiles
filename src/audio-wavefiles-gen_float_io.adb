@@ -35,7 +35,7 @@ with Audio.Wavefiles.Gen_PCM_IO;
 package body Audio.Wavefiles.Gen_Float_IO is
 
    package Audio_Types is new Audio.Wavefiles.Float_Types
-     (Audio_Res, PCM_Type);
+     (Fixed, Audio_Res, PCM_Type);
 
    type Audio_Samples is array (Positive range <>) of Audio_Res;
 

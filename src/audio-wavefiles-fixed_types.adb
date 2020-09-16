@@ -80,23 +80,64 @@ package body Audio.Wavefiles.Fixed_Types is
    function Convert_Sample (Sample : Audio_Res) return PCM_Type is
       Sample_In   : Audio_Res := Sample;
       Sample_Out  : PCM_Type;
-      Bits_In     : Audio_Res_Bit_Array;
-      Bits_Out    : PCM_Bit_Array;
-      for Bits_In'Address  use Sample_In'Address;
-      for Bits_Out'Address use Sample_Out'Address;
 
    begin
-      Sample_Out := 0.0;
+      if Fixed then
+         declare
+            Bits_In     : Audio_Res_Bit_Array;
+            Bits_Out    : PCM_Bit_Array;
+            for Bits_In'Address  use Sample_In'Address;
+            for Bits_Out'Address use Sample_Out'Address;
+         begin
+            Sample_Out := 0.0;
 
-      if Audio_Res'Size <= PCM_Type'Size then
-         for B in 0 .. Audio_Res'Size - 1 loop
-            --  Todo: better handling of small negative values
-            Bits_Out (B + PCM_Type'Size - Audio_Res'Size) := Bits_In (B);
-         end loop;
+            if Audio_Res'Size <= PCM_Type'Size then
+               for B in 0 .. Audio_Res'Size - 1 loop
+                  --  Todo: better handling of small negative values
+                  Bits_Out (B + PCM_Type'Size - Audio_Res'Size) := Bits_In (B);
+               end loop;
+            else
+               for B in 0 .. PCM_Type'Size - 1 loop
+                  Bits_Out (B) := Bits_In (B + Audio_Res'Size - PCM_Type'Size);
+               end loop;
+            end if;
+         end;
       else
-         for B in 0 .. PCM_Type'Size - 1 loop
-            Bits_Out (B) := Bits_In (B + Audio_Res'Size - PCM_Type'Size);
-         end loop;
+         case Audio_Res'Size is
+
+         when 32 =>
+            declare
+               F : Float;
+               for F'Address use Sample_In'Address;
+               pragma Assert (F'Size = 32);
+            begin
+               if F > Float (PCM_Type'Last) then
+                  Sample_Out := PCM_Type'Last;
+               elsif F < Float (PCM_Type'First) then
+                  Sample_Out := PCM_Type'First;
+               else
+                  Sample_Out := PCM_Type (F);
+               end if;
+            end;
+
+         when 64 =>
+            declare
+               F : Long_Float;
+               for F'Address use Sample_In'Address;
+               pragma Assert (F'Size = 64);
+            begin
+               if F > Long_Float (PCM_Type'Last) then
+                  Sample_Out := PCM_Type'Last;
+               elsif F < Long_Float (PCM_Type'First) then
+                  Sample_Out := PCM_Type'First;
+               else
+                  Sample_Out := PCM_Type (F);
+               end if;
+            end;
+
+         when others =>
+            Sample_Out := 0.0;
+         end case;
       end if;
 
       if Convert_Sample_Debug then
@@ -109,21 +150,46 @@ package body Audio.Wavefiles.Fixed_Types is
 
    function Convert_Sample (Sample : PCM_Type) return Audio_Res is
       Sample_In   : PCM_Type := Sample;
-      Sample_Out  : Audio_Res := 0;
+      Sample_Out  : Audio_Res;
       Bits_In     : PCM_Bit_Array;
       Bits_Out    : Audio_Res_Bit_Array;
       for Bits_In'Address  use Sample_In'Address;
       for Bits_Out'Address use Sample_Out'Address;
    begin
-      if PCM_Type'Size <= Audio_Res'Size then
-         for B in 0 .. PCM_Type'Size - 1 loop
-            --  Todo: better handling of small negative values
-            Bits_Out (B + Audio_Res'Size - PCM_Type'Size) := Bits_In (B);
-         end loop;
+      if Fixed then
+         Sample_Out := 0;
+         if PCM_Type'Size <= Audio_Res'Size then
+            for B in 0 .. PCM_Type'Size - 1 loop
+               --  Todo: better handling of small negative values
+               Bits_Out (B + Audio_Res'Size - PCM_Type'Size) := Bits_In (B);
+            end loop;
+         else
+            for B in 0 .. Audio_Res'Size - 1 loop
+               Bits_Out (B) := Bits_In (B + PCM_Type'Size - Audio_Res'Size);
+            end loop;
+         end if;
       else
-         for B in 0 .. Audio_Res'Size - 1 loop
-            Bits_Out (B) := Bits_In (B + PCM_Type'Size - Audio_Res'Size);
-         end loop;
+         case Audio_Res'Size is
+         when 32 =>
+            declare
+               F : Float;
+               for F'Address use Sample_Out'Address;
+               pragma Assert (F'Size = 32);
+            begin
+               F := Float (Sample_In);
+            end;
+
+         when 64 =>
+            declare
+               F : Long_Float;
+               for F'Address use Sample_Out'Address;
+               pragma Assert (F'Size = 64);
+            begin
+               F := Long_Float (Sample_In);
+            end;
+         when others =>
+            Sample_Out := 0;
+         end case;
       end if;
 
       if Convert_Sample_Debug then

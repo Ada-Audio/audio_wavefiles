@@ -46,6 +46,9 @@ package Audio.Wavefiles.Internals is
    type Wav_Int_32 is range -2 ** (32 - 1) .. 2 ** (32 - 1) - 1
      with Size => 32;
 
+   type Wav_Int_64 is range -2 ** (64 - 1) .. 2 ** (64 - 1) - 1
+     with Size => 64;
+
    procedure Skip_Bytes
      (F     : in out Ada.Streams.Stream_IO.File_Type;
       Bytes : in Unsigned_32);

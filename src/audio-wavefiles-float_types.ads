@@ -28,6 +28,7 @@
 -------------------------------------------------------------------------------
 
 private generic
+   Fixed : Boolean;
    type Audio_Res is range <>;
    type PCM_Type is digits <>;
 package Audio.Wavefiles.Float_Types is
