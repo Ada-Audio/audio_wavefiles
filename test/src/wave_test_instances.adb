@@ -37,14 +37,20 @@ package body Wave_Test_Instances is
 
    D_8      : constant := 1.0 / 2.0 ** (8  - 1);
    D_16     : constant := 1.0 / 2.0 ** (16 - 1);
+   D_24     : constant := 1.0 / 2.0 ** (24 - 1);
    D_32     : constant := 1.0 / 2.0 ** (32 - 1);
+   D_64     : constant := 1.0 / 2.0 ** (64 - 1);
 
    type Fixed_8_PCM is delta D_8 range -1.0 .. 1.0 - D_8
      with Size => 8;
    type Fixed_16_PCM is delta D_16 range -1.0 .. 1.0 - D_16
      with Size => 16;
+   type Fixed_24_PCM is delta D_24 range -1.0 .. 1.0 - D_24
+     with Size => 24;
    type Fixed_32_PCM is delta D_32 range -1.0 .. 1.0 - D_32
      with Size => 32;
+   type Fixed_64_PCM is delta D_64 range -1.0 .. 1.0 - D_64
+     with Size => 64;
 
    type Float_32_PCM is digits 6
      with Size => 32;
@@ -59,7 +65,9 @@ package body Wave_Test_Instances is
 
    type Fixed_8_PCM_Buffer is array (Positive range <>) of Fixed_8_PCM;
    type Fixed_16_PCM_Buffer is array (Positive range <>) of Fixed_16_PCM;
+   type Fixed_24_PCM_Buffer is array (Positive range <>) of Fixed_24_PCM;
    type Fixed_32_PCM_Buffer is array (Positive range <>) of Fixed_32_PCM;
+   type Fixed_64_PCM_Buffer is array (Positive range <>) of Fixed_64_PCM;
 
    package Wave_Test_Fixed_8 is new Gen_Fixed_Wave_Test
      (PCM_Type   => Fixed_8_PCM,
@@ -67,9 +75,15 @@ package body Wave_Test_Instances is
    package Wave_Test_Fixed_16 is new Gen_Fixed_Wave_Test
      (PCM_Type   => Fixed_16_PCM,
       MC_Samples => Fixed_16_PCM_Buffer);
+   package Wave_Test_Fixed_24 is new Gen_Fixed_Wave_Test
+     (PCM_Type   => Fixed_24_PCM,
+      MC_Samples => Fixed_24_PCM_Buffer);
    package Wave_Test_Fixed_32 is new Gen_Fixed_Wave_Test
      (PCM_Type   => Fixed_32_PCM,
       MC_Samples => Fixed_32_PCM_Buffer);
+   package Wave_Test_Fixed_64 is new Gen_Fixed_Wave_Test
+     (PCM_Type   => Fixed_64_PCM,
+      MC_Samples => Fixed_64_PCM_Buffer);
 
    package Wave_Test_Float_32 is new Gen_Float_Wave_Test
      (PCM_Type   => Float_32_PCM,
@@ -221,6 +235,18 @@ package body Wave_Test_Instances is
                Proc_Mix_Files
                  := Wave_Test_Fixed_16.Mix_Files'Access;
                Set_It;
+            when 24 =>
+               Proc_Display_Info_File
+                 := Wave_Test_Fixed_24.Display_Info_File'Access;
+               Proc_Copy_File
+                 := Wave_Test_Fixed_24.Copy_File'Access;
+               Proc_Compare_Files
+                 := Wave_Test_Fixed_24.Compare_Files'Access;
+               Proc_Diff_Files
+                 := Wave_Test_Fixed_24.Diff_Files'Access;
+               Proc_Mix_Files
+                 := Wave_Test_Fixed_24.Mix_Files'Access;
+               Set_It;
             when 32 =>
                Proc_Display_Info_File
                  := Wave_Test_Fixed_32.Display_Info_File'Access;
@@ -232,6 +258,18 @@ package body Wave_Test_Instances is
                  := Wave_Test_Fixed_32.Diff_Files'Access;
                Proc_Mix_Files
                  := Wave_Test_Fixed_32.Mix_Files'Access;
+               Set_It;
+            when 64 =>
+               Proc_Display_Info_File
+                 := Wave_Test_Fixed_64.Display_Info_File'Access;
+               Proc_Copy_File
+                 := Wave_Test_Fixed_64.Copy_File'Access;
+               Proc_Compare_Files
+                 := Wave_Test_Fixed_64.Compare_Files'Access;
+               Proc_Diff_Files
+                 := Wave_Test_Fixed_64.Diff_Files'Access;
+               Proc_Mix_Files
+                 := Wave_Test_Fixed_64.Mix_Files'Access;
                Set_It;
             when others =>
                null;
