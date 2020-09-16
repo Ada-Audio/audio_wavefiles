@@ -27,7 +27,7 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body Audio.Wavefiles.Gen_PCM_IO is
+package body Audio.Wavefiles.Gen_Wav_IO is
 
    function Get (WF  : in out Wavefile) return Wav_Data
    is
@@ -57,4 +57,4 @@ package body Audio.Wavefiles.Gen_PCM_IO is
       WF.Samples := WF.Samples + Long_Integer (Ch);
    end Put;
 
-end Audio.Wavefiles.Gen_PCM_IO;
+end Audio.Wavefiles.Gen_Wav_IO;

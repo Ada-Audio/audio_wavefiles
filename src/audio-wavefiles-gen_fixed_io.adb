@@ -30,7 +30,7 @@
 with Ada.Assertions;
 
 with Audio.Wavefiles.Fixed_Types;
-with Audio.Wavefiles.Gen_PCM_IO;
+with Audio.Wavefiles.Gen_Wav_IO;
 
 package body Audio.Wavefiles.Gen_Fixed_IO is
 
@@ -39,10 +39,10 @@ package body Audio.Wavefiles.Gen_Fixed_IO is
 
    type Wav_Data is array (Positive range <>) of Wav_Data_Type;
 
-   package PCM_IO is new Audio.Wavefiles.Gen_PCM_IO
+   package Wav_IO is new Audio.Wavefiles.Gen_Wav_IO
      (Wav_Data_Type => Wav_Data_Type,
       Wav_Data      => Wav_Data);
-   use PCM_IO;
+   use Wav_IO;
 
    function Convert_Samples (Wav : Wav_Data)   return MC_Samples;
    function Convert_Samples (PCM : MC_Samples) return Wav_Data;

@@ -30,7 +30,7 @@
 private generic
    type Wav_Data_Type is range <>;
    type Wav_Data is array (Positive range <>) of Wav_Data_Type;
-package Audio.Wavefiles.Gen_PCM_IO is
+package Audio.Wavefiles.Gen_Wav_IO is
 
    function Get (WF  : in out Wavefile) return Wav_Data
      with Inline;
@@ -39,4 +39,4 @@ package Audio.Wavefiles.Gen_PCM_IO is
                   Wav :        Wav_Data)
      with Inline;
 
-end Audio.Wavefiles.Gen_PCM_IO;
+end Audio.Wavefiles.Gen_Wav_IO;
