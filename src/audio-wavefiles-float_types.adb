@@ -31,6 +31,14 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Audio.Wavefiles.Float_Types is
 
+   type PCM_Bits_Type is array (0 .. PCM_Type'Size - 1) of Boolean
+     with Pack;
+
+   type Wav_Data_Bits_Type is array (0 .. Wav_Data_Type'Size - 1) of Boolean
+     with Pack;
+
+   Bool_Image  : constant array (Boolean'Range) of Character := ('0', '1');
+
    procedure Print_Sample_Read
      (Wav_Sample : Wav_Data_Type;
       PCM_Sample : PCM_Type)

@@ -33,13 +33,6 @@ private generic
    type PCM_Type is delta <>;
 package Audio.Wavefiles.Fixed_Types is
 
-   type PCM_Bits_Type is array (0 .. PCM_Type'Size - 1) of Boolean;
-   pragma Pack (PCM_Bits_Type);
-
-   type Wav_Data_Bits_Type is array (0 .. Wav_Data_Type'Size - 1) of Boolean;
-   pragma Pack (Wav_Data_Bits_Type);
-
-   Bool_Image  : constant array (Boolean'Range) of Character := ('0', '1');
    Convert_Sample_Debug : constant Boolean := False;
 
    procedure Print_Sample_Read
