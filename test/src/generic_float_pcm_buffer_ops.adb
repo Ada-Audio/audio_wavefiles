@@ -29,13 +29,13 @@
 
 package body Generic_Float_PCM_Buffer_Ops is
 
-   function "+" (PCM_Ref : MC_Samples;
-                 PCM_DUT : MC_Samples)
-                    return MC_Samples
+   function "+" (PCM_Ref : PCM_MC_Sample;
+                 PCM_DUT : PCM_MC_Sample)
+                    return PCM_MC_Sample
    is
       Max_Last : constant Positive :=
                    Positive'Max (PCM_Ref'Last, PCM_DUT'Last);
-      PCM_Sum  :          MC_Samples (1 .. Max_Last);
+      PCM_Sum  :          PCM_MC_Sample (1 .. Max_Last);
    begin
       for I in 1 .. Max_Last loop
          PCM_Sum (I) := PCM_Ref (I) + PCM_DUT (I);
@@ -43,13 +43,13 @@ package body Generic_Float_PCM_Buffer_Ops is
       return PCM_Sum;
    end "+";
 
-   function "-" (PCM_Ref : MC_Samples;
-                 PCM_DUT : MC_Samples)
-                    return MC_Samples
+   function "-" (PCM_Ref : PCM_MC_Sample;
+                 PCM_DUT : PCM_MC_Sample)
+                    return PCM_MC_Sample
    is
       Max_Last : constant Positive :=
                    Positive'Max (PCM_Ref'Last, PCM_DUT'Last);
-      PCM_Diff :          MC_Samples (1 .. Max_Last);
+      PCM_Diff :          PCM_MC_Sample (1 .. Max_Last);
    begin
       for I in 1 .. Max_Last loop
          PCM_Diff (I) := PCM_Ref (I) - PCM_DUT (I);

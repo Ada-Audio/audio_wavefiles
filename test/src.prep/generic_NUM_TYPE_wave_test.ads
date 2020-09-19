@@ -33,7 +33,7 @@ generic
 #else
    type PCM_Type is delta <>;
 #end if;
-   type MC_Samples is array (Positive range <>) of PCM_Type;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 package Generic_Float_Wave_Test is
 #else

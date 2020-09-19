@@ -43,15 +43,15 @@ package body Generic_Fixed_Wave_Test is
 
    function Get is new Wav_Read.Get_Fixed
      (PCM_Type      => PCM_Type,
-      PCM_MC_Sample => MC_Samples);
+      PCM_MC_Sample => PCM_MC_Sample);
 
    procedure Put is new Wav_Write.Put_Fixed
      (PCM_Type      => PCM_Type,
-      PCM_MC_Sample => MC_Samples);
+      PCM_MC_Sample => PCM_MC_Sample);
 
    package Fixed_PCM_Buffer_Ops is new Generic_Fixed_PCM_Buffer_Ops
-     (PCM_Type   => PCM_Type,
-      MC_Samples => MC_Samples);
+     (PCM_Type      => PCM_Type,
+      PCM_MC_Sample => PCM_MC_Sample);
    use Fixed_PCM_Buffer_Ops;
 
    Verbose     : constant Boolean := False;
@@ -74,14 +74,14 @@ package body Generic_Fixed_Wave_Test is
       EOF         : Boolean;
       Samples     : Integer := 0;
 
-      procedure Copy_MC_Sample;
+      procedure Copy_PCM_MC_Sample;
 
-      procedure Copy_MC_Sample is
-         PCM_Buf : constant MC_Samples := Get (WF_In);
+      procedure Copy_PCM_MC_Sample is
+         PCM_Buf : constant PCM_MC_Sample := Get (WF_In);
       begin
          EOF := Wav_Read.Is_EOF (WF_In);
          Put (WF_Out, PCM_Buf);
-      end Copy_MC_Sample;
+      end Copy_PCM_MC_Sample;
 
    begin
       Wav_Read.Open (WF_In, File_In);
@@ -103,7 +103,7 @@ package body Generic_Fixed_Wave_Test is
             Put ("[" & Integer'Image (Samples) & "]");
          end if;
 
-         Copy_MC_Sample;
+         Copy_PCM_MC_Sample;
          exit when EOF;
       end loop;
       Wav_Read.Close (WF_In);
@@ -122,12 +122,12 @@ package body Generic_Fixed_Wave_Test is
       Diff_Sample      : Natural := 0;
       Samples          : Integer := 0;
 
-      procedure Compare_MC_Sample;
+      procedure Compare_PCM_MC_Sample;
       procedure Report_Comparison;
 
-      procedure Compare_MC_Sample is
-         PCM_Ref : constant MC_Samples := Get (WF_Ref);
-         PCM_DUT : constant MC_Samples := Get (WF_DUT);
+      procedure Compare_PCM_MC_Sample is
+         PCM_Ref : constant PCM_MC_Sample := Get (WF_Ref);
+         PCM_DUT : constant PCM_MC_Sample := Get (WF_DUT);
       begin
          EOF_Ref := Wav_Read.Is_EOF (WF_Ref);
          EOF_DUT := Wav_Read.Is_EOF (WF_DUT);
@@ -135,7 +135,7 @@ package body Generic_Fixed_Wave_Test is
          if PCM_Ref /= PCM_DUT then
             Diff_Sample := Diff_Sample + 1;
          end if;
-      end Compare_MC_Sample;
+      end Compare_PCM_MC_Sample;
 
       procedure Report_Comparison is
       begin
@@ -156,7 +156,7 @@ package body Generic_Fixed_Wave_Test is
       Wav_Read.Open (WF_DUT, File_DUT);
       loop
          Samples := Samples + 1;
-         Compare_MC_Sample;
+         Compare_PCM_MC_Sample;
          exit when EOF_Ref or EOF_DUT;
       end loop;
       Wav_Read.Close (WF_Ref);
@@ -176,19 +176,19 @@ package body Generic_Fixed_Wave_Test is
       Wave_Format      : Audio.RIFF.Wave_Format_Extensible;
       EOF_Ref, EOF_DUT : Boolean;
 
-      procedure Diff_MC_Sample;
+      procedure Diff_PCM_MC_Sample;
 
-      procedure Diff_MC_Sample is
-         PCM_Ref  : constant MC_Samples := Get (WF_Ref);
-         PCM_DUT  : constant MC_Samples := Get (WF_DUT);
-         PCM_Diff : constant MC_Samples :=
+      procedure Diff_PCM_MC_Sample is
+         PCM_Ref  : constant PCM_MC_Sample := Get (WF_Ref);
+         PCM_DUT  : constant PCM_MC_Sample := Get (WF_DUT);
+         PCM_Diff : constant PCM_MC_Sample :=
                       PCM_Ref - PCM_DUT;
       begin
          EOF_Ref := Wav_Read.Is_EOF (WF_Ref);
          EOF_DUT := Wav_Read.Is_EOF (WF_DUT);
 
          Put (WF_Diff, PCM_Diff);
-      end Diff_MC_Sample;
+      end Diff_PCM_MC_Sample;
 
    begin
       Audio.RIFF.Set_Default (Wave_Format);
@@ -197,7 +197,7 @@ package body Generic_Fixed_Wave_Test is
       Wav_Read.Open (WF_DUT, File_DUT);
       Wav_Write.Open (WF_Diff, File_Diff, Wave_Format);
       loop
-         Diff_MC_Sample;
+         Diff_PCM_MC_Sample;
          exit when EOF_Ref or EOF_DUT;
       end loop;
       Wav_Read.Close (WF_Ref);
@@ -216,18 +216,18 @@ package body Generic_Fixed_Wave_Test is
       Wave_Format      : Audio.RIFF.Wave_Format_Extensible;
       EOF_Ref, EOF_DUT : Boolean;
 
-      procedure Mix_MC_Sample;
+      procedure Mix_PCM_MC_Sample;
 
-      procedure Mix_MC_Sample is
-         PCM_Ref : constant MC_Samples := Get (WF_Ref);
-         PCM_DUT : constant MC_Samples := Get (WF_DUT);
-         PCM_Mix : constant MC_Samples :=
+      procedure Mix_PCM_MC_Sample is
+         PCM_Ref : constant PCM_MC_Sample := Get (WF_Ref);
+         PCM_DUT : constant PCM_MC_Sample := Get (WF_DUT);
+         PCM_Mix : constant PCM_MC_Sample :=
                      PCM_Ref + PCM_DUT;
       begin
          EOF_Ref := Wav_Read.Is_EOF (WF_Ref);
          EOF_DUT := Wav_Read.Is_EOF (WF_DUT);
          Put (WF_Mix, PCM_Mix);
-      end Mix_MC_Sample;
+      end Mix_PCM_MC_Sample;
 
    begin
       Audio.RIFF.Set_Default (Wave_Format);
@@ -236,7 +236,7 @@ package body Generic_Fixed_Wave_Test is
       Wav_Read.Open (WF_DUT, File_DUT);
       Wav_Write.Open (WF_Mix, File_Mix, Wave_Format);
       loop
-         Mix_MC_Sample;
+         Mix_PCM_MC_Sample;
          exit when EOF_Ref or EOF_DUT;
       end loop;
       Wav_Read.Close (WF_Ref);

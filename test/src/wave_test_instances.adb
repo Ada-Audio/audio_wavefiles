@@ -70,30 +70,30 @@ package body Wave_Test_Instances is
    type Fixed_64_PCM_Buffer is array (Positive range <>) of Fixed_64_PCM;
 
    package Wave_Test_Fixed_8 is new Generic_Fixed_Wave_Test
-     (PCM_Type   => Fixed_8_PCM,
-      MC_Samples => Fixed_8_PCM_Buffer);
+     (PCM_Type      => Fixed_8_PCM,
+      PCM_MC_Sample => Fixed_8_PCM_Buffer);
    package Wave_Test_Fixed_16 is new Generic_Fixed_Wave_Test
-     (PCM_Type   => Fixed_16_PCM,
-      MC_Samples => Fixed_16_PCM_Buffer);
+     (PCM_Type      => Fixed_16_PCM,
+      PCM_MC_Sample => Fixed_16_PCM_Buffer);
    package Wave_Test_Fixed_24 is new Generic_Fixed_Wave_Test
-     (PCM_Type   => Fixed_24_PCM,
-      MC_Samples => Fixed_24_PCM_Buffer);
+     (PCM_Type      => Fixed_24_PCM,
+      PCM_MC_Sample => Fixed_24_PCM_Buffer);
    package Wave_Test_Fixed_32 is new Generic_Fixed_Wave_Test
-     (PCM_Type   => Fixed_32_PCM,
-      MC_Samples => Fixed_32_PCM_Buffer);
+     (PCM_Type      => Fixed_32_PCM,
+      PCM_MC_Sample => Fixed_32_PCM_Buffer);
    package Wave_Test_Fixed_64 is new Generic_Fixed_Wave_Test
-     (PCM_Type   => Fixed_64_PCM,
-      MC_Samples => Fixed_64_PCM_Buffer);
+     (PCM_Type      => Fixed_64_PCM,
+      PCM_MC_Sample => Fixed_64_PCM_Buffer);
 
    package Wave_Test_Float_32 is new Generic_Float_Wave_Test
-     (PCM_Type   => Float_32_PCM,
-      MC_Samples => Float_32_PCM_Buffer);
+     (PCM_Type      => Float_32_PCM,
+      PCM_MC_Sample => Float_32_PCM_Buffer);
    package Wave_Test_Float_64 is new Generic_Float_Wave_Test
-     (PCM_Type   => Float_64_PCM,
-      MC_Samples => Float_64_PCM_Buffer);
+     (PCM_Type      => Float_64_PCM,
+      PCM_MC_Sample => Float_64_PCM_Buffer);
    package Wave_Test_Float_128 is new Generic_Float_Wave_Test
-     (PCM_Type   => Float_128_PCM,
-      MC_Samples => Float_128_PCM_Buffer);
+     (PCM_Type      => Float_128_PCM,
+      PCM_MC_Sample => Float_128_PCM_Buffer);
 
    Proc_Display_Info_File : access procedure (File_In : String)
      := Wave_Test_Fixed_32.Display_Info_File'Access;

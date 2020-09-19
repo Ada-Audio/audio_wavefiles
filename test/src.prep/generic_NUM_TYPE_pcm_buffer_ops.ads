@@ -33,20 +33,20 @@ generic
 #else
    type PCM_Type is delta <>;
 #end if;
-   type MC_Samples is array (Positive range <>) of PCM_Type;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 package Generic_Float_PCM_Buffer_Ops is
 #else
 package Generic_Fixed_PCM_Buffer_Ops is
 #end if;
 
-   function "+" (PCM_Ref : MC_Samples;
-                 PCM_DUT : MC_Samples)
-                    return MC_Samples;
+   function "+" (PCM_Ref : PCM_MC_Sample;
+                 PCM_DUT : PCM_MC_Sample)
+                    return PCM_MC_Sample;
 
-   function "-" (PCM_Ref : MC_Samples;
-                 PCM_DUT : MC_Samples)
-                    return MC_Samples;
+   function "-" (PCM_Ref : PCM_MC_Sample;
+                 PCM_DUT : PCM_MC_Sample)
+                    return PCM_MC_Sample;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 end Generic_Float_PCM_Buffer_Ops;

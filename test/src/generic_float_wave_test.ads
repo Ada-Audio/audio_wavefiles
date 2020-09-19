@@ -29,7 +29,7 @@
 
 generic
    type PCM_Type is digits <>;
-   type MC_Samples is array (Positive range <>) of PCM_Type;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
 package Generic_Float_Wave_Test is
 
    procedure Display_Info_File
