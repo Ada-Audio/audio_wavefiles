@@ -30,9 +30,9 @@
 with Ada.Assertions;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-with Audio.Wavefiles.Float_Types;
+with Audio.Wavefiles.Generic_Float_Types;
 #else
-with Audio.Wavefiles.Fixed_Types;
+with Audio.Wavefiles.Generic_Fixed_Types;
 #end if;
 with Audio.Wavefiles.Generic_Wav_IO;
 
@@ -43,15 +43,15 @@ package body Audio.Wavefiles.Generic_Fixed_IO is
 #end if;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   package Wav_Data_Types is new Audio.Wavefiles.Float_Types
+   package Wav_Data_Types is new Audio.Wavefiles.Generic_Float_Types
 #else
-   package Wav_Data_Types is new Audio.Wavefiles.Fixed_Types
+   package Wav_Data_Types is new Audio.Wavefiles.Generic_Fixed_Types
 #end if;
      (Wav_Num_Type, Wav_Data_Type, PCM_Type);
 
    type Wav_Data is array (Positive range <>) of Wav_Data_Type;
 
-   package Wav_IO is new Audio.Wavefiles.Gen_Wav_IO
+   package Wav_IO is new Audio.Wavefiles.Generic_Wav_IO
      (Wav_Data_Type => Wav_Data_Type,
       Wav_Data      => Wav_Data);
    use Wav_IO;
