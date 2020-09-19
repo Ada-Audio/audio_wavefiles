@@ -40,10 +40,10 @@ package Audio.Wavefiles is
    Wavefile_Error       : exception;
    Wavefile_Unsupported : exception;
 
-   function Get_Wave_Format
+   function Format_Of_Wavefile
      (W : Wavefile) return  Audio.RIFF.Wave_Format_Extensible;
 
-   function Get_Channels
+   function Number_Of_Channels
      (W : Wavefile) return Positive;
 
 private

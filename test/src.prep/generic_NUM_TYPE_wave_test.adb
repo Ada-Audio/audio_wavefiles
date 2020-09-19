@@ -108,7 +108,7 @@ package body Generic_Fixed_Wave_Test is
    begin
       Wav_Read.Open (WF_In, File_In);
 
-      Wave_Format := Audio.Wavefiles.Get_Wave_Format (WF_In);
+      Wave_Format := Audio.Wavefiles.Format_Of_Wavefile (WF_In);
 
       Wav_Write.Open (WF_Out, File_Out, Wave_Format);
 
