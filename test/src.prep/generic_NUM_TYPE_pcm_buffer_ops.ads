@@ -35,9 +35,9 @@ generic
 #end if;
    type MC_Samples is array (Positive range <>) of PCM_Type;
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-package Gen_Float_PCM_Buffer_Ops is
+package Generic_Float_PCM_Buffer_Ops is
 #else
-package Gen_Fixed_PCM_Buffer_Ops is
+package Generic_Fixed_PCM_Buffer_Ops is
 #end if;
 
    function "+" (PCM_Ref : MC_Samples;
@@ -49,7 +49,7 @@ package Gen_Fixed_PCM_Buffer_Ops is
                     return MC_Samples;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-end Gen_Float_PCM_Buffer_Ops;
+end Generic_Float_PCM_Buffer_Ops;
 #else
-end Gen_Fixed_PCM_Buffer_Ops;
+end Generic_Fixed_PCM_Buffer_Ops;
 #end if;

@@ -29,7 +29,7 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 
-package body Audio.Wavefiles.Fixed_Types is
+package body Audio.Wavefiles.Generic_Fixed_Types is
 
    type PCM_Bits_Type is array (0 .. PCM_Type'Size - 1) of Boolean
      with Pack;
@@ -212,4 +212,4 @@ package body Audio.Wavefiles.Fixed_Types is
       return Wav_Sample_Out;
    end Convert_Sample;
 
-end Audio.Wavefiles.Fixed_Types;
+end Audio.Wavefiles.Generic_Fixed_Types;

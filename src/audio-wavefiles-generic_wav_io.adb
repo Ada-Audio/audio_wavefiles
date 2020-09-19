@@ -2,11 +2,11 @@
 --
 --                                WAVEFILES
 --
---                             Test application
+--                           Generic Wavefile I/O
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -27,30 +27,34 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-generic
-   type PCM_Type is digits <>;
-   type MC_Samples is array (Positive range <>) of PCM_Type;
-package Gen_Float_Wave_Test is
+package body Audio.Wavefiles.Generic_Wav_IO is
 
-   procedure Display_Info_File
-     (File_In : String);
+   function Get (WF  : in out Wavefile) return Wav_Data
+   is
+      Ch         : constant Positive := Positive (WF.Wave_Format.Channels);
+      Wav_Sample : Wav_Data_Type;
+   begin
+      return Wav : Wav_Data (1 .. Ch) do
+         for J in 1 .. Ch loop
 
-   procedure Copy_File
-     (File_In         : String;
-      File_Out        : String);
+            Wav_Data_Type'Read (WF.File_Access, Wav_Sample);
+            Wav (J) := Wav_Sample;
+            if Ada.Streams.Stream_IO.End_Of_File (WF.File) and then
+              J < Ch
+            then
+               --  Cannot read data for all channels
+               raise Wavefile_Error;
+            end if;
+         end loop;
+      end return;
+   end Get;
 
-   procedure Compare_Files
-     (File_Ref    : String;
-      File_DUT    : String);
+   procedure Put (WF  : in out Wavefile;
+                  Wav :        Wav_Data) is
+      Ch : constant Positive := Positive (WF.Wave_Format.Channels);
+   begin
+      Wav_Data'Write (WF.File_Access, Wav);
+      WF.Samples := WF.Samples + Long_Integer (Ch);
+   end Put;
 
-   procedure Diff_Files
-     (File_Ref       : String;
-      File_DUT       : String;
-      File_Diff      : String);
-
-   procedure Mix_Files
-     (File_Ref        : String;
-      File_DUT        : String;
-      File_Mix        : String);
-
-end Gen_Float_Wave_Test;
+end Audio.Wavefiles.Generic_Wav_IO;

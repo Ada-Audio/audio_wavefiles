@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---               Type conversion for wavefile I/O operations
+--                             Test application
 --
 --  The MIT License (MIT)
 --
@@ -27,16 +27,30 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-private generic
-   Wav_Num_Type : Wav_Numeric_Data_Type;
-   type Wav_Data_Type is range <>;
+generic
    type PCM_Type is delta <>;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
-package Audio.Wavefiles.Gen_Fixed_IO is
+   type MC_Samples is array (Positive range <>) of PCM_Type;
+package Generic_Fixed_Wave_Test is
 
-   function Get (WF   : in out Wavefile) return PCM_MC_Sample;
+   procedure Display_Info_File
+     (File_In : String);
 
-   procedure Put (WF  : in out Wavefile;
-                  PCM :        PCM_MC_Sample);
+   procedure Copy_File
+     (File_In         : String;
+      File_Out        : String);
 
-end Audio.Wavefiles.Gen_Fixed_IO;
+   procedure Compare_Files
+     (File_Ref    : String;
+      File_DUT    : String);
+
+   procedure Diff_Files
+     (File_Ref       : String;
+      File_DUT       : String;
+      File_Diff      : String);
+
+   procedure Mix_Files
+     (File_Ref        : String;
+      File_DUT        : String;
+      File_Mix        : String);
+
+end Generic_Fixed_Wave_Test;

@@ -35,13 +35,13 @@ with Audio.Wavefiles.Write;
 with Audio.RIFF;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-with Gen_Float_PCM_Buffer_Ops;
+with Generic_Float_PCM_Buffer_Ops;
 
-package body Gen_Float_Wave_Test is
+package body Generic_Float_Wave_Test is
 #else
-with Gen_Fixed_PCM_Buffer_Ops;
+with Generic_Fixed_PCM_Buffer_Ops;
 
-package body Gen_Fixed_Wave_Test is
+package body Generic_Fixed_Wave_Test is
 #end if;
 
    package Wav_Read  renames  Audio.Wavefiles.Read;
@@ -267,7 +267,7 @@ package body Gen_Fixed_Wave_Test is
    end Mix_Files;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-end Gen_Float_Wave_Test;
+end Generic_Float_Wave_Test;
 #else
-end Gen_Fixed_Wave_Test;
+end Generic_Fixed_Wave_Test;
 #end if;

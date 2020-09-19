@@ -2,11 +2,11 @@
 --
 --                                WAVEFILES
 --
---               Type conversion for wavefile I/O operations
+--                             Test application
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -27,24 +27,42 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-private generic
-   Wav_Num_Type : Wav_Numeric_Data_Type;
-   type Wav_Data_Type is range <>;
-   type PCM_Type is digits <>;
-package Audio.Wavefiles.Float_Types is
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+package body Generic_Float_PCM_Buffer_Ops is
+#else
+package body Generic_Fixed_PCM_Buffer_Ops is
+#end if;
 
-   Convert_Sample_Debug : constant Boolean := False;
+   function "+" (PCM_Ref : MC_Samples;
+                 PCM_DUT : MC_Samples)
+                    return MC_Samples
+   is
+      Max_Last : constant Positive :=
+                   Positive'Max (PCM_Ref'Last, PCM_DUT'Last);
+      PCM_Sum  :          MC_Samples (1 .. Max_Last);
+   begin
+      for I in 1 .. Max_Last loop
+         PCM_Sum (I) := PCM_Ref (I) + PCM_DUT (I);
+      end loop;
+      return PCM_Sum;
+   end "+";
 
-   procedure Print_Sample_Read
-     (Wav_Sample : Wav_Data_Type;
-      PCM_Sample : PCM_Type);
+   function "-" (PCM_Ref : MC_Samples;
+                 PCM_DUT : MC_Samples)
+                    return MC_Samples
+   is
+      Max_Last : constant Positive :=
+                   Positive'Max (PCM_Ref'Last, PCM_DUT'Last);
+      PCM_Diff :          MC_Samples (1 .. Max_Last);
+   begin
+      for I in 1 .. Max_Last loop
+         PCM_Diff (I) := PCM_Ref (I) - PCM_DUT (I);
+      end loop;
+      return PCM_Diff;
+   end "-";
 
-   procedure Print_Sample_Write
-     (PCM_Sample : PCM_Type;
-      Wav_Sample : Wav_Data_Type);
-
-   function Convert_Sample (Wav_Sample : Wav_Data_Type) return PCM_Type;
-
-   function Convert_Sample (PCM_Sample : PCM_Type) return Wav_Data_Type;
-
-end Audio.Wavefiles.Float_Types;
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+end Generic_Float_PCM_Buffer_Ops;
+#else
+end Generic_Fixed_PCM_Buffer_Ops;
+#end if;

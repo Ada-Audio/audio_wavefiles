@@ -29,17 +29,17 @@
 
 with Ada.Assertions;
 
-with Audio.Wavefiles.Fixed_Types;
-with Audio.Wavefiles.Gen_Wav_IO;
+with Audio.Wavefiles.Generic_Float_Types;
+with Audio.Wavefiles.Generic_Wav_IO;
 
-package body Audio.Wavefiles.Gen_Fixed_IO is
+package body Audio.Wavefiles.Generic_Float_IO is
 
-   package Wav_Data_Types is new Audio.Wavefiles.Fixed_Types
+   package Wav_Data_Types is new Audio.Wavefiles.Generic_Float_Types
      (Wav_Num_Type, Wav_Data_Type, PCM_Type);
 
    type Wav_Data is array (Positive range <>) of Wav_Data_Type;
 
-   package Wav_IO is new Audio.Wavefiles.Gen_Wav_IO
+   package Wav_IO is new Audio.Wavefiles.Generic_Wav_IO
      (Wav_Data_Type => Wav_Data_Type,
       Wav_Data      => Wav_Data);
    use Wav_IO;
@@ -82,4 +82,4 @@ package body Audio.Wavefiles.Gen_Fixed_IO is
       Put (WF, Wav);
    end Put;
 
-end Audio.Wavefiles.Gen_Fixed_IO;
+end Audio.Wavefiles.Generic_Float_IO;

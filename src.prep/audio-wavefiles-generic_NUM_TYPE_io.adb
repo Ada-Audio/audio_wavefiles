@@ -34,12 +34,12 @@ with Audio.Wavefiles.Float_Types;
 #else
 with Audio.Wavefiles.Fixed_Types;
 #end if;
-with Audio.Wavefiles.Gen_Wav_IO;
+with Audio.Wavefiles.Generic_Wav_IO;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-package body Audio.Wavefiles.Gen_Float_IO is
+package body Audio.Wavefiles.Generic_Float_IO is
 #else
-package body Audio.Wavefiles.Gen_Fixed_IO is
+package body Audio.Wavefiles.Generic_Fixed_IO is
 #end if;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
@@ -95,7 +95,7 @@ package body Audio.Wavefiles.Gen_Fixed_IO is
    end Put;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-end Audio.Wavefiles.Gen_Float_IO;
+end Audio.Wavefiles.Generic_Float_IO;
 #else
-end Audio.Wavefiles.Gen_Fixed_IO;
+end Audio.Wavefiles.Generic_Fixed_IO;
 #end if;

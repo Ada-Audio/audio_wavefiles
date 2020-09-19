@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                           Generic Wavefile I/O
+--                             Test application
 --
 --  The MIT License (MIT)
 --
@@ -27,16 +27,17 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-private generic
-   type Wav_Data_Type is range <>;
-   type Wav_Data is array (Positive range <>) of Wav_Data_Type;
-package Audio.Wavefiles.Gen_Wav_IO is
+generic
+   type PCM_Type is delta <>;
+   type MC_Samples is array (Positive range <>) of PCM_Type;
+package Generic_Fixed_PCM_Buffer_Ops is
 
-   function Get (WF  : in out Wavefile) return Wav_Data
-     with Inline;
+   function "+" (PCM_Ref : MC_Samples;
+                 PCM_DUT : MC_Samples)
+                    return MC_Samples;
 
-   procedure Put (WF  : in out Wavefile;
-                  Wav :        Wav_Data)
-     with Inline;
+   function "-" (PCM_Ref : MC_Samples;
+                 PCM_DUT : MC_Samples)
+                    return MC_Samples;
 
-end Audio.Wavefiles.Gen_Wav_IO;
+end Generic_Fixed_PCM_Buffer_Ops;

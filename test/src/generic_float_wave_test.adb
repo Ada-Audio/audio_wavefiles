@@ -34,25 +34,25 @@ with Audio.Wavefiles.Read;
 with Audio.Wavefiles.Write;
 with Audio.RIFF;
 
-with Gen_Fixed_PCM_Buffer_Ops;
+with Generic_Float_PCM_Buffer_Ops;
 
-package body Gen_Fixed_Wave_Test is
+package body Generic_Float_Wave_Test is
 
    package Wav_Read  renames  Audio.Wavefiles.Read;
    package Wav_Write renames  Audio.Wavefiles.Write;
 
-   function Get is new Wav_Read.Get_Fixed
+   function Get is new Wav_Read.Get_Float
      (PCM_Type      => PCM_Type,
       PCM_MC_Sample => MC_Samples);
 
-   procedure Put is new Wav_Write.Put_Fixed
+   procedure Put is new Wav_Write.Put_Float
      (PCM_Type      => PCM_Type,
       PCM_MC_Sample => MC_Samples);
 
-   package Fixed_PCM_Buffer_Ops is new Gen_Fixed_PCM_Buffer_Ops
+   package Float_PCM_Buffer_Ops is new Generic_Float_PCM_Buffer_Ops
      (PCM_Type   => PCM_Type,
       MC_Samples => MC_Samples);
-   use Fixed_PCM_Buffer_Ops;
+   use Float_PCM_Buffer_Ops;
 
    Verbose     : constant Boolean := False;
 
@@ -244,4 +244,4 @@ package body Gen_Fixed_Wave_Test is
       Wav_Write.Close (WF_Mix);
    end Mix_Files;
 
-end Gen_Fixed_Wave_Test;
+end Generic_Float_Wave_Test;
