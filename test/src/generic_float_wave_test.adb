@@ -32,6 +32,7 @@ with Ada.Text_IO;                   use Ada.Text_IO;
 with Audio.Wavefiles;
 with Audio.Wavefiles.Read;
 with Audio.Wavefiles.Write;
+with Audio.Wavefiles.Generic_Float_PCM_IO;
 with Audio.RIFF;
 
 with Generic_Float_PCM_Buffer_Ops;
@@ -41,13 +42,10 @@ package body Generic_Float_Wave_Test is
    package Wav_Read  renames  Audio.Wavefiles.Read;
    package Wav_Write renames  Audio.Wavefiles.Write;
 
-   function Get is new Wav_Read.Get_Float
+   package PCM_IO    is new   Audio.Wavefiles.Generic_Float_PCM_IO
      (PCM_Type      => PCM_Type,
       PCM_MC_Sample => PCM_MC_Sample);
-
-   procedure Put is new Wav_Write.Put_Float
-     (PCM_Type      => PCM_Type,
-      PCM_MC_Sample => PCM_MC_Sample);
+   use PCM_IO;
 
    package Float_PCM_Buffer_Ops is new Generic_Float_PCM_Buffer_Ops
      (PCM_Type      => PCM_Type,

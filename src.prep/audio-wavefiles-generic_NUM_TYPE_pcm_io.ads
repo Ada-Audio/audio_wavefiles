@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                            Wavefile reading
+--                   Wavefile I/O operations for PCM buffers
 --
 --  The MIT License (MIT)
 --
@@ -27,18 +27,29 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package Audio.Wavefiles.Read is
+generic
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+   type PCM_Type is digits <>;
+#else
+   type PCM_Type is delta <>;
+#end if;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+package Audio.Wavefiles.Generic_Float_PCM_IO is
+#else
+package Audio.Wavefiles.Generic_Fixed_PCM_IO is
+#end if;
 
-   procedure Open
-     (WF         : in out Wavefile;
-      File_Name  : String);
+   function Get
+     (WF   : in out Wavefile) return PCM_MC_Sample
+       with Inline;
 
-   function Is_EOF
-     (WF   : in out Wavefile) return Boolean
-     with Inline;
+   procedure Put
+     (WF   : in out Wavefile;
+      PCM  :        PCM_MC_Sample);
 
-   procedure Display_Info (WF : in Wavefile);
-
-   procedure Close (WF        : in out Wavefile);
-
-end Audio.Wavefiles.Read;
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+end Audio.Wavefiles.Generic_Float_PCM_IO;
+#else
+end Audio.Wavefiles.Generic_Fixed_PCM_IO;
+#end if;

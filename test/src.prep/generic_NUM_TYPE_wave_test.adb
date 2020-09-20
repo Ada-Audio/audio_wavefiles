@@ -32,6 +32,11 @@ with Ada.Text_IO;                   use Ada.Text_IO;
 with Audio.Wavefiles;
 with Audio.Wavefiles.Read;
 with Audio.Wavefiles.Write;
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+with Audio.Wavefiles.Generic_Float_PCM_IO;
+#else
+with Audio.Wavefiles.Generic_Fixed_PCM_IO;
+#end if;
 with Audio.RIFF;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
@@ -48,20 +53,13 @@ package body Generic_Fixed_Wave_Test is
    package Wav_Write renames  Audio.Wavefiles.Write;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   function Get is new Wav_Read.Get_Float
+   package PCM_IO    is new   Audio.Wavefiles.Generic_Float_PCM_IO
 #else
-   function Get is new Wav_Read.Get_Fixed
+   package PCM_IO    is new   Audio.Wavefiles.Generic_Fixed_PCM_IO
 #end if;
      (PCM_Type      => PCM_Type,
       PCM_MC_Sample => PCM_MC_Sample);
-
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   procedure Put is new Wav_Write.Put_Float
-#else
-   procedure Put is new Wav_Write.Put_Fixed
-#end if;
-     (PCM_Type      => PCM_Type,
-      PCM_MC_Sample => PCM_MC_Sample);
+   use PCM_IO;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
    package Float_PCM_Buffer_Ops is new Generic_Float_PCM_Buffer_Ops

@@ -32,6 +32,7 @@ with Ada.Text_IO;                   use Ada.Text_IO;
 with Audio.Wavefiles;
 with Audio.Wavefiles.Read;
 with Audio.Wavefiles.Write;
+with Audio.Wavefiles.Generic_Fixed_PCM_IO;
 with Audio.RIFF;
 
 with Generic_Fixed_PCM_Buffer_Ops;
@@ -41,13 +42,10 @@ package body Generic_Fixed_Wave_Test is
    package Wav_Read  renames  Audio.Wavefiles.Read;
    package Wav_Write renames  Audio.Wavefiles.Write;
 
-   function Get is new Wav_Read.Get_Fixed
+   package PCM_IO    is new   Audio.Wavefiles.Generic_Fixed_PCM_IO
      (PCM_Type      => PCM_Type,
       PCM_MC_Sample => PCM_MC_Sample);
-
-   procedure Put is new Wav_Write.Put_Fixed
-     (PCM_Type      => PCM_Type,
-      PCM_MC_Sample => PCM_MC_Sample);
+   use PCM_IO;
 
    package Fixed_PCM_Buffer_Ops is new Generic_Fixed_PCM_Buffer_Ops
      (PCM_Type      => PCM_Type,

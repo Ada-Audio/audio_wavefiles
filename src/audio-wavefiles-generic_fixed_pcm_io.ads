@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                            Wavefile reading
+--                   Wavefile I/O operations for PCM buffers
 --
 --  The MIT License (MIT)
 --
@@ -27,18 +27,17 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package Audio.Wavefiles.Read is
+generic
+   type PCM_Type is delta <>;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
+package Audio.Wavefiles.Generic_Fixed_PCM_IO is
 
-   procedure Open
-     (WF         : in out Wavefile;
-      File_Name  : String);
+   function Get
+     (WF   : in out Wavefile) return PCM_MC_Sample
+       with Inline;
 
-   function Is_EOF
-     (WF   : in out Wavefile) return Boolean
-     with Inline;
+   procedure Put
+     (WF   : in out Wavefile;
+      PCM  :        PCM_MC_Sample);
 
-   procedure Display_Info (WF : in Wavefile);
-
-   procedure Close (WF        : in out Wavefile);
-
-end Audio.Wavefiles.Read;
+end Audio.Wavefiles.Generic_Fixed_PCM_IO;
