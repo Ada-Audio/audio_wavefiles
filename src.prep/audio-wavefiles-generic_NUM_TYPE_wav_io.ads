@@ -42,10 +42,12 @@ package Audio.Wavefiles.Generic_Float_Wav_IO is
 package Audio.Wavefiles.Generic_Fixed_Wav_IO is
 #end if;
 
-   function Get (WF   : in out Wavefile) return PCM_MC_Sample;
+   function Get (WF   : in out Wavefile) return PCM_MC_Sample
+     with Pre => File_Mode (WF) = In_File;
 
    procedure Put (WF  : in out Wavefile;
-                  PCM :        PCM_MC_Sample);
+                  PCM :        PCM_MC_Sample)
+     with Pre => File_Mode (WF) = Out_File;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 end Audio.Wavefiles.Generic_Float_Wav_IO;

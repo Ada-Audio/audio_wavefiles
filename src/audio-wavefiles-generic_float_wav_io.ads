@@ -34,9 +34,11 @@ private generic
    type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
 package Audio.Wavefiles.Generic_Float_Wav_IO is
 
-   function Get (WF   : in out Wavefile) return PCM_MC_Sample;
+   function Get (WF   : in out Wavefile) return PCM_MC_Sample
+     with Pre => File_Mode (WF) = In_File;
 
    procedure Put (WF  : in out Wavefile;
-                  PCM :        PCM_MC_Sample);
+                  PCM :        PCM_MC_Sample)
+     with Pre => File_Mode (WF) = Out_File;
 
 end Audio.Wavefiles.Generic_Float_Wav_IO;
