@@ -1,4 +1,4 @@
-with "../wavefiles_lib.gpr";
+with "../../wavefiles_lib.gpr";
 
 project Wavefiles_Test is
 
