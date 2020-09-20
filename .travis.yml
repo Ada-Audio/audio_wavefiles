@@ -26,4 +26,4 @@ jobs:
         - PATH=$GNAT_PATH/bin:$PATH TEST=1 ./scripts/generate_src.sh
     - stage: "Build test for Wavefile Library"
       script:
-        - PATH=$GNAT_PATH/bin:$PATH gprbuild -P test/wavefiles_test.gpr
+        - PATH=$GNAT_PATH/bin:$PATH gprbuild -P test/wavefiles_test/wavefiles_test.gpr

@@ -49,9 +49,9 @@ generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_wav_io.adb
 generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_pcm_io.ads
 generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_pcm_io.adb
 
-generate_src_files $DIR/../test/src.prep/generic_NUM_TYPE_pcm_buffer_ops.adb
-generate_src_files $DIR/../test/src.prep/generic_NUM_TYPE_pcm_buffer_ops.ads
-generate_src_files $DIR/../test/src.prep/generic_NUM_TYPE_wave_test.adb
-generate_src_files $DIR/../test/src.prep/generic_NUM_TYPE_wave_test.ads
+generate_src_files $DIR/../test/wavefiles_test/src.prep/generic_NUM_TYPE_pcm_buffer_ops.adb
+generate_src_files $DIR/../test/wavefiles_test/src.prep/generic_NUM_TYPE_pcm_buffer_ops.ads
+generate_src_files $DIR/../test/wavefiles_test/src.prep/generic_NUM_TYPE_wave_test.adb
+generate_src_files $DIR/../test/wavefiles_test/src.prep/generic_NUM_TYPE_wave_test.ads
 
 exit $TEST_EXIT_CODE
