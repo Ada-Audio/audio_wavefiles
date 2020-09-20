@@ -30,9 +30,9 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-package body Audio.Wavefiles.Float_Types is
+package body Audio.Wavefiles.Generic_Float_PCM_Conversions is
 #else
-package body Audio.Wavefiles.Fixed_Types is
+package body Audio.Wavefiles.Generic_Fixed_PCM_Conversions is
 #end if;
 
    type PCM_Bits_Type is array (0 .. PCM_Type'Size - 1) of Boolean
@@ -238,7 +238,7 @@ package body Audio.Wavefiles.Fixed_Types is
    end Convert_Sample;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-end Audio.Wavefiles.Float_Types;
+end Audio.Wavefiles.Generic_Float_PCM_Conversions;
 #else
-end Audio.Wavefiles.Fixed_Types;
+end Audio.Wavefiles.Generic_Fixed_PCM_Conversions;
 #end if;

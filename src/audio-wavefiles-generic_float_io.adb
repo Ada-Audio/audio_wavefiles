@@ -29,17 +29,17 @@
 
 with Ada.Assertions;
 
-with Audio.Wavefiles.Fixed_Types;
-with Audio.Wavefiles.Gen_Wav_IO;
+with Audio.Wavefiles.Generic_Float_PCM_Conversions;
+with Audio.Wavefiles.Generic_Wav_IO;
 
-package body Audio.Wavefiles.Gen_Fixed_IO is
+package body Audio.Wavefiles.Generic_Float_IO is
 
-   package Wav_Data_Types is new Audio.Wavefiles.Fixed_Types
+   package Conversions is new Audio.Wavefiles.Generic_Float_PCM_Conversions
      (Wav_Num_Type, Wav_Data_Type, PCM_Type);
 
    type Wav_Data is array (Positive range <>) of Wav_Data_Type;
 
-   package Wav_IO is new Audio.Wavefiles.Gen_Wav_IO
+   package Wav_IO is new Audio.Wavefiles.Generic_Wav_IO
      (Wav_Data_Type => Wav_Data_Type,
       Wav_Data      => Wav_Data);
    use Wav_IO;
@@ -51,7 +51,7 @@ package body Audio.Wavefiles.Gen_Fixed_IO is
    begin
       return PCM : PCM_MC_Sample (Wav'Range) do
          for I in PCM'Range loop
-            PCM (I) := Wav_Data_Types.Convert_Sample (Wav (I));
+            PCM (I) := Conversions.Convert_Sample (Wav (I));
          end loop;
       end return;
    end Convert_Samples;
@@ -60,7 +60,7 @@ package body Audio.Wavefiles.Gen_Fixed_IO is
    begin
       return Wav : Wav_Data (PCM'Range) do
          for I in Wav'Range loop
-            Wav (I) := Wav_Data_Types.Convert_Sample (PCM (I));
+            Wav (I) := Conversions.Convert_Sample (PCM (I));
          end loop;
       end return;
    end Convert_Samples;
@@ -74,12 +74,12 @@ package body Audio.Wavefiles.Gen_Fixed_IO is
 
    procedure Put (WF  : in out Wavefile;
                   PCM :        PCM_MC_Sample) is
-      Ch  : constant Positive := Positive (WF.Wave_Format.Channels);
-      Wav : constant Wav_Data := Convert_Samples (PCM);
+      N_Ch : constant Positive := Number_Of_Channels (WF);
+      Wav  : constant Wav_Data := Convert_Samples (PCM);
    begin
-      Ada.Assertions.Assert (Ch = PCM'Length,
+      Ada.Assertions.Assert (N_Ch = PCM'Length,
                              "Wrong number of channels in buffer");
       Put (WF, Wav);
    end Put;
 
-end Audio.Wavefiles.Gen_Fixed_IO;
+end Audio.Wavefiles.Generic_Float_IO;

@@ -29,13 +29,13 @@
 
 package body Audio.Wavefiles is
 
-   function Get_Wave_Format
+   function Format_Of_Wavefile
      (W : Wavefile) return  RIFF.Wave_Format_Extensible is
    begin
       return W.Wave_Format;
-   end Get_Wave_Format;
+   end Format_Of_Wavefile;
 
-   function Get_Channels
+   function Number_Of_Channels
      (W : Wavefile) return Positive is (Positive (W.Wave_Format.Channels));
 
 end Audio.Wavefiles;

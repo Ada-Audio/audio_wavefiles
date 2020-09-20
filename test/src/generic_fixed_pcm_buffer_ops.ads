@@ -2,11 +2,11 @@
 --
 --                                WAVEFILES
 --
---               Type conversion for wavefile I/O operations
+--                             Test application
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -27,33 +27,17 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-private generic
-   Wav_Num_Type : Wav_Numeric_Data_Type;
-   type Wav_Data_Type is range <>;
-#if NUM_TYPE'Defined and then (NUM_TYPE = "float") then
-   type PCM_Type is digits <>;
-package Audio.Wavefiles.Float_Types is
-#else
+generic
    type PCM_Type is delta <>;
-package Audio.Wavefiles.Fixed_Types is
-#end if;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
+package Generic_Fixed_PCM_Buffer_Ops is
 
-   Convert_Sample_Debug : constant Boolean := False;
+   function "+" (PCM_Ref : PCM_MC_Sample;
+                 PCM_DUT : PCM_MC_Sample)
+                    return PCM_MC_Sample;
 
-   procedure Print_Sample_Read
-     (Wav_Sample : Wav_Data_Type;
-      PCM_Sample : PCM_Type);
+   function "-" (PCM_Ref : PCM_MC_Sample;
+                 PCM_DUT : PCM_MC_Sample)
+                    return PCM_MC_Sample;
 
-   procedure Print_Sample_Write
-     (PCM_Sample : PCM_Type;
-      Wav_Sample : Wav_Data_Type);
-
-   function Convert_Sample (Wav_Sample : Wav_Data_Type) return PCM_Type;
-
-   function Convert_Sample (PCM_Sample : PCM_Type) return Wav_Data_Type;
-
-#if NUM_TYPE'Defined and then (NUM_TYPE = "float") then
-end Audio.Wavefiles.Float_Types;
-#else
-end Audio.Wavefiles.Fixed_Types;
-#end if;
+end Generic_Fixed_PCM_Buffer_Ops;

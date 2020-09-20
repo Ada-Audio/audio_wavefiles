@@ -6,7 +6,7 @@
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -27,42 +27,34 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-generic
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   type PCM_Type is digits <>;
-#else
-   type PCM_Type is delta <>;
-#end if;
-   type MC_Samples is array (Positive range <>) of PCM_Type;
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-package Gen_Float_Wave_Test is
-#else
-package Gen_Fixed_Wave_Test is
-#end if;
+package body Generic_Float_PCM_Buffer_Ops is
 
-   procedure Display_Info_File
-     (File_In : String);
+   function "+" (PCM_Ref : PCM_MC_Sample;
+                 PCM_DUT : PCM_MC_Sample)
+                    return PCM_MC_Sample
+   is
+      Max_Last : constant Positive :=
+                   Positive'Max (PCM_Ref'Last, PCM_DUT'Last);
+      PCM_Sum  :          PCM_MC_Sample (1 .. Max_Last);
+   begin
+      for I in 1 .. Max_Last loop
+         PCM_Sum (I) := PCM_Ref (I) + PCM_DUT (I);
+      end loop;
+      return PCM_Sum;
+   end "+";
 
-   procedure Copy_File
-     (File_In         : String;
-      File_Out        : String);
+   function "-" (PCM_Ref : PCM_MC_Sample;
+                 PCM_DUT : PCM_MC_Sample)
+                    return PCM_MC_Sample
+   is
+      Max_Last : constant Positive :=
+                   Positive'Max (PCM_Ref'Last, PCM_DUT'Last);
+      PCM_Diff :          PCM_MC_Sample (1 .. Max_Last);
+   begin
+      for I in 1 .. Max_Last loop
+         PCM_Diff (I) := PCM_Ref (I) - PCM_DUT (I);
+      end loop;
+      return PCM_Diff;
+   end "-";
 
-   procedure Compare_Files
-     (File_Ref    : String;
-      File_DUT    : String);
-
-   procedure Diff_Files
-     (File_Ref       : String;
-      File_DUT       : String;
-      File_Diff      : String);
-
-   procedure Mix_Files
-     (File_Ref        : String;
-      File_DUT        : String;
-      File_Mix        : String);
-
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-end Gen_Float_Wave_Test;
-#else
-end Gen_Fixed_Wave_Test;
-#end if;
+end Generic_Float_PCM_Buffer_Ops;

@@ -2,11 +2,11 @@
 --
 --                                WAVEFILES
 --
---               Type conversion for wavefile I/O operations
+--                           Generic Wavefile I/O
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -28,23 +28,15 @@
 -------------------------------------------------------------------------------
 
 private generic
-   Wav_Num_Type : Wav_Numeric_Data_Type;
    type Wav_Data_Type is range <>;
-   type PCM_Type is digits <>;
-package Audio.Wavefiles.Float_Types is
+   type Wav_Data is array (Positive range <>) of Wav_Data_Type;
+package Audio.Wavefiles.Generic_Wav_IO is
 
-   Convert_Sample_Debug : constant Boolean := False;
+   function Get (WF  : in out Wavefile) return Wav_Data
+     with Inline;
 
-   procedure Print_Sample_Read
-     (Wav_Sample : Wav_Data_Type;
-      PCM_Sample : PCM_Type);
+   procedure Put (WF  : in out Wavefile;
+                  Wav :        Wav_Data)
+     with Inline;
 
-   procedure Print_Sample_Write
-     (PCM_Sample : PCM_Type;
-      Wav_Sample : Wav_Data_Type);
-
-   function Convert_Sample (Wav_Sample : Wav_Data_Type) return PCM_Type;
-
-   function Convert_Sample (PCM_Sample : PCM_Type) return Wav_Data_Type;
-
-end Audio.Wavefiles.Float_Types;
+end Audio.Wavefiles.Generic_Wav_IO;

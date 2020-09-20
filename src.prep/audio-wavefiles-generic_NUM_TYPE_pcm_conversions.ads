@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                             Test application
+--               Type conversion for wavefile I/O operations
 --
 --  The MIT License (MIT)
 --
@@ -27,30 +27,33 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-generic
+private generic
+   Wav_Num_Type : Wav_Numeric_Data_Type;
+   type Wav_Data_Type is range <>;
+#if NUM_TYPE'Defined and then (NUM_TYPE = "float") then
+   type PCM_Type is digits <>;
+package Audio.Wavefiles.Generic_Float_PCM_Conversions is
+#else
    type PCM_Type is delta <>;
-   type MC_Samples is array (Positive range <>) of PCM_Type;
-package Gen_Fixed_Wave_Test is
+package Audio.Wavefiles.Generic_Fixed_PCM_Conversions is
+#end if;
 
-   procedure Display_Info_File
-     (File_In : String);
+   Convert_Sample_Debug : constant Boolean := False;
 
-   procedure Copy_File
-     (File_In         : String;
-      File_Out        : String);
+   procedure Print_Sample_Read
+     (Wav_Sample : Wav_Data_Type;
+      PCM_Sample : PCM_Type);
 
-   procedure Compare_Files
-     (File_Ref    : String;
-      File_DUT    : String);
+   procedure Print_Sample_Write
+     (PCM_Sample : PCM_Type;
+      Wav_Sample : Wav_Data_Type);
 
-   procedure Diff_Files
-     (File_Ref       : String;
-      File_DUT       : String;
-      File_Diff      : String);
+   function Convert_Sample (Wav_Sample : Wav_Data_Type) return PCM_Type;
 
-   procedure Mix_Files
-     (File_Ref        : String;
-      File_DUT        : String;
-      File_Mix        : String);
+   function Convert_Sample (PCM_Sample : PCM_Type) return Wav_Data_Type;
 
-end Gen_Fixed_Wave_Test;
+#if NUM_TYPE'Defined and then (NUM_TYPE = "float") then
+end Audio.Wavefiles.Generic_Float_PCM_Conversions;
+#else
+end Audio.Wavefiles.Generic_Fixed_PCM_Conversions;
+#end if;

@@ -29,17 +29,29 @@
 
 with Ada.Assertions;
 
-with Audio.Wavefiles.Float_Types;
-with Audio.Wavefiles.Gen_Wav_IO;
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+with Audio.Wavefiles.Generic_Float_PCM_Conversions;
+#else
+with Audio.Wavefiles.Generic_Fixed_PCM_Conversions;
+#end if;
+with Audio.Wavefiles.Generic_Wav_IO;
 
-package body Audio.Wavefiles.Gen_Float_IO is
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+package body Audio.Wavefiles.Generic_Float_IO is
+#else
+package body Audio.Wavefiles.Generic_Fixed_IO is
+#end if;
 
-   package Wav_Data_Types is new Audio.Wavefiles.Float_Types
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+   package Conversions is new Audio.Wavefiles.Generic_Float_PCM_Conversions
+#else
+   package Conversions is new Audio.Wavefiles.Generic_Fixed_PCM_Conversions
+#end if;
      (Wav_Num_Type, Wav_Data_Type, PCM_Type);
 
    type Wav_Data is array (Positive range <>) of Wav_Data_Type;
 
-   package Wav_IO is new Audio.Wavefiles.Gen_Wav_IO
+   package Wav_IO is new Audio.Wavefiles.Generic_Wav_IO
      (Wav_Data_Type => Wav_Data_Type,
       Wav_Data      => Wav_Data);
    use Wav_IO;
@@ -51,7 +63,7 @@ package body Audio.Wavefiles.Gen_Float_IO is
    begin
       return PCM : PCM_MC_Sample (Wav'Range) do
          for I in PCM'Range loop
-            PCM (I) := Wav_Data_Types.Convert_Sample (Wav (I));
+            PCM (I) := Conversions.Convert_Sample (Wav (I));
          end loop;
       end return;
    end Convert_Samples;
@@ -60,7 +72,7 @@ package body Audio.Wavefiles.Gen_Float_IO is
    begin
       return Wav : Wav_Data (PCM'Range) do
          for I in Wav'Range loop
-            Wav (I) := Wav_Data_Types.Convert_Sample (PCM (I));
+            Wav (I) := Conversions.Convert_Sample (PCM (I));
          end loop;
       end return;
    end Convert_Samples;
@@ -74,12 +86,16 @@ package body Audio.Wavefiles.Gen_Float_IO is
 
    procedure Put (WF  : in out Wavefile;
                   PCM :        PCM_MC_Sample) is
-      Ch  : constant Positive := Positive (WF.Wave_Format.Channels);
-      Wav : constant Wav_Data := Convert_Samples (PCM);
+      N_Ch : constant Positive := Number_Of_Channels (WF);
+      Wav  : constant Wav_Data := Convert_Samples (PCM);
    begin
-      Ada.Assertions.Assert (Ch = PCM'Length,
+      Ada.Assertions.Assert (N_Ch = PCM'Length,
                              "Wrong number of channels in buffer");
       Put (WF, Wav);
    end Put;
 
-end Audio.Wavefiles.Gen_Float_IO;
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+end Audio.Wavefiles.Generic_Float_IO;
+#else
+end Audio.Wavefiles.Generic_Fixed_IO;
+#end if;

@@ -30,25 +30,21 @@
 private generic
    Wav_Num_Type : Wav_Numeric_Data_Type;
    type Wav_Data_Type is range <>;
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
    type PCM_Type is digits <>;
-#else
-   type PCM_Type is delta <>;
-#end if;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-package Audio.Wavefiles.Gen_Float_IO is
-#else
-package Audio.Wavefiles.Gen_Fixed_IO is
-#end if;
+package Audio.Wavefiles.Generic_Float_PCM_Conversions is
 
-   function Get (WF   : in out Wavefile) return PCM_MC_Sample;
+   Convert_Sample_Debug : constant Boolean := False;
 
-   procedure Put (WF  : in out Wavefile;
-                  PCM :        PCM_MC_Sample);
+   procedure Print_Sample_Read
+     (Wav_Sample : Wav_Data_Type;
+      PCM_Sample : PCM_Type);
 
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-end Audio.Wavefiles.Gen_Float_IO;
-#else
-end Audio.Wavefiles.Gen_Fixed_IO;
-#end if;
+   procedure Print_Sample_Write
+     (PCM_Sample : PCM_Type;
+      Wav_Sample : Wav_Data_Type);
+
+   function Convert_Sample (Wav_Sample : Wav_Data_Type) return PCM_Type;
+
+   function Convert_Sample (PCM_Sample : PCM_Type) return Wav_Data_Type;
+
+end Audio.Wavefiles.Generic_Float_PCM_Conversions;

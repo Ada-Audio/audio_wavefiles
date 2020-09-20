@@ -15,12 +15,12 @@ function generate_src_files {
     generate_src_file $SRC fixed
 }
 
-generate_src_files $DIR/../src.prep/audio-wavefiles-NUM_TYPE_types.ads
-generate_src_files $DIR/../src.prep/audio-wavefiles-NUM_TYPE_types.adb
-generate_src_files $DIR/../src.prep/audio-wavefiles-gen_NUM_TYPE_io.ads
-generate_src_files $DIR/../src.prep/audio-wavefiles-gen_NUM_TYPE_io.adb
+generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_pcm_conversions.ads
+generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_pcm_conversions.adb
+generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_io.ads
+generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_io.adb
 
-generate_src_files $DIR/../test/src.prep/gen_NUM_TYPE_pcm_buffer_ops.adb
-generate_src_files $DIR/../test/src.prep/gen_NUM_TYPE_pcm_buffer_ops.ads
-generate_src_files $DIR/../test/src.prep/gen_NUM_TYPE_wave_test.adb
-generate_src_files $DIR/../test/src.prep/gen_NUM_TYPE_wave_test.ads
+generate_src_files $DIR/../test/src.prep/generic_NUM_TYPE_pcm_buffer_ops.adb
+generate_src_files $DIR/../test/src.prep/generic_NUM_TYPE_pcm_buffer_ops.ads
+generate_src_files $DIR/../test/src.prep/generic_NUM_TYPE_wave_test.adb
+generate_src_files $DIR/../test/src.prep/generic_NUM_TYPE_wave_test.ads

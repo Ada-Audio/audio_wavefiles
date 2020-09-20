@@ -27,29 +27,42 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-generic
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   type PCM_Type is digits <>;
+package body Generic_Float_PCM_Buffer_Ops is
 #else
-   type PCM_Type is delta <>;
-#end if;
-   type MC_Samples is array (Positive range <>) of PCM_Type;
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-package Gen_Float_PCM_Buffer_Ops is
-#else
-package Gen_Fixed_PCM_Buffer_Ops is
+package body Generic_Fixed_PCM_Buffer_Ops is
 #end if;
 
-   function "+" (PCM_Ref : MC_Samples;
-                 PCM_DUT : MC_Samples)
-                    return MC_Samples;
+   function "+" (PCM_Ref : PCM_MC_Sample;
+                 PCM_DUT : PCM_MC_Sample)
+                    return PCM_MC_Sample
+   is
+      Max_Last : constant Positive :=
+                   Positive'Max (PCM_Ref'Last, PCM_DUT'Last);
+      PCM_Sum  :          PCM_MC_Sample (1 .. Max_Last);
+   begin
+      for I in 1 .. Max_Last loop
+         PCM_Sum (I) := PCM_Ref (I) + PCM_DUT (I);
+      end loop;
+      return PCM_Sum;
+   end "+";
 
-   function "-" (PCM_Ref : MC_Samples;
-                 PCM_DUT : MC_Samples)
-                    return MC_Samples;
+   function "-" (PCM_Ref : PCM_MC_Sample;
+                 PCM_DUT : PCM_MC_Sample)
+                    return PCM_MC_Sample
+   is
+      Max_Last : constant Positive :=
+                   Positive'Max (PCM_Ref'Last, PCM_DUT'Last);
+      PCM_Diff :          PCM_MC_Sample (1 .. Max_Last);
+   begin
+      for I in 1 .. Max_Last loop
+         PCM_Diff (I) := PCM_Ref (I) - PCM_DUT (I);
+      end loop;
+      return PCM_Diff;
+   end "-";
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-end Gen_Float_PCM_Buffer_Ops;
+end Generic_Float_PCM_Buffer_Ops;
 #else
-end Gen_Fixed_PCM_Buffer_Ops;
+end Generic_Fixed_PCM_Buffer_Ops;
 #end if;
