@@ -10,7 +10,7 @@ function generate_src_file {
     TARGET_SRC=$(echo $SRC | sed -e 's#\.prep##' \
                  | sed -e "s#NUM_TYPE#${NUM_TYPE}#")
     TEST_SRC=$(  echo $SRC | sed -e 's#\.prep##' \
-                 | sed -e "s#NUM_TYPE#${NUM_TYPE}_TEST_#")
+                 | sed -e "s#NUM_TYPE#${NUM_TYPE}_TEST#")
 
     if [ "$TEST" == "1" ]
     then
@@ -28,6 +28,8 @@ function generate_src_file {
         then
             echo "ERROR: differences detected in file $TARGET_SRC"
             TEST_EXIT_CODE=1
+        else
+            echo "PASS: $TARGET_SRC"
         fi
 
         rm -f $TEST_SRC
