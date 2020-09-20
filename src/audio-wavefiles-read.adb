@@ -32,16 +32,15 @@ with Interfaces;                   use Interfaces;
 
 with Audio.RIFF;                   use Audio.RIFF;
 with Audio.Wavefiles.Internals;    use Audio.Wavefiles.Internals;
-with Audio.Wavefiles.Generic_Float_IO;
-with Audio.Wavefiles.Generic_Fixed_IO;
 
 package body Audio.Wavefiles.Read is
 
    use Ada.Streams.Stream_IO;
 
    procedure Open
-     (WF        : in out Wavefile;
-      File_Name : String)
+     (WF          : in out Wavefile;
+      File_Name   : String;
+      Wave_Format : in out RIFF.Wave_Format_Extensible)
    is
       RIFF_Tag    : RIFF_Tag_Type;
       RIFF_Chunk  : RIFF_Chunk_Type;
@@ -149,6 +148,8 @@ package body Audio.Wavefiles.Read is
                    / Long_Integer (WF.Wave_Format.Channels)));
       end if;
 
+      Wave_Format := Format_Of_Wavefile (WF);
+
    end Open;
 
    function Is_EOF
@@ -162,149 +163,6 @@ package body Audio.Wavefiles.Read is
          return False;
       end if;
    end Is_EOF;
-
-
-   function Get_Float
-     (WF   : in out Wavefile) return PCM_MC_Sample
-   is
-      package Float_PCM_Fixed_Wav_16 is new Audio.Wavefiles.Generic_Float_IO
-        (Wav_Num_Type  => Wav_Fixed_Data,
-         Wav_Data_Type => Wav_Data_16_Type,
-         PCM_Type      => PCM_Type,
-         PCM_MC_Sample => PCM_MC_Sample);
-
-      package Float_PCM_Fixed_Wav_24 is new Audio.Wavefiles.Generic_Float_IO
-        (Wav_Num_Type  => Wav_Fixed_Data,
-         Wav_Data_Type => Wav_Data_24_Type,
-         PCM_Type      => PCM_Type,
-         PCM_MC_Sample => PCM_MC_Sample);
-
-      package Float_PCM_Fixed_Wav_32 is new Audio.Wavefiles.Generic_Float_IO
-        (Wav_Num_Type  => Wav_Fixed_Data,
-         Wav_Data_Type => Wav_Data_32_Type,
-         PCM_Type      => PCM_Type,
-         PCM_MC_Sample => PCM_MC_Sample);
-
-      package Float_PCM_Float_Wav_32 is new Audio.Wavefiles.Generic_Float_IO
-        (Wav_Num_Type  => Wav_Float_Data,
-         Wav_Data_Type => Wav_Data_32_Type,
-         PCM_Type      => PCM_Type,
-         PCM_MC_Sample => PCM_MC_Sample);
-
-      package Float_PCM_Float_Wav_64 is new Audio.Wavefiles.Generic_Float_IO
-        (Wav_Num_Type  => Wav_Float_Data,
-         Wav_Data_Type => Wav_Data_64_Type,
-         PCM_Type      => PCM_Type,
-         PCM_MC_Sample => PCM_MC_Sample);
-
-      Ch : constant Positive := Positive (WF.Wave_Format.Channels);
-   begin
-      if not WF.Is_Opened then
-         raise Wavefile_Error;
-      end if;
-      if not Is_Supported_Format (WF.Wave_Format) then
-         raise Wavefile_Unsupported;
-      end if;
-
-      WF.Samples_Read := WF.Samples_Read + Long_Integer (Ch);
-
-      if WF.Wave_Format.Sub_Format = GUID_IEEE_Float then
-         case WF.Wave_Format.Bits_Per_Sample is
-            when 32 =>
-               return Float_PCM_Float_Wav_32.Get (WF);
-            when 64 =>
-               return Float_PCM_Float_Wav_64.Get (WF);
-            when others =>
-               raise Wavefile_Unsupported;
-         end case;
-      else
-         --  Always assume WF.Wave_Format.Sub_Format = GUID_PCM
-         case WF.Wave_Format.Bits_Per_Sample is
-            when 8 =>
-               raise Wavefile_Unsupported;
-            when 16 =>
-               return Float_PCM_Fixed_Wav_16.Get (WF);
-            when 24 =>
-               return Float_PCM_Fixed_Wav_24.Get (WF);
-            when 32 =>
-               return Float_PCM_Fixed_Wav_32.Get (WF);
-            when others =>
-               raise Wavefile_Unsupported;
-         end case;
-      end if;
-
-   end Get_Float;
-
-   function Get_Fixed
-     (WF   : in out Wavefile) return PCM_MC_Sample
-   is
-      package Fixed_PCM_Fixed_Wav_16 is new Audio.Wavefiles.Generic_Fixed_IO
-        (Wav_Num_Type  => Wav_Fixed_Data,
-         Wav_Data_Type => Wav_Data_16_Type,
-         PCM_Type      => PCM_Type,
-         PCM_MC_Sample => PCM_MC_Sample);
-
-      package Fixed_PCM_Fixed_Wav_24 is new Audio.Wavefiles.Generic_Fixed_IO
-        (Wav_Num_Type  => Wav_Fixed_Data,
-         Wav_Data_Type => Wav_Data_24_Type,
-         PCM_Type      => PCM_Type,
-         PCM_MC_Sample => PCM_MC_Sample);
-
-      package Fixed_PCM_Fixed_Wav_32 is new Audio.Wavefiles.Generic_Fixed_IO
-        (Wav_Num_Type  => Wav_Fixed_Data,
-         Wav_Data_Type => Wav_Data_32_Type,
-         PCM_Type      => PCM_Type,
-         PCM_MC_Sample => PCM_MC_Sample);
-
-      package Fixed_PCM_Float_Wav_32 is new Audio.Wavefiles.Generic_Fixed_IO
-        (Wav_Num_Type  => Wav_Float_Data,
-         Wav_Data_Type => Wav_Data_32_Type,
-         PCM_Type      => PCM_Type,
-         PCM_MC_Sample => PCM_MC_Sample);
-
-      package Fixed_PCM_Float_Wav_64 is new Audio.Wavefiles.Generic_Fixed_IO
-        (Wav_Num_Type  => Wav_Float_Data,
-         Wav_Data_Type => Wav_Data_64_Type,
-         PCM_Type      => PCM_Type,
-         PCM_MC_Sample => PCM_MC_Sample);
-
-      Ch : constant Positive := Positive (WF.Wave_Format.Channels);
-   begin
-      if not WF.Is_Opened then
-         raise Wavefile_Error;
-      end if;
-      if not Is_Supported_Format (WF.Wave_Format) then
-         raise Wavefile_Unsupported;
-      end if;
-
-      WF.Samples_Read := WF.Samples_Read + Long_Integer (Ch);
-
-      if WF.Wave_Format.Sub_Format = GUID_IEEE_Float then
-         case WF.Wave_Format.Bits_Per_Sample is
-            when 32 =>
-               return Fixed_PCM_Float_Wav_32.Get (WF);
-            when 64 =>
-               return Fixed_PCM_Float_Wav_64.Get (WF);
-            when others =>
-               raise Wavefile_Unsupported;
-         end case;
-      else
-         --  Always assume WF.Wave_Format.Sub_Format = GUID_PCM
-         case WF.Wave_Format.Bits_Per_Sample is
-            when 8 =>
-               raise Wavefile_Unsupported;
-            when 16 =>
-               return Fixed_PCM_Fixed_Wav_16.Get (WF);
-            when 24 =>
-               return Fixed_PCM_Fixed_Wav_24.Get (WF);
-            when 32 =>
-               return Fixed_PCM_Fixed_Wav_32.Get (WF);
-            when others =>
-               raise Wavefile_Unsupported;
-         end case;
-      end if;
-
-   end Get_Fixed;
 
    procedure Display_Info (WF : in Wavefile) is
    begin

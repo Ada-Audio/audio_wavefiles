@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---               Type conversion for wavefile I/O operations
+--                      Wavefile data I/O operations
 --
 --  The MIT License (MIT)
 --
@@ -29,24 +29,12 @@
 
 with Ada.Assertions;
 
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-with Audio.Wavefiles.Generic_Float_PCM_Conversions;
-#else
 with Audio.Wavefiles.Generic_Fixed_PCM_Conversions;
-#end if;
 with Audio.Wavefiles.Generic_Wav_IO;
 
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-package body Audio.Wavefiles.Generic_Float_IO is
-#else
-package body Audio.Wavefiles.Generic_Fixed_IO is
-#end if;
+package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
 
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   package Conversions is new Audio.Wavefiles.Generic_Float_PCM_Conversions
-#else
    package Conversions is new Audio.Wavefiles.Generic_Fixed_PCM_Conversions
-#end if;
      (Wav_Num_Type, Wav_Data_Type, PCM_Type);
 
    type Wav_Data is array (Positive range <>) of Wav_Data_Type;
@@ -94,8 +82,4 @@ package body Audio.Wavefiles.Generic_Fixed_IO is
       Put (WF, Wav);
    end Put;
 
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-end Audio.Wavefiles.Generic_Float_IO;
-#else
-end Audio.Wavefiles.Generic_Fixed_IO;
-#end if;
+end Audio.Wavefiles.Generic_Fixed_Wav_IO;

@@ -33,10 +33,11 @@ private generic
 package Audio.Wavefiles.Generic_Wav_IO is
 
    function Get (WF  : in out Wavefile) return Wav_Data
-     with Inline;
+     with Inline, Pre => File_Mode (WF) = In_File;
+
 
    procedure Put (WF  : in out Wavefile;
                   Wav :        Wav_Data)
-     with Inline;
+     with Inline, Pre => File_Mode (WF) = Out_File;
 
 end Audio.Wavefiles.Generic_Wav_IO;

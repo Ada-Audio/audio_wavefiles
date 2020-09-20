@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---               Type conversion for wavefile I/O operations
+--                   Wavefile I/O operations for PCM buffers
 --
 --  The MIT License (MIT)
 --
@@ -27,16 +27,30 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-private generic
-   Wav_Num_Type : Wav_Numeric_Data_Type;
-   type Wav_Data_Type is range <>;
+generic
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+   type PCM_Type is digits <>;
+#else
    type PCM_Type is delta <>;
+#end if;
    type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
-package Audio.Wavefiles.Generic_Fixed_IO is
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+package Audio.Wavefiles.Generic_Float_PCM_IO is
+#else
+package Audio.Wavefiles.Generic_Fixed_PCM_IO is
+#end if;
 
-   function Get (WF   : in out Wavefile) return PCM_MC_Sample;
+   function Get
+     (WF   : in out Wavefile) return PCM_MC_Sample
+     with Inline, Pre => File_Mode (WF) = In_File;
 
-   procedure Put (WF  : in out Wavefile;
-                  PCM :        PCM_MC_Sample);
+   procedure Put
+     (WF   : in out Wavefile;
+      PCM  :        PCM_MC_Sample)
+     with Pre => File_Mode (WF) = Out_File;
 
-end Audio.Wavefiles.Generic_Fixed_IO;
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+end Audio.Wavefiles.Generic_Float_PCM_IO;
+#else
+end Audio.Wavefiles.Generic_Fixed_PCM_IO;
+#end if;

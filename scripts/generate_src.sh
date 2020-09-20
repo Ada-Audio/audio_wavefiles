@@ -17,8 +17,10 @@ function generate_src_files {
 
 generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_pcm_conversions.ads
 generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_pcm_conversions.adb
-generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_io.ads
-generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_io.adb
+generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_wav_io.ads
+generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_wav_io.adb
+generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_pcm_io.ads
+generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_pcm_io.adb
 
 generate_src_files $DIR/../test/src.prep/generic_NUM_TYPE_pcm_buffer_ops.adb
 generate_src_files $DIR/../test/src.prep/generic_NUM_TYPE_pcm_buffer_ops.ads

@@ -27,7 +27,43 @@
 --  DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------
 
+with Audio.Wavefiles.Read;
+with Audio.Wavefiles.Write;
+
 package body Audio.Wavefiles is
+
+   use Ada.Streams.Stream_IO;
+
+   procedure Open
+     (WF          : in out Wavefile;
+      Mode        : Wav_File_Mode;
+      File_Name   : String;
+      Wave_Format : in out RIFF.Wave_Format_Extensible) is
+   begin
+      if Mode = In_File then
+         Audio.Wavefiles.Read.Open (WF, File_Name, Wave_Format);
+      else
+         Audio.Wavefiles.Write.Open (WF, File_Name, Wave_Format);
+      end if;
+   end Open;
+
+   function Is_EOF
+     (WF   : in out Wavefile) return Boolean
+   is (Audio.Wavefiles.Read.Is_EOF (WF));
+
+   procedure Display_Info (WF : in Wavefile) is
+   begin
+      Audio.Wavefiles.Read.Display_Info (WF);
+   end Display_Info;
+
+   procedure Close (WF : in out Wavefile) is
+   begin
+      if File_Mode (WF) = In_File then
+         Audio.Wavefiles.Read.Close (WF);
+      else
+         Audio.Wavefiles.Write.Close (WF);
+      end if;
+   end Close;
 
    function Format_Of_Wavefile
      (W : Wavefile) return  RIFF.Wave_Format_Extensible is
@@ -37,5 +73,8 @@ package body Audio.Wavefiles is
 
    function Number_Of_Channels
      (W : Wavefile) return Positive is (Positive (W.Wave_Format.Channels));
+
+   function File_Mode (W : Wavefile) return Wav_File_Mode is
+     (if Mode (W.File) = In_File then In_File else Out_File);
 
 end Audio.Wavefiles;
