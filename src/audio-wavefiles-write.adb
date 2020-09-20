@@ -109,31 +109,31 @@ package body Audio.Wavefiles.Write is
         (Wav_Num_Type  => Wav_Fixed_Data,
          Wav_Data_Type => Wav_Data_16_Type,
          PCM_Type      => PCM_Type,
-         PCM_MC_Sample    => PCM_MC_Sample);
+         PCM_MC_Sample => PCM_MC_Sample);
 
       package Float_PCM_Fixed_Wav_24 is new Audio.Wavefiles.Generic_Float_IO
         (Wav_Num_Type  => Wav_Fixed_Data,
          Wav_Data_Type => Wav_Data_24_Type,
          PCM_Type      => PCM_Type,
-         PCM_MC_Sample    => PCM_MC_Sample);
+         PCM_MC_Sample => PCM_MC_Sample);
 
       package Float_PCM_Fixed_Wav_32 is new Audio.Wavefiles.Generic_Float_IO
         (Wav_Num_Type  => Wav_Fixed_Data,
          Wav_Data_Type => Wav_Data_32_Type,
          PCM_Type      => PCM_Type,
-         PCM_MC_Sample    => PCM_MC_Sample);
+         PCM_MC_Sample => PCM_MC_Sample);
 
       package Float_PCM_Float_Wav_32 is new Audio.Wavefiles.Generic_Float_IO
         (Wav_Num_Type  => Wav_Float_Data,
          Wav_Data_Type => Wav_Data_32_Type,
          PCM_Type      => PCM_Type,
-         PCM_MC_Sample    => PCM_MC_Sample);
+         PCM_MC_Sample => PCM_MC_Sample);
 
       package Float_PCM_Float_Wav_64 is new Audio.Wavefiles.Generic_Float_IO
         (Wav_Num_Type  => Wav_Float_Data,
          Wav_Data_Type => Wav_Data_64_Type,
          PCM_Type      => PCM_Type,
-         PCM_MC_Sample    => PCM_MC_Sample);
+         PCM_MC_Sample => PCM_MC_Sample);
    begin
       if not WF.Is_Opened then
          raise Wavefile_Error;
@@ -179,31 +179,31 @@ package body Audio.Wavefiles.Write is
         (Wav_Num_Type  => Wav_Fixed_Data,
          Wav_Data_Type => Wav_Data_16_Type,
          PCM_Type      => PCM_Type,
-         PCM_MC_Sample    => PCM_MC_Sample);
+         PCM_MC_Sample => PCM_MC_Sample);
 
       package Fixed_PCM_Fixed_Wav_24 is new Audio.Wavefiles.Generic_Fixed_IO
         (Wav_Num_Type  => Wav_Fixed_Data,
          Wav_Data_Type => Wav_Data_24_Type,
          PCM_Type      => PCM_Type,
-         PCM_MC_Sample    => PCM_MC_Sample);
+         PCM_MC_Sample => PCM_MC_Sample);
 
       package Fixed_PCM_Fixed_Wav_32 is new Audio.Wavefiles.Generic_Fixed_IO
         (Wav_Num_Type  => Wav_Fixed_Data,
          Wav_Data_Type => Wav_Data_32_Type,
          PCM_Type      => PCM_Type,
-         PCM_MC_Sample    => PCM_MC_Sample);
+         PCM_MC_Sample => PCM_MC_Sample);
 
       package Fixed_PCM_Float_Wav_32 is new Audio.Wavefiles.Generic_Fixed_IO
         (Wav_Num_Type  => Wav_Float_Data,
          Wav_Data_Type => Wav_Data_32_Type,
          PCM_Type      => PCM_Type,
-         PCM_MC_Sample    => PCM_MC_Sample);
+         PCM_MC_Sample => PCM_MC_Sample);
 
       package Fixed_PCM_Float_Wav_64 is new Audio.Wavefiles.Generic_Fixed_IO
         (Wav_Num_Type  => Wav_Float_Data,
          Wav_Data_Type => Wav_Data_64_Type,
          PCM_Type      => PCM_Type,
-         PCM_MC_Sample    => PCM_MC_Sample);
+         PCM_MC_Sample => PCM_MC_Sample);
 
    begin
       if not WF.Is_Opened then
