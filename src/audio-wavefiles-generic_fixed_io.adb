@@ -74,10 +74,10 @@ package body Audio.Wavefiles.Generic_Fixed_IO is
 
    procedure Put (WF  : in out Wavefile;
                   PCM :        PCM_MC_Sample) is
-      Ch  : constant Positive := Positive (WF.Wave_Format.Channels);
-      Wav : constant Wav_Data := Convert_Samples (PCM);
+      N_Ch : constant Positive := Number_Of_Channels (WF);
+      Wav  : constant Wav_Data := Convert_Samples (PCM);
    begin
-      Ada.Assertions.Assert (Ch = PCM'Length,
+      Ada.Assertions.Assert (N_Ch = PCM'Length,
                              "Wrong number of channels in buffer");
       Put (WF, Wav);
    end Put;
