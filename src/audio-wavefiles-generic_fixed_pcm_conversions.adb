@@ -29,11 +29,7 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-package body Audio.Wavefiles.Generic_Float_Types is
-#else
-package body Audio.Wavefiles.Generic_Fixed_Types is
-#end if;
+package body Audio.Wavefiles.Generic_Fixed_PCM_Conversions is
 
    type PCM_Bits_Type is array (0 .. PCM_Type'Size - 1) of Boolean
      with Pack;
@@ -95,10 +91,6 @@ package body Audio.Wavefiles.Generic_Fixed_Types is
    begin
       case Wav_Num_Type is
       when Wav_Fixed_Data =>
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-         PCM_Sample_Out := PCM_Type (Long_Float (Wav_Sample_In)
-                                     / Long_Float (Wav_Data_Type'Last));
-#else
          declare
             Wav_Sample_Bits : Wav_Data_Bits_Type;
             PCM_Sample_Bits : PCM_Bits_Type;
@@ -120,11 +112,7 @@ package body Audio.Wavefiles.Generic_Fixed_Types is
                end loop;
             end if;
          end;
-#end if;
       when Wav_Float_Data =>
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-         PCM_Sample_Out := PCM_Type (Wav_Sample_In);
-#else
          case Wav_Data_Type'Size is
 
          when 32 =>
@@ -160,7 +148,6 @@ package body Audio.Wavefiles.Generic_Fixed_Types is
          when others =>
             PCM_Sample_Out := 0.0;
          end case;
-#end if;
       end case;
 
       if Convert_Sample_Debug then
@@ -174,20 +161,13 @@ package body Audio.Wavefiles.Generic_Fixed_Types is
    function Convert_Sample (PCM_Sample : PCM_Type) return Wav_Data_Type is
       PCM_Sample_In   : constant PCM_Type := PCM_Sample;
       Wav_Sample_Out  : Wav_Data_Type;
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-#else
       PCM_Sample_Bits : PCM_Bits_Type;
       Wav_Sample_Bits : Wav_Data_Bits_Type;
       for PCM_Sample_Bits'Address use PCM_Sample_In'Address;
       for Wav_Sample_Bits'Address use Wav_Sample_Out'Address;
-#end if;
    begin
       case Wav_Num_Type is
       when Wav_Fixed_Data =>
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-         Wav_Sample_Out := Wav_Data_Type (Long_Float (PCM_Sample_In)
-                                          * Long_Float (Wav_Data_Type'Last));
-#else
          Wav_Sample_Out := 0;
          if PCM_Type'Size <= Wav_Data_Type'Size then
             for B in 0 .. PCM_Type'Size - 1 loop
@@ -201,11 +181,7 @@ package body Audio.Wavefiles.Generic_Fixed_Types is
                  PCM_Sample_Bits (B + PCM_Type'Size - Wav_Data_Type'Size);
             end loop;
          end if;
-#end if;
       when Wav_Float_Data =>
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-         Wav_Sample_Out := Wav_Data_Type (PCM_Sample_In);
-#else
          case Wav_Data_Type'Size is
          when 32 =>
             declare
@@ -227,7 +203,6 @@ package body Audio.Wavefiles.Generic_Fixed_Types is
          when others =>
             Wav_Sample_Out := 0;
          end case;
-#end if;
       end case;
 
       if Convert_Sample_Debug then
@@ -237,8 +212,4 @@ package body Audio.Wavefiles.Generic_Fixed_Types is
       return Wav_Sample_Out;
    end Convert_Sample;
 
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-end Audio.Wavefiles.Generic_Float_Types;
-#else
-end Audio.Wavefiles.Generic_Fixed_Types;
-#end if;
+end Audio.Wavefiles.Generic_Fixed_PCM_Conversions;

@@ -31,7 +31,7 @@ private generic
    Wav_Num_Type : Wav_Numeric_Data_Type;
    type Wav_Data_Type is range <>;
    type PCM_Type is delta <>;
-package Audio.Wavefiles.Generic_Fixed_Types is
+package Audio.Wavefiles.Generic_Fixed_PCM_Conversions is
 
    Convert_Sample_Debug : constant Boolean := False;
 
@@ -47,4 +47,4 @@ package Audio.Wavefiles.Generic_Fixed_Types is
 
    function Convert_Sample (PCM_Sample : PCM_Type) return Wav_Data_Type;
 
-end Audio.Wavefiles.Generic_Fixed_Types;
+end Audio.Wavefiles.Generic_Fixed_PCM_Conversions;

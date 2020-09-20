@@ -32,10 +32,10 @@ private generic
    type Wav_Data_Type is range <>;
 #if NUM_TYPE'Defined and then (NUM_TYPE = "float") then
    type PCM_Type is digits <>;
-package Audio.Wavefiles.Generic_Float_Types is
+package Audio.Wavefiles.Generic_Float_PCM_Conversions is
 #else
    type PCM_Type is delta <>;
-package Audio.Wavefiles.Generic_Fixed_Types is
+package Audio.Wavefiles.Generic_Fixed_PCM_Conversions is
 #end if;
 
    Convert_Sample_Debug : constant Boolean := False;
@@ -53,7 +53,7 @@ package Audio.Wavefiles.Generic_Fixed_Types is
    function Convert_Sample (PCM_Sample : PCM_Type) return Wav_Data_Type;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "float") then
-end Audio.Wavefiles.Generic_Float_Types;
+end Audio.Wavefiles.Generic_Float_PCM_Conversions;
 #else
-end Audio.Wavefiles.Generic_Fixed_Types;
+end Audio.Wavefiles.Generic_Fixed_PCM_Conversions;
 #end if;

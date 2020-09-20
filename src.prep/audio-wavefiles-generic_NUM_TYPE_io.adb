@@ -30,9 +30,9 @@
 with Ada.Assertions;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-with Audio.Wavefiles.Generic_Float_Types;
+with Audio.Wavefiles.Generic_Float_PCM_Conversions;
 #else
-with Audio.Wavefiles.Generic_Fixed_Types;
+with Audio.Wavefiles.Generic_Fixed_PCM_Conversions;
 #end if;
 with Audio.Wavefiles.Generic_Wav_IO;
 
@@ -43,9 +43,9 @@ package body Audio.Wavefiles.Generic_Fixed_IO is
 #end if;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   package Wav_Data_Types is new Audio.Wavefiles.Generic_Float_Types
+   package Conversions is new Audio.Wavefiles.Generic_Float_PCM_Conversions
 #else
-   package Wav_Data_Types is new Audio.Wavefiles.Generic_Fixed_Types
+   package Conversions is new Audio.Wavefiles.Generic_Fixed_PCM_Conversions
 #end if;
      (Wav_Num_Type, Wav_Data_Type, PCM_Type);
 
@@ -63,7 +63,7 @@ package body Audio.Wavefiles.Generic_Fixed_IO is
    begin
       return PCM : PCM_MC_Sample (Wav'Range) do
          for I in PCM'Range loop
-            PCM (I) := Wav_Data_Types.Convert_Sample (Wav (I));
+            PCM (I) := Conversions.Convert_Sample (Wav (I));
          end loop;
       end return;
    end Convert_Samples;
@@ -72,7 +72,7 @@ package body Audio.Wavefiles.Generic_Fixed_IO is
    begin
       return Wav : Wav_Data (PCM'Range) do
          for I in Wav'Range loop
-            Wav (I) := Wav_Data_Types.Convert_Sample (PCM (I));
+            Wav (I) := Conversions.Convert_Sample (PCM (I));
          end loop;
       end return;
    end Convert_Samples;
