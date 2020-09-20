@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---               Type conversion for wavefile I/O operations
+--                      Wavefile data I/O operations
 --
 --  The MIT License (MIT)
 --
@@ -29,12 +29,12 @@
 
 with Ada.Assertions;
 
-with Audio.Wavefiles.Generic_Fixed_PCM_Conversions;
+with Audio.Wavefiles.Generic_Float_PCM_Conversions;
 with Audio.Wavefiles.Generic_Wav_IO;
 
-package body Audio.Wavefiles.Generic_Fixed_IO is
+package body Audio.Wavefiles.Generic_Float_Wav_IO is
 
-   package Conversions is new Audio.Wavefiles.Generic_Fixed_PCM_Conversions
+   package Conversions is new Audio.Wavefiles.Generic_Float_PCM_Conversions
      (Wav_Num_Type, Wav_Data_Type, PCM_Type);
 
    type Wav_Data is array (Positive range <>) of Wav_Data_Type;
@@ -82,4 +82,4 @@ package body Audio.Wavefiles.Generic_Fixed_IO is
       Put (WF, Wav);
    end Put;
 
-end Audio.Wavefiles.Generic_Fixed_IO;
+end Audio.Wavefiles.Generic_Float_Wav_IO;

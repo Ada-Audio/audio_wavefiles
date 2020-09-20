@@ -30,9 +30,9 @@
 with Audio.RIFF;                   use Audio.RIFF;
 with Audio.Wavefiles.Internals;    use Audio.Wavefiles.Internals;
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-with Audio.Wavefiles.Generic_Float_IO;
+with Audio.Wavefiles.Generic_Float_Wav_IO;
 #else
-with Audio.Wavefiles.Generic_Fixed_IO;
+with Audio.Wavefiles.Generic_Fixed_Wav_IO;
 #end if;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
@@ -42,9 +42,9 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
 #end if;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   package PCM_Fixed_Wav_16 is new Audio.Wavefiles.Generic_Float_IO
+   package PCM_Fixed_Wav_16 is new Audio.Wavefiles.Generic_Float_Wav_IO
 #else
-   package PCM_Fixed_Wav_16 is new Audio.Wavefiles.Generic_Fixed_IO
+   package PCM_Fixed_Wav_16 is new Audio.Wavefiles.Generic_Fixed_Wav_IO
 #end if;
      (Wav_Num_Type  => Wav_Fixed_Data,
       Wav_Data_Type => Wav_Data_16_Type,
@@ -52,9 +52,9 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
       PCM_MC_Sample => PCM_MC_Sample);
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   package PCM_Fixed_Wav_24 is new Audio.Wavefiles.Generic_Float_IO
+   package PCM_Fixed_Wav_24 is new Audio.Wavefiles.Generic_Float_Wav_IO
 #else
-   package PCM_Fixed_Wav_24 is new Audio.Wavefiles.Generic_Fixed_IO
+   package PCM_Fixed_Wav_24 is new Audio.Wavefiles.Generic_Fixed_Wav_IO
 #end if;
      (Wav_Num_Type  => Wav_Fixed_Data,
       Wav_Data_Type => Wav_Data_24_Type,
@@ -62,9 +62,9 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
       PCM_MC_Sample => PCM_MC_Sample);
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   package PCM_Fixed_Wav_32 is new Audio.Wavefiles.Generic_Float_IO
+   package PCM_Fixed_Wav_32 is new Audio.Wavefiles.Generic_Float_Wav_IO
 #else
-   package PCM_Fixed_Wav_32 is new Audio.Wavefiles.Generic_Fixed_IO
+   package PCM_Fixed_Wav_32 is new Audio.Wavefiles.Generic_Fixed_Wav_IO
 #end if;
      (Wav_Num_Type  => Wav_Fixed_Data,
       Wav_Data_Type => Wav_Data_32_Type,
@@ -72,9 +72,9 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
       PCM_MC_Sample => PCM_MC_Sample);
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   package PCM_Float_Wav_32 is new Audio.Wavefiles.Generic_Float_IO
+   package PCM_Float_Wav_32 is new Audio.Wavefiles.Generic_Float_Wav_IO
 #else
-   package PCM_Float_Wav_32 is new Audio.Wavefiles.Generic_Fixed_IO
+   package PCM_Float_Wav_32 is new Audio.Wavefiles.Generic_Fixed_Wav_IO
 #end if;
      (Wav_Num_Type  => Wav_Float_Data,
       Wav_Data_Type => Wav_Data_32_Type,
@@ -82,9 +82,9 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
       PCM_MC_Sample => PCM_MC_Sample);
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   package PCM_Float_Wav_64 is new Audio.Wavefiles.Generic_Float_IO
+   package PCM_Float_Wav_64 is new Audio.Wavefiles.Generic_Float_Wav_IO
 #else
-   package PCM_Float_Wav_64 is new Audio.Wavefiles.Generic_Fixed_IO
+   package PCM_Float_Wav_64 is new Audio.Wavefiles.Generic_Fixed_Wav_IO
 #end if;
      (Wav_Num_Type  => Wav_Float_Data,
       Wav_Data_Type => Wav_Data_64_Type,
