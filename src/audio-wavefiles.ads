@@ -37,14 +37,34 @@ with Audio.RIFF;
 package Audio.Wavefiles is
    type Wavefile is limited private;
 
+   type Wav_File_Mode is (In_File, Out_File);
+
    Wavefile_Error       : exception;
    Wavefile_Unsupported : exception;
+
+   procedure Open
+     (WF          : in out Wavefile;
+      Mode        : Wav_File_Mode;
+      File_Name   : String;
+      Wave_Format : in out RIFF.Wave_Format_Extensible);
+
+   function Is_EOF
+     (WF   : in out Wavefile) return Boolean
+     with Inline, Pre => File_Mode (WF) = In_File;
+
+   procedure Display_Info (WF : in Wavefile)
+     with Pre => File_Mode (WF) = In_File;
+
+   procedure Close (WF : in out Wavefile);
 
    function Format_Of_Wavefile
      (W : Wavefile) return  Audio.RIFF.Wave_Format_Extensible;
 
    function Number_Of_Channels
      (W : Wavefile) return Positive;
+
+   function File_Mode
+     (W : Wavefile) return Wav_File_Mode;
 
 private
 

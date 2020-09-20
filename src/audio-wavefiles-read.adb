@@ -38,8 +38,9 @@ package body Audio.Wavefiles.Read is
    use Ada.Streams.Stream_IO;
 
    procedure Open
-     (WF        : in out Wavefile;
-      File_Name : String)
+     (WF          : in out Wavefile;
+      File_Name   : String;
+      Wave_Format : in out RIFF.Wave_Format_Extensible)
    is
       RIFF_Tag    : RIFF_Tag_Type;
       RIFF_Chunk  : RIFF_Chunk_Type;
@@ -146,6 +147,8 @@ package body Audio.Wavefiles.Read is
          Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples
                    / Long_Integer (WF.Wave_Format.Channels)));
       end if;
+
+      Wave_Format := Format_Of_Wavefile (WF);
 
    end Open;
 

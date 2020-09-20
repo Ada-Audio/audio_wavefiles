@@ -30,8 +30,6 @@
 with Ada.Text_IO;                   use Ada.Text_IO;
 
 with Audio.Wavefiles;
-with Audio.Wavefiles.Read;
-with Audio.Wavefiles.Write;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
 with Audio.RIFF;
 
@@ -39,8 +37,7 @@ with Generic_Float_PCM_Buffer_Ops;
 
 package body Generic_Float_Wave_Test is
 
-   package Wav_Read  renames  Audio.Wavefiles.Read;
-   package Wav_Write renames  Audio.Wavefiles.Write;
+   package Wav       renames  Audio.Wavefiles;
 
    package PCM_IO    is new   Audio.Wavefiles.Generic_Float_PCM_IO
      (PCM_Type      => PCM_Type,
@@ -56,10 +53,11 @@ package body Generic_Float_Wave_Test is
 
    procedure Display_Info_File (File_In  : String) is
       WF_In       : Audio.Wavefiles.Wavefile;
+      Wave_Format : Audio.RIFF.Wave_Format_Extensible;
    begin
-      Wav_Read.Open (WF_In, File_In);
-      Wav_Read.Display_Info (WF_In);
-      Wav_Read.Close (WF_In);
+      Wav.Open (WF_In, Wav.In_File, File_In, Wave_Format);
+      Wav.Display_Info (WF_In);
+      Wav.Close (WF_In);
    end Display_Info_File;
 
    procedure Copy_File
@@ -77,22 +75,19 @@ package body Generic_Float_Wave_Test is
       procedure Copy_PCM_MC_Sample is
          PCM_Buf : constant PCM_MC_Sample := Get (WF_In);
       begin
-         EOF := Wav_Read.Is_EOF (WF_In);
+         EOF := Wav.Is_EOF (WF_In);
          Put (WF_Out, PCM_Buf);
       end Copy_PCM_MC_Sample;
 
    begin
-      Wav_Read.Open (WF_In, File_In);
-
-      Wave_Format := Audio.Wavefiles.Format_Of_Wavefile (WF_In);
-
-      Wav_Write.Open (WF_Out, File_Out, Wave_Format);
+      Wav.Open (WF_In,  Wav.In_File,  File_In, Wave_Format);
+      Wav.Open (WF_Out, Wav.Out_File, File_Out, Wave_Format);
 
       if Verbose then
          Put_Line ("Input File:");
-         Wav_Read.Display_Info (WF_In);
+         Wav.Display_Info (WF_In);
          Put_Line ("Output File:");
-         Wav_Read.Display_Info (WF_Out);
+         Wav.Display_Info (WF_Out);
       end if;
 
       loop
@@ -104,8 +99,8 @@ package body Generic_Float_Wave_Test is
          Copy_PCM_MC_Sample;
          exit when EOF;
       end loop;
-      Wav_Read.Close (WF_In);
-      Wav_Write.Close (WF_Out);
+      Wav.Close (WF_In);
+      Wav.Close (WF_Out);
 
    end Copy_File;
 
@@ -127,8 +122,8 @@ package body Generic_Float_Wave_Test is
          PCM_Ref : constant PCM_MC_Sample := Get (WF_Ref);
          PCM_DUT : constant PCM_MC_Sample := Get (WF_DUT);
       begin
-         EOF_Ref := Wav_Read.Is_EOF (WF_Ref);
-         EOF_DUT := Wav_Read.Is_EOF (WF_DUT);
+         EOF_Ref := Wav.Is_EOF (WF_Ref);
+         EOF_DUT := Wav.Is_EOF (WF_DUT);
 
          if PCM_Ref /= PCM_DUT then
             Diff_Sample := Diff_Sample + 1;
@@ -148,17 +143,15 @@ package body Generic_Float_Wave_Test is
       end Report_Comparison;
 
    begin
-      Wave_Format.Set_Default;
-
-      Wav_Read.Open (WF_Ref, File_Ref);
-      Wav_Read.Open (WF_DUT, File_DUT);
+      Wav.Open (WF_Ref, Wav.In_File, File_Ref, Wave_Format);
+      Wav.Open (WF_DUT, Wav.In_File, File_DUT, Wave_Format);
       loop
          Samples := Samples + 1;
          Compare_PCM_MC_Sample;
          exit when EOF_Ref or EOF_DUT;
       end loop;
-      Wav_Read.Close (WF_Ref);
-      Wav_Read.Close (WF_DUT);
+      Wav.Close (WF_Ref);
+      Wav.Close (WF_DUT);
 
       Report_Comparison;
    end Compare_Files;
@@ -182,25 +175,23 @@ package body Generic_Float_Wave_Test is
          PCM_Diff : constant PCM_MC_Sample :=
                       PCM_Ref - PCM_DUT;
       begin
-         EOF_Ref := Wav_Read.Is_EOF (WF_Ref);
-         EOF_DUT := Wav_Read.Is_EOF (WF_DUT);
+         EOF_Ref := Wav.Is_EOF (WF_Ref);
+         EOF_DUT := Wav.Is_EOF (WF_DUT);
 
          Put (WF_Diff, PCM_Diff);
       end Diff_PCM_MC_Sample;
 
    begin
-      Audio.RIFF.Set_Default (Wave_Format);
-
-      Wav_Read.Open (WF_Ref, File_Ref);
-      Wav_Read.Open (WF_DUT, File_DUT);
-      Wav_Write.Open (WF_Diff, File_Diff, Wave_Format);
+      Wav.Open (WF_Ref,  Wav.In_File,  File_Ref,  Wave_Format);
+      Wav.Open (WF_DUT,  Wav.In_File,  File_DUT,  Wave_Format);
+      Wav.Open (WF_Diff, Wav.Out_File, File_Diff, Wave_Format);
       loop
          Diff_PCM_MC_Sample;
          exit when EOF_Ref or EOF_DUT;
       end loop;
-      Wav_Read.Close (WF_Ref);
-      Wav_Read.Close (WF_DUT);
-      Wav_Write.Close (WF_Diff);
+      Wav.Close (WF_Ref);
+      Wav.Close (WF_DUT);
+      Wav.Close (WF_Diff);
    end Diff_Files;
 
    procedure Mix_Files
@@ -211,7 +202,8 @@ package body Generic_Float_Wave_Test is
       WF_Ref           : Audio.Wavefiles.Wavefile;
       WF_DUT           : Audio.Wavefiles.Wavefile;
       WF_Mix           : Audio.Wavefiles.Wavefile;
-      Wave_Format      : Audio.RIFF.Wave_Format_Extensible;
+      Wave_Format_Ref  : Audio.RIFF.Wave_Format_Extensible;
+      Wave_Format_DUT  : Audio.RIFF.Wave_Format_Extensible;
       EOF_Ref, EOF_DUT : Boolean;
 
       procedure Mix_PCM_MC_Sample;
@@ -222,24 +214,22 @@ package body Generic_Float_Wave_Test is
          PCM_Mix : constant PCM_MC_Sample :=
                      PCM_Ref + PCM_DUT;
       begin
-         EOF_Ref := Wav_Read.Is_EOF (WF_Ref);
-         EOF_DUT := Wav_Read.Is_EOF (WF_DUT);
+         EOF_Ref := Wav.Is_EOF (WF_Ref);
+         EOF_DUT := Wav.Is_EOF (WF_DUT);
          Put (WF_Mix, PCM_Mix);
       end Mix_PCM_MC_Sample;
 
    begin
-      Audio.RIFF.Set_Default (Wave_Format);
-
-      Wav_Read.Open (WF_Ref, File_Ref);
-      Wav_Read.Open (WF_DUT, File_DUT);
-      Wav_Write.Open (WF_Mix, File_Mix, Wave_Format);
+      Wav.Open (WF_Ref, Wav.In_File,  File_Ref, Wave_Format_Ref);
+      Wav.Open (WF_DUT, Wav.In_File,  File_DUT, Wave_Format_DUT);
+      Wav.Open (WF_Mix, Wav.Out_File, File_Mix, Wave_Format_Ref);
       loop
          Mix_PCM_MC_Sample;
          exit when EOF_Ref or EOF_DUT;
       end loop;
-      Wav_Read.Close (WF_Ref);
-      Wav_Read.Close (WF_DUT);
-      Wav_Write.Close (WF_Mix);
+      Wav.Close (WF_Ref);
+      Wav.Close (WF_DUT);
+      Wav.Close (WF_Mix);
    end Mix_Files;
 
 end Generic_Float_Wave_Test;
