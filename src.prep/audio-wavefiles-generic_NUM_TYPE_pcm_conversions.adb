@@ -123,7 +123,29 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_Conversions is
 #end if;
       when Wav_Float_Data =>
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-         PCM_Sample_Out := PCM_Type (Wav_Sample_In);
+         case Wav_Data_Type'Size is
+         when 32 =>
+            declare
+               Wav_Sample_Float : Float;
+               for Wav_Sample_Float'Address use Wav_Sample_In'Address;
+               pragma Assert (Float'Size = 32);
+            begin
+               PCM_Sample_Out := PCM_Type (Wav_Sample_Float);
+            end;
+
+         when 64 =>
+            declare
+               Wav_Sample_Float : Long_Float;
+               for Wav_Sample_Float'Address use Wav_Sample_In'Address;
+               pragma Assert (Long_Float'Size = 64);
+            begin
+               PCM_Sample_Out := PCM_Type (Wav_Sample_Float);
+            end;
+
+         when others =>
+            PCM_Sample_Out := 0.0;
+         end case;
+
 #else
          case Wav_Data_Type'Size is
 
@@ -204,7 +226,28 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_Conversions is
 #end if;
       when Wav_Float_Data =>
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-         Wav_Sample_Out := Wav_Data_Type (PCM_Sample_In);
+         case Wav_Data_Type'Size is
+         when 32 =>
+            declare
+               Wav_Sample_Float : Float;
+               for Wav_Sample_Float'Address use Wav_Sample_Out'Address;
+               pragma Assert (Float'Size = 32);
+            begin
+               Wav_Sample_Float := Float (PCM_Sample_In);
+            end;
+
+         when 64 =>
+            declare
+               Wav_Sample_Float : Long_Float;
+               for Wav_Sample_Float'Address use Wav_Sample_Out'Address;
+               pragma Assert (Long_Float'Size = 64);
+            begin
+               Wav_Sample_Float := Long_Float (PCM_Sample_In);
+            end;
+
+         when others =>
+            Wav_Sample_Out := 0;
+         end case;
 #else
          case Wav_Data_Type'Size is
          when 32 =>
