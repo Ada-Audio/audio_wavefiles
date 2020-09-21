@@ -59,15 +59,15 @@ package body Wave_Test_Instances is
    type Float_128_PCM is digits 18
      with Size => 128;
 
-   type Float_32_PCM_Buffer is array (Positive range <>) of Float_32_PCM;
-   type Float_64_PCM_Buffer is array (Positive range <>) of Float_64_PCM;
-   type Float_128_PCM_Buffer is array (Positive range <>) of Float_128_PCM;
+   type Fixed_8_PCM_Buffer   is array (Positive range <>) of Fixed_8_PCM;
+   type Fixed_16_PCM_Buffer  is array (Positive range <>) of Fixed_16_PCM;
+   type Fixed_24_PCM_Buffer  is array (Positive range <>) of Fixed_24_PCM;
+   type Fixed_32_PCM_Buffer  is array (Positive range <>) of Fixed_32_PCM;
+   type Fixed_64_PCM_Buffer  is array (Positive range <>) of Fixed_64_PCM;
 
-   type Fixed_8_PCM_Buffer is array (Positive range <>) of Fixed_8_PCM;
-   type Fixed_16_PCM_Buffer is array (Positive range <>) of Fixed_16_PCM;
-   type Fixed_24_PCM_Buffer is array (Positive range <>) of Fixed_24_PCM;
-   type Fixed_32_PCM_Buffer is array (Positive range <>) of Fixed_32_PCM;
-   type Fixed_64_PCM_Buffer is array (Positive range <>) of Fixed_64_PCM;
+   type Float_32_PCM_Buffer  is array (Positive range <>) of Float_32_PCM;
+   type Float_64_PCM_Buffer  is array (Positive range <>) of Float_64_PCM;
+   type Float_128_PCM_Buffer is array (Positive range <>) of Float_128_PCM;
 
    package Wave_Test_Fixed_8 is new Generic_Fixed_Wave_Test
      (PCM_Type      => Fixed_8_PCM,
