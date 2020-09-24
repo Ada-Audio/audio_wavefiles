@@ -407,7 +407,12 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
      (Wav_Filename_Prefix : String) return Boolean
    is
       Wav_Test_File_Name : constant String
-        := Wav_Filename_Prefix & "check_extremes";
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+        := Wav_Filename_Prefix & "check_extremes_float";
+#else
+        := Wav_Filename_Prefix & "check_extremes_fixed";
+
+#end if;
 
       Success : Boolean := True;
    begin

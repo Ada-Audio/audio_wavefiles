@@ -317,7 +317,7 @@ package body Quick_Wav_Data_Checks.Float_Checks is
      (Wav_Filename_Prefix : String) return Boolean
    is
       Wav_Test_File_Name : constant String
-        := Wav_Filename_Prefix & "check_extremes";
+        := Wav_Filename_Prefix & "check_extremes_float";
 
       Success : Boolean := True;
    begin
