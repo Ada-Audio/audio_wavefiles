@@ -33,21 +33,6 @@ with Ada.Streams.Stream_IO;
 private
 package Audio.Wavefiles.Internals is
 
-   type Wav_Data_8_Type is range -2 ** (8 - 1) .. 2 ** (8 - 1) - 1
-     with Size => 8;
-
-   type Wav_Data_16_Type is range -2 ** (16 - 1) .. 2 ** (16 - 1) - 1
-     with Size => 16;
-
-   type Wav_Data_24_Type is range -2 ** (24 - 1) .. 2 ** (24 - 1) - 1
-     with Size => 24;
-
-   type Wav_Data_32_Type is range -2 ** (32 - 1) .. 2 ** (32 - 1) - 1
-     with Size => 32;
-
-   type Wav_Data_64_Type is range -2 ** (64 - 1) .. 2 ** (64 - 1) - 1
-     with Size => 64;
-
    procedure Skip_Bytes
      (F     : in out Ada.Streams.Stream_IO.File_Type;
       Bytes : in Unsigned_32);
