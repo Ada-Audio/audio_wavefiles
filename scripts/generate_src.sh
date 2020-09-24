@@ -77,4 +77,7 @@ generate_src_2_files $DIR/../test/wavefiles_test/src.prep/generic_NUM_TYPE_pcm_b
 generate_src_2_files $DIR/../test/wavefiles_test/src.prep/generic_NUM_TYPE_wave_test.adb
 generate_src_2_files $DIR/../test/wavefiles_test/src.prep/generic_NUM_TYPE_wave_test.ads
 
+generate_src_2_files $DIR/../test/quick_wav_data_check/src.prep/quick_wav_data_checks-NUM_TYPE_checks.ads
+generate_src_2_files $DIR/../test/quick_wav_data_check/src.prep/quick_wav_data_checks-NUM_TYPE_checks.adb
+
 exit $TEST_EXIT_CODE
