@@ -2,11 +2,11 @@
 --
 --                                WAVEFILES
 --
---                           Generic Wavefile I/O
+--                      Wavefile data I/O operations
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2020 Gustavo A. Hoffmann
+--  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -27,34 +27,17 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body Audio.Wavefiles.Generic_Wav_IO is
+private generic
+   type Wav_Data_Type is digits <>;
+   type PCM_Type is delta <>;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
+package Audio.Wavefiles.Generic_Float_Wav_Fixed_PCM_IO is
 
-   function Get (WF  : in out Wavefile) return Wav_Data
-   is
-      N_Ch       : constant Positive := Number_Of_Channels (WF);
-      Wav_Sample : Wav_Data_Type;
-   begin
-      return Wav : Wav_Data (1 .. N_Ch) do
-         for J in 1 .. N_Ch loop
-
-            Wav_Data_Type'Read (WF.File_Access, Wav_Sample);
-            Wav (J) := Wav_Sample;
-            if Ada.Streams.Stream_IO.End_Of_File (WF.File) and then
-              J < N_Ch
-            then
-               --  Cannot read data for all channels
-               raise Wavefile_Error;
-            end if;
-         end loop;
-      end return;
-   end Get;
+   function Get (WF   : in out Wavefile) return PCM_MC_Sample
+     with Pre => File_Mode (WF) = In_File;
 
    procedure Put (WF  : in out Wavefile;
-                  Wav :        Wav_Data) is
-      N_Ch : constant Positive := Number_Of_Channels (WF);
-   begin
-      Wav_Data'Write (WF.File_Access, Wav);
-      WF.Samples := WF.Samples + Long_Integer (N_Ch);
-   end Put;
+                  PCM :        PCM_MC_Sample)
+     with Pre => File_Mode (WF) = Out_File;
 
-end Audio.Wavefiles.Generic_Wav_IO;
+end Audio.Wavefiles.Generic_Float_Wav_Fixed_PCM_IO;

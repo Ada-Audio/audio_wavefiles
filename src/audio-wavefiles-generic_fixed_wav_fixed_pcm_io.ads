@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---               Type conversion for wavefile I/O operations
+--                      Wavefile data I/O operations
 --
 --  The MIT License (MIT)
 --
@@ -28,23 +28,16 @@
 -------------------------------------------------------------------------------
 
 private generic
-   Wav_Num_Type : Wav_Numeric_Data_Type;
-   type Wav_Data_Type is range <>;
+   type Wav_Data_Type is delta <>;
    type PCM_Type is delta <>;
-package Audio.Wavefiles.Generic_Fixed_PCM_Conversions is
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
+package Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
 
-   Convert_Sample_Debug : constant Boolean := False;
+   function Get (WF   : in out Wavefile) return PCM_MC_Sample
+     with Pre => File_Mode (WF) = In_File;
 
-   procedure Print_Sample_Read
-     (Wav_Sample : Wav_Data_Type;
-      PCM_Sample : PCM_Type);
+   procedure Put (WF  : in out Wavefile;
+                  PCM :        PCM_MC_Sample)
+     with Pre => File_Mode (WF) = Out_File;
 
-   procedure Print_Sample_Write
-     (PCM_Sample : PCM_Type;
-      Wav_Sample : Wav_Data_Type);
-
-   function Convert_Sample (Wav_Sample : Wav_Data_Type) return PCM_Type;
-
-   function Convert_Sample (PCM_Sample : PCM_Type) return Wav_Data_Type;
-
-end Audio.Wavefiles.Generic_Fixed_PCM_Conversions;
+end Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO;

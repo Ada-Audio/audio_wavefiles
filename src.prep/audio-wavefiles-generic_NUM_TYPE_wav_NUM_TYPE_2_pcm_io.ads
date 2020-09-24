@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---               Type conversion for wavefile I/O operations
+--                      Wavefile data I/O operations
 --
 --  The MIT License (MIT)
 --
@@ -28,32 +28,40 @@
 -------------------------------------------------------------------------------
 
 private generic
-   Wav_Num_Type : Wav_Numeric_Data_Type;
-   type Wav_Data_Type is range <>;
-#if NUM_TYPE'Defined and then (NUM_TYPE = "float") then
+#if (NUM_TYPE = "FLOAT") then
+   type Wav_Data_Type is digits <>;
+#else
+   type Wav_Data_Type is delta <>;
+#end if;
+#if (NUM_TYPE_2 = "FLOAT") then
    type PCM_Type is digits <>;
-package Audio.Wavefiles.Generic_Float_PCM_Conversions is
 #else
    type PCM_Type is delta <>;
-package Audio.Wavefiles.Generic_Fixed_PCM_Conversions is
+#end if;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
+#if (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FLOAT") then
+package Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO is
+#elsif (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FIXED") then
+package Audio.Wavefiles.Generic_Float_Wav_Fixed_PCM_IO is
+#elsif (NUM_TYPE = "FIXED") and then (NUM_TYPE_2 = "FLOAT") then
+package Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO is
+#elsif (NUM_TYPE = "FIXED") and then (NUM_TYPE_2 = "FIXED") then
+package Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
 #end if;
 
-   Convert_Sample_Debug : constant Boolean := False;
+   function Get (WF   : in out Wavefile) return PCM_MC_Sample
+     with Pre => File_Mode (WF) = In_File;
 
-   procedure Print_Sample_Read
-     (Wav_Sample : Wav_Data_Type;
-      PCM_Sample : PCM_Type);
+   procedure Put (WF  : in out Wavefile;
+                  PCM :        PCM_MC_Sample)
+     with Pre => File_Mode (WF) = Out_File;
 
-   procedure Print_Sample_Write
-     (PCM_Sample : PCM_Type;
-      Wav_Sample : Wav_Data_Type);
-
-   function Convert_Sample (Wav_Sample : Wav_Data_Type) return PCM_Type;
-
-   function Convert_Sample (PCM_Sample : PCM_Type) return Wav_Data_Type;
-
-#if NUM_TYPE'Defined and then (NUM_TYPE = "float") then
-end Audio.Wavefiles.Generic_Float_PCM_Conversions;
-#else
-end Audio.Wavefiles.Generic_Fixed_PCM_Conversions;
+#if (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FLOAT") then
+end Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO;
+#elsif (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FIXED") then
+end Audio.Wavefiles.Generic_Float_Wav_Fixed_PCM_IO;
+#elsif (NUM_TYPE = "FIXED") and then (NUM_TYPE_2 = "FLOAT") then
+end Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO;
+#elsif (NUM_TYPE = "FIXED") and then (NUM_TYPE_2 = "FIXED") then
+end Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO;
 #end if;

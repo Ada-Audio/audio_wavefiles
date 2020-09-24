@@ -2,11 +2,11 @@
 --
 --                                WAVEFILES
 --
---                           Generic Wavefile I/O
+--                      Wavefile data I/O operations
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2020 Gustavo A. Hoffmann
+--  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -28,16 +28,16 @@
 -------------------------------------------------------------------------------
 
 private generic
-   type Wav_Data_Type is range <>;
-   type Wav_Data is array (Positive range <>) of Wav_Data_Type;
-package Audio.Wavefiles.Generic_Wav_IO is
+   type Wav_Data_Type is delta <>;
+   type PCM_Type is digits <>;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
+package Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO is
 
-   function Get (WF  : in out Wavefile) return Wav_Data
-     with Inline, Pre => File_Mode (WF) = In_File;
-
+   function Get (WF   : in out Wavefile) return PCM_MC_Sample
+     with Pre => File_Mode (WF) = In_File;
 
    procedure Put (WF  : in out Wavefile;
-                  Wav :        Wav_Data)
-     with Inline, Pre => File_Mode (WF) = Out_File;
+                  PCM :        PCM_MC_Sample)
+     with Pre => File_Mode (WF) = Out_File;
 
-end Audio.Wavefiles.Generic_Wav_IO;
+end Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO;
