@@ -56,9 +56,9 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
       Wav_MC_Sample => Wav_MC_Sample);
    use Wav_IO;
 
-   function Convert_Samples (Wav : Wav_MC_Sample) return PCM_MC_Sample
+   function Convert (Wav : Wav_MC_Sample) return PCM_MC_Sample
      with Inline;
-   function Convert_Samples (PCM : PCM_MC_Sample) return Wav_MC_Sample
+   function Convert (PCM : PCM_MC_Sample) return Wav_MC_Sample
      with Inline;
 #if (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FIXED") then
    function Saturate (Wav : Wav_Sample) return PCM_Sample
@@ -95,7 +95,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
    end Saturate;
 
 #end if;
-   function Convert_Samples (Wav : Wav_MC_Sample) return PCM_MC_Sample is
+   function Convert (Wav : Wav_MC_Sample) return PCM_MC_Sample is
    begin
       return PCM : PCM_MC_Sample (Wav'Range) do
          for I in PCM'Range loop
@@ -106,9 +106,9 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
 #end if;
          end loop;
       end return;
-   end Convert_Samples;
+   end Convert;
 
-   function Convert_Samples (PCM : PCM_MC_Sample) return Wav_MC_Sample is
+   function Convert (PCM : PCM_MC_Sample) return Wav_MC_Sample is
    begin
       return Wav : Wav_MC_Sample (PCM'Range) do
          for I in Wav'Range loop
@@ -119,11 +119,11 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
 #end if;
          end loop;
       end return;
-   end Convert_Samples;
+   end Convert;
 
    function Get (WF  : in out Wavefile) return PCM_MC_Sample is
       Wav : constant Wav_MC_Sample := Get (WF);
-      PCM : constant PCM_MC_Sample := Convert_Samples (Wav);
+      PCM : constant PCM_MC_Sample := Convert (Wav);
    begin
       return PCM;
    end Get;
@@ -131,7 +131,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
    procedure Put (WF  : in out Wavefile;
                   PCM :        PCM_MC_Sample) is
       N_Ch : constant Positive := Number_Of_Channels (WF);
-      Wav  : constant Wav_MC_Sample := Convert_Samples (PCM);
+      Wav  : constant Wav_MC_Sample := Convert (PCM);
    begin
       Ada.Assertions.Assert (N_Ch = PCM'Length,
                              "Wrong number of channels in buffer");
