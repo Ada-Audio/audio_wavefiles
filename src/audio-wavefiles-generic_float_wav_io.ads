@@ -29,15 +29,15 @@
 
 generic
    type Wav_Data_Type is digits <>;
-   type Wav_Data is array (Positive range <>) of Wav_Data_Type;
+   type Wav_MC_Sample is array (Positive range <>) of Wav_Data_Type;
 package Audio.Wavefiles.Generic_Float_Wav_IO is
 
-   function Get (WF  : in out Wavefile) return Wav_Data
+   function Get (WF  : in out Wavefile) return Wav_MC_Sample
      with Inline, Pre => File_Mode (WF) = In_File;
 
 
    procedure Put (WF  : in out Wavefile;
-                  Wav :        Wav_Data)
+                  Wav :        Wav_MC_Sample)
      with Inline, Pre => File_Mode (WF) = Out_File;
 
 end Audio.Wavefiles.Generic_Float_Wav_IO;

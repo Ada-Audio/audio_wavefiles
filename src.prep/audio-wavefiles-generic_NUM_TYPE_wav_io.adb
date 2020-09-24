@@ -35,12 +35,12 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
 package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
 #end if;
 
-   function Get (WF  : in out Wavefile) return Wav_Data
+   function Get (WF  : in out Wavefile) return Wav_MC_Sample
    is
       N_Ch       : constant Positive := Number_Of_Channels (WF);
       Wav_Sample : Wav_Data_Type;
    begin
-      return Wav : Wav_Data (1 .. N_Ch) do
+      return Wav : Wav_MC_Sample (1 .. N_Ch) do
          for J in 1 .. N_Ch loop
 
             Wav_Data_Type'Read (WF.File_Access, Wav_Sample);
@@ -56,12 +56,12 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
    end Get;
 
    procedure Put (WF  : in out Wavefile;
-                  Wav :        Wav_Data) is
+                  Wav :        Wav_MC_Sample) is
       N_Ch : constant Positive := Number_Of_Channels (WF);
    begin
       Ada.Assertions.Assert (N_Ch = Wav'Length,
                              "Wrong number of channels in buffer");
-      Wav_Data'Write (WF.File_Access, Wav);
+      Wav_MC_Sample'Write (WF.File_Access, Wav);
       WF.Samples := WF.Samples + Long_Integer (N_Ch);
    end Put;
 

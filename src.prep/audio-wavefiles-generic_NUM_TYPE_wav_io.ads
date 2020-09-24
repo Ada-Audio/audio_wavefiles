@@ -33,19 +33,19 @@ generic
 #else
    type Wav_Data_Type is delta <>;
 #end if;
-   type Wav_Data is array (Positive range <>) of Wav_Data_Type;
+   type Wav_MC_Sample is array (Positive range <>) of Wav_Data_Type;
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 package Audio.Wavefiles.Generic_Float_Wav_IO is
 #else
 package Audio.Wavefiles.Generic_Fixed_Wav_IO is
 #end if;
 
-   function Get (WF  : in out Wavefile) return Wav_Data
+   function Get (WF  : in out Wavefile) return Wav_MC_Sample
      with Inline, Pre => File_Mode (WF) = In_File;
 
 
    procedure Put (WF  : in out Wavefile;
-                  Wav :        Wav_Data)
+                  Wav :        Wav_MC_Sample)
      with Inline, Pre => File_Mode (WF) = Out_File;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
