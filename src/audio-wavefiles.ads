@@ -81,7 +81,7 @@ private
          File_Index       : Ada.Streams.Stream_IO.Positive_Count;
          Wave_Format      : Audio.RIFF.Wave_Format_Extensible;
          Samples          : Long_Integer;
-         Samples_Read     : Long_Integer := 0;
+         Samples_Read     : Long_Integer;
       end record;
 
 end Audio.Wavefiles;
