@@ -66,6 +66,9 @@ package Audio.Wavefiles is
    function File_Mode
      (W : Wavefile) return Wav_File_Mode;
 
+   function Is_Supported_Format (W : RIFF.Wave_Format_Extensible)
+                                 return Boolean;
+
 private
 
    type Wav_Numeric_Data_Type is (Wav_Fixed_Data, Wav_Float_Data);

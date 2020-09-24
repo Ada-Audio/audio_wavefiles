@@ -77,4 +77,18 @@ package body Audio.Wavefiles is
    function File_Mode (W : Wavefile) return Wav_File_Mode is
      (if Mode (W.File) = In_File then In_File else Out_File);
 
+   function Is_Supported_Format (W : RIFF.Wave_Format_Extensible)
+                                 return Boolean is
+      use type RIFF.GUID;
+   begin
+      if not (W.Sub_Format = RIFF.GUID_Undefined
+              or W.Sub_Format = RIFF.GUID_PCM
+              or W.Sub_Format = RIFF.GUID_IEEE_Float)
+      then
+         return False;
+      end if;
+
+      return True;
+   end Is_Supported_Format;
+
 end Audio.Wavefiles;

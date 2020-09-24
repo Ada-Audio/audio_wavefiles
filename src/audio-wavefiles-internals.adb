@@ -39,17 +39,4 @@ package body Audio.Wavefiles.Internals is
                  + Ada.Streams.Stream_IO.Count (Bytes));
    end Skip_Bytes;
 
-   function Is_Supported_Format (W : Wave_Format_Extensible) return Boolean is
-   begin
-      if not (W.Sub_Format = GUID_Undefined
-              or W.Sub_Format = GUID_PCM
-              or W.Sub_Format = GUID_IEEE_Float)
-      then
-         return False;
-      end if;
-
-      return True;
-   end Is_Supported_Format;
-
-
 end Audio.Wavefiles.Internals;

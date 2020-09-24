@@ -29,7 +29,6 @@
 
 with Interfaces; use Interfaces;
 with Ada.Streams.Stream_IO;
-with Audio.RIFF; use Audio.RIFF;
 
 private
 package Audio.Wavefiles.Internals is
@@ -52,7 +51,5 @@ package Audio.Wavefiles.Internals is
    procedure Skip_Bytes
      (F     : in out Ada.Streams.Stream_IO.File_Type;
       Bytes : in Unsigned_32);
-
-   function Is_Supported_Format (W : Wave_Format_Extensible) return Boolean;
 
 end Audio.Wavefiles.Internals;
