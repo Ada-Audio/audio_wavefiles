@@ -60,12 +60,50 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
      with Inline;
    function Convert_Samples (PCM : PCM_MC_Sample) return Wav_MC_Sample
      with Inline;
+#if (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FIXED") then
+   function Saturate (Wav : Wav_Sample) return PCM_Sample
+     with Inline;
+#end if;
+#if (NUM_TYPE = "FIXED") and then (NUM_TYPE_2 = "FLOAT") then
+   function Saturate (PCM : PCM_Sample) return Wav_Sample
+     with Inline;
+#end if;
 
+#if (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FIXED") then
+   function Saturate (Wav : Wav_Sample) return PCM_Sample is
+   begin
+      if Wav > Wav_Sample (PCM_Sample'Last) then
+         return PCM_Sample'Last;
+      elsif Wav < Wav_Sample (PCM_Sample'First) then
+         return PCM_Sample'First;
+      else
+         return PCM_Sample (Wav);
+      end if;
+   end Saturate;
+
+#end if;
+#if (NUM_TYPE = "FIXED") and then (NUM_TYPE_2 = "FLOAT") then
+   function Saturate (PCM : PCM_Sample) return Wav_Sample is
+   begin
+      if PCM > PCM_Sample (Wav_Sample'Last) then
+         return Wav_Sample'Last;
+      elsif PCM < PCM_Sample (Wav_Sample'First) then
+         return Wav_Sample'First;
+      else
+         return Wav_Sample (PCM);
+      end if;
+   end Saturate;
+
+#end if;
    function Convert_Samples (Wav : Wav_MC_Sample) return PCM_MC_Sample is
    begin
       return PCM : PCM_MC_Sample (Wav'Range) do
          for I in PCM'Range loop
+#if (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FIXED") then
+            PCM (I) := Saturate (Wav (I));
+#else
             PCM (I) := PCM_Sample (Wav (I));
+#end if;
          end loop;
       end return;
    end Convert_Samples;
@@ -74,7 +112,11 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
    begin
       return Wav : Wav_MC_Sample (PCM'Range) do
          for I in Wav'Range loop
+#if (NUM_TYPE = "FIXED") and then (NUM_TYPE_2 = "FLOAT") then
+            Wav (I) := Saturate (PCM (I));
+#else
             Wav (I) := Wav_Sample (PCM (I));
+#end if;
          end loop;
       end return;
    end Convert_Samples;

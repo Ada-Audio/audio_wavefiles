@@ -44,6 +44,19 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO is
      with Inline;
    function Convert_Samples (PCM : PCM_MC_Sample) return Wav_MC_Sample
      with Inline;
+   function Saturate (PCM : PCM_Sample) return Wav_Sample
+     with Inline;
+
+   function Saturate (PCM : PCM_Sample) return Wav_Sample is
+   begin
+      if PCM > PCM_Sample (Wav_Sample'Last) then
+         return Wav_Sample'Last;
+      elsif PCM < PCM_Sample (Wav_Sample'First) then
+         return Wav_Sample'First;
+      else
+         return Wav_Sample (PCM);
+      end if;
+   end Saturate;
 
    function Convert_Samples (Wav : Wav_MC_Sample) return PCM_MC_Sample is
    begin
@@ -58,7 +71,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO is
    begin
       return Wav : Wav_MC_Sample (PCM'Range) do
          for I in Wav'Range loop
-            Wav (I) := Wav_Sample (PCM (I));
+            Wav (I) := Saturate (PCM (I));
          end loop;
       end return;
    end Convert_Samples;
