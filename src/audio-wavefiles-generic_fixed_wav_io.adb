@@ -27,8 +27,6 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Assertions;
-
 package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
 
    function Get (WF  : in out Wavefile) return Wav_MC_Sample
@@ -55,8 +53,6 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
                   Wav :        Wav_MC_Sample) is
       N_Ch : constant Positive := Number_Of_Channels (WF);
    begin
-      Ada.Assertions.Assert (N_Ch = Wav'Length,
-                             "Wrong number of channels in buffer");
       Wav_MC_Sample'Write (WF.File_Access, Wav);
       WF.Samples := WF.Samples + Long_Integer (N_Ch);
    end Put;

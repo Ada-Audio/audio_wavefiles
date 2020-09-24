@@ -38,6 +38,8 @@ package Audio.Wavefiles.Generic_Fixed_Wav_IO is
 
    procedure Put (WF  : in out Wavefile;
                   Wav :        Wav_MC_Sample)
-     with Inline, Pre => File_Mode (WF) = Out_File;
+     with Inline,
+          Pre => File_Mode (WF) = Out_File
+                 and Wav'Length >= Number_Of_Channels (WF);
 
 end Audio.Wavefiles.Generic_Fixed_Wav_IO;
