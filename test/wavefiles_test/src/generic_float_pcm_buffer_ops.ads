@@ -28,8 +28,8 @@
 -------------------------------------------------------------------------------
 
 generic
-   type PCM_Type is digits <>;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
+   type PCM_Sample is digits <>;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Sample;
 package Generic_Float_PCM_Buffer_Ops is
 
    function "+" (PCM_Ref : PCM_MC_Sample;

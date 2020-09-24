@@ -29,11 +29,11 @@
 
 generic
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   type PCM_Type is digits <>;
+   type PCM_Sample is digits <>;
 #else
-   type PCM_Type is delta <>;
+   type PCM_Sample is delta <>;
 #end if;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Sample;
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 package Generic_Float_Wave_Test is
 #else

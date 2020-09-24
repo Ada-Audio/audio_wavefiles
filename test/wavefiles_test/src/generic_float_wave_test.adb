@@ -40,12 +40,12 @@ package body Generic_Float_Wave_Test is
    package Wav       renames  Audio.Wavefiles;
 
    package PCM_IO    is new   Audio.Wavefiles.Generic_Float_PCM_IO
-     (PCM_Type      => PCM_Type,
+     (PCM_Sample    => PCM_Sample,
       PCM_MC_Sample => PCM_MC_Sample);
    use PCM_IO;
 
    package Float_PCM_Buffer_Ops is new Generic_Float_PCM_Buffer_Ops
-     (PCM_Type      => PCM_Type,
+     (PCM_Sample    => PCM_Sample,
       PCM_MC_Sample => PCM_MC_Sample);
    use Float_PCM_Buffer_Ops;
 

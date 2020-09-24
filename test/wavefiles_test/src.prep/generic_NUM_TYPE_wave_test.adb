@@ -54,7 +54,7 @@ package body Generic_Fixed_Wave_Test is
 #else
    package PCM_IO    is new   Audio.Wavefiles.Generic_Fixed_PCM_IO
 #end if;
-     (PCM_Type      => PCM_Type,
+     (PCM_Sample    => PCM_Sample,
       PCM_MC_Sample => PCM_MC_Sample);
    use PCM_IO;
 
@@ -63,7 +63,7 @@ package body Generic_Fixed_Wave_Test is
 #else
    package Fixed_PCM_Buffer_Ops is new Generic_Fixed_PCM_Buffer_Ops
 #end if;
-     (PCM_Type      => PCM_Type,
+     (PCM_Sample    => PCM_Sample,
       PCM_MC_Sample => PCM_MC_Sample);
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
    use Float_PCM_Buffer_Ops;
