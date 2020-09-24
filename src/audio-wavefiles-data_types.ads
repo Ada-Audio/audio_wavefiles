@@ -24,4 +24,14 @@ package Audio.Wavefiles.Data_Types is
    type Wav_Float_128 is digits 18
      with Size => 128;
 
+   type Wav_Buffer_Fixed_8   is array (Positive range <>) of Wav_Fixed_8;
+   type Wav_Buffer_Fixed_16  is array (Positive range <>) of Wav_Fixed_16;
+   type Wav_Buffer_Fixed_24  is array (Positive range <>) of Wav_Fixed_24;
+   type Wav_Buffer_Fixed_32  is array (Positive range <>) of Wav_Fixed_32;
+   type Wav_Buffer_Fixed_64  is array (Positive range <>) of Wav_Fixed_64;
+
+   type Wav_Buffer_Float_32  is array (Positive range <>) of Wav_Float_32;
+   type Wav_Buffer_Float_64  is array (Positive range <>) of Wav_Float_64;
+   type Wav_Buffer_Float_128 is array (Positive range <>) of Wav_Float_128;
+
 end Audio.Wavefiles.Data_Types;
