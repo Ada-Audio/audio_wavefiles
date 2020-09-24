@@ -29,16 +29,16 @@
 
 private generic
 #if (NUM_TYPE = "FLOAT") then
-   type Wav_Data_Type is digits <>;
+   type Wav_Sample is digits <>;
 #else
-   type Wav_Data_Type is delta <>;
+   type Wav_Sample is delta <>;
 #end if;
 #if (NUM_TYPE_2 = "FLOAT") then
-   type PCM_Type is digits <>;
+   type PCM_Sample is digits <>;
 #else
-   type PCM_Type is delta <>;
+   type PCM_Sample is delta <>;
 #end if;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Sample;
 #if (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FLOAT") then
 package Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO is
 #elsif (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FIXED") then

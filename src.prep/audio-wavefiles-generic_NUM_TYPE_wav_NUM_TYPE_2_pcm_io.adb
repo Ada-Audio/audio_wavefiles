@@ -45,14 +45,14 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO is
 package body Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
 #end if;
 
-   type Wav_MC_Sample is array (Positive range <>) of Wav_Data_Type;
+   type Wav_MC_Sample is array (Positive range <>) of Wav_Sample;
 
 #if (NUM_TYPE = "FLOAT") then
    package Wav_IO is new Audio.Wavefiles.Generic_Float_Wav_IO
 #else
    package Wav_IO is new Audio.Wavefiles.Generic_Fixed_Wav_IO
 #end if;
-     (Wav_Data_Type => Wav_Data_Type,
+     (Wav_Sample    => Wav_Sample,
       Wav_MC_Sample => Wav_MC_Sample);
    use Wav_IO;
 
@@ -65,7 +65,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
    begin
       return PCM : PCM_MC_Sample (Wav'Range) do
          for I in PCM'Range loop
-            PCM (I) := PCM_Type (Wav (I));
+            PCM (I) := PCM_Sample (Wav (I));
          end loop;
       end return;
    end Convert_Samples;
@@ -74,7 +74,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
    begin
       return Wav : Wav_MC_Sample (PCM'Range) do
          for I in Wav'Range loop
-            Wav (I) := Wav_Data_Type (PCM (I));
+            Wav (I) := Wav_Sample (PCM (I));
          end loop;
       end return;
    end Convert_Samples;

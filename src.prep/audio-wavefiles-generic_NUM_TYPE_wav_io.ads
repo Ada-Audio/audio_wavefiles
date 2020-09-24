@@ -29,11 +29,11 @@
 
 generic
 #if (NUM_TYPE = "FLOAT") then
-   type Wav_Data_Type is digits <>;
+   type Wav_Sample is digits <>;
 #else
-   type Wav_Data_Type is delta <>;
+   type Wav_Sample is delta <>;
 #end if;
-   type Wav_MC_Sample is array (Positive range <>) of Wav_Data_Type;
+   type Wav_MC_Sample is array (Positive range <>) of Wav_Sample;
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 package Audio.Wavefiles.Generic_Float_Wav_IO is
 #else

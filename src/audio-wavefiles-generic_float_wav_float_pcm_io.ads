@@ -28,9 +28,9 @@
 -------------------------------------------------------------------------------
 
 private generic
-   type Wav_Data_Type is digits <>;
-   type PCM_Type is digits <>;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
+   type Wav_Sample is digits <>;
+   type PCM_Sample is digits <>;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Sample;
 package Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO is
 
    function Get (WF   : in out Wavefile) return PCM_MC_Sample

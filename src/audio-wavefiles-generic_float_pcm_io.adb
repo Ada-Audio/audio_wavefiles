@@ -36,32 +36,32 @@ package body Audio.Wavefiles.Generic_Float_PCM_IO is
 
    package PCM_Fixed_Wav_16 is new
      Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO
-     (Wav_Data_Type => Wav_Fixed_16,
-      PCM_Type      => PCM_Type,
+     (Wav_Sample    => Wav_Fixed_16,
+      PCM_Sample    => PCM_Sample,
       PCM_MC_Sample => PCM_MC_Sample);
 
    package PCM_Fixed_Wav_24 is new
      Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO
-     (Wav_Data_Type => Wav_Fixed_24,
-      PCM_Type      => PCM_Type,
+     (Wav_Sample    => Wav_Fixed_24,
+      PCM_Sample    => PCM_Sample,
       PCM_MC_Sample => PCM_MC_Sample);
 
    package PCM_Fixed_Wav_32 is new
      Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO
-     (Wav_Data_Type => Wav_Fixed_32,
-      PCM_Type      => PCM_Type,
+     (Wav_Sample    => Wav_Fixed_32,
+      PCM_Sample    => PCM_Sample,
       PCM_MC_Sample => PCM_MC_Sample);
 
    package PCM_Float_Wav_32 is new
      Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO
-     (Wav_Data_Type => Wav_Float_32,
-      PCM_Type      => PCM_Type,
+     (Wav_Sample    => Wav_Float_32,
+      PCM_Sample    => PCM_Sample,
       PCM_MC_Sample => PCM_MC_Sample);
 
    package PCM_Float_Wav_64 is new
      Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO
-     (Wav_Data_Type => Wav_Float_64,
-      PCM_Type      => PCM_Type,
+     (Wav_Sample    => Wav_Float_64,
+      PCM_Sample    => PCM_Sample,
       PCM_MC_Sample => PCM_MC_Sample);
 
    function Get

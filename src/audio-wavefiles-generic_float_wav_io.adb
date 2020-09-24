@@ -33,14 +33,14 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
 
    function Get (WF  : in out Wavefile) return Wav_MC_Sample
    is
-      N_Ch       : constant Positive := Number_Of_Channels (WF);
-      Wav_Sample : Wav_Data_Type;
+      N_Ch   : constant Positive := Number_Of_Channels (WF);
+      Sample : Wav_Sample;
    begin
       return Wav : Wav_MC_Sample (1 .. N_Ch) do
          for J in 1 .. N_Ch loop
 
-            Wav_Data_Type'Read (WF.File_Access, Wav_Sample);
-            Wav (J) := Wav_Sample;
+            Wav_Sample'Read (WF.File_Access, Sample);
+            Wav (J) := Sample;
             if Ada.Streams.Stream_IO.End_Of_File (WF.File) and then
               J < N_Ch
             then

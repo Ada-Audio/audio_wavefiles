@@ -28,8 +28,8 @@
 -------------------------------------------------------------------------------
 
 generic
-   type Wav_Data_Type is digits <>;
-   type Wav_MC_Sample is array (Positive range <>) of Wav_Data_Type;
+   type Wav_Sample is digits <>;
+   type Wav_MC_Sample is array (Positive range <>) of Wav_Sample;
 package Audio.Wavefiles.Generic_Float_Wav_IO is
 
    function Get (WF  : in out Wavefile) return Wav_MC_Sample
