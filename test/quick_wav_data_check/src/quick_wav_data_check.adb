@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                             Test application
+--                         Quick Wave Data I/O Check
 --
 --  The MIT License (MIT)
 --
@@ -27,29 +27,22 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-generic
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   type PCM_Type is digits <>;
-#else
-   type PCM_Type is delta <>;
-#end if;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-package Generic_Float_PCM_Buffer_Ops is
-#else
-package Generic_Fixed_PCM_Buffer_Ops is
-#end if;
+with Ada.Command_Line;       use Ada.Command_Line;
 
-   function "+" (PCM_Ref : PCM_MC_Sample;
-                 PCM_DUT : PCM_MC_Sample)
-                    return PCM_MC_Sample;
+with Quick_Wav_Data_Checks;  use Quick_Wav_Data_Checks;
 
-   function "-" (PCM_Ref : PCM_MC_Sample;
-                 PCM_DUT : PCM_MC_Sample)
-                    return PCM_MC_Sample;
+function Quick_Wav_Data_Check return Integer is
+   Success : Boolean;
+begin
+   if Argument_Count >= 1 then
+      Success := Wav_IO_OK (Argument (1));
+   else
+      Success := Wav_IO_OK ("quick_");
+   end if;
 
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-end Generic_Float_PCM_Buffer_Ops;
-#else
-end Generic_Fixed_PCM_Buffer_Ops;
-#end if;
+   if Success then
+      return 0;
+   else
+      return 1;
+   end if;
+end Quick_Wav_Data_Check;

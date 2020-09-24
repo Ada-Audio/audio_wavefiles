@@ -27,19 +27,41 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-generic
+private generic
+#if (NUM_TYPE = "FLOAT") then
    type Wav_Sample is digits <>;
-   type Wav_MC_Sample is array (Positive range <>) of Wav_Sample;
-package Audio.Wavefiles.Generic_Float_Wav_IO is
+#else
+   type Wav_Sample is delta <>;
+#end if;
+#if (NUM_TYPE_2 = "FLOAT") then
+   type PCM_Sample is digits <>;
+#else
+   type PCM_Sample is delta <>;
+#end if;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Sample;
+#if (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FLOAT") then
+package Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO is
+#elsif (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FIXED") then
+package Audio.Wavefiles.Generic_Float_Wav_Fixed_PCM_IO is
+#elsif (NUM_TYPE = "FIXED") and then (NUM_TYPE_2 = "FLOAT") then
+package Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO is
+#elsif (NUM_TYPE = "FIXED") and then (NUM_TYPE_2 = "FIXED") then
+package Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
+#end if;
 
-   function Get (WF  : in out Wavefile) return Wav_MC_Sample
-     with Inline, Pre => File_Mode (WF) = In_File;
-
+   function Get (WF   : in out Wavefile) return PCM_MC_Sample
+     with Pre => File_Mode (WF) = In_File;
 
    procedure Put (WF  : in out Wavefile;
-                  Wav :        Wav_MC_Sample)
-     with Inline,
-          Pre => File_Mode (WF) = Out_File
-                 and Wav'Length >= Number_Of_Channels (WF);
+                  PCM :        PCM_MC_Sample)
+     with Pre => File_Mode (WF) = Out_File;
 
-end Audio.Wavefiles.Generic_Float_Wav_IO;
+#if (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FLOAT") then
+end Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO;
+#elsif (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FIXED") then
+end Audio.Wavefiles.Generic_Float_Wav_Fixed_PCM_IO;
+#elsif (NUM_TYPE = "FIXED") and then (NUM_TYPE_2 = "FLOAT") then
+end Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO;
+#elsif (NUM_TYPE = "FIXED") and then (NUM_TYPE_2 = "FIXED") then
+end Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO;
+#end if;

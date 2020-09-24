@@ -27,18 +27,19 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-private generic
-   Wav_Num_Type : Wav_Numeric_Data_Type;
-   type Wav_Data_Type is range <>;
-   type PCM_Type is delta <>;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
+generic
+   type Wav_Sample is delta <>;
+   type Wav_MC_Sample is array (Positive range <>) of Wav_Sample;
 package Audio.Wavefiles.Generic_Fixed_Wav_IO is
 
-   function Get (WF   : in out Wavefile) return PCM_MC_Sample
-     with Pre => File_Mode (WF) = In_File;
+   function Get (WF  : in out Wavefile) return Wav_MC_Sample
+     with Inline, Pre => File_Mode (WF) = In_File;
+
 
    procedure Put (WF  : in out Wavefile;
-                  PCM :        PCM_MC_Sample)
-     with Pre => File_Mode (WF) = Out_File;
+                  Wav :        Wav_MC_Sample)
+     with Inline,
+          Pre => File_Mode (WF) = Out_File
+                 and Wav'Length >= Number_Of_Channels (WF);
 
 end Audio.Wavefiles.Generic_Fixed_Wav_IO;

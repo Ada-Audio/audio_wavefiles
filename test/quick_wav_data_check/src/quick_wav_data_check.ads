@@ -2,11 +2,11 @@
 --
 --                                WAVEFILES
 --
---                             Test application
+--                         Quick Wave Data I/O Check
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -27,30 +27,4 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-generic
-   type PCM_Type is digits <>;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
-package Generic_Float_Wave_Test is
-
-   procedure Display_Info_File
-     (File_In : String);
-
-   procedure Copy_File
-     (File_In         : String;
-      File_Out        : String);
-
-   procedure Compare_Files
-     (File_Ref    : String;
-      File_DUT    : String);
-
-   procedure Diff_Files
-     (File_Ref       : String;
-      File_DUT       : String;
-      File_Diff      : String);
-
-   procedure Mix_Files
-     (File_Ref        : String;
-      File_DUT        : String;
-      File_Mix        : String);
-
-end Generic_Float_Wave_Test;
+function Quick_Wav_Data_Check return Integer;

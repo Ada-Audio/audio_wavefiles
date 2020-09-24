@@ -28,9 +28,9 @@
 -------------------------------------------------------------------------------
 
 generic
-   type PCM_Type is delta <>;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
-package Generic_Fixed_PCM_Buffer_Ops is
+   type PCM_Sample is digits <>;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Sample;
+package Generic_Float_PCM_Buffer_Ops is
 
    function "+" (PCM_Ref : PCM_MC_Sample;
                  PCM_DUT : PCM_MC_Sample)
@@ -40,4 +40,4 @@ package Generic_Fixed_PCM_Buffer_Ops is
                  PCM_DUT : PCM_MC_Sample)
                     return PCM_MC_Sample;
 
-end Generic_Fixed_PCM_Buffer_Ops;
+end Generic_Float_PCM_Buffer_Ops;

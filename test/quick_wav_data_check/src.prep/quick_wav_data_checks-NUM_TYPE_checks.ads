@@ -2,11 +2,11 @@
 --
 --                                WAVEFILES
 --
---                             Test application
+--                         Quick Wave Data I/O Check
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -27,30 +27,17 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-generic
-   type PCM_Type is delta <>;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
-package Generic_Fixed_Wave_Test is
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+package Quick_Wav_Data_Checks.Float_Checks is
+#else
+package Quick_Wav_Data_Checks.Fixed_Checks is
+#end if;
 
-   procedure Display_Info_File
-     (File_In : String);
+   function Wav_IO_OK
+     (Wav_Filename_Prefix : String) return Boolean;
 
-   procedure Copy_File
-     (File_In         : String;
-      File_Out        : String);
-
-   procedure Compare_Files
-     (File_Ref    : String;
-      File_DUT    : String);
-
-   procedure Diff_Files
-     (File_Ref       : String;
-      File_DUT       : String;
-      File_Diff      : String);
-
-   procedure Mix_Files
-     (File_Ref        : String;
-      File_DUT        : String;
-      File_Mix        : String);
-
-end Generic_Fixed_Wave_Test;
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+end Quick_Wav_Data_Checks.Float_Checks;
+#else
+end Quick_Wav_Data_Checks.Fixed_Checks;
+#end if;

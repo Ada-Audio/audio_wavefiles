@@ -2,11 +2,11 @@
 --
 --                                WAVEFILES
 --
---               Type conversion for wavefile I/O operations
+--                         Quick Wave Data I/O Check
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -27,24 +27,9 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-private generic
-   Wav_Num_Type : Wav_Numeric_Data_Type;
-   type Wav_Data_Type is range <>;
-   type PCM_Type is delta <>;
-package Audio.Wavefiles.Generic_Fixed_PCM_Conversions is
+package Quick_Wav_Data_Checks.Float_Checks is
 
-   Convert_Sample_Debug : constant Boolean := False;
+   function Wav_IO_OK
+     (Wav_Filename_Prefix : String) return Boolean;
 
-   procedure Print_Sample_Read
-     (Wav_Sample : Wav_Data_Type;
-      PCM_Sample : PCM_Type);
-
-   procedure Print_Sample_Write
-     (PCM_Sample : PCM_Type;
-      Wav_Sample : Wav_Data_Type);
-
-   function Convert_Sample (Wav_Sample : Wav_Data_Type) return PCM_Type;
-
-   function Convert_Sample (PCM_Sample : PCM_Type) return Wav_Data_Type;
-
-end Audio.Wavefiles.Generic_Fixed_PCM_Conversions;
+end Quick_Wav_Data_Checks.Float_Checks;

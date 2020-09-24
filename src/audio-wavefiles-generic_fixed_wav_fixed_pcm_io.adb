@@ -27,19 +27,57 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-generic
-   type Wav_Sample is digits <>;
+with Ada.Assertions;
+
+with Audio.Wavefiles.Generic_Fixed_Wav_IO;
+
+package body Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
+
    type Wav_MC_Sample is array (Positive range <>) of Wav_Sample;
-package Audio.Wavefiles.Generic_Float_Wav_IO is
 
-   function Get (WF  : in out Wavefile) return Wav_MC_Sample
-     with Inline, Pre => File_Mode (WF) = In_File;
+   package Wav_IO is new Audio.Wavefiles.Generic_Fixed_Wav_IO
+     (Wav_Sample    => Wav_Sample,
+      Wav_MC_Sample => Wav_MC_Sample);
+   use Wav_IO;
 
+   function Convert (Wav : Wav_MC_Sample) return PCM_MC_Sample
+     with Inline;
+   function Convert (PCM : PCM_MC_Sample) return Wav_MC_Sample
+     with Inline;
+
+   function Convert (Wav : Wav_MC_Sample) return PCM_MC_Sample is
+   begin
+      return PCM : PCM_MC_Sample (Wav'Range) do
+         for I in PCM'Range loop
+            PCM (I) := PCM_Sample (Wav (I));
+         end loop;
+      end return;
+   end Convert;
+
+   function Convert (PCM : PCM_MC_Sample) return Wav_MC_Sample is
+   begin
+      return Wav : Wav_MC_Sample (PCM'Range) do
+         for I in Wav'Range loop
+            Wav (I) := Wav_Sample (PCM (I));
+         end loop;
+      end return;
+   end Convert;
+
+   function Get (WF  : in out Wavefile) return PCM_MC_Sample is
+      Wav : constant Wav_MC_Sample := Get (WF);
+      PCM : constant PCM_MC_Sample := Convert (Wav);
+   begin
+      return PCM;
+   end Get;
 
    procedure Put (WF  : in out Wavefile;
-                  Wav :        Wav_MC_Sample)
-     with Inline,
-          Pre => File_Mode (WF) = Out_File
-                 and Wav'Length >= Number_Of_Channels (WF);
+                  PCM :        PCM_MC_Sample) is
+      N_Ch : constant Positive := Number_Of_Channels (WF);
+      Wav  : constant Wav_MC_Sample := Convert (PCM);
+   begin
+      Ada.Assertions.Assert (N_Ch = PCM'Length,
+                             "Wrong number of channels in buffer");
+      Put (WF, Wav);
+   end Put;
 
-end Audio.Wavefiles.Generic_Float_Wav_IO;
+end Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO;

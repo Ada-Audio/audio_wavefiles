@@ -2,11 +2,11 @@
 --
 --                                WAVEFILES
 --
---                      Wavefile data I/O operations
+--                             Test application
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -28,18 +28,28 @@
 -------------------------------------------------------------------------------
 
 generic
-   type Wav_Sample is digits <>;
-   type Wav_MC_Sample is array (Positive range <>) of Wav_Sample;
-package Audio.Wavefiles.Generic_Float_Wav_IO is
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+   type PCM_Sample is digits <>;
+#else
+   type PCM_Sample is delta <>;
+#end if;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Sample;
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+package Generic_Float_PCM_Buffer_Ops is
+#else
+package Generic_Fixed_PCM_Buffer_Ops is
+#end if;
 
-   function Get (WF  : in out Wavefile) return Wav_MC_Sample
-     with Inline, Pre => File_Mode (WF) = In_File;
+   function "+" (PCM_Ref : PCM_MC_Sample;
+                 PCM_DUT : PCM_MC_Sample)
+                    return PCM_MC_Sample;
 
+   function "-" (PCM_Ref : PCM_MC_Sample;
+                 PCM_DUT : PCM_MC_Sample)
+                    return PCM_MC_Sample;
 
-   procedure Put (WF  : in out Wavefile;
-                  Wav :        Wav_MC_Sample)
-     with Inline,
-          Pre => File_Mode (WF) = Out_File
-                 and Wav'Length >= Number_Of_Channels (WF);
-
-end Audio.Wavefiles.Generic_Float_Wav_IO;
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+end Generic_Float_PCM_Buffer_Ops;
+#else
+end Generic_Fixed_PCM_Buffer_Ops;
+#end if;

@@ -66,6 +66,9 @@ package Audio.Wavefiles is
    function File_Mode
      (W : Wavefile) return Wav_File_Mode;
 
+   function Is_Supported_Format (W : RIFF.Wave_Format_Extensible)
+                                 return Boolean;
+
 private
 
    type Wav_Numeric_Data_Type is (Wav_Fixed_Data, Wav_Float_Data);
@@ -78,7 +81,7 @@ private
          File_Index       : Ada.Streams.Stream_IO.Positive_Count;
          Wave_Format      : Audio.RIFF.Wave_Format_Extensible;
          Samples          : Long_Integer;
-         Samples_Read     : Long_Integer := 0;
+         Samples_Read     : Long_Integer;
       end record;
 
 end Audio.Wavefiles;

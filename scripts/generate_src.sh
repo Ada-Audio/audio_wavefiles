@@ -7,9 +7,12 @@ TEST_EXIT_CODE=0
 function generate_src_file {
     SRC=$1
     NUM_TYPE=$2
+    NUM_TYPE_2=$3
     TARGET_SRC=$(echo $SRC | sed -e 's#\.prep##' \
+                 | sed -e "s#NUM_TYPE_2#${NUM_TYPE_2}#" \
                  | sed -e "s#NUM_TYPE#${NUM_TYPE}#")
     TEST_SRC=$(  echo $SRC | sed -e 's#\.prep##' \
+                 | sed -e "s#NUM_TYPE_2#${NUM_TYPE_2}#" \
                  | sed -e "s#NUM_TYPE#${NUM_TYPE}_TEST#")
 
     if [ "$TEST" == "1" ]
@@ -19,7 +22,12 @@ function generate_src_file {
         OUTPUT_SRC=$TARGET_SRC
     fi
 
-    gnatprep -DNUM_TYPE=${NUM_TYPE} $SRC $OUTPUT_SRC
+    if [ "$NUM_TYPE_2" != "" ]
+    then
+        gnatprep -DNUM_TYPE=${NUM_TYPE} -DNUM_TYPE_2=${NUM_TYPE_2} $SRC $OUTPUT_SRC
+    else
+        gnatprep -DNUM_TYPE=${NUM_TYPE} $SRC $OUTPUT_SRC
+    fi
 
     if [ "$TEST" == "1" ]
     then
@@ -36,22 +44,40 @@ function generate_src_file {
     fi
 }
 
-function generate_src_files {
+function generate_src_2_files {
     SRC=$1
-    generate_src_file $SRC float
-    generate_src_file $SRC fixed
+    for num_type_1 in float fixed
+    do
+        generate_src_file $SRC $num_type_1
+    done
 }
 
-generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_pcm_conversions.ads
-generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_pcm_conversions.adb
-generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_wav_io.ads
-generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_wav_io.adb
-generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_pcm_io.ads
-generate_src_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_pcm_io.adb
+function generate_src_4_files {
+    SRC=$1
+    for num_type_1 in float fixed
+    do
+        for num_type_2 in float fixed
+        do
+            generate_src_file $SRC $num_type_1 $num_type_2
+        done
+    done
+}
 
-generate_src_files $DIR/../test/src.prep/generic_NUM_TYPE_pcm_buffer_ops.adb
-generate_src_files $DIR/../test/src.prep/generic_NUM_TYPE_pcm_buffer_ops.ads
-generate_src_files $DIR/../test/src.prep/generic_NUM_TYPE_wave_test.adb
-generate_src_files $DIR/../test/src.prep/generic_NUM_TYPE_wave_test.ads
+generate_src_4_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_wav_NUM_TYPE_2_pcm_io.ads
+generate_src_4_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_wav_NUM_TYPE_2_pcm_io.adb
+
+generate_src_2_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_wav_io.ads
+generate_src_2_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_wav_io.adb
+
+generate_src_2_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_pcm_io.ads
+generate_src_2_files $DIR/../src.prep/audio-wavefiles-generic_NUM_TYPE_pcm_io.adb
+
+generate_src_2_files $DIR/../test/wavefiles_test/src.prep/generic_NUM_TYPE_pcm_buffer_ops.adb
+generate_src_2_files $DIR/../test/wavefiles_test/src.prep/generic_NUM_TYPE_pcm_buffer_ops.ads
+generate_src_2_files $DIR/../test/wavefiles_test/src.prep/generic_NUM_TYPE_wave_test.adb
+generate_src_2_files $DIR/../test/wavefiles_test/src.prep/generic_NUM_TYPE_wave_test.ads
+
+generate_src_2_files $DIR/../test/quick_wav_data_check/src.prep/quick_wav_data_checks-NUM_TYPE_checks.ads
+generate_src_2_files $DIR/../test/quick_wav_data_check/src.prep/quick_wav_data_checks-NUM_TYPE_checks.adb
 
 exit $TEST_EXIT_CODE

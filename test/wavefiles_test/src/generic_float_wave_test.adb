@@ -30,46 +30,24 @@
 with Ada.Text_IO;                   use Ada.Text_IO;
 
 with Audio.Wavefiles;
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 with Audio.Wavefiles.Generic_Float_PCM_IO;
-#else
-with Audio.Wavefiles.Generic_Fixed_PCM_IO;
-#end if;
 with Audio.RIFF;
 
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 with Generic_Float_PCM_Buffer_Ops;
 
 package body Generic_Float_Wave_Test is
-#else
-with Generic_Fixed_PCM_Buffer_Ops;
-
-package body Generic_Fixed_Wave_Test is
-#end if;
 
    package Wav       renames  Audio.Wavefiles;
 
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
    package PCM_IO    is new   Audio.Wavefiles.Generic_Float_PCM_IO
-#else
-   package PCM_IO    is new   Audio.Wavefiles.Generic_Fixed_PCM_IO
-#end if;
-     (PCM_Type      => PCM_Type,
+     (PCM_Sample    => PCM_Sample,
       PCM_MC_Sample => PCM_MC_Sample);
    use PCM_IO;
 
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
    package Float_PCM_Buffer_Ops is new Generic_Float_PCM_Buffer_Ops
-#else
-   package Fixed_PCM_Buffer_Ops is new Generic_Fixed_PCM_Buffer_Ops
-#end if;
-     (PCM_Type      => PCM_Type,
+     (PCM_Sample    => PCM_Sample,
       PCM_MC_Sample => PCM_MC_Sample);
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
    use Float_PCM_Buffer_Ops;
-#else
-   use Fixed_PCM_Buffer_Ops;
-#end if;
 
    Verbose     : constant Boolean := False;
 
@@ -254,8 +232,4 @@ package body Generic_Fixed_Wave_Test is
       Wav.Close (WF_Mix);
    end Mix_Files;
 
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 end Generic_Float_Wave_Test;
-#else
-end Generic_Fixed_Wave_Test;
-#end if;

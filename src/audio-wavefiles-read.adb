@@ -55,6 +55,7 @@ package body Audio.Wavefiles.Read is
       WF.File_Access := Stream (WF.File);
 
       WF.Is_Opened := True;
+      WF.Samples_Read := 0;
 
       --  Read/check RIFF Chunk
       RIFF_Tag_Type'Read (WF.File_Access, RIFF_Tag);

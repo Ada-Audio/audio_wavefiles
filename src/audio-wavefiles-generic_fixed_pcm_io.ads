@@ -28,8 +28,8 @@
 -------------------------------------------------------------------------------
 
 generic
-   type PCM_Type is delta <>;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
+   type PCM_Sample is delta <>;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Sample;
 package Audio.Wavefiles.Generic_Fixed_PCM_IO is
 
    function Get

@@ -2,11 +2,11 @@
 --
 --                                WAVEFILES
 --
---                      Wavefile data I/O operations
+--                         Quick Wave Data I/O Check
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -27,19 +27,9 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-generic
-   type Wav_Sample is digits <>;
-   type Wav_MC_Sample is array (Positive range <>) of Wav_Sample;
-package Audio.Wavefiles.Generic_Float_Wav_IO is
+package Quick_Wav_Data_Checks is
 
-   function Get (WF  : in out Wavefile) return Wav_MC_Sample
-     with Inline, Pre => File_Mode (WF) = In_File;
+   function Wav_IO_OK
+     (Wav_Filename_Prefix : String) return Boolean;
 
-
-   procedure Put (WF  : in out Wavefile;
-                  Wav :        Wav_MC_Sample)
-     with Inline,
-          Pre => File_Mode (WF) = Out_File
-                 and Wav'Length >= Number_Of_Channels (WF);
-
-end Audio.Wavefiles.Generic_Float_Wav_IO;
+end Quick_Wav_Data_Checks;

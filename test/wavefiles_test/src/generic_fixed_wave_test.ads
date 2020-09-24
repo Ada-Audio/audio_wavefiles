@@ -28,17 +28,9 @@
 -------------------------------------------------------------------------------
 
 generic
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   type PCM_Type is digits <>;
-#else
-   type PCM_Type is delta <>;
-#end if;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-package Generic_Float_Wave_Test is
-#else
+   type PCM_Sample is delta <>;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Sample;
 package Generic_Fixed_Wave_Test is
-#end if;
 
    procedure Display_Info_File
      (File_In : String);
@@ -61,8 +53,4 @@ package Generic_Fixed_Wave_Test is
       File_DUT        : String;
       File_Mix        : String);
 
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-end Generic_Float_Wave_Test;
-#else
 end Generic_Fixed_Wave_Test;
-#end if;

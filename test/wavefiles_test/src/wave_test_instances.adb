@@ -27,6 +27,8 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
+with Audio.Wavefiles.Data_Types; use Audio.Wavefiles.Data_Types;
+
 with Generic_Fixed_Wave_Test;
 with Generic_Float_Wave_Test;
 
@@ -35,65 +37,31 @@ package body Wave_Test_Instances is
    PCM_Bits  : Positive := 32;
    PCM_Fixed : Boolean  := True;
 
-   D_8      : constant := 1.0 / 2.0 ** (8  - 1);
-   D_16     : constant := 1.0 / 2.0 ** (16 - 1);
-   D_24     : constant := 1.0 / 2.0 ** (24 - 1);
-   D_32     : constant := 1.0 / 2.0 ** (32 - 1);
-   D_64     : constant := 1.0 / 2.0 ** (64 - 1);
-
-   type Fixed_8_PCM is delta D_8 range -1.0 .. 1.0 - D_8
-     with Size => 8;
-   type Fixed_16_PCM is delta D_16 range -1.0 .. 1.0 - D_16
-     with Size => 16;
-   type Fixed_24_PCM is delta D_24 range -1.0 .. 1.0 - D_24
-     with Size => 24;
-   type Fixed_32_PCM is delta D_32 range -1.0 .. 1.0 - D_32
-     with Size => 32;
-   type Fixed_64_PCM is delta D_64 range -1.0 .. 1.0 - D_64
-     with Size => 64;
-
-   type Float_32_PCM is digits 6
-     with Size => 32;
-   type Float_64_PCM is digits 15
-     with Size => 64;
-   type Float_128_PCM is digits 18
-     with Size => 128;
-
-   type Float_32_PCM_Buffer is array (Positive range <>) of Float_32_PCM;
-   type Float_64_PCM_Buffer is array (Positive range <>) of Float_64_PCM;
-   type Float_128_PCM_Buffer is array (Positive range <>) of Float_128_PCM;
-
-   type Fixed_8_PCM_Buffer is array (Positive range <>) of Fixed_8_PCM;
-   type Fixed_16_PCM_Buffer is array (Positive range <>) of Fixed_16_PCM;
-   type Fixed_24_PCM_Buffer is array (Positive range <>) of Fixed_24_PCM;
-   type Fixed_32_PCM_Buffer is array (Positive range <>) of Fixed_32_PCM;
-   type Fixed_64_PCM_Buffer is array (Positive range <>) of Fixed_64_PCM;
-
    package Wave_Test_Fixed_8 is new Generic_Fixed_Wave_Test
-     (PCM_Type      => Fixed_8_PCM,
-      PCM_MC_Sample => Fixed_8_PCM_Buffer);
+     (PCM_Sample    => Wav_Fixed_8,
+      PCM_MC_Sample => Wav_Buffer_Fixed_8);
    package Wave_Test_Fixed_16 is new Generic_Fixed_Wave_Test
-     (PCM_Type      => Fixed_16_PCM,
-      PCM_MC_Sample => Fixed_16_PCM_Buffer);
+     (PCM_Sample    => Wav_Fixed_16,
+      PCM_MC_Sample => Wav_Buffer_Fixed_16);
    package Wave_Test_Fixed_24 is new Generic_Fixed_Wave_Test
-     (PCM_Type      => Fixed_24_PCM,
-      PCM_MC_Sample => Fixed_24_PCM_Buffer);
+     (PCM_Sample    => Wav_Fixed_24,
+      PCM_MC_Sample => Wav_Buffer_Fixed_24);
    package Wave_Test_Fixed_32 is new Generic_Fixed_Wave_Test
-     (PCM_Type      => Fixed_32_PCM,
-      PCM_MC_Sample => Fixed_32_PCM_Buffer);
+     (PCM_Sample    => Wav_Fixed_32,
+      PCM_MC_Sample => Wav_Buffer_Fixed_32);
    package Wave_Test_Fixed_64 is new Generic_Fixed_Wave_Test
-     (PCM_Type      => Fixed_64_PCM,
-      PCM_MC_Sample => Fixed_64_PCM_Buffer);
+     (PCM_Sample    => Wav_Fixed_64,
+      PCM_MC_Sample => Wav_Buffer_Fixed_64);
 
    package Wave_Test_Float_32 is new Generic_Float_Wave_Test
-     (PCM_Type      => Float_32_PCM,
-      PCM_MC_Sample => Float_32_PCM_Buffer);
+     (PCM_Sample    => Wav_Float_32,
+      PCM_MC_Sample => Wav_Buffer_Float_32);
    package Wave_Test_Float_64 is new Generic_Float_Wave_Test
-     (PCM_Type      => Float_64_PCM,
-      PCM_MC_Sample => Float_64_PCM_Buffer);
+     (PCM_Sample    => Wav_Float_64,
+      PCM_MC_Sample => Wav_Buffer_Float_64);
    package Wave_Test_Float_128 is new Generic_Float_Wave_Test
-     (PCM_Type      => Float_128_PCM,
-      PCM_MC_Sample => Float_128_PCM_Buffer);
+     (PCM_Sample    => Wav_Float_128,
+      PCM_MC_Sample => Wav_Buffer_Float_128);
 
    Proc_Display_Info_File : access procedure (File_In : String)
      := Wave_Test_Fixed_32.Display_Info_File'Access;

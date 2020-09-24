@@ -27,27 +27,28 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-private generic
-   Wav_Num_Type : Wav_Numeric_Data_Type;
-   type Wav_Data_Type is range <>;
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   type PCM_Type is digits <>;
+generic
+#if (NUM_TYPE = "FLOAT") then
+   type Wav_Sample is digits <>;
 #else
-   type PCM_Type is delta <>;
+   type Wav_Sample is delta <>;
 #end if;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
+   type Wav_MC_Sample is array (Positive range <>) of Wav_Sample;
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 package Audio.Wavefiles.Generic_Float_Wav_IO is
 #else
 package Audio.Wavefiles.Generic_Fixed_Wav_IO is
 #end if;
 
-   function Get (WF   : in out Wavefile) return PCM_MC_Sample
-     with Pre => File_Mode (WF) = In_File;
+   function Get (WF  : in out Wavefile) return Wav_MC_Sample
+     with Inline, Pre => File_Mode (WF) = In_File;
+
 
    procedure Put (WF  : in out Wavefile;
-                  PCM :        PCM_MC_Sample)
-     with Pre => File_Mode (WF) = Out_File;
+                  Wav :        Wav_MC_Sample)
+     with Inline,
+          Pre => File_Mode (WF) = Out_File
+                 and Wav'Length >= Number_Of_Channels (WF);
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 end Audio.Wavefiles.Generic_Float_Wav_IO;

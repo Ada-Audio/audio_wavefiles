@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                      Wavefile data I/O operations
+--                             Test application
 --
 --  The MIT License (MIT)
 --
@@ -28,18 +28,41 @@
 -------------------------------------------------------------------------------
 
 generic
-   type Wav_Sample is digits <>;
-   type Wav_MC_Sample is array (Positive range <>) of Wav_Sample;
-package Audio.Wavefiles.Generic_Float_Wav_IO is
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+   type PCM_Sample is digits <>;
+#else
+   type PCM_Sample is delta <>;
+#end if;
+   type PCM_MC_Sample is array (Positive range <>) of PCM_Sample;
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+package Generic_Float_Wave_Test is
+#else
+package Generic_Fixed_Wave_Test is
+#end if;
 
-   function Get (WF  : in out Wavefile) return Wav_MC_Sample
-     with Inline, Pre => File_Mode (WF) = In_File;
+   procedure Display_Info_File
+     (File_In : String);
 
+   procedure Copy_File
+     (File_In         : String;
+      File_Out        : String);
 
-   procedure Put (WF  : in out Wavefile;
-                  Wav :        Wav_MC_Sample)
-     with Inline,
-          Pre => File_Mode (WF) = Out_File
-                 and Wav'Length >= Number_Of_Channels (WF);
+   procedure Compare_Files
+     (File_Ref    : String;
+      File_DUT    : String);
 
-end Audio.Wavefiles.Generic_Float_Wav_IO;
+   procedure Diff_Files
+     (File_Ref       : String;
+      File_DUT       : String;
+      File_Diff      : String);
+
+   procedure Mix_Files
+     (File_Ref        : String;
+      File_DUT        : String;
+      File_Mix        : String);
+
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+end Generic_Float_Wave_Test;
+#else
+end Generic_Fixed_Wave_Test;
+#end if;

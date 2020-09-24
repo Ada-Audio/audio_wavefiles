@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                           Generic Wavefile I/O
+--                         Quick Wave Data I/O Check
 --
 --  The MIT License (MIT)
 --
@@ -27,34 +27,25 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body Audio.Wavefiles.Generic_Wav_IO is
+with Quick_Wav_Data_Checks.Float_Checks;
+with Quick_Wav_Data_Checks.Fixed_Checks;
 
-   function Get (WF  : in out Wavefile) return Wav_Data
+package body Quick_Wav_Data_Checks is
+
+   function Wav_IO_OK
+     (Wav_Filename_Prefix : String) return Boolean
    is
-      N_Ch       : constant Positive := Number_Of_Channels (WF);
-      Wav_Sample : Wav_Data_Type;
+      Success : Boolean := True;
    begin
-      return Wav : Wav_Data (1 .. N_Ch) do
-         for J in 1 .. N_Ch loop
+      if not Fixed_Checks.Wav_IO_OK (Wav_Filename_Prefix) then
+         Success := False;
+      end if;
+      if not Float_Checks.Wav_IO_OK (Wav_Filename_Prefix) then
+         Success := False;
+      end if;
 
-            Wav_Data_Type'Read (WF.File_Access, Wav_Sample);
-            Wav (J) := Wav_Sample;
-            if Ada.Streams.Stream_IO.End_Of_File (WF.File) and then
-              J < N_Ch
-            then
-               --  Cannot read data for all channels
-               raise Wavefile_Error;
-            end if;
-         end loop;
-      end return;
-   end Get;
+      return Success;
+   end Wav_IO_OK;
 
-   procedure Put (WF  : in out Wavefile;
-                  Wav :        Wav_Data) is
-      N_Ch : constant Positive := Number_Of_Channels (WF);
-   begin
-      Wav_Data'Write (WF.File_Access, Wav);
-      WF.Samples := WF.Samples + Long_Integer (N_Ch);
-   end Put;
 
-end Audio.Wavefiles.Generic_Wav_IO;
+end Quick_Wav_Data_Checks;

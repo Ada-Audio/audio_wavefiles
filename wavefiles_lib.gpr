@@ -13,7 +13,7 @@ library project Wavefiles_Lib is
    end Ide;
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnato", "-gnatVa", "-gnatwa", "-fstack-check", "-gnaty");
+      for Default_Switches ("ada") use ("-gnata", "-gnato", "-gnatVa", "-gnatwa", "-fstack-check", "-gnaty");
    end Compiler;
 
 end Wavefiles_Lib;

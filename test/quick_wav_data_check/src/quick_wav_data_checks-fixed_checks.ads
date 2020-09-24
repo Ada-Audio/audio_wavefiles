@@ -2,7 +2,7 @@
 --
 --                                WAVEFILES
 --
---                             Test application
+--                         Quick Wave Data I/O Check
 --
 --  The MIT License (MIT)
 --
@@ -27,17 +27,9 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-generic
-   type PCM_Type is digits <>;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Type;
-package Generic_Float_PCM_Buffer_Ops is
+package Quick_Wav_Data_Checks.Fixed_Checks is
 
-   function "+" (PCM_Ref : PCM_MC_Sample;
-                 PCM_DUT : PCM_MC_Sample)
-                    return PCM_MC_Sample;
+   function Wav_IO_OK
+     (Wav_Filename_Prefix : String) return Boolean;
 
-   function "-" (PCM_Ref : PCM_MC_Sample;
-                 PCM_DUT : PCM_MC_Sample)
-                    return PCM_MC_Sample;
-
-end Generic_Float_PCM_Buffer_Ops;
+end Quick_Wav_Data_Checks.Fixed_Checks;
