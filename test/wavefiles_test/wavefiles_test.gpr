@@ -15,7 +15,7 @@ project Wavefiles_Test is
    end Ide;
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnato", "-gnatVa", "-gnatwa", "-fstack-check", "-gnatyy", "-g", "-gnatQ");
+      for Default_Switches ("ada") use ("-gnata", "-gnato", "-gnatVa", "-gnatwa", "-fstack-check", "-gnatyy", "-g", "-gnatQ");
    end Compiler;
 
    package Linker is

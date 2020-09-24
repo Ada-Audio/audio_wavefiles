@@ -27,59 +27,34 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Assertions;
-
-with Audio.Wavefiles.Generic_Fixed_PCM_Conversions;
-with Audio.Wavefiles.Generic_Wav_IO;
-
 package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
 
-   package Conversions is new Audio.Wavefiles.Generic_Fixed_PCM_Conversions
-     (Wav_Num_Type, Wav_Data_Type, PCM_Type);
-
-   type Wav_Data is array (Positive range <>) of Wav_Data_Type;
-
-   package Wav_IO is new Audio.Wavefiles.Generic_Wav_IO
-     (Wav_Data_Type => Wav_Data_Type,
-      Wav_Data      => Wav_Data);
-   use Wav_IO;
-
-   function Convert_Samples (Wav : Wav_Data)      return PCM_MC_Sample;
-   function Convert_Samples (PCM : PCM_MC_Sample) return Wav_Data;
-
-   function Convert_Samples (Wav : Wav_Data) return PCM_MC_Sample is
+   function Get (WF  : in out Wavefile) return Wav_MC_Sample
+   is
+      N_Ch   : constant Positive := Number_Of_Channels (WF);
+      Sample : Wav_Sample;
    begin
-      return PCM : PCM_MC_Sample (Wav'Range) do
-         for I in PCM'Range loop
-            PCM (I) := Conversions.Convert_Sample (Wav (I));
+      return Wav : Wav_MC_Sample (1 .. N_Ch) do
+         for J in 1 .. N_Ch loop
+
+            Wav_Sample'Read (WF.File_Access, Sample);
+            Wav (J) := Sample;
+            if Ada.Streams.Stream_IO.End_Of_File (WF.File) and then
+              J < N_Ch
+            then
+               --  Cannot read data for all channels
+               raise Wavefile_Error;
+            end if;
          end loop;
       end return;
-   end Convert_Samples;
-
-   function Convert_Samples (PCM : PCM_MC_Sample) return Wav_Data is
-   begin
-      return Wav : Wav_Data (PCM'Range) do
-         for I in Wav'Range loop
-            Wav (I) := Conversions.Convert_Sample (PCM (I));
-         end loop;
-      end return;
-   end Convert_Samples;
-
-   function Get (WF  : in out Wavefile) return PCM_MC_Sample is
-      Wav : constant Wav_Data      := Get (WF);
-      PCM : constant PCM_MC_Sample := Convert_Samples (Wav);
-   begin
-      return PCM;
    end Get;
 
    procedure Put (WF  : in out Wavefile;
-                  PCM :        PCM_MC_Sample) is
+                  Wav :        Wav_MC_Sample) is
       N_Ch : constant Positive := Number_Of_Channels (WF);
-      Wav  : constant Wav_Data := Convert_Samples (PCM);
    begin
-      Ada.Assertions.Assert (N_Ch = PCM'Length,
-                             "Wrong number of channels in buffer");
-      Put (WF, Wav);
+      Wav_MC_Sample'Write (WF.File_Access, Wav);
+      WF.Samples := WF.Samples + Long_Integer (N_Ch);
    end Put;
 
 end Audio.Wavefiles.Generic_Fixed_Wav_IO;

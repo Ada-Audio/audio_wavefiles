@@ -40,12 +40,12 @@ package body Generic_Fixed_Wave_Test is
    package Wav       renames  Audio.Wavefiles;
 
    package PCM_IO    is new   Audio.Wavefiles.Generic_Fixed_PCM_IO
-     (PCM_Type      => PCM_Type,
+     (PCM_Sample    => PCM_Sample,
       PCM_MC_Sample => PCM_MC_Sample);
    use PCM_IO;
 
    package Fixed_PCM_Buffer_Ops is new Generic_Fixed_PCM_Buffer_Ops
-     (PCM_Type      => PCM_Type,
+     (PCM_Sample    => PCM_Sample,
       PCM_MC_Sample => PCM_MC_Sample);
    use Fixed_PCM_Buffer_Ops;
 
