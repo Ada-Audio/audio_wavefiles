@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 --
---                                WAVEFILES
+--                           WAVEFILE DEFINITIONS
 --
---                              WAV RIFF data
+--                                  GUIDs
 --
 --  The MIT License (MIT)
 --
@@ -27,17 +27,11 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package Audio.Wavefiles.RIFF is
+with Audio.Wavefile_Definitions.Wave_Formats;
 
-   type Wave_Format_Chunk_Size is
-     (Wave_Format_16_Size,
-      Wave_Format_18_Size,
-      Wave_Format_Extensible_Size);
+package Audio.Wavefile_Definitions.GUIDs is
 
-   for Wave_Format_Chunk_Size use
-     (Wave_Format_16_Size         => 16,
-      Wave_Format_18_Size         => 18,
-      Wave_Format_Extensible_Size => 40);
+   use  Audio.Wavefile_Definitions.Wave_Formats;
 
    GUID_Undefined : constant GUID :=
                       (16#00000000#,
@@ -68,7 +62,4 @@ package Audio.Wavefiles.RIFF is
                          16#00#, 16#38#,
                          16#9b#, 16#71#));
 
-   procedure Print (W : Wave_Format_Extensible);
-
-
-end Audio.Wavefiles.RIFF;
+end Audio.Wavefile_Definitions.GUIDs;

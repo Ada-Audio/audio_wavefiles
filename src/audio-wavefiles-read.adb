@@ -28,10 +28,12 @@
 -------------------------------------------------------------------------------
 
 with Ada.Text_IO;                  use Ada.Text_IO;
+with Interfaces;
 
 with Audio.RIFF;                   use Audio.RIFF;
-with Audio.Wavefiles.RIFF;         use Audio.Wavefiles.RIFF;
 with Audio.Wavefiles.Internals;    use Audio.Wavefiles.Internals;
+
+with Audio.Wavefile_Definitions.Wave_Formats.Report;
 
 package body Audio.Wavefiles.Read is
 
@@ -49,6 +51,7 @@ package body Audio.Wavefiles.Read is
       if WF.Is_Opened then
          raise Wavefile_Error;
       end if;
+      Set_Default (WF.Wave_Format);
 
       --  Open input wavefile
       Open (WF.File, In_File, File_Name);
@@ -65,7 +68,7 @@ package body Audio.Wavefiles.Read is
       if Verbose then
          Put_Line ("RIFF Tag: " & RIFF_Tag.FOURCC);
          Put_Line ("RIFF/WAVE chunk size: "
-                   & Unsigned_32'Image (RIFF_Tag.Size));
+                   & Interfaces.Unsigned_32'Image (RIFF_Tag.Size));
       end if;
 
       --  Read/check WAVE tag
@@ -101,8 +104,10 @@ package body Audio.Wavefiles.Read is
                          & Integer'Image (
                            Wave_Format_18'Value_Size / 8));
                Put_Line ("BitsPerSample: "
-                         & Unsigned_16'Image (WF.Wave_Format.Bits_Per_Sample));
-               Put_Line ("Size: " & Unsigned_16'Image (WF.Wave_Format.Size));
+                         & Interfaces.Unsigned_16'Image
+                           (WF.Wave_Format.Bits_Per_Sample));
+               Put_Line ("Size: " & Interfaces.Unsigned_16'Image
+                         (WF.Wave_Format.Size));
             end if;
 
          when Wave_Format_Chunk_Size'Enum_Rep (Wave_Format_Extensible_Size) =>
@@ -116,8 +121,10 @@ package body Audio.Wavefiles.Read is
                Put_Line ("File index: " & Integer'Image (
                          Integer (Ada.Streams.Stream_IO.Index (WF.File))));
                Put_Line ("BitsPerSample: "
-                         & Unsigned_16'Image (WF.Wave_Format.Bits_Per_Sample));
-               Put_Line ("Size: " & Unsigned_16'Image (WF.Wave_Format.Size));
+                         & Interfaces.Unsigned_16'Image
+                           (WF.Wave_Format.Bits_Per_Sample));
+               Put_Line ("Size: " & Interfaces.Unsigned_16'Image
+                         (WF.Wave_Format.Size));
             end if;
 
          when others =>
@@ -125,8 +132,9 @@ package body Audio.Wavefiles.Read is
       end case;
 
       if Verbose then
-         Print (WF.Wave_Format);
-         Put_Line ("fmt chunk size: " & Unsigned_32'Image (RIFF_Tag.Size));
+         Display_Info (WF);
+         Put_Line ("fmt chunk size: " & Interfaces.Unsigned_32'Image
+                   (RIFF_Tag.Size));
       end if;
 
       --  Read/skip chunks until data chunk
@@ -140,10 +148,11 @@ package body Audio.Wavefiles.Read is
       end loop;
 
       WF.Samples := Long_Integer (RIFF_Tag.Size)
-        / Long_Integer (WF.Wave_Format.Bits_Per_Sample / 8);
+        / (Long_Integer (WF.Wave_Format.Bits_Per_Sample) / 8);
 
       if Verbose then
-         Put_Line ("Data chunk size: " & Unsigned_32'Image (RIFF_Tag.Size));
+         Put_Line ("Data chunk size: " & Interfaces.Unsigned_32'Image
+                   (RIFF_Tag.Size));
          Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples));
          Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples
                    / Long_Integer (WF.Wave_Format.Channels)));
@@ -166,6 +175,7 @@ package body Audio.Wavefiles.Read is
    end Is_EOF;
 
    procedure Display_Info (WF : in Wavefile) is
+      use Audio.Wavefile_Definitions.Wave_Formats.Report;
    begin
       Print (WF.Wave_Format);
 

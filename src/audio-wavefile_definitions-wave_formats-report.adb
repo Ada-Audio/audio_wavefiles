@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 --
---                                WAVEFILES
+--                           WAVEFILE DEFINITIONS
 --
---                              WAV RIFF data
+--                              Wave Formats
 --
 --  The MIT License (MIT)
 --
@@ -27,9 +27,11 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO;                      use Ada.Text_IO;
 
-package body Audio.Wavefiles.RIFF is
+with Audio.Wavefile_Definitions.GUIDs; use Audio.Wavefile_Definitions.GUIDs;
+
+package body Audio.Wavefile_Definitions.Wave_Formats.Report is
 
    procedure Print (W : Wave_Format_Extensible) is
    begin
@@ -119,4 +121,4 @@ package body Audio.Wavefiles.RIFF is
       Put_Line ("-------------------------------------------");
    end Print;
 
-end Audio.Wavefiles.RIFF;
+end Audio.Wavefile_Definitions.Wave_Formats.Report;

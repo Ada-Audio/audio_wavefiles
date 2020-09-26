@@ -29,6 +29,7 @@
 
 with Ada.Text_IO;                          use Ada.Text_IO;
 with Ada.Strings.Fixed;                    use Ada.Strings.Fixed;
+with Interfaces;                           use Interfaces;
 
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
@@ -37,7 +38,10 @@ with Audio.Wavefiles.Data_Types.Text_IO;
 use  Audio.Wavefiles.Data_Types.Text_IO;
 
 with Audio.Wavefiles.Generic_Fixed_PCM_IO;
-with Interfaces;                           use Interfaces;
+
+with Audio.Wavefile_Definitions.Wave_Formats;
+use  Audio.Wavefile_Definitions.Wave_Formats;
+
 
 package body Quick_Wav_Data_Checks.Fixed_Checks is
 

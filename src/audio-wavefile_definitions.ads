@@ -1,12 +1,12 @@
 -------------------------------------------------------------------------------
 --
---                                WAVEFILES
+--                           WAVEFILE DEFINITIONS
 --
---                           Internal information
+--                              Main package
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -27,14 +27,6 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Streams.Stream_IO;
-with Interfaces;            use Interfaces;
+package Audio.Wavefile_Definitions with Pure is
 
-private
-package Audio.Wavefiles.Internals is
-
-   procedure Skip_Bytes
-     (F     : in out Ada.Streams.Stream_IO.File_Type;
-      Bytes : in Unsigned_32);
-
-end Audio.Wavefiles.Internals;
+end Audio.Wavefile_Definitions;

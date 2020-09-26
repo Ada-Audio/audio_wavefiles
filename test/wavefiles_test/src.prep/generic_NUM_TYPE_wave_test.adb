@@ -36,6 +36,9 @@ with Audio.Wavefiles.Generic_Float_PCM_IO;
 with Audio.Wavefiles.Generic_Fixed_PCM_IO;
 #end if;
 
+with Audio.Wavefile_Definitions.Wave_Formats;
+use  Audio.Wavefile_Definitions.Wave_Formats;
+
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 with Generic_Float_PCM_Buffer_Ops;
 
@@ -74,7 +77,7 @@ package body Generic_Fixed_Wave_Test is
 
    procedure Display_Info_File (File_In  : String) is
       WF_In       : Audio.Wavefiles.Wavefile;
-      Wave_Format : Audio.Wavefiles.Wave_Format_Extensible;
+      Wave_Format : Wave_Format_Extensible;
    begin
       Wav.Open (WF_In, Wav.In_File, File_In, Wave_Format);
       Wav.Display_Info (WF_In);
@@ -87,7 +90,7 @@ package body Generic_Fixed_Wave_Test is
    is
       WF_In       : Audio.Wavefiles.Wavefile;
       WF_Out      : Audio.Wavefiles.Wavefile;
-      Wave_Format : Audio.Wavefiles.Wave_Format_Extensible;
+      Wave_Format : Wave_Format_Extensible;
       EOF         : Boolean;
       Samples     : Integer := 0;
 
@@ -131,7 +134,7 @@ package body Generic_Fixed_Wave_Test is
    is
       WF_Ref           : Audio.Wavefiles.Wavefile;
       WF_DUT           : Audio.Wavefiles.Wavefile;
-      Wave_Format      : Audio.Wavefiles.Wave_Format_Extensible;
+      Wave_Format      : Wave_Format_Extensible;
       EOF_Ref, EOF_DUT : Boolean;
       Diff_Sample      : Natural := 0;
       Samples          : Integer := 0;
@@ -185,7 +188,7 @@ package body Generic_Fixed_Wave_Test is
       WF_Ref           : Audio.Wavefiles.Wavefile;
       WF_DUT           : Audio.Wavefiles.Wavefile;
       WF_Diff          : Audio.Wavefiles.Wavefile;
-      Wave_Format      : Audio.Wavefiles.Wave_Format_Extensible;
+      Wave_Format      : Wave_Format_Extensible;
       EOF_Ref, EOF_DUT : Boolean;
 
       procedure Diff_PCM_MC_Sample;
@@ -223,8 +226,8 @@ package body Generic_Fixed_Wave_Test is
       WF_Ref           : Audio.Wavefiles.Wavefile;
       WF_DUT           : Audio.Wavefiles.Wavefile;
       WF_Mix           : Audio.Wavefiles.Wavefile;
-      Wave_Format_Ref  : Audio.Wavefiles.Wave_Format_Extensible;
-      Wave_Format_DUT  : Audio.Wavefiles.Wave_Format_Extensible;
+      Wave_Format_Ref  : Wave_Format_Extensible;
+      Wave_Format_DUT  : Wave_Format_Extensible;
       EOF_Ref, EOF_DUT : Boolean;
 
       procedure Mix_PCM_MC_Sample;

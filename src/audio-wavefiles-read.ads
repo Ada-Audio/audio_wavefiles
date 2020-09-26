@@ -27,9 +27,6 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
---  with Audio.Wavefiles.RIFF;         use Audio.Wavefiles.RIFF;
---  with Audio.Wavefiles.Wavefile_IO;  use Audio.Wavefiles.Wavefile_IO;
-
 package Audio.Wavefiles.Read is
 
    procedure Open
