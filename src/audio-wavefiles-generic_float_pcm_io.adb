@@ -27,7 +27,7 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Audio.RIFF;                   use Audio.RIFF;
+with Audio.Wavefiles.RIFF;         use Audio.Wavefiles.RIFF;
 with Audio.Wavefiles.Data_Types;   use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO;
 with Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO;

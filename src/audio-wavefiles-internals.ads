@@ -27,7 +27,6 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Interfaces; use Interfaces;
 with Ada.Streams.Stream_IO;
 
 private

@@ -30,6 +30,7 @@
 with Interfaces;                   use Interfaces;
 
 with Audio.RIFF;                   use Audio.RIFF;
+with Audio.Wavefiles.RIFF;         use Audio.Wavefiles.RIFF;
 
 package body Audio.Wavefiles.Write is
 
@@ -38,7 +39,7 @@ package body Audio.Wavefiles.Write is
    procedure Open
      (WF          : in out Wavefile;
       File_Name   : String;
-      Wave_Format : RIFF.Wave_Format_Extensible)
+      Wave_Format : Wave_Format_Extensible)
    is
       RIFF_Tag    : RIFF_Tag_Type;
       RIFF_Chunk  : RIFF_Chunk_Type;

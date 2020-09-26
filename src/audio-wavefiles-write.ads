@@ -27,14 +27,12 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Audio.RIFF;
-
 package Audio.Wavefiles.Write is
 
    procedure Open
      (WF          : in out Wavefile;
       File_Name   : String;
-      Wave_Format : RIFF.Wave_Format_Extensible);
+      Wave_Format : Wave_Format_Extensible);
 
    procedure Close (WF         : in out Wavefile);
 

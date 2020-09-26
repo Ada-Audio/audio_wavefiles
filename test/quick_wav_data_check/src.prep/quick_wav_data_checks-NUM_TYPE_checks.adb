@@ -32,6 +32,9 @@ with Ada.Strings.Fixed;                    use Ada.Strings.Fixed;
 
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+with Audio.Wavefiles.RIFF;                 use Audio.Wavefiles.RIFF;
+#end if;
 
 with Audio.Wavefiles.Data_Types.Text_IO;
 use  Audio.Wavefiles.Data_Types.Text_IO;
@@ -41,7 +44,6 @@ with Audio.Wavefiles.Generic_Float_PCM_IO;
 #else
 with Audio.Wavefiles.Generic_Fixed_PCM_IO;
 #end if;
-with Audio.RIFF;                           use Audio.RIFF;
 with Interfaces;                           use Interfaces;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then

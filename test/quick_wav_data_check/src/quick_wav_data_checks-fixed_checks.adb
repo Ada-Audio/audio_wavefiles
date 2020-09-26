@@ -37,7 +37,6 @@ with Audio.Wavefiles.Data_Types.Text_IO;
 use  Audio.Wavefiles.Data_Types.Text_IO;
 
 with Audio.Wavefiles.Generic_Fixed_PCM_IO;
-with Audio.RIFF;                           use Audio.RIFF;
 with Interfaces;                           use Interfaces;
 
 package body Quick_Wav_Data_Checks.Fixed_Checks is

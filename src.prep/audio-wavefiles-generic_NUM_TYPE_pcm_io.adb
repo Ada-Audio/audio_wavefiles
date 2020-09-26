@@ -27,7 +27,7 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Audio.RIFF;                   use Audio.RIFF;
+with Audio.Wavefiles.RIFF;         use Audio.Wavefiles.RIFF;
 with Audio.Wavefiles.Data_Types;   use Audio.Wavefiles.Data_Types;
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 with Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO;

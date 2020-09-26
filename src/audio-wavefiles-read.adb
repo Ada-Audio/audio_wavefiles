@@ -28,9 +28,9 @@
 -------------------------------------------------------------------------------
 
 with Ada.Text_IO;                  use Ada.Text_IO;
-with Interfaces;                   use Interfaces;
 
 with Audio.RIFF;                   use Audio.RIFF;
+with Audio.Wavefiles.RIFF;         use Audio.Wavefiles.RIFF;
 with Audio.Wavefiles.Internals;    use Audio.Wavefiles.Internals;
 
 package body Audio.Wavefiles.Read is
@@ -40,7 +40,7 @@ package body Audio.Wavefiles.Read is
    procedure Open
      (WF          : in out Wavefile;
       File_Name   : String;
-      Wave_Format : in out RIFF.Wave_Format_Extensible)
+      Wave_Format : in out Wave_Format_Extensible)
    is
       RIFF_Tag    : RIFF_Tag_Type;
       RIFF_Chunk  : RIFF_Chunk_Type;
