@@ -44,6 +44,8 @@ package body Audio.Wavefiles.Write is
       RIFF_Tag    : RIFF_Tag_Type;
       RIFF_Chunk  : RIFF_Chunk_Type;
 
+      Verbose     : constant Boolean := False;
+
       use Audio.Wavefile_Info.Formats.Report;
    begin
       if WF.Is_Opened then
@@ -88,7 +90,9 @@ package body Audio.Wavefiles.Write is
          when others =>
             raise Wavefile_Error;
       end case;
-      Print (WF.Wave_Format);
+      if Verbose then
+         Print (WF.Wave_Format);
+      end if;
 
       --  Write data chunk
       WF.File_Index := Ada.Streams.Stream_IO.Index (WF.File);
