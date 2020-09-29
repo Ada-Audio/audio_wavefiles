@@ -27,11 +27,11 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Audio.Wavefile_Definitions.Wave_Formats;
+with Audio.Wavefile_Info.Formats;
 
-package Audio.Wavefile_Definitions.GUIDs is
+package Audio.Wavefile_Info.GUIDs is
 
-   use  Audio.Wavefile_Definitions.Wave_Formats;
+   use  Audio.Wavefile_Info.Formats;
 
    GUID_Undefined : constant GUID :=
                       (16#00000000#,
@@ -62,4 +62,4 @@ package Audio.Wavefile_Definitions.GUIDs is
                          16#00#, 16#38#,
                          16#9b#, 16#71#));
 
-end Audio.Wavefile_Definitions.GUIDs;
+end Audio.Wavefile_Info.GUIDs;

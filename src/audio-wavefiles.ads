@@ -29,8 +29,7 @@
 
 with Ada.Streams.Stream_IO;
 
-with Audio.Wavefile_Definitions.Wave_Formats;
-use  Audio.Wavefile_Definitions.Wave_Formats;
+with Audio.Wavefile_Info.Formats; use Audio.Wavefile_Info.Formats;
 
 package Audio.Wavefiles is
 

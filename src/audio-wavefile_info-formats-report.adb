@@ -27,11 +27,11 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO;                      use Ada.Text_IO;
+with Ada.Text_IO;               use Ada.Text_IO;
 
-with Audio.Wavefile_Definitions.GUIDs; use Audio.Wavefile_Definitions.GUIDs;
+with Audio.Wavefile_Info.GUIDs; use Audio.Wavefile_Info.GUIDs;
 
-package body Audio.Wavefile_Definitions.Wave_Formats.Report is
+package body Audio.Wavefile_Info.Formats.Report is
 
    procedure Print (W : Wave_Format_Extensible) is
    begin
@@ -121,4 +121,4 @@ package body Audio.Wavefile_Definitions.Wave_Formats.Report is
       Put_Line ("-------------------------------------------");
    end Print;
 
-end Audio.Wavefile_Definitions.Wave_Formats.Report;
+end Audio.Wavefile_Info.Formats.Report;

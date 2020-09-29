@@ -32,8 +32,7 @@ with Ada.Text_IO;                   use Ada.Text_IO;
 with Audio.Wavefiles;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
 
-with Audio.Wavefile_Definitions.Wave_Formats;
-use  Audio.Wavefile_Definitions.Wave_Formats;
+with Audio.Wavefile_Info.Formats;   use Audio.Wavefile_Info.Formats;
 
 with Generic_Float_PCM_Buffer_Ops;
 

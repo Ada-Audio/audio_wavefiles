@@ -31,7 +31,7 @@ with Interfaces;                   use Interfaces;
 
 with Audio.RIFF;                   use Audio.RIFF;
 
-with Audio.Wavefile_Definitions.Wave_Formats.Report;
+with Audio.Wavefile_Info.Formats.Report;
 
 package body Audio.Wavefiles.Write is
 
@@ -45,7 +45,7 @@ package body Audio.Wavefiles.Write is
       RIFF_Tag    : RIFF_Tag_Type;
       RIFF_Chunk  : RIFF_Chunk_Type;
 
-      use Audio.Wavefile_Definitions.Wave_Formats.Report;
+      use Audio.Wavefile_Info.Formats.Report;
    begin
       if WF.Is_Opened then
          raise Wavefile_Error;

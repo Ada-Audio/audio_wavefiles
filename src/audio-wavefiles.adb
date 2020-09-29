@@ -31,7 +31,7 @@
 with Audio.Wavefiles.Read;
 with Audio.Wavefiles.Write;
 
-with Audio.Wavefile_Definitions.GUIDs; use Audio.Wavefile_Definitions.GUIDs;
+with Audio.Wavefile_Info.GUIDs; use Audio.Wavefile_Info.GUIDs;
 
 package body Audio.Wavefiles is
 

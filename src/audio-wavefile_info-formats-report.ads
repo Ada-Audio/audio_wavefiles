@@ -27,8 +27,8 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package Audio.Wavefile_Definitions.Wave_Formats.Report is
+package Audio.Wavefile_Info.Formats.Report is
 
    procedure Print (W : Wave_Format_Extensible);
 
-end Audio.Wavefile_Definitions.Wave_Formats.Report;
+end Audio.Wavefile_Info.Formats.Report;

@@ -27,6 +27,6 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package Audio.Wavefile_Definitions with Pure is
+package Audio.Wavefile_Info with Pure is
 
-end Audio.Wavefile_Definitions;
+end Audio.Wavefile_Info;

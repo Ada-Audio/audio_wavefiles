@@ -39,11 +39,9 @@ use  Audio.Wavefiles.Data_Types.Text_IO;
 
 with Audio.Wavefiles.Generic_Float_PCM_IO;
 
-with Audio.Wavefile_Definitions.Wave_Formats;
-use  Audio.Wavefile_Definitions.Wave_Formats;
+with Audio.Wavefile_Info.Formats;          use Audio.Wavefile_Info.Formats;
 
-with Audio.Wavefile_Definitions.GUIDs;
-use  Audio.Wavefile_Definitions.GUIDs;
+with Audio.Wavefile_Info.GUIDs;            use Audio.Wavefile_Info.GUIDs;
 
 package body Quick_Wav_Data_Checks.Float_Checks is
 

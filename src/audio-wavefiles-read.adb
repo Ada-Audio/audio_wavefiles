@@ -33,7 +33,7 @@ with Interfaces;
 with Audio.RIFF;                   use Audio.RIFF;
 with Audio.Wavefiles.Internals;    use Audio.Wavefiles.Internals;
 
-with Audio.Wavefile_Definitions.Wave_Formats.Report;
+with Audio.Wavefile_Info.Formats.Report;
 
 package body Audio.Wavefiles.Read is
 
@@ -175,7 +175,7 @@ package body Audio.Wavefiles.Read is
    end Is_EOF;
 
    procedure Display_Info (WF : in Wavefile) is
-      use Audio.Wavefile_Definitions.Wave_Formats.Report;
+      use Audio.Wavefile_Info.Formats.Report;
    begin
       Print (WF.Wave_Format);
 

@@ -43,12 +43,10 @@ with Audio.Wavefiles.Generic_Float_PCM_IO;
 with Audio.Wavefiles.Generic_Fixed_PCM_IO;
 #end if;
 
-with Audio.Wavefile_Definitions.Wave_Formats;
-use  Audio.Wavefile_Definitions.Wave_Formats;
+with Audio.Wavefile_Info.Formats;          use Audio.Wavefile_Info.Formats;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-with Audio.Wavefile_Definitions.GUIDs;
-use  Audio.Wavefile_Definitions.GUIDs;
+with Audio.Wavefile_Info.GUIDs;            use Audio.Wavefile_Info.GUIDs;
 #end if;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
