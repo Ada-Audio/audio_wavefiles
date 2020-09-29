@@ -41,8 +41,7 @@ package body Audio.Wavefiles.Read is
 
    procedure Open
      (WF          : in out Wavefile;
-      File_Name   : String;
-      Wave_Format : in out Wave_Format_Extensible)
+      File_Name   : String)
    is
       RIFF_Tag    : RIFF_Tag_Type;
       RIFF_Chunk  : RIFF_Chunk_Type;
@@ -157,9 +156,6 @@ package body Audio.Wavefiles.Read is
          Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples
                    / Long_Integer (WF.Wave_Format.Channels)));
       end if;
-
-      Wave_Format := Format_Of_Wavefile (WF);
-
    end Open;
 
    function Is_EOF

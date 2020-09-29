@@ -40,13 +40,12 @@ package body Audio.Wavefiles is
    procedure Open
      (WF          : in out Wavefile;
       Mode        : Wav_File_Mode;
-      File_Name   : String;
-      Wave_Format : in out Wave_Format_Extensible) is
+      File_Name   : String) is
    begin
       if Mode = In_File then
-         Audio.Wavefiles.Read.Open (WF, File_Name, Wave_Format);
+         Audio.Wavefiles.Read.Open (WF, File_Name);
       else
-         Audio.Wavefiles.Write.Open (WF, File_Name, Wave_Format);
+         Audio.Wavefiles.Write.Open (WF, File_Name);
       end if;
    end Open;
 
@@ -67,6 +66,13 @@ package body Audio.Wavefiles is
          Audio.Wavefiles.Write.Close (WF);
       end if;
    end Close;
+
+   procedure Set_Format_Of_Wavefile
+     (WF     : in out Wavefile;
+      Format :        Wave_Format_Extensible) is
+   begin
+      WF.Wave_Format := Format;
+   end Set_Format_Of_Wavefile;
 
    function Format_Of_Wavefile
      (W : Wavefile) return  Wave_Format_Extensible is

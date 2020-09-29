@@ -32,8 +32,6 @@ with Ada.Text_IO;                   use Ada.Text_IO;
 with Audio.Wavefiles;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
 
-with Audio.Wavefile_Info.Formats;   use Audio.Wavefile_Info.Formats;
-
 with Generic_Float_PCM_Buffer_Ops;
 
 package body Generic_Float_Wave_Test is
@@ -54,9 +52,8 @@ package body Generic_Float_Wave_Test is
 
    procedure Display_Info_File (File_In  : String) is
       WF_In       : Audio.Wavefiles.Wavefile;
-      Wave_Format : Wave_Format_Extensible;
    begin
-      Wav.Open (WF_In, Wav.In_File, File_In, Wave_Format);
+      Wav.Open (WF_In, Wav.In_File, File_In);
       Wav.Display_Info (WF_In);
       Wav.Close (WF_In);
    end Display_Info_File;
@@ -67,7 +64,6 @@ package body Generic_Float_Wave_Test is
    is
       WF_In       : Audio.Wavefiles.Wavefile;
       WF_Out      : Audio.Wavefiles.Wavefile;
-      Wave_Format : Wave_Format_Extensible;
       EOF         : Boolean;
       Samples     : Integer := 0;
 
@@ -81,8 +77,13 @@ package body Generic_Float_Wave_Test is
       end Copy_PCM_MC_Sample;
 
    begin
-      Wav.Open (WF_In,  Wav.In_File,  File_In, Wave_Format);
-      Wav.Open (WF_Out, Wav.Out_File, File_Out, Wave_Format);
+      Wav.Open (WF_In,  Wav.In_File,  File_In);
+
+      Wav.Set_Format_Of_Wavefile
+        (WF_Out,
+         Wav.Format_Of_Wavefile (WF_In));
+
+      Wav.Open (WF_Out, Wav.Out_File, File_Out);
 
       if Verbose then
          Put_Line ("Input File:");
@@ -111,7 +112,6 @@ package body Generic_Float_Wave_Test is
    is
       WF_Ref           : Audio.Wavefiles.Wavefile;
       WF_DUT           : Audio.Wavefiles.Wavefile;
-      Wave_Format      : Wave_Format_Extensible;
       EOF_Ref, EOF_DUT : Boolean;
       Diff_Sample      : Natural := 0;
       Samples          : Integer := 0;
@@ -144,8 +144,8 @@ package body Generic_Float_Wave_Test is
       end Report_Comparison;
 
    begin
-      Wav.Open (WF_Ref, Wav.In_File, File_Ref, Wave_Format);
-      Wav.Open (WF_DUT, Wav.In_File, File_DUT, Wave_Format);
+      Wav.Open (WF_Ref, Wav.In_File, File_Ref);
+      Wav.Open (WF_DUT, Wav.In_File, File_DUT);
       loop
          Samples := Samples + 1;
          Compare_PCM_MC_Sample;
@@ -165,7 +165,6 @@ package body Generic_Float_Wave_Test is
       WF_Ref           : Audio.Wavefiles.Wavefile;
       WF_DUT           : Audio.Wavefiles.Wavefile;
       WF_Diff          : Audio.Wavefiles.Wavefile;
-      Wave_Format      : Wave_Format_Extensible;
       EOF_Ref, EOF_DUT : Boolean;
 
       procedure Diff_PCM_MC_Sample;
@@ -183,9 +182,14 @@ package body Generic_Float_Wave_Test is
       end Diff_PCM_MC_Sample;
 
    begin
-      Wav.Open (WF_Ref,  Wav.In_File,  File_Ref,  Wave_Format);
-      Wav.Open (WF_DUT,  Wav.In_File,  File_DUT,  Wave_Format);
-      Wav.Open (WF_Diff, Wav.Out_File, File_Diff, Wave_Format);
+      Wav.Open (WF_Ref,  Wav.In_File,  File_Ref);
+      Wav.Open (WF_DUT,  Wav.In_File,  File_DUT);
+
+      Wav.Set_Format_Of_Wavefile
+        (WF_Diff,
+         Wav.Format_Of_Wavefile (WF_Ref));
+
+      Wav.Open (WF_Diff, Wav.Out_File, File_Diff);
       loop
          Diff_PCM_MC_Sample;
          exit when EOF_Ref or EOF_DUT;
@@ -203,8 +207,6 @@ package body Generic_Float_Wave_Test is
       WF_Ref           : Audio.Wavefiles.Wavefile;
       WF_DUT           : Audio.Wavefiles.Wavefile;
       WF_Mix           : Audio.Wavefiles.Wavefile;
-      Wave_Format_Ref  : Wave_Format_Extensible;
-      Wave_Format_DUT  : Wave_Format_Extensible;
       EOF_Ref, EOF_DUT : Boolean;
 
       procedure Mix_PCM_MC_Sample;
@@ -221,9 +223,14 @@ package body Generic_Float_Wave_Test is
       end Mix_PCM_MC_Sample;
 
    begin
-      Wav.Open (WF_Ref, Wav.In_File,  File_Ref, Wave_Format_Ref);
-      Wav.Open (WF_DUT, Wav.In_File,  File_DUT, Wave_Format_DUT);
-      Wav.Open (WF_Mix, Wav.Out_File, File_Mix, Wave_Format_Ref);
+      Wav.Open (WF_Ref, Wav.In_File,  File_Ref);
+      Wav.Open (WF_DUT, Wav.In_File,  File_DUT);
+
+      Wav.Set_Format_Of_Wavefile
+        (WF_Mix,
+         Wav.Format_Of_Wavefile (WF_Ref));
+
+      Wav.Open (WF_Mix, Wav.Out_File, File_Mix);
       loop
          Mix_PCM_MC_Sample;
          exit when EOF_Ref or EOF_DUT;

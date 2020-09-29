@@ -31,8 +31,7 @@ package Audio.Wavefiles.Read is
 
    procedure Open
      (WF          : in out Wavefile;
-      File_Name   : String;
-      Wave_Format : in out Wave_Format_Extensible);
+      File_Name   : String);
 
    function Is_EOF
      (WF   : in out Wavefile) return Boolean

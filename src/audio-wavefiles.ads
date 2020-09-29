@@ -43,8 +43,10 @@ package Audio.Wavefiles is
    procedure Open
      (WF          : in out Wavefile;
       Mode        : Wav_File_Mode;
-      File_Name   : String;
-      Wave_Format : in out Wave_Format_Extensible);
+      File_Name   : String);
+
+   function Is_Opened
+     (WF : Wavefile) return Boolean;
 
    function Is_EOF
      (WF   : in out Wavefile) return Boolean
@@ -54,6 +56,11 @@ package Audio.Wavefiles is
      with Pre => File_Mode (WF) = In_File;
 
    procedure Close (WF : in out Wavefile);
+
+   procedure Set_Format_Of_Wavefile
+     (WF     : in out Wavefile;
+      Format :        Wave_Format_Extensible)
+     with Pre => not Is_Opened (WF);
 
    function Format_Of_Wavefile
      (W : Wavefile) return Wave_Format_Extensible;
@@ -81,5 +88,8 @@ private
          Samples          : Long_Integer;
          Samples_Read     : Long_Integer;
       end record;
+
+   function Is_Opened
+     (WF : Wavefile) return Boolean is (WF.Is_Opened);
 
 end Audio.Wavefiles;

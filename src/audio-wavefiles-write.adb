@@ -39,8 +39,7 @@ package body Audio.Wavefiles.Write is
 
    procedure Open
      (WF          : in out Wavefile;
-      File_Name   : String;
-      Wave_Format : Wave_Format_Extensible)
+      File_Name   : String)
    is
       RIFF_Tag    : RIFF_Tag_Type;
       RIFF_Chunk  : RIFF_Chunk_Type;
@@ -50,8 +49,6 @@ package body Audio.Wavefiles.Write is
       if WF.Is_Opened then
          raise Wavefile_Error;
       end if;
-
-      WF.Wave_Format := Wave_Format;
 
       --  Open output wavefile
       Create (WF.File, Out_File, File_Name);
