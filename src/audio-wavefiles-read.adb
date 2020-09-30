@@ -50,7 +50,7 @@ package body Audio.Wavefiles.Read is
       if WF.Is_Opened then
          raise Wavefile_Error;
       end if;
-      Set_Default (WF.Wave_Format);
+      WF.Wave_Format := Default;
 
       --  Open input wavefile
       Open (WF.File, In_File, File_Name);

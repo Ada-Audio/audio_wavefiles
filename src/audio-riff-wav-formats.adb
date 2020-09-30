@@ -33,31 +33,37 @@ package body Audio.RIFF.Wav.Formats is
 
    type Channel_Mask_Integer is mod 2**Channel_Mask_Type_Size;
 
-   procedure Set_Default (W : out Wave_Format_16) is
+   function Default return Wave_Format_16 is
    begin
-      W.Format_Tag        := 16#0001#;
-      W.Channels          := 2;
-      W.Samples_Per_Sec   := 44100;
-      W.Bits_Per_Sample   := 16;
-      W.Block_Align       := ((W.Bits_Per_Sample + 7) / 8) * W.Channels;
-      W.Avg_Bytes_Per_Sec := 0;
-   end Set_Default;
+      return W : Wave_Format_16 do
+         W.Format_Tag        := 16#0001#;
+         W.Channels          := 2;
+         W.Samples_Per_Sec   := 44100;
+         W.Bits_Per_Sample   := 16;
+         W.Block_Align       := ((W.Bits_Per_Sample + 7) / 8) * W.Channels;
+         W.Avg_Bytes_Per_Sec := 0;
+      end return;
+   end Default;
 
-   procedure Set_Default (W : out Wave_Format_18) is
+   function Default return Wave_Format_18 is
    begin
-      Set_Default (Wave_Format_16 (W));
-      W.Size := 0;
-   end Set_Default;
+      return W : Wave_Format_18 do
+         Wave_Format_16 (W) := Default;
+         W.Size := 0;
+      end return;
+   end Default;
 
-   procedure Set_Default (W : out Wave_Format_Extensible) is
+   function Default return Wave_Format_Extensible is
       use Audio.RIFF.Wav.GUIDs;
    begin
-      Set_Default (Wave_Format_18 (W));
-      W.Size                  := 22;
-      W.Valid_Bits_Per_Sample := 0;
-      W.Sub_Format            := GUID_Undefined;
-      W.Channel_Mask          := (others => False);
-   end Set_Default;
+      return W : Wave_Format_Extensible do
+         Wave_Format_18 (W)      := Default;
+         W.Size                  := 22;
+         W.Valid_Bits_Per_Sample := W.Bits_Per_Sample;
+         W.Sub_Format            := GUID_Undefined;
+         W.Channel_Mask          := (others => False);
+      end return;
+   end Default;
 
    function Is_Float_Format
      (W : Wave_Format_Extensible) return Boolean

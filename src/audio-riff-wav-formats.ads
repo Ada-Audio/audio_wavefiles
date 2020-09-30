@@ -91,14 +91,14 @@ package Audio.RIFF.Wav.Formats is
          Bits_Per_Sample   : Unsigned_16;
       end record;
 
-   procedure Set_Default (W : out Wave_Format_16);
+   function Default return Wave_Format_16;
 
    type Wave_Format_18 is new Wave_Format_16 with
       record
          Size              : Unsigned_16 := 0;
       end record;
 
-   procedure Set_Default (W : out Wave_Format_18);
+   function Default return Wave_Format_18;
 
    type Wave_Format_Extensible is new Wave_Format_18 with
       record
@@ -107,7 +107,7 @@ package Audio.RIFF.Wav.Formats is
          Sub_Format            : GUID;
       end record;
 
-   procedure Set_Default (W : out Wave_Format_Extensible);
+   function Default return Wave_Format_Extensible;
 
    function Is_Float_Format
      (W : Wave_Format_Extensible) return Boolean;
