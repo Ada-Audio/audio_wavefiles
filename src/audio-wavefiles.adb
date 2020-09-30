@@ -1,3 +1,4 @@
+
 -------------------------------------------------------------------------------
 --
 --                                WAVEFILES
@@ -30,6 +31,8 @@
 with Audio.Wavefiles.Read;
 with Audio.Wavefiles.Write;
 
+with Audio.RIFF.Wav.GUIDs;  use Audio.RIFF.Wav.GUIDs;
+
 package body Audio.Wavefiles is
 
    use Ada.Streams.Stream_IO;
@@ -37,13 +40,12 @@ package body Audio.Wavefiles is
    procedure Open
      (WF          : in out Wavefile;
       Mode        : Wav_File_Mode;
-      File_Name   : String;
-      Wave_Format : in out RIFF.Wave_Format_Extensible) is
+      File_Name   : String) is
    begin
       if Mode = In_File then
-         Audio.Wavefiles.Read.Open (WF, File_Name, Wave_Format);
+         Audio.Wavefiles.Read.Open (WF, File_Name);
       else
-         Audio.Wavefiles.Write.Open (WF, File_Name, Wave_Format);
+         Audio.Wavefiles.Write.Open (WF, File_Name);
       end if;
    end Open;
 
@@ -65,8 +67,15 @@ package body Audio.Wavefiles is
       end if;
    end Close;
 
+   procedure Set_Format_Of_Wavefile
+     (WF     : in out Wavefile;
+      Format :        Wave_Format_Extensible) is
+   begin
+      WF.Wave_Format := Format;
+   end Set_Format_Of_Wavefile;
+
    function Format_Of_Wavefile
-     (W : Wavefile) return  RIFF.Wave_Format_Extensible is
+     (W : Wavefile) return  Wave_Format_Extensible is
    begin
       return W.Wave_Format;
    end Format_Of_Wavefile;
@@ -77,13 +86,12 @@ package body Audio.Wavefiles is
    function File_Mode (W : Wavefile) return Wav_File_Mode is
      (if Mode (W.File) = In_File then In_File else Out_File);
 
-   function Is_Supported_Format (W : RIFF.Wave_Format_Extensible)
+   function Is_Supported_Format (W : Wave_Format_Extensible)
                                  return Boolean is
-      use type RIFF.GUID;
    begin
-      if not (W.Sub_Format = RIFF.GUID_Undefined
-              or W.Sub_Format = RIFF.GUID_PCM
-              or W.Sub_Format = RIFF.GUID_IEEE_Float)
+      if not (W.Sub_Format = GUID_Undefined
+              or W.Sub_Format = GUID_PCM
+              or W.Sub_Format = GUID_IEEE_Float)
       then
          return False;
       end if;

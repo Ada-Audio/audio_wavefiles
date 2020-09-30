@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 --
---                                WAVEFILES
+--                           WAVEFILE DEFINITIONS
 --
---                           Internal information
+--                                  GUIDs
 --
 --  The MIT License (MIT)
 --
@@ -27,14 +27,39 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Streams.Stream_IO;
-with Interfaces;            use Interfaces;
+with Audio.RIFF.Wav.Formats;
 
-private
-package Audio.Wavefiles.Internals is
+package Audio.RIFF.Wav.GUIDs is
 
-   procedure Skip_Bytes
-     (F     : in out Ada.Streams.Stream_IO.File_Type;
-      Bytes : in Unsigned_32);
+   use  Audio.RIFF.Wav.Formats;
 
-end Audio.Wavefiles.Internals;
+   GUID_Undefined : constant GUID :=
+                      (16#00000000#,
+                       16#0000#,
+                       16#0000#,
+                       (16#00#, 16#00#,
+                        16#00#, 16#00#,
+                        16#00#, 16#00#,
+                        16#00#, 16#00#));
+   --  Undefined GUID
+
+   GUID_PCM       : constant GUID :=
+                      (16#00000001#,
+                       16#0000#,
+                       16#0010#,
+                       (16#80#, 16#00#,
+                        16#00#, 16#aa#,
+                        16#00#, 16#38#,
+                        16#9b#, 16#71#));
+   --  CEA 861 0x01: KSDATAFORMAT_SUBTYPE_PCM (IEC 60958 PCM)
+
+   GUID_IEEE_Float : constant GUID :=
+                       (16#00000003#,
+                        16#0000#,
+                        16#0010#,
+                        (16#80#, 16#00#,
+                         16#00#, 16#aa#,
+                         16#00#, 16#38#,
+                         16#9b#, 16#71#));
+
+end Audio.RIFF.Wav.GUIDs;

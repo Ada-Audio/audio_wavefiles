@@ -29,6 +29,7 @@
 
 with Ada.Text_IO;                          use Ada.Text_IO;
 with Ada.Strings.Fixed;                    use Ada.Strings.Fixed;
+with Interfaces;                           use Interfaces;
 
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
@@ -37,8 +38,10 @@ with Audio.Wavefiles.Data_Types.Text_IO;
 use  Audio.Wavefiles.Data_Types.Text_IO;
 
 with Audio.Wavefiles.Generic_Float_PCM_IO;
-with Audio.RIFF;                           use Audio.RIFF;
-with Interfaces;                           use Interfaces;
+
+with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
+
+with Audio.RIFF.Wav.GUIDs;                 use Audio.RIFF.Wav.GUIDs;
 
 package body Quick_Wav_Data_Checks.Float_Checks is
 
@@ -200,11 +203,12 @@ package body Quick_Wav_Data_Checks.Float_Checks is
       WF_Out      : Wavefile;
       Wave_Format : Wave_Format_Extensible;
    begin
-      Set_Default (Wave_Format);
+      Wave_Format := Default;
       Wave_Format.Bits_Per_Sample := Test_Bits;
       Wave_Format.Sub_Format := GUID_IEEE_Float;
 
-      Open (WF_Out, Out_File, Wav_File_Name, Wave_Format);
+      Set_Format_Of_Wavefile (WF_Out, Wave_Format);
+      Open (WF_Out, Out_File, Wav_File_Name);
 
       Write_PCM_Vals (WF_Out, PCM_Ref);
 
@@ -216,11 +220,12 @@ package body Quick_Wav_Data_Checks.Float_Checks is
       PCM_DUT       : out PCM_Buffer)
    is
       WF_In       : Wavefile;
-      Wave_Format : Wave_Format_Extensible;
+      --  Wave_Format : Wave_Format_Extensible;
       EOF         : Boolean;
       Samples     : Integer := 0;
    begin
-      Open (WF_In, In_File, Wav_File_Name, Wave_Format);
+      Open (WF_In, In_File, Wav_File_Name);
+      --  Wave_Format := Format_Of_Wavefile (WF_In);
 
       if Verbose then
          Display_Info (WF_In, "Input File:");

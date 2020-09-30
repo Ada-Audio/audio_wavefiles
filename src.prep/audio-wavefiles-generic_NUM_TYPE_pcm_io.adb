@@ -27,8 +27,8 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Audio.RIFF;                   use Audio.RIFF;
 with Audio.Wavefiles.Data_Types;   use Audio.Wavefiles.Data_Types;
+
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 with Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO;
 with Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO;
@@ -107,7 +107,7 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
 
       WF.Samples_Read := WF.Samples_Read + Long_Integer (Ch);
 
-      if WF.Wave_Format.Sub_Format = GUID_IEEE_Float then
+      if Is_Float_Format (WF.Wave_Format) then
          case WF.Wave_Format.Bits_Per_Sample is
             when 32 =>
                return PCM_Float_Wav_32.Get (WF);
@@ -117,7 +117,7 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
                raise Wavefile_Unsupported;
          end case;
       else
-         --  Always assume WF.Wave_Format.Sub_Format = GUID_PCM
+         --  Always assume fixed-point PCM format
          case WF.Wave_Format.Bits_Per_Sample is
             when 8 =>
                raise Wavefile_Unsupported;
@@ -146,7 +146,7 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
          raise Wavefile_Unsupported;
       end if;
 
-      if WF.Wave_Format.Sub_Format = GUID_IEEE_Float then
+      if Is_Float_Format (WF.Wave_Format) then
          case WF.Wave_Format.Bits_Per_Sample is
             when 32 =>
                PCM_Float_Wav_32.Put (WF, PCM);
@@ -156,7 +156,7 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
                raise Wavefile_Unsupported;
          end case;
       else
-         --  Always assume WF.Wave_Format.Sub_Format = GUID_PCM
+         --  Always assume fixed-point PCM format
          case WF.Wave_Format.Bits_Per_Sample is
             when 8 =>
                raise Wavefile_Unsupported;

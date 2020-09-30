@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 --
---                                WAVEFILES
+--                           WAVEFILE DEFINITIONS
 --
---                           Internal information
+--                              Wave Formats
 --
 --  The MIT License (MIT)
 --
@@ -27,14 +27,8 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Streams.Stream_IO;
-with Interfaces;            use Interfaces;
+package Audio.RIFF.Wav.Formats.Report is
 
-private
-package Audio.Wavefiles.Internals is
+   procedure Print (W : Wave_Format_Extensible);
 
-   procedure Skip_Bytes
-     (F     : in out Ada.Streams.Stream_IO.File_Type;
-      Bytes : in Unsigned_32);
-
-end Audio.Wavefiles.Internals;
+end Audio.RIFF.Wav.Formats.Report;

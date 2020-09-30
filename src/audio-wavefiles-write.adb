@@ -31,23 +31,26 @@ with Interfaces;                   use Interfaces;
 
 with Audio.RIFF;                   use Audio.RIFF;
 
+with Audio.RIFF.Wav.Formats.Report;
+
 package body Audio.Wavefiles.Write is
 
    use Ada.Streams.Stream_IO;
 
    procedure Open
      (WF          : in out Wavefile;
-      File_Name   : String;
-      Wave_Format : RIFF.Wave_Format_Extensible)
+      File_Name   : String)
    is
       RIFF_Tag    : RIFF_Tag_Type;
       RIFF_Chunk  : RIFF_Chunk_Type;
+
+      Verbose     : constant Boolean := False;
+
+      use Audio.RIFF.Wav.Formats.Report;
    begin
       if WF.Is_Opened then
          raise Wavefile_Error;
       end if;
-
-      WF.Wave_Format := Wave_Format;
 
       --  Open output wavefile
       Create (WF.File, Out_File, File_Name);
@@ -87,7 +90,9 @@ package body Audio.Wavefiles.Write is
          when others =>
             raise Wavefile_Error;
       end case;
-      Print (WF.Wave_Format);
+      if Verbose then
+         Print (WF.Wave_Format);
+      end if;
 
       --  Write data chunk
       WF.File_Index := Ada.Streams.Stream_IO.Index (WF.File);

@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 --
---                                WAVEFILES
+--                           WAVEFILE DEFINITIONS
 --
---                              WAV RIFF data
+--                              Wave Formats
 --
 --  The MIT License (MIT)
 --
@@ -27,35 +27,11 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO;          use Ada.Text_IO;
 
-package body Audio.RIFF is
+with Audio.RIFF.Wav.GUIDs; use Audio.RIFF.Wav.GUIDs;
 
-   type Channel_Mask_Integer is mod 2**Channel_Mask_Type_Size;
-
-   procedure Read
-     (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-      Item   : out Channel_Mask_Type)
-   is
-      V : Channel_Mask_Integer;
-      X : Channel_Mask_Type;
-      for X'Address use V'Address;
-   begin
-      Channel_Mask_Integer'Read (Stream, V);
-      Item := X;
-   end Read;
-
-   procedure Write
-     (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-      Item   : Channel_Mask_Type)
-   is
-      V : Channel_Mask_Integer;
-      X : Channel_Mask_Type;
-      for X'Address use V'Address;
-   begin
-      X := Item;
-      Channel_Mask_Integer'Write (Stream, V);
-   end Write;
+package body Audio.RIFF.Wav.Formats.Report is
 
    procedure Print (W : Wave_Format_Extensible) is
    begin
@@ -145,27 +121,4 @@ package body Audio.RIFF is
       Put_Line ("-------------------------------------------");
    end Print;
 
-   procedure Set_Default (W : out Wave_Format_16) is
-   begin
-      W.Format_Tag        := 16#0001#;
-      W.Channels          := 2;
-      W.Samples_Per_Sec   := 44100;
-      W.Bits_Per_Sample   := 16;
-      W.Block_Align       := ((W.Bits_Per_Sample + 7) / 8) * W.Channels;
-      W.Avg_Bytes_Per_Sec := 0;
-   end Set_Default;
-
-   procedure Set_Default (W : out Wave_Format_18) is
-   begin
-      Set_Default (Wave_Format_16 (W));
-      null;
-   end Set_Default;
-
-   procedure Set_Default (W : out Wave_Format_Extensible) is
-   begin
-      Set_Default (Wave_Format_18 (W));
-      W.Size := 22;
-      null;
-   end Set_Default;
-
-end Audio.RIFF;
+end Audio.RIFF.Wav.Formats.Report;

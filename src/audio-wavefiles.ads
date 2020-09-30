@@ -28,13 +28,11 @@
 -------------------------------------------------------------------------------
 
 with Ada.Streams.Stream_IO;
-with Audio.RIFF;
 
---  <description>
---     Main package for WAVE file reading / writing
---  </description>
+with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
 
 package Audio.Wavefiles is
+
    type Wavefile is limited private;
 
    type Wav_File_Mode is (In_File, Out_File);
@@ -45,8 +43,10 @@ package Audio.Wavefiles is
    procedure Open
      (WF          : in out Wavefile;
       Mode        : Wav_File_Mode;
-      File_Name   : String;
-      Wave_Format : in out RIFF.Wave_Format_Extensible);
+      File_Name   : String);
+
+   function Is_Opened
+     (WF : Wavefile) return Boolean;
 
    function Is_EOF
      (WF   : in out Wavefile) return Boolean
@@ -57,8 +57,13 @@ package Audio.Wavefiles is
 
    procedure Close (WF : in out Wavefile);
 
+   procedure Set_Format_Of_Wavefile
+     (WF     : in out Wavefile;
+      Format :        Wave_Format_Extensible)
+     with Pre => not Is_Opened (WF);
+
    function Format_Of_Wavefile
-     (W : Wavefile) return  Audio.RIFF.Wave_Format_Extensible;
+     (W : Wavefile) return Wave_Format_Extensible;
 
    function Number_Of_Channels
      (W : Wavefile) return Positive;
@@ -66,8 +71,8 @@ package Audio.Wavefiles is
    function File_Mode
      (W : Wavefile) return Wav_File_Mode;
 
-   function Is_Supported_Format (W : RIFF.Wave_Format_Extensible)
-                                 return Boolean;
+   function Is_Supported_Format
+     (W : Wave_Format_Extensible) return Boolean;
 
 private
 
@@ -79,9 +84,12 @@ private
          File             : Ada.Streams.Stream_IO.File_Type;
          File_Access      : Ada.Streams.Stream_IO.Stream_Access;
          File_Index       : Ada.Streams.Stream_IO.Positive_Count;
-         Wave_Format      : Audio.RIFF.Wave_Format_Extensible;
+         Wave_Format      : Wave_Format_Extensible := Default;
          Samples          : Long_Integer;
          Samples_Read     : Long_Integer;
       end record;
+
+   function Is_Opened
+     (WF : Wavefile) return Boolean is (WF.Is_Opened);
 
 end Audio.Wavefiles;
