@@ -151,6 +151,17 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
                    6      => -2#1.0#e-15,
                    others => 0.0);
 
+   PCM_Ref_24 : constant PCM_Buffer (1 .. 15) :=
+                  (1      =>  16#0.FFFF_FE00_0000_0000#,
+                   2      => -2#1.0#e-0,
+                   3      =>  2#1.0#e-1,
+                   4      => -2#1.0#e-1,
+                   5      =>  2#1.0#e-15,
+                   6      => -2#1.0#e-15,
+                   7      =>  2#1.0#e-23,
+                   8      => -2#1.0#e-23,
+                   others => 0.0);
+
    PCM_Ref_32 : constant PCM_Buffer (1 .. 15) :=
                   (1      =>  16#0.FFFF_FFFE_0000_0000#,
                    2      => -2#1.0#e-0,
@@ -259,7 +270,7 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
    Test_Bits_Per_Sample : constant Bits_Per_Sample_List := (32, 64);
 #else
-   Test_Bits_Per_Sample : constant Bits_Per_Sample_List := (16, 32);
+   Test_Bits_Per_Sample : constant Bits_Per_Sample_List := (16, 24, 32);
 #end if;
 
    procedure Display_Info
@@ -368,6 +379,8 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
 #else
          when 16 =>
             return PCM_Data_Is_OK (PCM_Ref_16, PCM_DUT);
+         when 24 =>
+            return PCM_Data_Is_OK (PCM_Ref_24, PCM_DUT);
          when 32 =>
             return PCM_Data_Is_OK (PCM_Ref_32, PCM_DUT);
 #end if;
