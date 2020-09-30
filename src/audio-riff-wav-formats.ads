@@ -29,7 +29,6 @@
 
 with Ada.Streams;
 with System;
-with Interfaces;  use Interfaces;
 
 package Audio.RIFF.Wav.Formats is
 
