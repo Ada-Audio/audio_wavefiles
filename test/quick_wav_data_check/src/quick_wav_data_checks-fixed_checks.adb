@@ -39,7 +39,7 @@ use  Audio.Wavefiles.Data_Types.Text_IO;
 
 with Audio.Wavefiles.Generic_Fixed_PCM_IO;
 
-with Audio.Wavefile_Info.Formats;          use Audio.Wavefile_Info.Formats;
+with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
 
 
 package body Quick_Wav_Data_Checks.Fixed_Checks is

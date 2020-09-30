@@ -27,11 +27,11 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Audio.Wavefile_Info.Formats;
+with Audio.RIFF.Wav.Formats;
 
-package Audio.Wavefile_Info.GUIDs is
+package Audio.RIFF.Wav.GUIDs is
 
-   use  Audio.Wavefile_Info.Formats;
+   use  Audio.RIFF.Wav.Formats;
 
    GUID_Undefined : constant GUID :=
                       (16#00000000#,
@@ -62,4 +62,4 @@ package Audio.Wavefile_Info.GUIDs is
                          16#00#, 16#38#,
                          16#9b#, 16#71#));
 
-end Audio.Wavefile_Info.GUIDs;
+end Audio.RIFF.Wav.GUIDs;

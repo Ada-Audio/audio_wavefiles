@@ -31,7 +31,7 @@ with Interfaces;                   use Interfaces;
 
 with Audio.RIFF;                   use Audio.RIFF;
 
-with Audio.Wavefile_Info.Formats.Report;
+with Audio.RIFF.Wav.Formats.Report;
 
 package body Audio.Wavefiles.Write is
 
@@ -46,7 +46,7 @@ package body Audio.Wavefiles.Write is
 
       Verbose     : constant Boolean := False;
 
-      use Audio.Wavefile_Info.Formats.Report;
+      use Audio.RIFF.Wav.Formats.Report;
    begin
       if WF.Is_Opened then
          raise Wavefile_Error;

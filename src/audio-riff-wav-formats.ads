@@ -31,7 +31,7 @@ with Ada.Streams;
 with System;
 with Interfaces;  use Interfaces;
 
-package Audio.Wavefile_Info.Formats is
+package Audio.RIFF.Wav.Formats is
 
    type Sub_GUID is array (1 .. 8) of Unsigned_8;
 
@@ -123,4 +123,4 @@ package Audio.Wavefile_Info.Formats is
       Wave_Format_18_Size         => 18,
       Wave_Format_Extensible_Size => 40);
 
-end Audio.Wavefile_Info.Formats;
+end Audio.RIFF.Wav.Formats;

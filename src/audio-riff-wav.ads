@@ -2,11 +2,11 @@
 --
 --                           WAVEFILE DEFINITIONS
 --
---                              Wave Formats
+--                              Main package
 --
 --  The MIT License (MIT)
 --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
+--  Copyright (c) 2020 Gustavo A. Hoffmann
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -27,8 +27,6 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package Audio.Wavefile_Info.Formats.Report is
+package Audio.RIFF.Wav with Pure is
 
-   procedure Print (W : Wave_Format_Extensible);
-
-end Audio.Wavefile_Info.Formats.Report;
+end Audio.RIFF.Wav;

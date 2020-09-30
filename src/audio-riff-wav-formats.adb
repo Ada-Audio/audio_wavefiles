@@ -27,9 +27,9 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Audio.Wavefile_Info.GUIDs;
+with Audio.RIFF.Wav.GUIDs;
 
-package body Audio.Wavefile_Info.Formats is
+package body Audio.RIFF.Wav.Formats is
 
    type Channel_Mask_Integer is mod 2**Channel_Mask_Type_Size;
 
@@ -50,7 +50,7 @@ package body Audio.Wavefile_Info.Formats is
    end Set_Default;
 
    procedure Set_Default (W : out Wave_Format_Extensible) is
-      use Audio.Wavefile_Info.GUIDs;
+      use Audio.RIFF.Wav.GUIDs;
    begin
       Set_Default (Wave_Format_18 (W));
       W.Size                  := 22;
@@ -62,7 +62,7 @@ package body Audio.Wavefile_Info.Formats is
    function Is_Float_Format
      (W : Wave_Format_Extensible) return Boolean
    is
-      use Audio.Wavefile_Info.GUIDs;
+      use Audio.RIFF.Wav.GUIDs;
    begin
       return W.Format_Tag = 16#0003# or
         W.Sub_Format = GUID_IEEE_Float;
@@ -92,4 +92,4 @@ package body Audio.Wavefile_Info.Formats is
       Channel_Mask_Integer'Write (Stream, V);
    end Write_Channel_Mask;
 
-end Audio.Wavefile_Info.Formats;
+end Audio.RIFF.Wav.Formats;
