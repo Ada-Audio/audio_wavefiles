@@ -29,7 +29,6 @@
 
 with Ada.Text_IO;                          use Ada.Text_IO;
 with Ada.Strings.Fixed;                    use Ada.Strings.Fixed;
-with Interfaces;                           use Interfaces;
 
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
@@ -40,7 +39,7 @@ use  Audio.Wavefiles.Data_Types.Text_IO;
 with Audio.Wavefiles.Generic_Fixed_PCM_IO;
 
 with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
-
+with Audio.RIFF.Wav.Formats.Report;
 
 package body Quick_Wav_Data_Checks.Fixed_Checks is
 
@@ -122,11 +121,11 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
      (PCM_Ref, PCM_DUT : PCM_Buffer) return Boolean;
 
    function PCM_Data_Is_OK
-     (Test_Bits : Unsigned_16;
+     (Test_Bits : Wav_Bit_Depth;
       PCM_DUT   : PCM_Buffer) return Boolean;
 
    function Wav_IO_OK_For_Audio_Resolution
-     (Test_Bits          : Unsigned_16;
+     (Test_Bits          : Wav_Bit_Depth;
       Wav_Test_File_Name : String) return Boolean;
 
    procedure Display_Info
@@ -135,11 +134,14 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
 
    procedure Write_Wavefile
      (Wav_File_Name : String;
-      Test_Bits     : Unsigned_16);
+      Test_Bits     : Wav_Bit_Depth);
 
    procedure Read_Wavefile
      (Wav_File_Name :     String;
       PCM_DUT       : out PCM_Buffer);
+
+   function Image (B : Wav_Bit_Depth) return String renames
+     Audio.RIFF.Wav.Formats.Report.Image;
 
    procedure Display_PCM_Vals (PCM_Vals : PCM_Buffer;
                                Header   : String)
@@ -182,8 +184,10 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
       end loop;
    end Write_PCM_Vals;
 
-   type Bits_Per_Sample_List is array (Positive range <>) of Unsigned_16;
-   Test_Bits_Per_Sample : constant Bits_Per_Sample_List := (16, 24, 32);
+   type Bits_Per_Sample_List is array (Positive range <>) of Wav_Bit_Depth;
+   Test_Bits_Per_Sample : constant Bits_Per_Sample_List := (Bit_Depth_16,
+                                                            Bit_Depth_24,
+                                                            Bit_Depth_32);
 
    procedure Display_Info
      (WF     : Wavefile;
@@ -200,13 +204,15 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
 
    procedure Write_Wavefile
      (Wav_File_Name : String;
-      Test_Bits     : Unsigned_16)
+      Test_Bits     : Wav_Bit_Depth)
    is
       WF_Out      : Wavefile;
       Wave_Format : Wave_Format_Extensible;
    begin
-      Wave_Format := Default;
-      Wave_Format.Bits_Per_Sample := Test_Bits;
+      Wave_Format := Init (Bit_Depth          => Test_Bits,
+                           Sample_Rate        => Sample_Rate_44100,
+                           Number_Of_Channels => 2,
+                           Use_Float          => False);
 
       Set_Format_Of_Wavefile (WF_Out, Wave_Format);
       Open (WF_Out, Out_File, Wav_File_Name);
@@ -276,34 +282,34 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
    end PCM_Data_Is_OK;
 
    function PCM_Data_Is_OK
-     (Test_Bits : Unsigned_16;
+     (Test_Bits : Wav_Bit_Depth;
       PCM_DUT   : PCM_Buffer) return Boolean is
    begin
       case Test_Bits is
-         when 16 =>
+         when Bit_Depth_16 =>
             return PCM_Data_Is_OK (PCM_Ref_16, PCM_DUT);
-         when 24 =>
+         when Bit_Depth_24 =>
             return PCM_Data_Is_OK (PCM_Ref_24, PCM_DUT);
-         when 32 =>
+         when Bit_Depth_32 =>
             return PCM_Data_Is_OK (PCM_Ref_32, PCM_DUT);
          when others =>
             Put_Line ("Unknown test for "
-                      & Unsigned_16'Image (Test_Bits)
+                      & Image (Test_Bits)
                       & " bits");
             return False;
       end case;
    end PCM_Data_Is_OK;
 
    function Wav_IO_OK_For_Audio_Resolution
-     (Test_Bits          : Unsigned_16;
+     (Test_Bits          : Wav_Bit_Depth;
       Wav_Test_File_Name : String) return Boolean
    is
       Test_Bits_String : constant String
-        := Trim (Unsigned_16'Image (Test_Bits), Ada.Strings.Both);
+        := Trim (Image (Test_Bits), Ada.Strings.Both);
       Wav_File_Name    : constant String
         := Wav_Test_File_Name & "_" & Test_Bits_String & ".wav";
       Test_Message     : constant String
-        := "Fixed " & Unsigned_16'Image (Test_Bits);
+        := "Fixed " & Image (Test_Bits);
       PCM_DUT          : PCM_Buffer (PCM_Ref'Range);
       Success          : Boolean := True;
    begin

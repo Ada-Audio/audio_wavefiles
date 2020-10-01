@@ -112,7 +112,7 @@ package body Audio.Wavefiles.Write is
       end if;
 
       Size := Unsigned_32 (WF.Samples)
-        * Unsigned_32 (WF.Wave_Format.Bits_Per_Sample / 8);
+        * Unsigned_32 (To_Unsigned_16 (WF.Wave_Format.Bits_Per_Sample) / 8);
 
       --  Update/finalize RIFF chunk
       Ada.Streams.Stream_IO.Set_Index (WF.File, 1);

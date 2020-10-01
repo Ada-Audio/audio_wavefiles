@@ -36,12 +36,19 @@ package body Audio.RIFF.Wav.Formats.Report is
    procedure Print (W : Wave_Format_Extensible) is
    begin
       Put_Line ("------------ WAVEFORMAT header  ------------");
+      Put_Line ("Format:              "
+                & Wav_Format_Tag'Image (W.Format_Tag));
       Put_Line ("BitsPerSample:      "
-                & Unsigned_16'Image (W.Bits_Per_Sample));
+                & Image (W.Bits_Per_Sample));
       Put_Line ("Channels:           "
                 & Unsigned_16'Image (W.Channels));
       Put_Line ("SamplesPerSec:      "
-                & Unsigned_32'Image (W.Samples_Per_Sec));
+                & Positive'Image
+                  (To_Positive (W.Samples_Per_Sec)));
+      Put_Line ("BlockAlign:         "
+                & Unsigned_16'Image (W.Block_Align));
+      Put_Line ("AvgBytesPerSec:     "
+                & Unsigned_32'Image (W.Avg_Bytes_Per_Sec));
       Put_Line ("Ext. Size:          "
                 & Unsigned_16'Image (W.Size));
       if W.Size > 0 then

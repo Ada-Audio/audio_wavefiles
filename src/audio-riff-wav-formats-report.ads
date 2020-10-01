@@ -31,4 +31,7 @@ package Audio.RIFF.Wav.Formats.Report is
 
    procedure Print (W : Wave_Format_Extensible);
 
+   function Image (B : Wav_Bit_Depth) return String is
+     (Positive'Image (To_Positive (B)));
+
 end Audio.RIFF.Wav.Formats.Report;

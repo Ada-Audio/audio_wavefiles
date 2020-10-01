@@ -93,18 +93,19 @@ package body Audio.Wavefiles.Read is
          when Wave_Format_Chunk_Size'Enum_Rep (Wave_Format_16_Size) =>
             Wave_Format_16'Read (WF.File_Access,
                                  Wave_Format_16 (WF.Wave_Format));
-
+            Reset_For_Wave_Format_16 (WF.Wave_Format);
          when Wave_Format_Chunk_Size'Enum_Rep (Wave_Format_18_Size) =>
             Wave_Format_18'Read (WF.File_Access,
                                  Wave_Format_18 (WF.Wave_Format));
+            Reset_For_Wave_Format_18 (WF.Wave_Format);
 
             if Verbose then
                Put_Line ("Size of waveformat record "
                          & Integer'Image (
                            Wave_Format_18'Value_Size / 8));
                Put_Line ("BitsPerSample: "
-                         & Interfaces.Unsigned_16'Image
-                           (WF.Wave_Format.Bits_Per_Sample));
+                         & Positive'Image
+                           (To_Positive (WF.Wave_Format.Bits_Per_Sample)));
                Put_Line ("Size: " & Interfaces.Unsigned_16'Image
                          (WF.Wave_Format.Size));
             end if;
@@ -120,8 +121,8 @@ package body Audio.Wavefiles.Read is
                Put_Line ("File index: " & Integer'Image (
                          Integer (Ada.Streams.Stream_IO.Index (WF.File))));
                Put_Line ("BitsPerSample: "
-                         & Interfaces.Unsigned_16'Image
-                           (WF.Wave_Format.Bits_Per_Sample));
+                         & Positive'Image
+                           (To_Positive (WF.Wave_Format.Bits_Per_Sample)));
                Put_Line ("Size: " & Interfaces.Unsigned_16'Image
                          (WF.Wave_Format.Size));
             end if;
@@ -147,7 +148,7 @@ package body Audio.Wavefiles.Read is
       end loop;
 
       WF.Samples := Long_Integer (RIFF_Tag.Size)
-        / (Long_Integer (WF.Wave_Format.Bits_Per_Sample) / 8);
+        / (Long_Integer (To_Positive (WF.Wave_Format.Bits_Per_Sample)) / 8);
 
       if Verbose then
          Put_Line ("Data chunk size: " & Interfaces.Unsigned_32'Image
