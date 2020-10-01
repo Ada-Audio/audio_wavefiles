@@ -126,7 +126,7 @@ package Audio.RIFF.Wav.Formats is
       Bit_Depth_64 => 64);
 
    function To_Positive (B : Wav_Bit_Depth) return Positive is
-     (Wav_Bit_Depth'Enum_Rep (B));
+     (Positive (Wav_Bit_Depth'Enum_Rep (B)));
 
    function To_Unsigned_16 (B : Wav_Bit_Depth) return Unsigned_16 is
      (Wav_Bit_Depth'Enum_Rep (B));
