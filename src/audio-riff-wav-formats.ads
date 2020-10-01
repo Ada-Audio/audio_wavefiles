@@ -350,6 +350,8 @@ package Audio.RIFF.Wav.Formats is
 
    function To_GUID (Format : Wav_Format_Tag) return GUID;
 
+   function To_Wav_Format_Tag (ID : GUID) return Wav_Format_Tag;
+
    type Wave_Format_16 is tagged
       record
          Format_Tag        : Wav_Format_Tag;

@@ -96,6 +96,46 @@ package body Audio.RIFF.Wav.Formats is
       end case;
    end To_GUID;
 
+   function To_Wav_Format_Tag (ID : GUID) return Wav_Format_Tag is
+      use Audio.RIFF.Wav.GUIDs;
+   begin
+      if ID = GUID_Undefined then
+         return Wav_Format_Unknown;
+      elsif ID = GUID_PCM then
+         return Wav_Format_PCM;
+      elsif ID = GUID_IEEE_Float then
+         return Wav_Format_PCM_Float;
+      --  elsif ID = GUID_DRM then
+      --     return Wav_Format_Unknown;
+      elsif ID = GUID_ALAW then
+         return Wav_Format_A_Law;
+      elsif ID = GUID_MULAW then
+         return Wav_Format_Mu_Law;
+      elsif ID = GUID_ADPCM then
+         return Wav_Format_ADPCM;
+      elsif ID = GUID_MPEG then
+         return Wav_Format_MPEG;
+      elsif ID = GUID_DOLBY_AC3_SPDIF then
+         return Wav_Format_Dolby_AC3_SPDIF;
+      --  elsif ID = GUID_WMA_SPDIF then
+      --     return Wav_Format_Unknown;
+      --  elsif ID = GUID_DTS then
+      --     return Wav_Format_Unknown;
+      elsif ID = GUID_MPEG_LAYER_3 then
+         return Wav_Format_MPEG_Layer_3;
+      --  elsif ID = GUID_MPEG_HE_AAC then
+      --     return Wav_Format_Unknown
+      --  elsif ID = GUID_WMA_2 then
+      --     return Wav_Format_Unknown;
+      --  elsif ID = GUID_WMA_3 then
+      --     return Wav_Format_Unknown;
+      --  elsif ID = GUID_WMA_LOSSLESS then
+      --     return Wav_Format_Unknown;
+      else
+         return Wav_Format_Unknown;
+      end if;
+   end To_Wav_Format_Tag;
+
    function Should_Use_Extensible_Format
      (Bit_Depth          : Wav_Bit_Depth;
       Number_Of_Channels : Positive) return Boolean is
