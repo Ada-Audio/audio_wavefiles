@@ -26,3 +26,6 @@ jobs:
 
     - name: Run Quick Wav-Data Check
       run: ./test/quick_wav_data_check/bin/quick_wav_data_check "$(date +"%Y%m%d-%H%M%S")_"
+
+    - name: Build & check Cookbook
+      run: ./scripts/test_cookbook.sh
