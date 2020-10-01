@@ -205,10 +205,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
       WF_Out      : Wavefile;
       Wave_Format : Wave_Format_Extensible;
    begin
-      Wave_Format := Init (Format             => Wav_Format_PCM_Float,
-                           Bit_Depth          => Test_Bits,
+      Wave_Format := Init (Bit_Depth          => Test_Bits,
                            Sample_Rate        => Sample_Rate_44100,
-                           Number_Of_Channels => 2);
+                           Number_Of_Channels => 2,
+                           Use_Float          => True);
 
       Set_Format_Of_Wavefile (WF_Out, Wave_Format);
       Open (WF_Out, Out_File, Wav_File_Name);

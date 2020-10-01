@@ -114,11 +114,14 @@ package body Audio.RIFF.Wav.Formats is
       Sample_Rate        : Wav_Sample_Rate) return Unsigned_32 is
      (Unsigned_32 (Block_Align) * To_Unsigned_32 (Sample_Rate));
 
-   function Init (Format             : Wav_Format_Tag;
-                  Bit_Depth          : Wav_Bit_Depth;
-                  Sample_Rate        : Wav_Sample_Rate;
-                  Number_Of_Channels : Positive) return Wave_Format_Extensible
+   function Init
+     (Bit_Depth          : Wav_Bit_Depth;
+      Sample_Rate        : Wav_Sample_Rate;
+      Number_Of_Channels : Positive;
+      Use_Float          : Boolean := False) return Wave_Format_Extensible
    is
+      Format             : constant Wav_Format_Tag
+        := (if Use_Float then Wav_Format_PCM_Float else Wav_Format_PCM);
       Use_Wav_Extensible : constant Boolean
         := Should_Use_Extensible_Format (Bit_Depth, Number_Of_Channels);
       use Audio.RIFF.Wav.GUIDs;

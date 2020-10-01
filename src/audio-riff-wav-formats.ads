@@ -397,10 +397,11 @@ package Audio.RIFF.Wav.Formats is
      (Block_Align        : Unsigned_16;
       Sample_Rate        : Wav_Sample_Rate) return Unsigned_32;
 
-   function Init (Format             : Wav_Format_Tag;
-                  Bit_Depth          : Wav_Bit_Depth;
-                  Sample_Rate        : Wav_Sample_Rate;
-                  Number_Of_Channels : Positive) return Wave_Format_Extensible;
+   function Init
+     (Bit_Depth          : Wav_Bit_Depth;
+      Sample_Rate        : Wav_Sample_Rate;
+      Number_Of_Channels : Positive;
+      Use_Float          : Boolean := False) return Wave_Format_Extensible;
 
    type Wave_Format_Chunk_Size is
      (Wave_Format_16_Size,
