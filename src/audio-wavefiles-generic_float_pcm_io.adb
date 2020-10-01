@@ -80,25 +80,25 @@ package body Audio.Wavefiles.Generic_Float_PCM_IO is
 
       if Is_Float_Format (WF.Wave_Format) then
          case WF.Wave_Format.Bits_Per_Sample is
-            when 32 =>
-               return PCM_Float_Wav_32.Get (WF);
-            when 64 =>
-               return PCM_Float_Wav_64.Get (WF);
-            when others =>
+            when Bit_Depth_8 | Bit_Depth_16 | Bit_Depth_24 =>
                raise Wavefile_Unsupported;
+            when Bit_Depth_32 =>
+               return PCM_Float_Wav_32.Get (WF);
+            when Bit_Depth_64 =>
+               return PCM_Float_Wav_64.Get (WF);
          end case;
       else
          --  Always assume fixed-point PCM format
          case WF.Wave_Format.Bits_Per_Sample is
-            when 8 =>
+            when Bit_Depth_8 =>
                raise Wavefile_Unsupported;
-            when 16 =>
+            when Bit_Depth_16 =>
                return PCM_Fixed_Wav_16.Get (WF);
-            when 24 =>
+            when Bit_Depth_24 =>
                return PCM_Fixed_Wav_24.Get (WF);
-            when 32 =>
+            when Bit_Depth_32 =>
                return PCM_Fixed_Wav_32.Get (WF);
-            when others =>
+            when Bit_Depth_64 =>
                raise Wavefile_Unsupported;
          end case;
       end if;
@@ -119,25 +119,25 @@ package body Audio.Wavefiles.Generic_Float_PCM_IO is
 
       if Is_Float_Format (WF.Wave_Format) then
          case WF.Wave_Format.Bits_Per_Sample is
-            when 32 =>
-               PCM_Float_Wav_32.Put (WF, PCM);
-            when 64 =>
-               PCM_Float_Wav_64.Put (WF, PCM);
-            when others =>
+            when Bit_Depth_8 | Bit_Depth_16 | Bit_Depth_24 =>
                raise Wavefile_Unsupported;
+            when Bit_Depth_32 =>
+               PCM_Float_Wav_32.Put (WF, PCM);
+            when Bit_Depth_64 =>
+               PCM_Float_Wav_64.Put (WF, PCM);
          end case;
       else
          --  Always assume fixed-point PCM format
          case WF.Wave_Format.Bits_Per_Sample is
-            when 8 =>
+            when Bit_Depth_8 =>
                raise Wavefile_Unsupported;
-            when 16 =>
+            when Bit_Depth_16 =>
                PCM_Fixed_Wav_16.Put (WF, PCM);
-            when 24 =>
+            when Bit_Depth_24 =>
                PCM_Fixed_Wav_24.Put (WF, PCM);
-            when 32 =>
+            when Bit_Depth_32 =>
                PCM_Fixed_Wav_32.Put (WF, PCM);
-            when others =>
+            when Bit_Depth_64 =>
                raise Wavefile_Unsupported;
          end case;
       end if;

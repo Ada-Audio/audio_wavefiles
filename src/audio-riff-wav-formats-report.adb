@@ -37,7 +37,7 @@ package body Audio.RIFF.Wav.Formats.Report is
    begin
       Put_Line ("------------ WAVEFORMAT header  ------------");
       Put_Line ("BitsPerSample:      "
-                & Unsigned_16'Image (W.Bits_Per_Sample));
+                & Image (W.Bits_Per_Sample));
       Put_Line ("Channels:           "
                 & Unsigned_16'Image (W.Channels));
       Put_Line ("SamplesPerSec:      "

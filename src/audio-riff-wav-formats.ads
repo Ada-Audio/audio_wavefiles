@@ -111,6 +111,23 @@ package Audio.RIFF.Wav.Formats is
    function To_Positive (SR : Wav_Sample_Rate) return Positive is
       (Wav_Sample_Rate'Enum_Rep (SR));
 
+   type Wav_Bit_Depth is
+     (Bit_Depth_8, Bit_Depth_16, Bit_Depth_24, Bit_Depth_32, Bit_Depth_64)
+     with Size => Unsigned_16'Size;
+
+   for Wav_Bit_Depth use
+     (Bit_Depth_8  =>  8,
+      Bit_Depth_16 => 16,
+      Bit_Depth_24 => 24,
+      Bit_Depth_32 => 32,
+      Bit_Depth_64 => 64);
+
+   function To_Positive (B : Wav_Bit_Depth) return Positive is
+     (Wav_Bit_Depth'Enum_Rep (B));
+
+   function To_Unsigned_16 (B : Wav_Bit_Depth) return Unsigned_16 is
+     (Wav_Bit_Depth'Enum_Rep (B));
+
    type Wave_Format_16 is tagged
       record
          Format_Tag        : Unsigned_16;
@@ -118,7 +135,7 @@ package Audio.RIFF.Wav.Formats is
          Samples_Per_Sec   : Wav_Sample_Rate;
          Avg_Bytes_Per_Sec : Unsigned_32;
          Block_Align       : Unsigned_16;
-         Bits_Per_Sample   : Unsigned_16;
+         Bits_Per_Sample   : Wav_Bit_Depth;
       end record;
 
    function Default return Wave_Format_16;

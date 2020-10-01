@@ -103,8 +103,8 @@ package body Audio.Wavefiles.Read is
                          & Integer'Image (
                            Wave_Format_18'Value_Size / 8));
                Put_Line ("BitsPerSample: "
-                         & Interfaces.Unsigned_16'Image
-                           (WF.Wave_Format.Bits_Per_Sample));
+                         & Positive'Image
+                           (To_Positive (WF.Wave_Format.Bits_Per_Sample)));
                Put_Line ("Size: " & Interfaces.Unsigned_16'Image
                          (WF.Wave_Format.Size));
             end if;
@@ -120,8 +120,8 @@ package body Audio.Wavefiles.Read is
                Put_Line ("File index: " & Integer'Image (
                          Integer (Ada.Streams.Stream_IO.Index (WF.File))));
                Put_Line ("BitsPerSample: "
-                         & Interfaces.Unsigned_16'Image
-                           (WF.Wave_Format.Bits_Per_Sample));
+                         & Positive'Image
+                           (To_Positive (WF.Wave_Format.Bits_Per_Sample)));
                Put_Line ("Size: " & Interfaces.Unsigned_16'Image
                          (WF.Wave_Format.Size));
             end if;
@@ -147,7 +147,7 @@ package body Audio.Wavefiles.Read is
       end loop;
 
       WF.Samples := Long_Integer (RIFF_Tag.Size)
-        / (Long_Integer (WF.Wave_Format.Bits_Per_Sample) / 8);
+        / (Long_Integer (To_Positive (WF.Wave_Format.Bits_Per_Sample)) / 8);
 
       if Verbose then
          Put_Line ("Data chunk size: " & Interfaces.Unsigned_32'Image

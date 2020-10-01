@@ -39,8 +39,9 @@ package body Audio.RIFF.Wav.Formats is
          W.Format_Tag        := 16#0001#;
          W.Channels          := 2;
          W.Samples_Per_Sec   := Sample_Rate_44100;
-         W.Bits_Per_Sample   := 16;
-         W.Block_Align       := ((W.Bits_Per_Sample + 7) / 8) * W.Channels;
+         W.Bits_Per_Sample   := Bit_Depth_16;
+         W.Block_Align       := ((To_Unsigned_16 (W.Bits_Per_Sample) + 7)
+                                 / 8) * W.Channels;
          W.Avg_Bytes_Per_Sec := 0;
       end return;
    end Default;
@@ -59,7 +60,7 @@ package body Audio.RIFF.Wav.Formats is
       return W : Wave_Format_Extensible do
          Wave_Format_18 (W)      := Default;
          W.Size                  := 22;
-         W.Valid_Bits_Per_Sample := W.Bits_Per_Sample;
+         W.Valid_Bits_Per_Sample := To_Unsigned_16 (W.Bits_Per_Sample);
          W.Sub_Format            := GUID_Undefined;
          W.Channel_Mask          := (others => False);
       end return;
