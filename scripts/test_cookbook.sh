@@ -52,6 +52,10 @@ function simple_testcase
 # Change to cookbook directory
 cd $DIR/../cookbook
 
+# Create .ada file based on Markdown file
+sed -n '/^```/,/^```/ p' < cookbook.md | sed '/^```/ d' > cookbook.ada
+cookbook_check "PREPARATIONS" "(sed)" ""
+
 # Create source-code files based on cookbook file
 gnatchop -wr cookbook.ada ./src >& gnatchop.log
 cookbook_check "PREPARATIONS" "(gnatchop)" "gnatchop.log"

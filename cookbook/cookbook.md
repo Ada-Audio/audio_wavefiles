@@ -1,3 +1,8 @@
+# Cookbook
+
+## Opening & closing a wavefile for reading
+
+```ada
 --
 -------------------------------------------------------------------------------
 --
@@ -38,6 +43,11 @@ begin
    end if;
 
 end Open_Close_Wavefile_For_Reading;
+```
+
+## Opening & closing a wavefile for writing
+
+```ada
 --
 -------------------------------------------------------------------------------
 --
@@ -87,4 +97,4 @@ begin
    end if;
 
 end Open_Close_Wavefile_For_Writing;
-
+```
