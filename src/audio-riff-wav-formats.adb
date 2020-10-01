@@ -85,7 +85,7 @@ package body Audio.RIFF.Wav.Formats is
    begin
       case Format is
          when Wav_Format_PCM             => return GUID_PCM;
-         when Wav_Format_PCM_Float       => return GUID_IEEE_Float;
+         when Wav_Format_IEEE_Float      => return GUID_IEEE_Float;
          when Wav_Format_A_Law           => return GUID_ALAW;
          when Wav_Format_Mu_Law          => return GUID_MULAW;
          when Wav_Format_ADPCM           => return GUID_ADPCM;
@@ -104,7 +104,7 @@ package body Audio.RIFF.Wav.Formats is
       elsif ID = GUID_PCM then
          return Wav_Format_PCM;
       elsif ID = GUID_IEEE_Float then
-         return Wav_Format_PCM_Float;
+         return Wav_Format_IEEE_Float;
       --  elsif ID = GUID_DRM then
       --     return Wav_Format_Unknown;
       elsif ID = GUID_ALAW then
@@ -167,7 +167,7 @@ package body Audio.RIFF.Wav.Formats is
       Use_Float          : Boolean := False) return Wave_Format_Extensible
    is
       Format             : constant Wav_Format_Tag
-        := (if Use_Float then Wav_Format_PCM_Float else Wav_Format_PCM);
+        := (if Use_Float then Wav_Format_IEEE_Float else Wav_Format_PCM);
       Use_Wav_Extensible : constant Boolean
         := Should_Use_Extensible_Format (Bit_Depth, Number_Of_Channels);
       use Audio.RIFF.Wav.GUIDs;
@@ -211,7 +211,7 @@ package body Audio.RIFF.Wav.Formats is
    is
       use Audio.RIFF.Wav.GUIDs;
    begin
-      return W.Format_Tag = Wav_Format_PCM_Float or
+      return W.Format_Tag = Wav_Format_IEEE_Float or
         W.Sub_Format = GUID_IEEE_Float;
    end Is_Float_Format;
 
