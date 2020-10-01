@@ -1,0 +1,88 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+####################
+# GLOBAL VARIABLES #
+####################
+
+TEST_EXIT_CODE=0
+CAT_FILE_LIST=""
+
+#######################
+# AUXILIARY FUNCTIONS #
+#######################
+
+function cookbook_check
+{
+    TEST_RESULT=$?
+    TEST_CASE=$1
+    TEST_CASE_DETAILS=$2
+    CAT_FILE=$3
+
+    if [ "$TEST_RESULT" -ne "0" ]
+    then
+        echo "ERROR: $TEST_CASE $TEST_CASE_DETAILS"
+        TEST_EXIT_CODE=1
+        if [ "$CAT_FILE" != "" ]
+        then
+            CAT_FILE_LIST="$CAT_FILE_LIST $CAT_FILE"
+        fi
+    else
+        echo "PASS: $TEST_CASE $TEST_CASE_DETAILS"
+    fi
+}
+
+function simple_testcase
+{
+    TESTCASE=$1
+    LOGFILE=${TESTCASE,,}.log
+    ./bin/${TESTCASE,,} \
+        >& $LOGFILE
+    cookbook_check "$TESTCASE" "(run check)"
+
+    diff ./ref/$LOGFILE $LOGFILE >& diff_$LOGFILE
+    cookbook_check "$TESTCASE" "(logfile check)" "diff_$LOGFILE"
+}
+
+################
+# PREPARATIONS #
+################
+
+# Change to cookbook directory
+cd $DIR/../cookbook
+
+# Create source-code files based on cookbook file
+gnatchop -wr cookbook.ada ./src >& gnatchop.log
+cookbook_check "PREPARATIONS" "(gnatchop)" "gnatchop.log"
+
+# Build application for each source-code file
+gprbuild ./cookbook.gpr  >& gprbuild.log
+cookbook_check "PREPARATIONS" "(gprbuild)" "gprbuild.log"
+
+##############
+# RUN & TEST #
+##############
+
+simple_testcase Open_Close_Wavefile_For_Reading
+simple_testcase Open_Close_Wavefile_For_Writing
+
+################
+# FINALIZATION #
+################
+
+if [ "$CAT_FILE_LIST" != "" ]
+then
+    for cat_file in $CAT_FILE_LIST
+    do
+        echo "------------------------------------------"
+        echo $cat_file
+        echo "------------------------------------------"
+        cat $cat_file
+    done
+fi
+
+rm *.log
+rm out/*
+
+exit $TEST_EXIT_CODE
