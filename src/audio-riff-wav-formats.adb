@@ -84,9 +84,15 @@ package body Audio.RIFF.Wav.Formats is
       use Audio.RIFF.Wav.GUIDs;
    begin
       case Format is
-         when Wav_Format_PCM       => return GUID_PCM;
-         when Wav_Format_PCM_Float => return GUID_IEEE_Float;
-         when others               => return GUID_Undefined;
+         when Wav_Format_PCM             => return GUID_PCM;
+         when Wav_Format_PCM_Float       => return GUID_IEEE_Float;
+         when Wav_Format_A_Law           => return GUID_ALAW;
+         when Wav_Format_Mu_Law          => return GUID_MULAW;
+         when Wav_Format_ADPCM           => return GUID_ADPCM;
+         when Wav_Format_MPEG            => return GUID_MPEG;
+         when Wav_Format_Dolby_AC3_SPDIF => return GUID_DOLBY_AC3_SPDIF;
+         when Wav_Format_MPEG_Layer_3    => return GUID_MPEG_LAYER_3;
+         when others                     => return GUID_Undefined;
       end case;
    end To_GUID;
 
