@@ -109,7 +109,7 @@ package Audio.RIFF.Wav.Formats is
       Sample_Rate_352800 => 352_800);
 
    function To_Positive (SR : Wav_Sample_Rate) return Positive is
-      (Wav_Sample_Rate'Enum_Rep (SR));
+     (Positive (Wav_Sample_Rate'Enum_Rep (SR)));
 
    function To_Unsigned_32 (SR : Wav_Sample_Rate) return Unsigned_32 is
       (Wav_Sample_Rate'Enum_Rep (SR));
