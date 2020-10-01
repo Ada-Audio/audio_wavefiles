@@ -378,6 +378,10 @@ package Audio.RIFF.Wav.Formats is
 
    function Default return Wave_Format_Extensible;
 
+   procedure Reset_For_Wave_Format_16 (W : in out Wave_Format_Extensible);
+
+   procedure Reset_For_Wave_Format_18 (W : in out Wave_Format_Extensible);
+
    function Is_Float_Format
      (W : Wave_Format_Extensible) return Boolean;
 

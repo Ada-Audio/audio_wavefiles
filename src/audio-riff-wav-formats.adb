@@ -66,6 +66,20 @@ package body Audio.RIFF.Wav.Formats is
       end return;
    end Default;
 
+   procedure Reset_For_Wave_Format_16 (W : in out Wave_Format_Extensible) is
+   begin
+      W.Size := 0;
+      Reset_For_Wave_Format_18 (W);
+   end Reset_For_Wave_Format_16;
+
+   procedure Reset_For_Wave_Format_18 (W : in out Wave_Format_Extensible) is
+      use Audio.RIFF.Wav.GUIDs;
+   begin
+      W.Valid_Bits_Per_Sample := To_Unsigned_16 (W.Bits_Per_Sample);
+      W.Sub_Format            := GUID_Undefined;
+      W.Channel_Mask          := (others => False);
+   end Reset_For_Wave_Format_18;
+
    function To_GUID (Format : Wav_Format_Tag) return GUID is
       use Audio.RIFF.Wav.GUIDs;
    begin

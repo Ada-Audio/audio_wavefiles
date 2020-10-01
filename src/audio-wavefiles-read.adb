@@ -93,10 +93,11 @@ package body Audio.Wavefiles.Read is
          when Wave_Format_Chunk_Size'Enum_Rep (Wave_Format_16_Size) =>
             Wave_Format_16'Read (WF.File_Access,
                                  Wave_Format_16 (WF.Wave_Format));
-
+            Reset_For_Wave_Format_16 (WF.Wave_Format);
          when Wave_Format_Chunk_Size'Enum_Rep (Wave_Format_18_Size) =>
             Wave_Format_18'Read (WF.File_Access,
                                  Wave_Format_18 (WF.Wave_Format));
+            Reset_For_Wave_Format_18 (WF.Wave_Format);
 
             if Verbose then
                Put_Line ("Size of waveformat record "
