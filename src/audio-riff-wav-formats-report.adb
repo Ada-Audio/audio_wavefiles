@@ -36,6 +36,8 @@ package body Audio.RIFF.Wav.Formats.Report is
    procedure Print (W : Wave_Format_Extensible) is
    begin
       Put_Line ("------------ WAVEFORMAT header  ------------");
+      Put_Line ("Format:              "
+                & Wav_Format_Tag'Image (W.Format_Tag));
       Put_Line ("BitsPerSample:      "
                 & Image (W.Bits_Per_Sample));
       Put_Line ("Channels:           "
