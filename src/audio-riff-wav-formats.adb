@@ -66,6 +66,16 @@ package body Audio.RIFF.Wav.Formats is
       end return;
    end Default;
 
+   function To_GUID (Format : Wav_Format_Tag) return GUID is
+      use Audio.RIFF.Wav.GUIDs;
+   begin
+      case Format is
+         when Wav_Format_PCM       => return GUID_PCM;
+         when Wav_Format_PCM_Float => return GUID_IEEE_Float;
+         when others               => return GUID_Undefined;
+      end case;
+   end To_GUID;
+
    function Is_Float_Format
      (W : Wave_Format_Extensible) return Boolean
    is

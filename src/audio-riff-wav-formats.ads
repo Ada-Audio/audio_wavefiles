@@ -348,6 +348,8 @@ package Audio.RIFF.Wav.Formats is
       Wav_Format_Interwav_VSC112            => 16#7150#,
       Wav_Format_Extensible                 => 16#FFFE#);
 
+   function To_GUID (Format : Wav_Format_Tag) return GUID;
+
    type Wave_Format_16 is tagged
       record
          Format_Tag        : Wav_Format_Tag;
