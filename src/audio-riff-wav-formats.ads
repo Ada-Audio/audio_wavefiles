@@ -108,6 +108,9 @@ package Audio.RIFF.Wav.Formats is
       Sample_Rate_192000 => 192_000,
       Sample_Rate_352800 => 352_800);
 
+   function To_Positive (SR : Wav_Sample_Rate) return Positive is
+      (Wav_Sample_Rate'Enum_Rep (SR));
+
    type Wave_Format_16 is tagged
       record
          Format_Tag        : Unsigned_16;
