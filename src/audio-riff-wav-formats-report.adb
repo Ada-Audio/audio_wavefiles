@@ -45,6 +45,10 @@ package body Audio.RIFF.Wav.Formats.Report is
       Put_Line ("SamplesPerSec:      "
                 & Positive'Image
                   (To_Positive (W.Samples_Per_Sec)));
+      Put_Line ("BlockAlign:         "
+                & Unsigned_16'Image (W.Block_Align));
+      Put_Line ("AvgBytesPerSec:     "
+                & Unsigned_32'Image (W.Avg_Bytes_Per_Sec));
       Put_Line ("Ext. Size:          "
                 & Unsigned_16'Image (W.Size));
       if W.Size > 0 then
