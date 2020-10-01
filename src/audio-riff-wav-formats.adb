@@ -76,6 +76,73 @@ package body Audio.RIFF.Wav.Formats is
       end case;
    end To_GUID;
 
+   function Should_Use_Extensible_Format
+     (Bit_Depth          : Wav_Bit_Depth;
+      Number_Of_Channels : Positive) return Boolean is
+   begin
+      if Bit_Depth not in Bit_Depth_8 | Bit_Depth_16 then
+         return True;
+      elsif Number_Of_Channels > 2 then
+         return True;
+      else
+         return False;
+      end if;
+   end Should_Use_Extensible_Format;
+
+   function Block_Align
+     (Bit_Depth          : Wav_Bit_Depth;
+      Number_Of_Channels : Positive) return Unsigned_16 is
+     (((To_Unsigned_16 (Bit_Depth) + 7) / 8)
+      * Unsigned_16 (Number_Of_Channels));
+
+   function Average_Bytes_Per_Second
+     (Block_Align        : Unsigned_16;
+      Sample_Rate        : Wav_Sample_Rate) return Unsigned_32 is
+     (Unsigned_32 (Block_Align) * To_Unsigned_32 (Sample_Rate));
+
+   function Init (Format             : Wav_Format_Tag;
+                  Bit_Depth          : Wav_Bit_Depth;
+                  Sample_Rate        : Wav_Sample_Rate;
+                  Number_Of_Channels : Positive) return Wave_Format_Extensible
+   is
+      Use_Wav_Extensible : constant Boolean
+        := Should_Use_Extensible_Format (Bit_Depth, Number_Of_Channels);
+      use Audio.RIFF.Wav.GUIDs;
+   begin
+      return W : Wave_Format_Extensible do
+         W.Channels          := Unsigned_16 (Number_Of_Channels);
+         W.Samples_Per_Sec   := Sample_Rate;
+         W.Bits_Per_Sample   := Bit_Depth;
+         W.Block_Align       := Block_Align (Bit_Depth, Number_Of_Channels);
+         W.Avg_Bytes_Per_Sec := Average_Bytes_Per_Second (W.Block_Align,
+                                                          Sample_Rate);
+
+         if not Use_Wav_Extensible then
+            W.Format_Tag            := Format;
+            W.Size                  := 0;
+            W.Valid_Bits_Per_Sample := 0;
+            W.Sub_Format            := GUID_Undefined;
+            W.Channel_Mask          := (others => False);
+         else
+            W.Size                  := 22;
+            W.Valid_Bits_Per_Sample := To_Unsigned_16 (W.Bits_Per_Sample);
+            W.Channel_Mask          := (others => False);
+
+            Init_Formats : declare
+               Sub_Format : constant GUID := To_GUID (Format);
+            begin
+               if Sub_Format /= GUID_Undefined then
+                  W.Format_Tag      := Wav_Format_Extensible;
+                  W.Sub_Format      := Sub_Format;
+               else
+                  W.Format_Tag      := Format;
+                  W.Sub_Format      := GUID_Undefined;
+               end if;
+            end Init_Formats;
+         end if;
+      end return;
+   end Init;
+
    function Is_Float_Format
      (W : Wave_Format_Extensible) return Boolean
    is

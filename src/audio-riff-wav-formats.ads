@@ -381,6 +381,23 @@ package Audio.RIFF.Wav.Formats is
    function Is_Float_Format
      (W : Wave_Format_Extensible) return Boolean;
 
+   function Should_Use_Extensible_Format
+     (Bit_Depth          : Wav_Bit_Depth;
+      Number_Of_Channels : Positive) return Boolean;
+
+   function Block_Align
+     (Bit_Depth          : Wav_Bit_Depth;
+      Number_Of_Channels : Positive) return Unsigned_16;
+
+   function Average_Bytes_Per_Second
+     (Block_Align        : Unsigned_16;
+      Sample_Rate        : Wav_Sample_Rate) return Unsigned_32;
+
+   function Init (Format             : Wav_Format_Tag;
+                  Bit_Depth          : Wav_Bit_Depth;
+                  Sample_Rate        : Wav_Sample_Rate;
+                  Number_Of_Channels : Positive) return Wave_Format_Extensible;
+
    type Wave_Format_Chunk_Size is
      (Wave_Format_16_Size,
       Wave_Format_18_Size,
