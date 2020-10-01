@@ -46,10 +46,6 @@ with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
 with Audio.RIFF.Wav.Formats.Report;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-with Audio.RIFF.Wav.GUIDs;                 use Audio.RIFF.Wav.GUIDs;
-#end if;
-
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 package body Quick_Wav_Data_Checks.Float_Checks is
 #else
 package body Quick_Wav_Data_Checks.Fixed_Checks is

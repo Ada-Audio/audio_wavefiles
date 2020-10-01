@@ -41,7 +41,6 @@ with Audio.Wavefiles.Generic_Fixed_PCM_IO;
 with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
 with Audio.RIFF.Wav.Formats.Report;
 
-
 package body Quick_Wav_Data_Checks.Fixed_Checks is
 
    Verbose : constant Boolean := False;

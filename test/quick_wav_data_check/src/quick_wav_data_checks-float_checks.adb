@@ -41,8 +41,6 @@ with Audio.Wavefiles.Generic_Float_PCM_IO;
 with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
 with Audio.RIFF.Wav.Formats.Report;
 
-with Audio.RIFF.Wav.GUIDs;                 use Audio.RIFF.Wav.GUIDs;
-
 package body Quick_Wav_Data_Checks.Float_Checks is
 
    Verbose : constant Boolean := False;
