@@ -302,6 +302,7 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
       Wave_Format := Default;
       Wave_Format.Bits_Per_Sample := Test_Bits;
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+      Wave_Format.Format_Tag := Wav_Format_Extensible;
       Wave_Format.Sub_Format := GUID_IEEE_Float;
 #end if;
 

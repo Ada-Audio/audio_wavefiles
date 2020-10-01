@@ -209,6 +209,7 @@ package body Quick_Wav_Data_Checks.Float_Checks is
    begin
       Wave_Format := Default;
       Wave_Format.Bits_Per_Sample := Test_Bits;
+      Wave_Format.Format_Tag := Wav_Format_Extensible;
       Wave_Format.Sub_Format := GUID_IEEE_Float;
 
       Set_Format_Of_Wavefile (WF_Out, Wave_Format);
