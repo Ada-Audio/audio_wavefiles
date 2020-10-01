@@ -299,12 +299,14 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
       WF_Out      : Wavefile;
       Wave_Format : Wave_Format_Extensible;
    begin
-      Wave_Format := Default;
-      Wave_Format.Bits_Per_Sample := Test_Bits;
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-      Wave_Format.Format_Tag := Wav_Format_Extensible;
-      Wave_Format.Sub_Format := GUID_IEEE_Float;
+      Wave_Format := Init (Format             => Wav_Format_PCM_Float,
+#else
+      Wave_Format := Init (Format             => Wav_Format_PCM,
 #end if;
+                           Bit_Depth          => Test_Bits,
+                           Sample_Rate        => Sample_Rate_44100,
+                           Number_Of_Channels => 2);
 
       Set_Format_Of_Wavefile (WF_Out, Wave_Format);
       Open (WF_Out, Out_File, Wav_File_Name);
