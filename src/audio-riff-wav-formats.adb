@@ -38,7 +38,7 @@ package body Audio.RIFF.Wav.Formats is
       return W : Wave_Format_16 do
          W.Format_Tag        := 16#0001#;
          W.Channels          := 2;
-         W.Samples_Per_Sec   := 44100;
+         W.Samples_Per_Sec   := Sample_Rate_44100;
          W.Bits_Per_Sample   := 16;
          W.Block_Align       := ((W.Bits_Per_Sample + 7) / 8) * W.Channels;
          W.Avg_Bytes_Per_Sec := 0;

@@ -81,11 +81,38 @@ package Audio.RIFF.Wav.Formats is
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
       Item   : Channel_Mask_Type);
 
+   type Wav_Sample_Rate is
+     (Sample_Rate_8000,
+      Sample_Rate_11025,  Sample_Rate_12000,  Sample_Rate_16000,
+      Sample_Rate_22050,  Sample_Rate_24000,  Sample_Rate_32000,
+      Sample_Rate_44100,  Sample_Rate_48000,  Sample_Rate_64000,
+      Sample_Rate_88200,  Sample_Rate_96000,
+      Sample_Rate_176400, Sample_Rate_192000,
+      Sample_Rate_352800)
+     with Size => Unsigned_32'Size;
+
+   for Wav_Sample_Rate use
+     (Sample_Rate_8000   =>   8_000,
+      Sample_Rate_11025  =>  11_025,
+      Sample_Rate_12000  =>  12_000,
+      Sample_Rate_16000  =>  16_000,
+      Sample_Rate_22050  =>  22_050,
+      Sample_Rate_24000  =>  24_000,
+      Sample_Rate_32000  =>  32_000,
+      Sample_Rate_44100  =>  44_100,
+      Sample_Rate_48000  =>  48_000,
+      Sample_Rate_64000  =>  64_000,
+      Sample_Rate_88200  =>  88_200,
+      Sample_Rate_96000  =>  96_000,
+      Sample_Rate_176400 => 176_400,
+      Sample_Rate_192000 => 192_000,
+      Sample_Rate_352800 => 352_800);
+
    type Wave_Format_16 is tagged
       record
          Format_Tag        : Unsigned_16;
          Channels          : Unsigned_16;
-         Samples_Per_Sec   : Unsigned_32;
+         Samples_Per_Sec   : Wav_Sample_Rate;
          Avg_Bytes_Per_Sec : Unsigned_32;
          Block_Align       : Unsigned_16;
          Bits_Per_Sample   : Unsigned_16;
