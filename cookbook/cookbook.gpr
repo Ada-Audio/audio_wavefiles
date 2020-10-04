@@ -38,7 +38,8 @@ project Cookbook is
 
    for Main use ("open_close_wavefile_for_reading.adb",
                  "open_close_wavefile_for_writing.adb",
-                 "write_silence_mono_wavefile.adb");
+                 "write_silence_mono_wavefile.adb",
+                 "write_sine_wavefile.adb");
 
    package Ide is
       for Vcs_Kind use "Git";
