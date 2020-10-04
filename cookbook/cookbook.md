@@ -99,6 +99,66 @@ begin
 end Open_Close_Wavefile_For_Writing;
 ```
 
+## Reading data from a wavefile
+
+```ada
+with Ada.Text_IO;                          use Ada.Text_IO;
+
+with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles.Generic_Float_PCM_IO;
+
+procedure Read_Display_Wavefile_Data is
+   type Float_Array is array (Positive range <>) of Float;
+
+   package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
+     (PCM_Sample    => Float,
+      PCM_MC_Sample => Float_Array);
+   use PCM_IO;
+
+   WF            : Wavefile;
+   Wav_File_Name : constant String := "data/2ch_silence.wav";
+   Sample_Count  : Natural := 0;
+   EOF           : Boolean;
+begin
+   Open (WF, In_File, Wav_File_Name);
+
+   if Is_Opened (WF) then
+      Put_Line ("Start reading: " & Wav_File_Name);
+      New_Line;
+
+      loop
+         Read_One_Sample : declare
+            PCM_Buf : constant Float_Array := Get (WF);
+         begin
+            EOF := Is_EOF (WF);
+            exit when EOF;
+
+            Sample_Count := Sample_Count + 1;
+
+            Display_Sample : begin
+               Put_Line ("Read sample #"
+                         & Natural'Image (Sample_Count) & ".");
+
+               for Channel_Number in PCM_Buf'Range loop
+                  Put_Line ("    Channel # " & Positive'Image (Channel_Number)
+                            & ": "  & Float'Image (PCM_Buf (Channel_Number)));
+               end loop;
+            end Display_Sample;
+
+         end Read_One_Sample;
+      end loop;
+
+      New_Line;
+      Put_Line ("Finished reading "
+                & Positive'Image (Sample_Count) & " samples.");
+
+      Close (WF);
+   end if;
+
+end Read_Display_Wavefile_Data;
+```
+
+
 ## Writing mono wavefile with silence
 
 ```ada
