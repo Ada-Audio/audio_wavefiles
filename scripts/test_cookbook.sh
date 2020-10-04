@@ -45,6 +45,19 @@ function simple_testcase
     cookbook_check "$TESTCASE" "(logfile check)" "diff_$LOGFILE"
 }
 
+function check_wavinfo
+{
+    TESTCASE=$1
+    WAVFILE=$2
+
+    LOGFILE=${TESTCASE,,}_wavinfo.log
+    wavinfo $WAVFILE >& $LOGFILE
+    cookbook_check "$TESTCASE" "(wavinfo)"
+
+    diff ./ref/$LOGFILE $LOGFILE >& diff_$LOGFILE
+    cookbook_check "$TESTCASE" "(wavinfo logfile check)" "diff_$LOGFILE"
+}
+
 ################
 # PREPARATIONS #
 ################
@@ -70,6 +83,7 @@ cookbook_check "PREPARATIONS" "(gprbuild)" "gprbuild.log"
 
 simple_testcase Open_Close_Wavefile_For_Reading
 simple_testcase Open_Close_Wavefile_For_Writing
+check_wavinfo   Open_Close_Wavefile_For_Writing "out/test.wav"
 
 ################
 # FINALIZATION #

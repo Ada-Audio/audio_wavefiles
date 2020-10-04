@@ -1,0 +1,19 @@
+Header info for: out/test.wav
+WaveHeader Size:	12
+ChunkHeader Size:	8
+FormatChunk Size:	16
+RIFF ID:	RIFF
+Total Size:	36
+Wave ID:	WAVE
+Chunk ID:	fmt 
+Chunk Size:	18
+Compression format is of type: 1
+Channels:	2
+Sample Rate:	44100
+Bytes / Sec:	176400
+wBlockAlign:	4
+Bits Per Sample Point:	16
+in size compare
+wavDataPtr: 46
+wavDataSize: 0
+
