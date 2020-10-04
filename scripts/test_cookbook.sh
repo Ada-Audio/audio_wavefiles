@@ -58,6 +58,17 @@ function check_wavinfo
     cookbook_check "$TESTCASE" "(wavinfo logfile check)" "diff_$LOGFILE"
 }
 
+function check_wavefile
+{
+    TESTCASE=$1
+    WAVFILE=$2
+
+    LOGFILE=${TESTCASE,,}.log
+
+    diff ./ref/$WAVFILE ./out/$WAVFILE >& diff_$LOGFILE
+    cookbook_check "$TESTCASE" "(wavfile check)" ""
+}
+
 ################
 # PREPARATIONS #
 ################
