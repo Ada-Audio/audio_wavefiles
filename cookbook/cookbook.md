@@ -214,7 +214,7 @@ procedure Write_Sine_Wavefile is
    Sample_Rate_Enum : constant Wav_Sample_Rate := Sample_Rate_44100;
    Num_Channels     : constant Positive := 2;
 
-   WF                 : Wavefile;
+   WF               : Wavefile;
 begin
    Set_Format_Of_Wavefile (WF,
                            Init (Bit_Depth          => Bit_Depth_16,
