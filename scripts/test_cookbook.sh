@@ -51,7 +51,7 @@ function check_wavinfo
     WAVFILE=$2
 
     LOGFILE=${TESTCASE,,}_wavinfo.log
-    wavinfo $WAVFILE >& $LOGFILE
+    wavinfo ./out/$WAVFILE >& $LOGFILE
     cookbook_check "$TESTCASE" "(wavinfo)"
 
     diff ./ref/$LOGFILE $LOGFILE >& diff_$LOGFILE
@@ -83,7 +83,7 @@ cookbook_check "PREPARATIONS" "(gprbuild)" "gprbuild.log"
 
 simple_testcase Open_Close_Wavefile_For_Reading
 simple_testcase Open_Close_Wavefile_For_Writing
-check_wavinfo   Open_Close_Wavefile_For_Writing "out/test.wav"
+check_wavinfo   Open_Close_Wavefile_For_Writing "test.wav"
 
 ################
 # FINALIZATION #
