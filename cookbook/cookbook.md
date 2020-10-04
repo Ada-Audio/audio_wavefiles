@@ -102,9 +102,6 @@ end Open_Close_Wavefile_For_Writing;
 ## Writing mono wavefile with silence
 
 ```ada
-with Ada.Numerics;
-with Ada.Numerics.Generic_Elementary_Functions;
-
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
@@ -116,9 +113,6 @@ procedure Write_Silence_Mono_Wavefile is
      (PCM_Sample    => Wav_Float_32,
       PCM_MC_Sample => Wav_Buffer_Float_32);
    use PCM_IO;
-
-   package PCM_Elementary_Functions is new
-     Ada.Numerics.Generic_Elementary_Functions (Wav_Float_32);
 
    Wav_File_Name    : constant String := "out/1ch_silence.wav";
    Sample_Rate_Enum : constant Wav_Sample_Rate := Sample_Rate_44100;
