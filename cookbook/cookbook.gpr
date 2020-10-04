@@ -37,7 +37,8 @@ project Cookbook is
    for Create_Missing_Dirs use "True";
 
    for Main use ("open_close_wavefile_for_reading.adb",
-                 "open_close_wavefile_for_writing.adb");
+                 "open_close_wavefile_for_writing.adb",
+                 "write_silence_mono_wavefile.adb");
 
    package Ide is
       for Vcs_Kind use "Git";

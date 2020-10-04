@@ -93,8 +93,13 @@ cookbook_check "PREPARATIONS" "(gprbuild)" "gprbuild.log"
 ##############
 
 simple_testcase Open_Close_Wavefile_For_Reading
+
 simple_testcase Open_Close_Wavefile_For_Writing
 check_wavinfo   Open_Close_Wavefile_For_Writing "test.wav"
+
+simple_testcase Write_Silence_Mono_Wavefile
+check_wavinfo   Write_Silence_Mono_Wavefile     "1ch_silence.wav"
+check_wavefile  Write_Silence_Mono_Wavefile     "1ch_silence.wav"
 
 ################
 # FINALIZATION #
