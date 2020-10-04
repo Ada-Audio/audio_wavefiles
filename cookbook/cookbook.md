@@ -99,7 +99,7 @@ begin
 end Open_Close_Wavefile_For_Writing;
 ```
 
-## Write mono wavefile with silence
+## Writing mono wavefile with silence
 
 ```ada
 with Ada.Numerics;
