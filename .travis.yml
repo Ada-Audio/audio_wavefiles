@@ -15,6 +15,10 @@ cache:
   directories:
   - $HOME/build_tools
 
+before_install:
+  - sudo apt-get update
+  - sudo apt-get -y install wavbreaker
+
 install: ./.travis/gnat_community_install.sh
 
 jobs:
