@@ -16,7 +16,7 @@ with Audio.Wavefiles; use Audio.Wavefiles;
 
 procedure Open_Close_Wavefile_For_Reading is
    WF            : Wavefile;
-   Wav_File_Name : String := "data/2ch_silence.wav";
+   Wav_File_Name : constant String := "data/2ch_silence.wav";
 begin
    --
    --  Opening the wavefile
@@ -62,7 +62,7 @@ with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
 
 procedure Open_Close_Wavefile_For_Writing is
    WF            : Wavefile;
-   Wav_File_Name : String := "out/test.wav";
+   Wav_File_Name : constant String := "out/test.wav";
 begin
    --
    --  Set format of the wavefile
