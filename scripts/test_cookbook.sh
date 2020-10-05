@@ -69,6 +69,14 @@ function check_wavefile
     cookbook_check "$TESTCASE" "(wavfile check)" ""
 }
 
+function cleanup_data
+{
+    rm log/*
+    rm out/*
+    rm src/*
+    rm cookbook.ada
+}
+
 ################
 # PREPARATIONS #
 ################
@@ -131,7 +139,6 @@ then
     done
 fi
 
-rm log/*
-rm out/*
+cleanup_data
 
 exit $TEST_EXIT_CODE
