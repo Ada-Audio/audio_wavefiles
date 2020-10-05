@@ -193,7 +193,7 @@ begin
 
    if Is_Opened (WF) then
 
-      Write_PCM_Vals : declare
+      Write_Silence : declare
          Last_Sample : constant Positive
            := Positive (Sample_Rate * Duration_In_Secs);
          PCM_Buf     : Wav_Buffer_Float_32 (1 .. Num_Channels);
@@ -204,7 +204,7 @@ begin
             end loop;
             Put (WF, PCM_Buf);
          end loop;
-      end Write_PCM_Vals;
+      end Write_Silence;
 
       Close (WF);
 
@@ -217,9 +217,9 @@ end Write_Silence_Mono_Wavefile;
 ```ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 
-procedure Write_PCM_Vals (WF           : in out Wavefile;
-                          Sample_Rate  :        Float;
-                          Num_Channels :        Positive);
+procedure Write_Sine_Tone (WF           : in out Wavefile;
+                           Sample_Rate  :        Float;
+                           Num_Channels :        Positive);
 
 with Ada.Numerics;
 with Ada.Numerics.Generic_Elementary_Functions;
@@ -227,9 +227,9 @@ with Ada.Numerics.Generic_Elementary_Functions;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
 
-procedure Write_PCM_Vals (WF           : in out Wavefile;
-                          Sample_Rate  :        Float;
-                          Num_Channels :        Positive)
+procedure Write_Sine_Tone (WF           : in out Wavefile;
+                           Sample_Rate  :        Float;
+                           Num_Channels :        Positive)
 is
    package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
      (PCM_Sample    => Wav_Float_32,
@@ -253,7 +253,7 @@ is
 begin
    for Sample in 1 .. Last_Sample loop
 
-      Write_PCM_Sample : declare
+      Write_Sine_Sample : declare
          P : constant Wav_Float_32 :=
                Wav_Float_32 (Two_Pi * Float (Sample) / Sample_Rate);
       begin
@@ -261,15 +261,15 @@ begin
             PCM_Buf (J) := Amp (J) * Sin (P * Freq (J));
          end loop;
          Put (WF, PCM_Buf);
-      end Write_PCM_Sample;
+      end Write_Sine_Sample;
 
    end loop;
-end Write_PCM_Vals;
+end Write_Sine_Tone;
 
 with Audio.Wavefiles;        use Audio.Wavefiles;
 with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
 
-with Write_PCM_Vals;
+with Write_Sine_Tone;
 
 procedure Write_Sine_Wavefile is
    Wav_File_Name    : constant String := "out/2ch_sine.wav";
@@ -287,7 +287,7 @@ begin
    Open (WF, Out_File, Wav_File_Name);
 
    if Is_Opened (WF) then
-      Write_PCM_Vals
+      Write_Sine_Tone
         (WF           => WF,
          Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),
          Num_Channels => Num_Channels);
