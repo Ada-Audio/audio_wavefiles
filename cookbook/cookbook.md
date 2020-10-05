@@ -199,8 +199,8 @@ begin
          PCM_Buf     : Wav_Buffer_Float_32 (1 .. Num_Channels);
       begin
          for Sample in 1 .. Last_Sample loop
-            for J in PCM_Buf'Range loop
-               PCM_Buf (J) := 0.0;
+            for Channel_Number in PCM_Buf'Range loop
+               PCM_Buf (Channel_Number) := 0.0;
             end loop;
             Put (WF, PCM_Buf);
          end loop;
@@ -257,8 +257,8 @@ begin
          P : constant Wav_Float_32 :=
                Wav_Float_32 (Two_Pi * Float (Sample) / Sample_Rate);
       begin
-         for J in PCM_Buf'Range loop
-            PCM_Buf (J) := Amp (J) * Sin (P * Freq (J));
+         for Ch_Num in PCM_Buf'Range loop
+            PCM_Buf (Ch_Num) := Amp (Ch_Num) * Sin (P * Freq (Ch_Num));
          end loop;
          Put (WF, PCM_Buf);
       end Write_Sine_Sample;
