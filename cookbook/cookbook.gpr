@@ -41,7 +41,8 @@ project Cookbook is
                  "read_display_wavefile_data.adb",
                  "write_silence_mono_wavefile.adb",
                  "write_stereo_sine_wavefile.adb",
-                 "write_5_1_channel_sine_wavefile.adb");
+                 "write_5_1_channel_sine_wavefile.adb",
+                 "write_7_1_4_channel_sine_wavefile.adb");
 
    package Ide is
       for Vcs_Kind use "Git";
