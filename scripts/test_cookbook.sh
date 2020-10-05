@@ -107,6 +107,11 @@ simple_testcase Write_Stereo_Sine_Wavefile
 check_wavinfo   Write_Stereo_Sine_Wavefile      "2ch_sine.wav"
 check_wavefile  Write_Stereo_Sine_Wavefile      "2ch_sine.wav"
 
+simple_testcase Write_5_1_Channel_Sine_Wavefile
+check_wavinfo   Write_5_1_Channel_Sine_Wavefile "5_1ch_sine.wav"
+check_wavefile  Write_5_1_Channel_Sine_Wavefile "5_1ch_sine.wav"
+
+
 ################
 # FINALIZATION #
 ################
