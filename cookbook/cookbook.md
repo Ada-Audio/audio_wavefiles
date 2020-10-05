@@ -359,7 +359,7 @@ with Write_5_1_Channel_Sine_Tone;
 procedure Write_5_1_Channel_Sine_Wavefile is
    Wav_File_Name    : constant String := "out/5_1ch_sine.wav";
    Sample_Rate_Enum : constant Wav_Sample_Rate := Sample_Rate_44100;
-   Num_Channels     : constant Positive := 6;
+   Num_Channels     : constant Positive := 5 + 1;
 
    WF               : Wavefile;
    Wave_Format      : Wave_Format_Extensible;
@@ -458,7 +458,7 @@ with Write_7_1_4_Channel_Sine_Tone;
 procedure Write_7_1_4_Channel_Sine_Wavefile is
    Wav_File_Name    : constant String := "out/7_1_4ch_sine.wav";
    Sample_Rate_Enum : constant Wav_Sample_Rate := Sample_Rate_12000;
-   Num_Channels     : constant Positive := 12;
+   Num_Channels     : constant Positive := 7 + 1 + 4;
 
    WF               : Wavefile;
    Wave_Format      : Wave_Format_Extensible;
