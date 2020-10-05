@@ -217,9 +217,9 @@ end Write_Silence_Mono_Wavefile;
 ```ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 
-procedure Write_Sine_Tone (WF           : in out Wavefile;
-                           Sample_Rate  :        Float;
-                           Num_Channels :        Positive);
+procedure Write_Stereo_Sine_Tone (WF           : in out Wavefile;
+                                  Sample_Rate  :        Float;
+                                  Num_Channels :        Positive);
 
 with Ada.Numerics;
 with Ada.Numerics.Generic_Elementary_Functions;
@@ -227,9 +227,9 @@ with Ada.Numerics.Generic_Elementary_Functions;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
 
-procedure Write_Sine_Tone (WF           : in out Wavefile;
-                           Sample_Rate  :        Float;
-                           Num_Channels :        Positive)
+procedure Write_Stereo_Sine_Tone (WF           : in out Wavefile;
+                                  Sample_Rate  :        Float;
+                                  Num_Channels :        Positive)
 is
    package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
      (PCM_Sample    => Wav_Float_32,
@@ -264,14 +264,14 @@ begin
       end Write_Sine_Sample;
 
    end loop;
-end Write_Sine_Tone;
+end Write_Stereo_Sine_Tone;
 
 with Audio.Wavefiles;        use Audio.Wavefiles;
 with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
 
-with Write_Sine_Tone;
+with Write_Stereo_Sine_Tone;
 
-procedure Write_Sine_Wavefile is
+procedure Write_Stereo_Sine_Wavefile is
    Wav_File_Name    : constant String := "out/2ch_sine.wav";
    Sample_Rate_Enum : constant Wav_Sample_Rate := Sample_Rate_44100;
    Num_Channels     : constant Positive := 2;
@@ -287,12 +287,12 @@ begin
    Open (WF, Out_File, Wav_File_Name);
 
    if Is_Opened (WF) then
-      Write_Sine_Tone
+      Write_Stereo_Sine_Tone
         (WF           => WF,
          Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),
          Num_Channels => Num_Channels);
 
       Close (WF);
    end if;
-end Write_Sine_Wavefile;
+end Write_Stereo_Sine_Wavefile;
 ```

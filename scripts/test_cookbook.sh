@@ -103,9 +103,9 @@ simple_testcase Write_Silence_Mono_Wavefile
 check_wavinfo   Write_Silence_Mono_Wavefile     "1ch_silence.wav"
 check_wavefile  Write_Silence_Mono_Wavefile     "1ch_silence.wav"
 
-simple_testcase Write_Sine_Wavefile
-check_wavinfo   Write_Sine_Wavefile             "2ch_sine.wav"
-check_wavefile  Write_Sine_Wavefile             "2ch_sine.wav"
+simple_testcase Write_Stereo_Sine_Wavefile
+check_wavinfo   Write_Stereo_Sine_Wavefile      "2ch_sine.wav"
+check_wavefile  Write_Stereo_Sine_Wavefile      "2ch_sine.wav"
 
 ################
 # FINALIZATION #
