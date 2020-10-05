@@ -38,11 +38,11 @@ function simple_testcase
     TESTCASE=$1
     LOGFILE=${TESTCASE,,}.log
     ./bin/${TESTCASE,,} \
-        >& $LOGFILE
+        >& ./log/$LOGFILE
     cookbook_check "$TESTCASE" "(run check)"
 
-    diff ./ref/$LOGFILE $LOGFILE >& diff_$LOGFILE
-    cookbook_check "$TESTCASE" "(logfile check)" "diff_$LOGFILE"
+    diff ./ref/$LOGFILE ./log/$LOGFILE >& ./log/diff_$LOGFILE
+    cookbook_check "$TESTCASE" "(logfile check)" "./log/diff_$LOGFILE"
 }
 
 function check_wavinfo
@@ -51,11 +51,11 @@ function check_wavinfo
     WAVFILE=$2
 
     LOGFILE=${TESTCASE,,}_wavinfo.log
-    wavinfo ./out/$WAVFILE >& $LOGFILE
+    wavinfo ./out/$WAVFILE >& ./log/$LOGFILE
     cookbook_check "$TESTCASE" "(wavinfo)"
 
-    diff ./ref/$LOGFILE $LOGFILE >& diff_$LOGFILE
-    cookbook_check "$TESTCASE" "(wavinfo logfile check)" "diff_$LOGFILE"
+    diff ./ref/$LOGFILE ./log/$LOGFILE >& ./log/diff_$LOGFILE
+    cookbook_check "$TESTCASE" "(wavinfo logfile check)" "./log/diff_$LOGFILE"
 }
 
 function check_wavefile
@@ -65,7 +65,7 @@ function check_wavefile
 
     LOGFILE=${TESTCASE,,}.log
 
-    diff ./ref/$WAVFILE ./out/$WAVFILE >& diff_$LOGFILE
+    diff ./ref/$WAVFILE ./out/$WAVFILE >& ./log/diff_$LOGFILE
     cookbook_check "$TESTCASE" "(wavfile check)" ""
 }
 
@@ -81,12 +81,12 @@ sed -n '/^```/,/^```/ p' < cookbook.md | sed '/^```/ d' > cookbook.ada
 cookbook_check "PREPARATIONS" "(sed)" ""
 
 # Create source-code files based on cookbook file
-gnatchop -wr cookbook.ada ./src >& gnatchop.log
-cookbook_check "PREPARATIONS" "(gnatchop)" "gnatchop.log"
+gnatchop -wr cookbook.ada ./src >& ./log/gnatchop.log
+cookbook_check "PREPARATIONS" "(gnatchop)" "./log/gnatchop.log"
 
 # Build application for each source-code file
-gprbuild ./cookbook.gpr  >& gprbuild.log
-cookbook_check "PREPARATIONS" "(gprbuild)" "gprbuild.log"
+gprbuild ./cookbook.gpr  >& ./log/gprbuild.log
+cookbook_check "PREPARATIONS" "(gprbuild)" "./log/gprbuild.log"
 
 ##############
 # RUN & TEST #
@@ -131,7 +131,7 @@ then
     done
 fi
 
-# rm *.log
-# rm out/*
+rm log/*
+rm out/*
 
 exit $TEST_EXIT_CODE
