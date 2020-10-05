@@ -168,7 +168,7 @@ with Audio.Wavefiles.Generic_Float_PCM_IO;
 
 with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
 
-procedure Write_Silence_Mono_Wavefile is
+procedure Write_Mono_Silence_Wavefile is
    package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
      (PCM_Sample    => Wav_Float_32,
       PCM_MC_Sample => Wav_Buffer_Float_32);
@@ -209,7 +209,7 @@ begin
       Close (WF);
 
    end if;
-end Write_Silence_Mono_Wavefile;
+end Write_Mono_Silence_Wavefile;
 ```
 
 ## Writing stereo wavefile with sine tone

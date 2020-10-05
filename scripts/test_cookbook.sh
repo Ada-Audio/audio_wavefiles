@@ -99,9 +99,9 @@ check_wavinfo   Open_Close_Wavefile_For_Writing     "test.wav"
 
 simple_testcase Read_Display_Wavefile_Data
 
-simple_testcase Write_Silence_Mono_Wavefile
-check_wavinfo   Write_Silence_Mono_Wavefile         "1ch_silence.wav"
-check_wavefile  Write_Silence_Mono_Wavefile         "1ch_silence.wav"
+simple_testcase Write_Mono_Silence_Wavefile
+check_wavinfo   Write_Mono_Silence_Wavefile         "1ch_silence.wav"
+check_wavefile  Write_Mono_Silence_Wavefile         "1ch_silence.wav"
 
 simple_testcase Write_Stereo_Sine_Wavefile
 check_wavinfo   Write_Stereo_Sine_Wavefile          "2ch_sine.wav"
