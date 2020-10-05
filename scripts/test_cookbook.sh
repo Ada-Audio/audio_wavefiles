@@ -95,25 +95,25 @@ cookbook_check "PREPARATIONS" "(gprbuild)" "gprbuild.log"
 simple_testcase Open_Close_Wavefile_For_Reading
 
 simple_testcase Open_Close_Wavefile_For_Writing
-check_wavinfo   Open_Close_Wavefile_For_Writing "test.wav"
+check_wavinfo   Open_Close_Wavefile_For_Writing     "test.wav"
 
 simple_testcase Read_Display_Wavefile_Data
 
 simple_testcase Write_Silence_Mono_Wavefile
-check_wavinfo   Write_Silence_Mono_Wavefile     "1ch_silence.wav"
-check_wavefile  Write_Silence_Mono_Wavefile     "1ch_silence.wav"
+check_wavinfo   Write_Silence_Mono_Wavefile         "1ch_silence.wav"
+check_wavefile  Write_Silence_Mono_Wavefile         "1ch_silence.wav"
 
 simple_testcase Write_Stereo_Sine_Wavefile
-check_wavinfo   Write_Stereo_Sine_Wavefile      "2ch_sine.wav"
-check_wavefile  Write_Stereo_Sine_Wavefile      "2ch_sine.wav"
+check_wavinfo   Write_Stereo_Sine_Wavefile          "2ch_sine.wav"
+check_wavefile  Write_Stereo_Sine_Wavefile          "2ch_sine.wav"
 
 simple_testcase Write_5_1_Channel_Sine_Wavefile
-check_wavinfo   Write_5_1_Channel_Sine_Wavefile "5_1ch_sine.wav"
-check_wavefile  Write_5_1_Channel_Sine_Wavefile "5_1ch_sine.wav"
+check_wavinfo   Write_5_1_Channel_Sine_Wavefile     "5_1ch_sine.wav"
+check_wavefile  Write_5_1_Channel_Sine_Wavefile     "5_1ch_sine.wav"
 
 simple_testcase Write_7_1_4_Channel_Sine_Wavefile
-check_wavinfo   Write_7_1_4_Channel_Sine_Wavefile "7_1_4ch_sine.wav"
-check_wavefile  Write_7_1_4_Channel_Sine_Wavefile "7_1_4ch_sine.wav"
+check_wavinfo   Write_7_1_4_Channel_Sine_Wavefile   "7_1_4ch_sine.wav"
+check_wavefile  Write_7_1_4_Channel_Sine_Wavefile   "7_1_4ch_sine.wav"
 
 
 ################
@@ -131,7 +131,7 @@ then
     done
 fi
 
-rm *.log
-rm out/*
+# rm *.log
+# rm out/*
 
 exit $TEST_EXIT_CODE
