@@ -191,21 +191,23 @@ begin
 
    Open (WF, Out_File, Wav_File_Name);
 
-   Write_PCM_Vals : declare
-      Last_Sample : constant Positive
-        := Positive (Sample_Rate * Duration_In_Secs);
-      PCM_Buf     : Wav_Buffer_Float_32 (1 .. Num_Channels);
-   begin
-      for Sample in 1 .. Last_Sample loop
-         for J in PCM_Buf'Range loop
-            PCM_Buf (J) := 0.0;
-         end loop;
-         Put (WF, PCM_Buf);
-      end loop;
-   end Write_PCM_Vals;
-
    if Is_Opened (WF) then
+
+      Write_PCM_Vals : declare
+         Last_Sample : constant Positive
+           := Positive (Sample_Rate * Duration_In_Secs);
+         PCM_Buf     : Wav_Buffer_Float_32 (1 .. Num_Channels);
+      begin
+         for Sample in 1 .. Last_Sample loop
+            for J in PCM_Buf'Range loop
+               PCM_Buf (J) := 0.0;
+            end loop;
+            Put (WF, PCM_Buf);
+         end loop;
+      end Write_PCM_Vals;
+
       Close (WF);
+
    end if;
 end Write_Silence_Mono_Wavefile;
 ```
@@ -284,12 +286,12 @@ begin
 
    Open (WF, Out_File, Wav_File_Name);
 
-   Write_PCM_Vals
-     (WF           => WF,
-      Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),
-      Num_Channels => Num_Channels);
-
    if Is_Opened (WF) then
+      Write_PCM_Vals
+        (WF           => WF,
+         Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),
+         Num_Channels => Num_Channels);
+
       Close (WF);
    end if;
 end Write_Sine_Wavefile;
