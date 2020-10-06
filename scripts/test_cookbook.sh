@@ -135,6 +135,18 @@ simple_testcase Convert_Fixed_To_Float_Wavefile
 check_wavinfo   Convert_Fixed_To_Float_Wavefile         "2ch_float_sine.wav"
 check_wavefile  Convert_Fixed_To_Float_Wavefile         "2ch_float_sine.wav"
 
+simple_testcase Downmix_Stereo_To_Mono_Wavefile
+check_wavinfo   Downmix_Stereo_To_Mono_Wavefile         "1ch_dmx_sine.wav"
+check_wavefile  Downmix_Stereo_To_Mono_Wavefile         "1ch_dmx_sine.wav"
+
+simple_testcase Downmix_5_1_To_2_0_Wavefile
+check_wavinfo   Downmix_5_1_To_2_0_Wavefile             "2_0ch_dmx_sine.wav"
+check_wavefile  Downmix_5_1_To_2_0_Wavefile             "2_0ch_dmx_sine.wav"
+
+simple_testcase Downmix_7_1_4_To_5_1_Wavefile
+check_wavinfo   Downmix_7_1_4_To_5_1_Wavefile           "5_1ch_dmx_sine.wav"
+check_wavefile  Downmix_7_1_4_To_5_1_Wavefile           "5_1ch_dmx_sine.wav"
+
 ################
 # FINALIZATION #
 ################

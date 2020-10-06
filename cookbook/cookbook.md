@@ -652,3 +652,202 @@ begin
    Close (WF_Out);
 end Convert_Fixed_To_Float_Wavefile;
 ```
+
+## Downmix stereo wavefile to mono wavefile
+
+```ada
+with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
+with Audio.Wavefiles.Generic_Float_PCM_IO;
+with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
+
+procedure Downmix_Stereo_To_Mono_Wavefile is
+   Wav_In_File_Name    : constant String := "ref/2ch_sine.wav";
+   Wav_Out_File_Name   : constant String := "out/1ch_dmx_sine.wav";
+
+   WF_In        : Wavefile;
+   WF_Out       : Wavefile;
+   WF_In_Format : Wave_Format_Extensible;
+begin
+   Open (WF_In,  In_File,  Wav_In_File_Name);
+
+   WF_In_Format := Format_Of_Wavefile (WF_In);
+
+   Set_Format_Of_Wavefile
+     (WF_Out,
+      Init (Bit_Depth          => WF_In_Format.Bits_Per_Sample,
+            Sample_Rate        => WF_In_Format.Samples_Per_Sec,
+            Number_Of_Channels => 1,
+            Use_Float          => Is_Float_Format (WF_In_Format)));
+
+   Open (WF_Out, Out_File, Wav_Out_File_Name);
+
+   loop
+      Downmix_PCM_MC_Sample : declare
+         package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
+           (PCM_Sample    => Wav_Float_64,
+            PCM_MC_Sample => Wav_Buffer_Float_64);
+         use PCM_IO;
+
+         PCM_Buf_In  : constant Wav_Buffer_Float_64 := Get (WF_In);
+         PCM_Buf_Out :          Wav_Buffer_Float_64 (1 .. 1);
+
+         L : constant := 1;
+         R : constant := 2;
+      begin
+         pragma Assert (PCM_Buf_In'Length = 2);
+
+         PCM_Buf_Out (1) := PCM_Buf_In (L) * 0.5 + PCM_Buf_In (R) * 0.5;
+         Put (WF_Out, PCM_Buf_Out);
+         exit when Is_EOF (WF_In);
+      end Downmix_PCM_MC_Sample;
+   end loop;
+
+   Close (WF_In);
+   Close (WF_Out);
+end Downmix_Stereo_To_Mono_Wavefile;
+```
+
+## Downmix 5.1-channel wavefile to stereo wavefile
+
+```ada
+with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
+with Audio.Wavefiles.Generic_Float_PCM_IO;
+with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
+
+procedure Downmix_5_1_To_2_0_Wavefile is
+   Wav_In_File_Name    : constant String := "out/5_1ch_sine.wav";
+   Wav_Out_File_Name   : constant String := "out/2_0ch_dmx_sine.wav";
+
+   WF_In        : Wavefile;
+   WF_Out       : Wavefile;
+   WF_In_Format : Wave_Format_Extensible;
+begin
+   Open (WF_In,  In_File,  Wav_In_File_Name);
+
+   WF_In_Format := Format_Of_Wavefile (WF_In);
+
+   Set_Format_Of_Wavefile
+     (WF_Out,
+      Init (Bit_Depth          => WF_In_Format.Bits_Per_Sample,
+            Sample_Rate        => WF_In_Format.Samples_Per_Sec,
+            Number_Of_Channels => 2,
+            Use_Float          => Is_Float_Format (WF_In_Format)));
+
+   Open (WF_Out, Out_File, Wav_Out_File_Name);
+
+   loop
+      Downmix_PCM_MC_Sample : declare
+         package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
+           (PCM_Sample    => Wav_Float_64,
+            PCM_MC_Sample => Wav_Buffer_Float_64);
+         use PCM_IO;
+
+         PCM_Buf_In  : constant Wav_Buffer_Float_64 := Get (WF_In);
+         PCM_Buf_Out :          Wav_Buffer_Float_64 (1 .. 2);
+
+         F_L : constant := 1;
+         F_R : constant := 2;
+         F_C : constant := 3;
+         LFE : constant := 4;
+         B_L : constant := 5;
+         B_R : constant := 6;
+      begin
+         pragma Assert (PCM_Buf_In'Length = 6);
+
+         PCM_Buf_Out (F_L) :=   PCM_Buf_In (F_L) * 0.35
+                              + PCM_Buf_In (F_C) * 0.25
+                              + PCM_Buf_In (LFE) * 0.15
+                              + PCM_Buf_In (B_L) * 0.25;
+         PCM_Buf_Out (F_R) :=   PCM_Buf_In (F_R) * 0.35
+                              + PCM_Buf_In (F_C) * 0.25
+                              + PCM_Buf_In (LFE) * 0.15
+                              + PCM_Buf_In (B_R) * 0.25;
+         Put (WF_Out, PCM_Buf_Out);
+         exit when Is_EOF (WF_In);
+      end Downmix_PCM_MC_Sample;
+   end loop;
+
+   Close (WF_In);
+   Close (WF_Out);
+end Downmix_5_1_To_2_0_Wavefile;
+```
+
+## Downmix 7.1.4-channel wavefile to 5.1-channel wavefile
+
+```ada
+with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
+with Audio.Wavefiles.Generic_Float_PCM_IO;
+with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
+
+procedure Downmix_7_1_4_To_5_1_Wavefile is
+   Wav_In_File_Name    : constant String := "out/7_1_4ch_sine.wav";
+   Wav_Out_File_Name   : constant String := "out/5_1ch_dmx_sine.wav";
+
+   WF_In        : Wavefile;
+   WF_Out       : Wavefile;
+   WF_In_Format : Wave_Format_Extensible;
+begin
+   Open (WF_In,  In_File,  Wav_In_File_Name);
+
+   WF_In_Format := Format_Of_Wavefile (WF_In);
+
+   Set_Format_Of_Wavefile
+     (WF_Out,
+      Init (Bit_Depth          => WF_In_Format.Bits_Per_Sample,
+            Sample_Rate        => WF_In_Format.Samples_Per_Sec,
+            Number_Of_Channels => 5 + 1,
+            Use_Float          => Is_Float_Format (WF_In_Format)));
+
+   Open (WF_Out, Out_File, Wav_Out_File_Name);
+
+   loop
+      Downmix_PCM_MC_Sample : declare
+         package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
+           (PCM_Sample    => Wav_Float_64,
+            PCM_MC_Sample => Wav_Buffer_Float_64);
+         use PCM_IO;
+
+         PCM_Buf_In  : constant Wav_Buffer_Float_64 := Get (WF_In);
+         PCM_Buf_Out :          Wav_Buffer_Float_64 (1 .. 6);
+
+         F_L   : constant := 1;
+         F_R   : constant := 2;
+         F_C   : constant := 3;
+         LFE   : constant := 4;
+         B_L   : constant := 5;
+         B_R   : constant := 6;
+         S_L   : constant := 7;
+         S_R   : constant := 8;
+         T_F_L : constant := 9;
+         T_F_R : constant := 10;
+         T_B_L : constant := 11;
+         T_B_R : constant := 12;
+      begin
+         pragma Assert (PCM_Buf_In'Length = 12);
+
+         PCM_Buf_Out (F_L) :=   PCM_Buf_In (F_L)   * 0.4
+                              + PCM_Buf_In (S_L)   * 0.2
+                              + PCM_Buf_In (T_F_L) * 0.4;
+         PCM_Buf_Out (F_R) :=   PCM_Buf_In (F_R)   * 0.4
+                              + PCM_Buf_In (S_R)   * 0.2
+                              + PCM_Buf_In (T_F_R) * 0.4;
+         PCM_Buf_Out (F_C) :=   PCM_Buf_In (F_C)   * 0.4;
+         PCM_Buf_Out (LFE) :=   PCM_Buf_In (LFE)   * 0.4;
+         PCM_Buf_Out (B_L) :=   PCM_Buf_In (B_L)   * 0.4
+                              + PCM_Buf_In (S_L)   * 0.2
+                              + PCM_Buf_In (T_B_L) * 0.4;
+         PCM_Buf_Out (B_R) :=   PCM_Buf_In (B_R)   * 0.4
+                              + PCM_Buf_In (S_R)   * 0.2
+                              + PCM_Buf_In (T_B_R) * 0.4;
+         Put (WF_Out, PCM_Buf_Out);
+         exit when Is_EOF (WF_In);
+      end Downmix_PCM_MC_Sample;
+   end loop;
+
+   Close (WF_In);
+   Close (WF_Out);
+end Downmix_7_1_4_To_5_1_Wavefile;
+```
