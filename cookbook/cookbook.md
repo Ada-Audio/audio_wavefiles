@@ -323,10 +323,19 @@ is
      Ada.Numerics.Generic_Elementary_Functions (Wav_Float_32);
    use PCM_Elementary_Functions;
 
-   Freq             : constant Wav_Buffer_Float_32 (1 .. Num_Channels)
-     := (440.0, 220.0, 110.0, 55.0, 660.0, 880.0);
-   Amp              : constant Wav_Buffer_Float_32 (1 .. Num_Channels)
-     := (0.5, 0.25, 0.10, 0.05, 0.25, 0.5);
+   F_L   : constant := 1;
+   F_R   : constant := 2;
+   F_C   : constant := 3;
+   LFE   : constant := 4;
+   B_L   : constant := 5;
+   B_R   : constant := 6;
+
+   Freq  : constant Wav_Buffer_Float_32 (1 .. Num_Channels)
+     := (F_L => 440.0, F_R => 220.0, F_C => 110.0, LFE =>  55.0,
+         B_L => 660.0, B_R => 880.0);
+   Amp   : constant Wav_Buffer_Float_32 (1 .. Num_Channels)
+     := (F_L => 0.50, F_R => 0.25, F_C => 0.10, LFE => 0.05,
+         B_L => 0.25, B_R => 0.50);
    Duration_In_Secs : constant := 0.2;
    Last_Sample      : constant Positive
      := Positive (Sample_Rate * Duration_In_Secs);
@@ -420,12 +429,29 @@ is
      Ada.Numerics.Generic_Elementary_Functions (Wav_Float_32);
    use PCM_Elementary_Functions;
 
-   Freq             : constant Wav_Buffer_Float_32 (1 .. Num_Channels)
-     := (440.0,   220.0,  110.0,   55.0, 660.0, 880.0, 330.0, 550.0,
-         1320.0, 1540.0, 1760.0, 2200.0);
-   Amp              : constant Wav_Buffer_Float_32 (1 .. Num_Channels)
-     := (0.5, 0.25, 0.10, 0.05, 0.25, 0.5, 0.2, 0.6,
-         0.3, 0.40, 0.35, 0.15);
+   F_L   : constant := 1;
+   F_R   : constant := 2;
+   F_C   : constant := 3;
+   LFE   : constant := 4;
+   B_L   : constant := 5;
+   B_R   : constant := 6;
+   S_L   : constant := 7;
+   S_R   : constant := 8;
+   T_F_L : constant := 9;
+   T_F_R : constant := 10;
+   T_B_L : constant := 11;
+   T_B_R : constant := 12;
+
+   Freq  : constant Wav_Buffer_Float_32 (1 .. Num_Channels)
+     := (F_L   =>  440.0, F_R   =>  220.0, F_C =>  110.0, LFE =>   55.0,
+         B_L   =>  660.0, B_R   =>  880.0, S_L =>  330.0, S_R =>  550.0,
+         T_F_L => 1320.0, T_F_R => 1540.0,
+         T_B_L => 1760.0, T_B_R => 2200.0);
+   Amp   : constant Wav_Buffer_Float_32 (1 .. Num_Channels)
+     := (F_L   => 0.50, F_R   => 0.25, F_C => 0.10, LFE =>  0.05,
+         B_L   => 0.25, B_R   => 0.50, S_L => 0.20, S_R =>  0.60,
+         T_F_L => 0.30, T_F_R => 0.40,
+         T_B_L => 0.35, T_B_R => 0.15);
    Duration_In_Secs : constant := 0.2;
    Last_Sample      : constant Positive
      := Positive (Sample_Rate * Duration_In_Secs);
