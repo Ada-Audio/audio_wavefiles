@@ -123,6 +123,17 @@ simple_testcase Write_7_1_4_Channel_Sine_Wavefile
 check_wavinfo   Write_7_1_4_Channel_Sine_Wavefile   "7_1_4ch_sine.wav"
 check_wavefile  Write_7_1_4_Channel_Sine_Wavefile   "7_1_4ch_sine.wav"
 
+simple_testcase Copy_Wavefile
+check_wavinfo   Copy_Wavefile                           "2ch_sine.wav"
+check_wavefile  Copy_Wavefile                           "2ch_sine.wav"
+
+simple_testcase Copy_Wavefile_Using_Fixed_Point_Buffer
+check_wavinfo   Copy_Wavefile_Using_Fixed_Point_Buffer  "2ch_sine.wav"
+check_wavefile  Copy_Wavefile_Using_Fixed_Point_Buffer  "2ch_sine.wav"
+
+simple_testcase Convert_Fixed_To_Float_Wavefile
+check_wavinfo   Convert_Fixed_To_Float_Wavefile         "2ch_float_sine.wav"
+check_wavefile  Convert_Fixed_To_Float_Wavefile         "2ch_float_sine.wav"
 
 ################
 # FINALIZATION #
