@@ -786,20 +786,29 @@ procedure Downmix_7_1_4_To_5_1_Wavefile is
    Wav_In_File_Name    : constant String := "out/7_1_4ch_sine.wav";
    Wav_Out_File_Name   : constant String := "out/5_1ch_dmx_sine.wav";
 
-   WF_In        : Wavefile;
-   WF_Out       : Wavefile;
-   WF_In_Format : Wave_Format_Extensible;
+   WF_In     : Wavefile;
+   WF_Out    : Wavefile;
+   WF_Format : Wave_Format_Extensible;
+
+   Channel_Config_5_1 : constant Channel_Mask_Type :=
+     (Speaker_Front_Left    => True,
+      Speaker_Front_Right   => True,
+      Speaker_Front_Center  => True,
+      Speaker_Low_Frequency => True,
+      Speaker_Back_Left     => True,
+      Speaker_Back_Right    => True,
+      others                => False);
 begin
    Open (WF_In,  In_File,  Wav_In_File_Name);
 
-   WF_In_Format := Format_Of_Wavefile (WF_In);
+   WF_Format := Format_Of_Wavefile (WF_In);
+   WF_Format := Init (Bit_Depth          => WF_Format.Bits_Per_Sample,
+                      Sample_Rate        => WF_Format.Samples_Per_Sec,
+                      Number_Of_Channels => 5 + 1,
+                      Use_Float          => Is_Float_Format (WF_Format));
+   WF_Format.Channel_Mask := Channel_Config_5_1;
 
-   Set_Format_Of_Wavefile
-     (WF_Out,
-      Init (Bit_Depth          => WF_In_Format.Bits_Per_Sample,
-            Sample_Rate        => WF_In_Format.Samples_Per_Sec,
-            Number_Of_Channels => 5 + 1,
-            Use_Float          => Is_Float_Format (WF_In_Format)));
+   Set_Format_Of_Wavefile (WF_Out, WF_Format);
 
    Open (WF_Out, Out_File, Wav_Out_File_Name);
 
