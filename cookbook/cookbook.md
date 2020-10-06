@@ -503,47 +503,6 @@ end Write_7_1_4_Channel_Sine_Wavefile;
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
-with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
-
-procedure Copy_Wavefile is
-   Wav_In_File_Name  : constant String := "ref/2ch_sine.wav";
-   Wav_Out_File_Name : constant String := "out/2ch_sine.wav";
-
-   WF_In       : Audio.Wavefiles.Wavefile;
-   WF_Out      : Audio.Wavefiles.Wavefile;
-begin
-   Open (WF_In, In_File, Wav_In_File_Name);
-
-   Set_Format_Of_Wavefile (WF_Out,
-                           Format_Of_Wavefile (WF_In));
-
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
-
-   loop
-      Copy_PCM_MC_Sample : declare
-         package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
-           (PCM_Sample    => Wav_Float_32,
-            PCM_MC_Sample => Wav_Buffer_Float_32);
-         use PCM_IO;
-
-         PCM_Buf : constant Wav_Buffer_Float_32 := Get (WF_In);
-      begin
-         Put (WF_Out, PCM_Buf);
-         exit when Is_EOF (WF_In);
-      end Copy_PCM_MC_Sample;
-   end loop;
-
-   Close (WF_In);
-   Close (WF_Out);
-end Copy_Wavefile;
-```
-
-## Copy complete wavefile
-
-```ada
-with Audio.Wavefiles;                      use Audio.Wavefiles;
-with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
-with Audio.Wavefiles.Generic_Float_PCM_IO;
 
 procedure Copy_Wavefile is
    Wav_In_File_Name    : constant String := "ref/2ch_sine.wav";
