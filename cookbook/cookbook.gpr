@@ -48,7 +48,9 @@ project Cookbook is
                  "convert_fixed_to_float_wavefile.adb",
                  "downmix_stereo_to_mono_wavefile.adb",
                  "downmix_5_1_to_2_0_wavefile.adb",
-                 "downmix_7_1_4_to_5_1_wavefile.adb");
+                 "downmix_7_1_4_to_5_1_wavefile.adb",
+                 "direct_copy_wavefile.adb",
+                 "direct_copy_float_wavefile.adb");
 
    package Ide is
       for Vcs_Kind use "Git";

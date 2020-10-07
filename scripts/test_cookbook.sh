@@ -147,6 +147,14 @@ simple_testcase Downmix_7_1_4_To_5_1_Wavefile
 check_wavinfo   Downmix_7_1_4_To_5_1_Wavefile           "5_1ch_dmx_sine.wav"
 check_wavefile  Downmix_7_1_4_To_5_1_Wavefile           "5_1ch_dmx_sine.wav"
 
+simple_testcase Direct_Copy_Wavefile
+check_wavinfo   Direct_Copy_Wavefile                    "2ch_sine.wav"
+check_wavefile  Direct_Copy_Wavefile                    "2ch_sine.wav"
+
+simple_testcase Direct_Copy_Float_Wavefile
+check_wavinfo   Direct_Copy_Float_Wavefile              "2ch_float_sine.wav"
+check_wavefile  Direct_Copy_Float_Wavefile              "2ch_float_sine.wav"
+
 ################
 # FINALIZATION #
 ################

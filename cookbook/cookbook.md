@@ -860,3 +860,95 @@ begin
    Close (WF_Out);
 end Downmix_7_1_4_To_5_1_Wavefile;
 ```
+
+## Direct copy complete wavefile without PCM buffer conversion
+
+```ada
+with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
+with Audio.Wavefiles.Generic_Fixed_Wav_IO;
+with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
+
+procedure Direct_Copy_Wavefile is
+   Wav_In_File_Name  : constant String := "ref/2ch_sine.wav";
+   Wav_Out_File_Name : constant String := "out/2ch_sine.wav";
+
+   WF_In  : Wavefile;
+   WF_Out : Wavefile;
+begin
+   Open (WF_In, In_File, Wav_In_File_Name);
+
+   Set_Format_Of_Wavefile
+     (WF_Out,
+      Format_Of_Wavefile (WF_In));
+
+   Open (WF_Out, Out_File, Wav_Out_File_Name);
+
+   loop
+      Copy_Wav_MC_Sample : declare
+         pragma Assert
+           (Format_Of_Wavefile (WF_In).Bits_Per_Sample = Bit_Depth_16
+            and not Is_Float_Format (Format_Of_Wavefile (WF_In)));
+
+         package Wav_IO is new Audio.Wavefiles.Generic_Fixed_Wav_IO
+           (Wav_Sample    => Wav_Fixed_16,
+            Wav_MC_Sample => Wav_Buffer_Fixed_16);
+         use Wav_IO;
+
+         Wav_Buf : constant Wav_Buffer_Fixed_16 := Get (WF_In);
+      begin
+         Put (WF_Out, Wav_Buf);
+         exit when Is_EOF (WF_In);
+      end Copy_Wav_MC_Sample;
+   end loop;
+
+   Close (WF_In);
+   Close (WF_Out);
+end Direct_Copy_Wavefile;
+```
+
+## Direct copy complete floating-point wavefile without PCM buffer conversion
+
+```ada
+with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
+with Audio.Wavefiles.Generic_Float_Wav_IO;
+with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
+
+procedure Direct_Copy_Float_Wavefile is
+   Wav_In_File_Name  : constant String := "ref/2ch_float_sine.wav";
+   Wav_Out_File_Name : constant String := "out/2ch_float_sine.wav";
+
+   WF_In  : Wavefile;
+   WF_Out : Wavefile;
+begin
+   Open (WF_In, In_File, Wav_In_File_Name);
+
+   Set_Format_Of_Wavefile
+     (WF_Out,
+      Format_Of_Wavefile (WF_In));
+
+   Open (WF_Out, Out_File, Wav_Out_File_Name);
+
+   loop
+      Copy_Wav_MC_Sample : declare
+         pragma Assert
+           (Format_Of_Wavefile (WF_In).Bits_Per_Sample = Bit_Depth_32
+            and Is_Float_Format (Format_Of_Wavefile (WF_In)));
+
+         package Wav_IO is new Audio.Wavefiles.Generic_Float_Wav_IO
+           (Wav_Sample    => Wav_Float_32,
+            Wav_MC_Sample => Wav_Buffer_Float_32);
+         use Wav_IO;
+
+         Wav_Buf : constant Wav_Buffer_Float_32 := Get (WF_In);
+      begin
+         Put (WF_Out, Wav_Buf);
+         exit when Is_EOF (WF_In);
+      end Copy_Wav_MC_Sample;
+   end loop;
+
+   Close (WF_In);
+   Close (WF_Out);
+end Direct_Copy_Float_Wavefile;
+```
