@@ -2,7 +2,7 @@
 
 ## Opening & closing a wavefile for reading
 
-```ada
+~~~~~~~~~~ada
 --
 -------------------------------------------------------------------------------
 --
@@ -43,11 +43,11 @@ begin
    end if;
 
 end Open_Close_Wavefile_For_Reading;
-```
+~~~~~~~~~~
 
 ## Opening & closing a wavefile for writing
 
-```ada
+~~~~~~~~~~ada
 --
 -------------------------------------------------------------------------------
 --
@@ -97,11 +97,11 @@ begin
    end if;
 
 end Open_Close_Wavefile_For_Writing;
-```
+~~~~~~~~~~
 
 ## Reading data from a wavefile
 
-```ada
+~~~~~~~~~~ada
 with Ada.Text_IO;                          use Ada.Text_IO;
 
 with Audio.Wavefiles;                      use Audio.Wavefiles;
@@ -154,12 +154,12 @@ begin
    end if;
 
 end Read_Display_Wavefile_Data;
-```
+~~~~~~~~~~
 
 
 ## Writing mono wavefile with silence
 
-```ada
+~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
@@ -208,11 +208,11 @@ begin
 
    end if;
 end Write_Mono_Silence_Wavefile;
-```
+~~~~~~~~~~
 
 ## Writing stereo wavefile with sine tone
 
-```ada
+~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 
 procedure Write_Stereo_Sine_Tone (WF           : in out Wavefile;
@@ -293,11 +293,11 @@ begin
       Close (WF);
    end if;
 end Write_Stereo_Sine_Wavefile;
-```
+~~~~~~~~~~
 
 ## Writing 5.1-channel wavefile with sine tone
 
-```ada
+~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 
 procedure Write_5_1_Channel_Sine_Tone (WF           : in out Wavefile;
@@ -399,11 +399,11 @@ begin
       Close (WF);
    end if;
 end Write_5_1_Channel_Sine_Wavefile;
-```
+~~~~~~~~~~
 
 ## Writing 7.1.4-channel wavefile with sine tone
 
-```ada
+~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 
 procedure Write_7_1_4_Channel_Sine_Tone (WF           : in out Wavefile;
@@ -521,11 +521,11 @@ begin
       Close (WF);
    end if;
 end Write_7_1_4_Channel_Sine_Wavefile;
-```
+~~~~~~~~~~
 
 ## Copy complete wavefile
 
-```ada
+~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
@@ -562,11 +562,11 @@ begin
    Close (WF_In);
    Close (WF_Out);
 end Copy_Wavefile;
-```
+~~~~~~~~~~
 
 ## Copy complete wavefile using fixed-point buffer
 
-```ada
+~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Fixed_PCM_IO;
@@ -603,11 +603,11 @@ begin
    Close (WF_In);
    Close (WF_Out);
 end Copy_Wavefile_Using_Fixed_Point_Buffer;
-```
+~~~~~~~~~~
 
 ## Convert PCM wavefile to 32-bit floating-point PCM wavefile
 
-```ada
+~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
@@ -651,11 +651,11 @@ begin
    Close (WF_In);
    Close (WF_Out);
 end Convert_Fixed_To_Float_Wavefile;
-```
+~~~~~~~~~~
 
 ## Downmix stereo wavefile to mono wavefile
 
-```ada
+~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
@@ -706,11 +706,11 @@ begin
    Close (WF_In);
    Close (WF_Out);
 end Downmix_Stereo_To_Mono_Wavefile;
-```
+~~~~~~~~~~
 
 ## Downmix 5.1-channel wavefile to stereo wavefile
 
-```ada
+~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
@@ -772,11 +772,11 @@ begin
    Close (WF_In);
    Close (WF_Out);
 end Downmix_5_1_To_2_0_Wavefile;
-```
+~~~~~~~~~~
 
 ## Downmix 7.1.4-channel wavefile to 5.1-channel wavefile
 
-```ada
+~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
@@ -859,11 +859,11 @@ begin
    Close (WF_In);
    Close (WF_Out);
 end Downmix_7_1_4_To_5_1_Wavefile;
-```
+~~~~~~~~~~
 
 ## Direct copy complete wavefile without PCM buffer conversion
 
-```ada
+~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Fixed_Wav_IO;
@@ -905,11 +905,11 @@ begin
    Close (WF_In);
    Close (WF_Out);
 end Direct_Copy_Wavefile;
-```
+~~~~~~~~~~
 
 ## Direct copy complete floating-point wavefile without PCM buffer conversion
 
-```ada
+~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_Wav_IO;
@@ -951,4 +951,4 @@ begin
    Close (WF_In);
    Close (WF_Out);
 end Direct_Copy_Float_Wavefile;
-```
+~~~~~~~~~~

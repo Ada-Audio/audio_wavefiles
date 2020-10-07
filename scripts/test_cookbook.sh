@@ -85,7 +85,7 @@ function cleanup_data
 cd $DIR/../cookbook
 
 # Create .ada file based on Markdown file
-sed -n '/^```/,/^```/ p' < cookbook.md | sed '/^```/ d' > cookbook.ada
+sed -n '/^~~~~~~~~~~/,/^~~~~~~~~~~/ p' < cookbook.md | sed '/^~~~~~~~~~~/ d' > cookbook.ada
 cookbook_check "PREPARATIONS" "(sed)" ""
 
 # Create source-code files based on cookbook file
