@@ -1,0 +1,16 @@
+Header info for: ./out/5_1ch_sine.wav
+WaveHeader Size:	12
+ChunkHeader Size:	8
+FormatChunk Size:	16
+RIFF ID:	RIFF
+Total Size:	105876
+Wave ID:	WAVE
+Chunk ID:	fmt 
+Chunk Size:	40
+Compression format is of type: -2
+Channels:	6
+Sample Rate:	44100
+Bytes / Sec:	529200
+wBlockAlign:	12
+Bits Per Sample Point:	16
+Loading compressed wave data is not supported.

@@ -15,6 +15,10 @@ cache:
   directories:
   - $HOME/build_tools
 
+before_install:
+  - sudo apt-get update
+  - sudo apt-get -y install wavbreaker
+
 install: ./.travis/gnat_community_install.sh
 
 jobs:
@@ -28,3 +32,6 @@ jobs:
     - stage: "Build & run Quick Wav-Data Check"
       script:
         - PATH=$GNAT_PATH/bin:$PATH gprbuild -P test/quick_wav_data_check/quick_wav_data_check.gpr && ./test/quick_wav_data_check/bin/quick_wav_data_check "$(date +"%Y%m%d-%H%M%S")_"
+    - stage: "Build & check Cookbook"
+      script:
+        - PATH=$GNAT_PATH/bin:$PATH ./scripts/test_cookbook.sh

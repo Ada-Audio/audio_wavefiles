@@ -13,7 +13,8 @@ jobs:
     - name: Set up GNAT toolchain
       run: >
         sudo apt-get update &&
-        sudo apt-get install gnat gprbuild
+        sudo apt-get install gnat gprbuild &&
+        sudo apt-get install wavbreaker
 
     - name: Verify generated source-code files
       run: TEST=1 ./scripts/generate_src.sh
@@ -26,3 +27,6 @@ jobs:
 
     - name: Run Quick Wav-Data Check
       run: ./test/quick_wav_data_check/bin/quick_wav_data_check "$(date +"%Y%m%d-%H%M%S")_"
+
+    - name: Build & check Cookbook
+      run: ./scripts/test_cookbook.sh
