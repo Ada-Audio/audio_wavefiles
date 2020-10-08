@@ -371,13 +371,10 @@ procedure Write_5_1_Channel_Sine_Wavefile is
    WF               : Wavefile;
    Wave_Format      : Wave_Format_Extensible;
    Channel_Config_5_1 : constant Channel_Mask_Type :=
-     (Speaker_Front_Left    => True,
-      Speaker_Front_Right   => True,
-      Speaker_Front_Center  => True,
-      Speaker_Low_Frequency => True,
-      Speaker_Back_Left     => True,
-      Speaker_Back_Right    => True,
-      others                => False);
+     (Speaker_Front_Left     | Speaker_Front_Right     |
+      Speaker_Front_Center   | Speaker_Low_Frequency   |
+      Speaker_Back_Left      | Speaker_Back_Right     => True,
+      others                                          => False);
 
 begin
    Wave_Format := Init (Bit_Depth          => Bit_Depth_16,
@@ -487,19 +484,13 @@ procedure Write_7_1_4_Channel_Sine_Wavefile is
    WF               : Wavefile;
    Wave_Format      : Wave_Format_Extensible;
    Channel_Config_7_1_4 : constant Channel_Mask_Type :=
-     (Speaker_Front_Left       => True,
-      Speaker_Front_Right      => True,
-      Speaker_Front_Center     => True,
-      Speaker_Low_Frequency    => True,
-      Speaker_Back_Left        => True,
-      Speaker_Back_Right       => True,
-      Speaker_Side_Left        => True,
-      Speaker_Side_Right       => True,
-      Speaker_Top_Front_Left   => True,
-      Speaker_Top_Front_Right  => True,
-      Speaker_Top_Back_Left    => True,
-      Speaker_Top_Back_Right   => True,
-      others                   => False);
+     (Speaker_Front_Left     | Speaker_Front_Right      |
+      Speaker_Front_Center   | Speaker_Low_Frequency    |
+      Speaker_Back_Left      | Speaker_Back_Right       |
+      Speaker_Side_Left      | Speaker_Side_Right       |
+      Speaker_Top_Front_Left | Speaker_Top_Front_Right  |
+      Speaker_Top_Back_Left  | Speaker_Top_Back_Right  => True,
+      others                                           => False);
 
 begin
    Wave_Format := Init (Bit_Depth          => Bit_Depth_16,
@@ -791,13 +782,10 @@ procedure Downmix_7_1_4_To_5_1_Wavefile is
    WF_Format : Wave_Format_Extensible;
 
    Channel_Config_5_1 : constant Channel_Mask_Type :=
-     (Speaker_Front_Left    => True,
-      Speaker_Front_Right   => True,
-      Speaker_Front_Center  => True,
-      Speaker_Low_Frequency => True,
-      Speaker_Back_Left     => True,
-      Speaker_Back_Right    => True,
-      others                => False);
+     (Speaker_Front_Left     | Speaker_Front_Right     |
+      Speaker_Front_Center   | Speaker_Low_Frequency   |
+      Speaker_Back_Left      | Speaker_Back_Right     => True,
+      others                                          => False);
 begin
    Open (WF_In,  In_File,  Wav_In_File_Name);
 
