@@ -213,7 +213,7 @@ end Write_Mono_Silence_Wavefile;
 ## Writing stereo wavefile with sine tone
 
 ~~~~~~~~~~ada
-with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles; use Audio.Wavefiles;
 
 procedure Write_Stereo_Sine_Tone (WF           : in out Wavefile;
                                   Sample_Rate  :        Float;
@@ -298,7 +298,7 @@ end Write_Stereo_Sine_Wavefile;
 ## Writing 5.1-channel wavefile with sine tone
 
 ~~~~~~~~~~ada
-with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles; use Audio.Wavefiles;
 
 procedure Write_5_1_Channel_Sine_Tone (WF           : in out Wavefile;
                                        Sample_Rate  :        Float;
@@ -401,7 +401,7 @@ end Write_5_1_Channel_Sine_Wavefile;
 ## Writing 7.1.4-channel wavefile with sine tone
 
 ~~~~~~~~~~ada
-with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles; use Audio.Wavefiles;
 
 procedure Write_7_1_4_Channel_Sine_Tone (WF           : in out Wavefile;
                                          Sample_Rate  :        Float;
