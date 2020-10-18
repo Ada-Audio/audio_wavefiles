@@ -22,7 +22,7 @@ procedure Simple_Benchmarking is
    end Wavefile_Benchmark;
 
    task body Wavefile_Benchmark is
-      Local_Results : Wavefile_Benchmark_Infos (1 .. 5);
+      Local_Results : Wavefile_Benchmark_Infos (Results'Range);
    begin
       if Verbose then
          Display_Current_CPU : declare
