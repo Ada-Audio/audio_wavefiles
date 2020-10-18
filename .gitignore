@@ -2,3 +2,5 @@ alire
 bin
 lib
 obj
+_arch
+/*.wav
