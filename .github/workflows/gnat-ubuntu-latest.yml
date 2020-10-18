@@ -31,7 +31,7 @@ jobs:
     - name: Build & check Cookbook
       run: ./scripts/test_cookbook.sh
 
-    - name: Build Simple Benchmarking
+    - name: Build & run Simple Benchmarking
       run: >
         gprclean -r -P test/simple_benchmarking/simple_benchmarking.gpr &&
         gprbuild -P test/simple_benchmarking/simple_benchmarking.gpr -XWAVEFILES_BUILD_MODE=RELEASE &&
