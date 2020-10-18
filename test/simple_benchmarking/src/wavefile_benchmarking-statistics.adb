@@ -35,21 +35,21 @@ package body Wavefile_Benchmarking.Statistics is
          Put ("Average Perf. " & B'Image & ": ");
          F_IO.Put (Item => Stats.Avg (B),
                    Fore => 5, Aft => 4, Exp => 0);
-         Put (" kHz (per channel and per sample)");
+         Put (" kHz (per channel and per 16-bit sample)");
          New_Line;
       end loop;
       for B in Stats.Max'Range loop
          Put ("Max Perf. " & B'Image & ": ");
          F_IO.Put (Item => Stats.Max (B),
                    Fore => 5, Aft => 4, Exp => 0);
-         Put (" kHz (per channel and per sample)");
+         Put (" kHz (per channel and per 16-bit sample)");
          New_Line;
       end loop;
       for B in Stats.Min'Range loop
          Put ("Min Perf. " & B'Image & ": ");
          F_IO.Put (Item => Stats.Min (B),
                    Fore => 5, Aft => 4, Exp => 0);
-         Put (" kHz (per channel and per sample)");
+         Put (" kHz (per channel and per 16-bit sample)");
          New_Line;
       end loop;
    end Display;
