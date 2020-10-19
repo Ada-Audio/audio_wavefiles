@@ -1,21 +1,16 @@
-library project Wavefiles_Lib is
+with "../../wavefiles_lib.gpr";
+
+project Simple_Benchmarking is
 
    type Build_Type is ("DEBUG", "RELEASE");
 
    Build : Build_Type :=
       External ("WAVEFILES_BUILD_MODE", External ("BUILD", "DEBUG"));
 
-   for Source_Dirs use ("src/**");
-   for Object_Dir use "./obj";
+   for Source_Dirs use ("src");
+   for Object_Dir use "obj";
    for Create_Missing_Dirs use "True";
-
-    for Library_Name use "wavefiles";
-    for Library_dir use "lib";
-
-   package Ide is
-      for Vcs_Kind use "Git";
-      for Documentation_Dir use "./doc";
-   end Ide;
+   for Main use ("simple_benchmarking.adb");
 
    package Compiler is
       case Build is
@@ -24,8 +19,9 @@ library project Wavefiles_Lib is
                                       "-gnata", "-gnato", "-gnatVa",
                                       "-gnatwa", "-fstack-check", "-gnaty");
          when "RELEASE" =>
-            for Switches ("Ada") use ("-O2", "-gnatn", "-gnatwa");
+            for Switches ("Ada") use ("-O2", "-gnatn", "-gnatp", "-gnatwa");
       end case;
+--       for Switches ("Ada") use ("-gnatp", "-O3");
    end Compiler;
 
-end Wavefiles_Lib;
+end Simple_Benchmarking;
