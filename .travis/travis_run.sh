@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -v
 set -e
 
 PATH=$GNAT_PATH/bin:$PATH
