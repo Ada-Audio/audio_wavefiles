@@ -37,6 +37,47 @@ with Audio.RIFF.Wav.Formats.Report;
 
 package body Audio.Wavefiles is
 
+   procedure Init_Data_For_File_Opening
+     (WF   : in out Wavefile);
+
+   procedure Init_Data_For_File_Opening
+     (WF   : in out Wavefile) is
+   begin
+      WF.Is_Opened    := True;
+      WF.Samples_Read := 0;
+      WF.Samples      := 0;
+   end Init_Data_For_File_Opening;
+
+   procedure Create
+     (WF   : in out Wavefile;
+      Mode :        File_Mode := Out_File;
+      Name :        String    := "";
+      Form :        String    := "")
+   is
+      pragma Unreferenced (Form);
+   begin
+      Init_Data_For_File_Opening (WF);
+
+      if Mode in In_File | Append_File then
+         WF.Wave_Format := Default;
+      end if;
+
+      Create_Wavefile : declare
+         Stream_Mode : constant Ada.Streams.Stream_IO.File_Mode :=
+                         Ada.Streams.Stream_IO.File_Mode (Mode);
+      begin
+         Ada.Streams.Stream_IO.Create (WF.File, Stream_Mode, Name);
+         WF.File_Access := Ada.Streams.Stream_IO.Stream (WF.File);
+      end Create_Wavefile;
+
+      case Mode is
+         when In_File | Append_File =>
+            Audio.Wavefiles.Read.Read_Until_Data_Start (WF);
+         when Out_File =>
+            Audio.Wavefiles.Write.Write_Until_Data_Start (WF);
+      end case;
+   end Create;
+
    procedure Open
      (WF   : in out Wavefile;
       Mode :        File_Mode;
@@ -44,35 +85,31 @@ package body Audio.Wavefiles is
       Form :        String    := "")
    is
       pragma Unreferenced (Form);
-
-      use Ada.Streams.Stream_IO;
-      Stream_Mode : Ada.Streams.Stream_IO.File_Mode;
    begin
       if WF.Is_Opened then
          raise Wavefile_Error;
       end if;
 
-      WF.Is_Opened    := True;
-      WF.Samples_Read := 0;
-      WF.Samples      := 0;
+      Init_Data_For_File_Opening (WF);
 
-      if Mode = In_File then
+      if Mode in In_File | Append_File then
          WF.Wave_Format := Default;
+      end if;
 
-         --  Open input wavefile
-         Stream_Mode := Ada.Streams.Stream_IO.File_Mode'(In_File);
+      Open_Wavefile : declare
+         Stream_Mode : constant Ada.Streams.Stream_IO.File_Mode :=
+                         Ada.Streams.Stream_IO.File_Mode (Mode);
+      begin
          Ada.Streams.Stream_IO.Open (WF.File, Stream_Mode, Name);
          WF.File_Access := Ada.Streams.Stream_IO.Stream (WF.File);
+      end Open_Wavefile;
 
-         Audio.Wavefiles.Read.Read_Until_Data_Start (WF);
-      else
-         --  Open output wavefile
-         Stream_Mode := Ada.Streams.Stream_IO.File_Mode'(Out_File);
-         Ada.Streams.Stream_IO.Create (WF.File, Stream_Mode, Name);
-         WF.File_Access := Stream (WF.File);
-
-         Audio.Wavefiles.Write.Write_Until_Data_Start (WF);
-      end if;
+      case Mode is
+         when In_File | Append_File =>
+            Audio.Wavefiles.Read.Read_Until_Data_Start (WF);
+         when Out_File =>
+            Audio.Wavefiles.Write.Write_Until_Data_Start (WF);
+      end case;
    end Open;
 
    function Is_EOF

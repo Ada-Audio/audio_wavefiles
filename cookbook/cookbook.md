@@ -73,9 +73,9 @@ begin
                                  Number_Of_Channels => 2,
                                  Use_Float          => False));
    --
-   --  Opening the wavefile
+   --  Create the wavefile
    --
-   Open (WF, Out_File, Wav_File_Name);
+   Create (WF, Out_File, Wav_File_Name);
 
    --
    --  Verifying that the wavefile is opened
@@ -187,7 +187,7 @@ begin
                                  Number_Of_Channels => Num_Channels,
                                  Use_Float          => False));
 
-   Open (WF, Out_File, Wav_File_Name);
+   Create (WF, Out_File, Wav_File_Name);
 
    if Is_Opened (WF) then
 
@@ -282,7 +282,7 @@ begin
                                  Number_Of_Channels => Num_Channels,
                                  Use_Float          => False));
 
-   Open (WF, Out_File, Wav_File_Name);
+   Create (WF, Out_File, Wav_File_Name);
 
    if Is_Opened (WF) then
       Write_Stereo_Sine_Tone
@@ -385,7 +385,7 @@ begin
 
    Set_Format_Of_Wavefile (WF, Wave_Format);
 
-   Open (WF, Out_File, Wav_File_Name);
+   Create (WF, Out_File, Wav_File_Name);
 
    if Is_Opened (WF) then
       Write_5_1_Channel_Sine_Tone
@@ -501,7 +501,7 @@ begin
 
    Set_Format_Of_Wavefile (WF, Wave_Format);
 
-   Open (WF, Out_File, Wav_File_Name);
+   Create (WF, Out_File, Wav_File_Name);
 
    if Is_Opened (WF) then
       Write_7_1_4_Channel_Sine_Tone
@@ -534,7 +534,7 @@ begin
      (WF_Out,
       Format_Of_Wavefile (WF_In));
 
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
+   Create (WF_Out, Out_File, Wav_Out_File_Name);
 
    loop
       Copy_PCM_MC_Sample : declare
@@ -575,7 +575,7 @@ begin
      (WF_Out,
       Format_Of_Wavefile (WF_In));
 
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
+   Create (WF_Out, Out_File, Wav_Out_File_Name);
 
    loop
       Copy_PCM_MC_Sample : declare
@@ -623,7 +623,7 @@ begin
             Number_Of_Channels => Positive (WF_In_Format.Channels),
             Use_Float          => True));
 
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
+   Create (WF_Out, Out_File, Wav_Out_File_Name);
 
    loop
       Copy_PCM_MC_Sample : declare
@@ -671,7 +671,7 @@ begin
             Number_Of_Channels => 1,
             Use_Float          => Is_Float_Format (WF_In_Format)));
 
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
+   Create (WF_Out, Out_File, Wav_Out_File_Name);
 
    loop
       Downmix_PCM_MC_Sample : declare
@@ -726,7 +726,7 @@ begin
             Number_Of_Channels => 2,
             Use_Float          => Is_Float_Format (WF_In_Format)));
 
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
+   Create (WF_Out, Out_File, Wav_Out_File_Name);
 
    loop
       Downmix_PCM_MC_Sample : declare
@@ -798,7 +798,7 @@ begin
 
    Set_Format_Of_Wavefile (WF_Out, WF_Format);
 
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
+   Create (WF_Out, Out_File, Wav_Out_File_Name);
 
    loop
       Downmix_PCM_MC_Sample : declare
@@ -870,7 +870,7 @@ begin
      (WF_Out,
       Format_Of_Wavefile (WF_In));
 
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
+   Create (WF_Out, Out_File, Wav_Out_File_Name);
 
    loop
       Copy_Wav_MC_Sample : declare
@@ -916,7 +916,7 @@ begin
      (WF_Out,
       Format_Of_Wavefile (WF_In));
 
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
+   Create (WF_Out, Out_File, Wav_Out_File_Name);
 
    loop
       Copy_Wav_MC_Sample : declare

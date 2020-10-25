@@ -40,6 +40,12 @@ package Audio.Wavefiles is
    Wavefile_Error       : exception;
    Wavefile_Unsupported : exception;
 
+   procedure Create
+     (WF   : in out Wavefile;
+      Mode :        File_Mode := Out_File;
+      Name :        String    := "";
+      Form :        String    := "");
+
    procedure Open
      (WF   : in out Wavefile;
       Mode :        File_Mode;
