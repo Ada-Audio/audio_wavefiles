@@ -45,7 +45,7 @@ package body Wavefile_Benchmarking is
         (WF_Out,
          Format_Of_Wavefile (WF_In));
 
-      Open (WF_Out, Out_File, Wav_Out_File_Name);
+      Create (WF_Out, Out_File, Wav_Out_File_Name);
    end Open_Wavefile;
 
    procedure Close_Wavefile is
