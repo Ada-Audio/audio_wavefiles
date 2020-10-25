@@ -34,10 +34,10 @@ private generic
 package Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO is
 
    function Get (WF   : in out Wavefile) return PCM_MC_Sample
-     with Pre => File_Mode (WF) = In_File;
+     with Pre => Mode (WF) = In_File;
 
    procedure Put (WF  : in out Wavefile;
                   PCM :        PCM_MC_Sample)
-     with Pre => File_Mode (WF) = Out_File;
+     with Pre => Mode (WF) = Out_File;
 
 end Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO;

@@ -72,7 +72,7 @@ package body Generic_Fixed_Wave_Test is
       procedure Copy_PCM_MC_Sample is
          PCM_Buf : constant PCM_MC_Sample := Get (WF_In);
       begin
-         EOF := Wav.Is_EOF (WF_In);
+         EOF := Wav.End_Of_File (WF_In);
          Put (WF_Out, PCM_Buf);
       end Copy_PCM_MC_Sample;
 
@@ -83,7 +83,7 @@ package body Generic_Fixed_Wave_Test is
         (WF_Out,
          Wav.Format_Of_Wavefile (WF_In));
 
-      Wav.Open (WF_Out, Wav.Out_File, File_Out);
+      Wav.Create (WF_Out, Wav.Out_File, File_Out);
 
       if Verbose then
          Put_Line ("Input File:");
@@ -123,8 +123,8 @@ package body Generic_Fixed_Wave_Test is
          PCM_Ref : constant PCM_MC_Sample := Get (WF_Ref);
          PCM_DUT : constant PCM_MC_Sample := Get (WF_DUT);
       begin
-         EOF_Ref := Wav.Is_EOF (WF_Ref);
-         EOF_DUT := Wav.Is_EOF (WF_DUT);
+         EOF_Ref := Wav.End_Of_File (WF_Ref);
+         EOF_DUT := Wav.End_Of_File (WF_DUT);
 
          if PCM_Ref /= PCM_DUT then
             Diff_Sample := Diff_Sample + 1;
@@ -175,8 +175,8 @@ package body Generic_Fixed_Wave_Test is
          PCM_Diff : constant PCM_MC_Sample :=
                       PCM_Ref - PCM_DUT;
       begin
-         EOF_Ref := Wav.Is_EOF (WF_Ref);
-         EOF_DUT := Wav.Is_EOF (WF_DUT);
+         EOF_Ref := Wav.End_Of_File (WF_Ref);
+         EOF_DUT := Wav.End_Of_File (WF_DUT);
 
          Put (WF_Diff, PCM_Diff);
       end Diff_PCM_MC_Sample;
@@ -189,7 +189,7 @@ package body Generic_Fixed_Wave_Test is
         (WF_Diff,
          Wav.Format_Of_Wavefile (WF_Ref));
 
-      Wav.Open (WF_Diff, Wav.Out_File, File_Diff);
+      Wav.Create (WF_Diff, Wav.Out_File, File_Diff);
       loop
          Diff_PCM_MC_Sample;
          exit when EOF_Ref or EOF_DUT;
@@ -217,8 +217,8 @@ package body Generic_Fixed_Wave_Test is
          PCM_Mix : constant PCM_MC_Sample :=
                      PCM_Ref + PCM_DUT;
       begin
-         EOF_Ref := Wav.Is_EOF (WF_Ref);
-         EOF_DUT := Wav.Is_EOF (WF_DUT);
+         EOF_Ref := Wav.End_Of_File (WF_Ref);
+         EOF_DUT := Wav.End_Of_File (WF_DUT);
          Put (WF_Mix, PCM_Mix);
       end Mix_PCM_MC_Sample;
 
@@ -230,7 +230,7 @@ package body Generic_Fixed_Wave_Test is
         (WF_Mix,
          Wav.Format_Of_Wavefile (WF_Ref));
 
-      Wav.Open (WF_Mix, Wav.Out_File, File_Mix);
+      Wav.Create (WF_Mix, Wav.Out_File, File_Mix);
       loop
          Mix_PCM_MC_Sample;
          exit when EOF_Ref or EOF_DUT;

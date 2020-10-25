@@ -27,12 +27,12 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package Audio.Wavefiles.Write is
+private package Audio.Wavefiles.Write is
 
-   procedure Open
-     (WF          : in out Wavefile;
-      File_Name   : String);
+   procedure Write_Until_Data_Start
+     (WF : in out Wavefile);
 
-   procedure Close (WF         : in out Wavefile);
+   procedure Update_Data_Size
+     (WF : in out Wavefile);
 
 end Audio.Wavefiles.Write;

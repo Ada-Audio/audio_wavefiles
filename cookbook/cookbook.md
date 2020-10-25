@@ -26,7 +26,7 @@ begin
    --
    --  Verifying that the wavefile is opened
    --
-   if Is_Opened (WF) then
+   if Is_Open (WF) then
       Put_Line ("File is open!");
    end if;
 
@@ -38,7 +38,7 @@ begin
    --
    --  Verifying that the wavefile is closed
    --
-   if not Is_Opened (WF) then
+   if not Is_Open (WF) then
       Put_Line ("File is closed!");
    end if;
 
@@ -73,14 +73,14 @@ begin
                                  Number_Of_Channels => 2,
                                  Use_Float          => False));
    --
-   --  Opening the wavefile
+   --  Create the wavefile
    --
-   Open (WF, Out_File, Wav_File_Name);
+   Create (WF, Out_File, Wav_File_Name);
 
    --
    --  Verifying that the wavefile is opened
    --
-   if Is_Opened (WF) then
+   if Is_Open (WF) then
       Put_Line ("File is open!");
    end if;
 
@@ -92,7 +92,7 @@ begin
    --
    --  Verifying that the wavefile is closed
    --
-   if not Is_Opened (WF) then
+   if not Is_Open (WF) then
       Put_Line ("File is closed!");
    end if;
 
@@ -121,7 +121,7 @@ procedure Read_Display_Wavefile_Data is
 begin
    Open (WF, In_File, Wav_File_Name);
 
-   if Is_Opened (WF) then
+   if Is_Open (WF) then
       Put_Line ("Start reading: " & Wav_File_Name);
       New_Line;
 
@@ -141,7 +141,7 @@ begin
                end loop;
             end Display_Sample;
 
-            exit when Is_EOF (WF);
+            exit when End_Of_File (WF);
 
          end Read_One_Sample;
       end loop;
@@ -187,9 +187,9 @@ begin
                                  Number_Of_Channels => Num_Channels,
                                  Use_Float          => False));
 
-   Open (WF, Out_File, Wav_File_Name);
+   Create (WF, Out_File, Wav_File_Name);
 
-   if Is_Opened (WF) then
+   if Is_Open (WF) then
 
       Write_Silence : declare
          Last_Sample : constant Positive
@@ -282,9 +282,9 @@ begin
                                  Number_Of_Channels => Num_Channels,
                                  Use_Float          => False));
 
-   Open (WF, Out_File, Wav_File_Name);
+   Create (WF, Out_File, Wav_File_Name);
 
-   if Is_Opened (WF) then
+   if Is_Open (WF) then
       Write_Stereo_Sine_Tone
         (WF           => WF,
          Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),
@@ -385,9 +385,9 @@ begin
 
    Set_Format_Of_Wavefile (WF, Wave_Format);
 
-   Open (WF, Out_File, Wav_File_Name);
+   Create (WF, Out_File, Wav_File_Name);
 
-   if Is_Opened (WF) then
+   if Is_Open (WF) then
       Write_5_1_Channel_Sine_Tone
         (WF           => WF,
          Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),
@@ -501,9 +501,9 @@ begin
 
    Set_Format_Of_Wavefile (WF, Wave_Format);
 
-   Open (WF, Out_File, Wav_File_Name);
+   Create (WF, Out_File, Wav_File_Name);
 
-   if Is_Opened (WF) then
+   if Is_Open (WF) then
       Write_7_1_4_Channel_Sine_Tone
         (WF           => WF,
          Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),
@@ -513,6 +513,54 @@ begin
    end if;
 end Write_7_1_4_Channel_Sine_Wavefile;
 ~~~~~~~~~~
+
+## Append wavefile
+
+~~~~~~~~~~ada
+with Ada.Directories;
+
+with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
+with Audio.Wavefiles.Generic_Float_PCM_IO;
+
+procedure Append_Wavefile is
+   Wav_Ref_File_Name    : constant String := "ref/2ch_sine.wav";
+   Wav_In_File_Name     : constant String := "ref/2ch_sine.wav";
+   Wav_Append_File_Name : constant String := "out/2ch_sine_append.wav";
+
+   WF_In     : Wavefile;
+   WF_Append : Wavefile;
+begin
+   --  Create a copy of the reference wavefile, which we'll then append
+   Copy_File_For_Appending : declare
+      use Ada.Directories;
+   begin
+      Copy_File (Wav_Ref_File_Name, Wav_Append_File_Name);
+   end Copy_File_For_Appending;
+
+   Open (WF_In, In_File, Wav_In_File_Name);
+
+   Open (WF_Append, Append_File, Wav_Append_File_Name);
+
+   loop
+      Append_PCM_MC_Sample : declare
+         package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
+           (PCM_Sample    => Wav_Float_64,
+            PCM_MC_Sample => Wav_Buffer_Float_64);
+         use PCM_IO;
+
+         PCM_Buf : constant Wav_Buffer_Float_64 := Get (WF_In);
+      begin
+         Put (WF_Append, PCM_Buf);
+         exit when End_Of_File (WF_In);
+      end Append_PCM_MC_Sample;
+   end loop;
+
+   Close (WF_In);
+   Close (WF_Append);
+end Append_Wavefile;
+~~~~~~~~~~
+
 
 ## Copy complete wavefile
 
@@ -534,7 +582,7 @@ begin
      (WF_Out,
       Format_Of_Wavefile (WF_In));
 
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
+   Create (WF_Out, Out_File, Wav_Out_File_Name);
 
    loop
       Copy_PCM_MC_Sample : declare
@@ -546,7 +594,7 @@ begin
          PCM_Buf : constant Wav_Buffer_Float_64 := Get (WF_In);
       begin
          Put (WF_Out, PCM_Buf);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Copy_PCM_MC_Sample;
    end loop;
 
@@ -575,7 +623,7 @@ begin
      (WF_Out,
       Format_Of_Wavefile (WF_In));
 
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
+   Create (WF_Out, Out_File, Wav_Out_File_Name);
 
    loop
       Copy_PCM_MC_Sample : declare
@@ -587,7 +635,7 @@ begin
          PCM_Buf : constant Wav_Buffer_Fixed_16 := Get (WF_In);
       begin
          Put (WF_Out, PCM_Buf);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Copy_PCM_MC_Sample;
    end loop;
 
@@ -623,7 +671,7 @@ begin
             Number_Of_Channels => Positive (WF_In_Format.Channels),
             Use_Float          => True));
 
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
+   Create (WF_Out, Out_File, Wav_Out_File_Name);
 
    loop
       Copy_PCM_MC_Sample : declare
@@ -635,7 +683,7 @@ begin
          PCM_Buf : constant Wav_Buffer_Float_32 := Get (WF_In);
       begin
          Put (WF_Out, PCM_Buf);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Copy_PCM_MC_Sample;
    end loop;
 
@@ -671,7 +719,7 @@ begin
             Number_Of_Channels => 1,
             Use_Float          => Is_Float_Format (WF_In_Format)));
 
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
+   Create (WF_Out, Out_File, Wav_Out_File_Name);
 
    loop
       Downmix_PCM_MC_Sample : declare
@@ -690,7 +738,7 @@ begin
 
          PCM_Buf_Out (1) := PCM_Buf_In (L) * 0.5 + PCM_Buf_In (R) * 0.5;
          Put (WF_Out, PCM_Buf_Out);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Downmix_PCM_MC_Sample;
    end loop;
 
@@ -726,7 +774,7 @@ begin
             Number_Of_Channels => 2,
             Use_Float          => Is_Float_Format (WF_In_Format)));
 
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
+   Create (WF_Out, Out_File, Wav_Out_File_Name);
 
    loop
       Downmix_PCM_MC_Sample : declare
@@ -756,7 +804,7 @@ begin
                               + PCM_Buf_In (LFE) * 0.15
                               + PCM_Buf_In (B_R) * 0.25;
          Put (WF_Out, PCM_Buf_Out);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Downmix_PCM_MC_Sample;
    end loop;
 
@@ -798,7 +846,7 @@ begin
 
    Set_Format_Of_Wavefile (WF_Out, WF_Format);
 
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
+   Create (WF_Out, Out_File, Wav_Out_File_Name);
 
    loop
       Downmix_PCM_MC_Sample : declare
@@ -840,7 +888,7 @@ begin
                               + PCM_Buf_In (S_R)   * 0.2
                               + PCM_Buf_In (T_B_R) * 0.4;
          Put (WF_Out, PCM_Buf_Out);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Downmix_PCM_MC_Sample;
    end loop;
 
@@ -870,7 +918,7 @@ begin
      (WF_Out,
       Format_Of_Wavefile (WF_In));
 
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
+   Create (WF_Out, Out_File, Wav_Out_File_Name);
 
    loop
       Copy_Wav_MC_Sample : declare
@@ -886,7 +934,7 @@ begin
          Wav_Buf : constant Wav_Buffer_Fixed_16 := Get (WF_In);
       begin
          Put (WF_Out, Wav_Buf);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Copy_Wav_MC_Sample;
    end loop;
 
@@ -916,7 +964,7 @@ begin
      (WF_Out,
       Format_Of_Wavefile (WF_In));
 
-   Open (WF_Out, Out_File, Wav_Out_File_Name);
+   Create (WF_Out, Out_File, Wav_Out_File_Name);
 
    loop
       Copy_Wav_MC_Sample : declare
@@ -932,7 +980,7 @@ begin
          Wav_Buf : constant Wav_Buffer_Float_32 := Get (WF_In);
       begin
          Put (WF_Out, Wav_Buf);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Copy_Wav_MC_Sample;
    end loop;
 

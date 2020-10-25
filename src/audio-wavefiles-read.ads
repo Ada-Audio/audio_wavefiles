@@ -27,18 +27,9 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package Audio.Wavefiles.Read is
+private package Audio.Wavefiles.Read is
 
-   procedure Open
-     (WF          : in out Wavefile;
-      File_Name   : String);
-
-   function Is_EOF
-     (WF   : in out Wavefile) return Boolean
-     with Inline;
-
-   procedure Display_Info (WF : in Wavefile);
-
-   procedure Close (WF        : in out Wavefile);
+   procedure Read_Until_Data_Start
+     (WF          : in out Wavefile);
 
 end Audio.Wavefiles.Read;

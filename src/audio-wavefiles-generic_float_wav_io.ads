@@ -33,13 +33,13 @@ generic
 package Audio.Wavefiles.Generic_Float_Wav_IO is
 
    function Get (WF  : in out Wavefile) return Wav_MC_Sample
-     with Inline, Pre => File_Mode (WF) = In_File;
+     with Inline, Pre => Mode (WF) = In_File;
 
 
    procedure Put (WF  : in out Wavefile;
                   Wav :        Wav_MC_Sample)
      with Inline,
-          Pre => File_Mode (WF) = Out_File
+          Pre => Mode (WF) = Out_File
                  and Wav'Length >= Number_Of_Channels (WF);
 
 end Audio.Wavefiles.Generic_Float_Wav_IO;

@@ -149,7 +149,7 @@ package body Wavefile_Benchmarking is
             Dummy_Wav_Buf : constant Wav_Buffer_Fixed_16 := Get (WF_In);
          begin
             Cnt := Cnt + 1;
-            exit when Is_EOF (WF_In);
+            exit when End_Of_File (WF_In);
          end Read_Wav_MC_Samples;
       end loop;
 

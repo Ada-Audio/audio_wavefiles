@@ -215,7 +215,7 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
                            Use_Float          => False);
 
       Set_Format_Of_Wavefile (WF_Out, Wave_Format);
-      Open (WF_Out, Out_File, Wav_File_Name);
+      Create (WF_Out, Out_File, Wav_File_Name);
 
       Write_PCM_Vals (WF_Out, PCM_Ref);
 
@@ -249,7 +249,7 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
          begin
             PCM_DUT (Samples) := PCM_Buf (PCM_Buf'First);
          end;
-         EOF := Is_EOF (WF_In);
+         EOF := End_Of_File (WF_In);
 
          exit when EOF;
       end loop;

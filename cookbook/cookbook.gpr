@@ -43,6 +43,7 @@ project Cookbook is
                  "write_stereo_sine_wavefile.adb",
                  "write_5_1_channel_sine_wavefile.adb",
                  "write_7_1_4_channel_sine_wavefile.adb",
+                 "append_wavefile.adb",
                  "copy_wavefile.adb",
                  "copy_wavefile_using_fixed_point_buffer.adb",
                  "convert_fixed_to_float_wavefile.adb",

@@ -35,32 +35,39 @@ package Audio.Wavefiles is
 
    type Wavefile is limited private;
 
-   type Wav_File_Mode is (In_File, Out_File);
+   type File_Mode is new Ada.Streams.Stream_IO.File_Mode;
 
    Wavefile_Error       : exception;
    Wavefile_Unsupported : exception;
 
-   procedure Open
-     (WF          : in out Wavefile;
-      Mode        : Wav_File_Mode;
-      File_Name   : String);
+   procedure Create
+     (WF   : in out Wavefile;
+      Mode :        File_Mode := Out_File;
+      Name :        String    := "";
+      Form :        String    := "");
 
-   function Is_Opened
+   procedure Open
+     (WF   : in out Wavefile;
+      Mode :        File_Mode;
+      Name :        String;
+      Form :        String    := "");
+
+   function Is_Open
      (WF : Wavefile) return Boolean;
 
-   function Is_EOF
+   function End_Of_File
      (WF   : in out Wavefile) return Boolean
-     with Inline, Pre => File_Mode (WF) = In_File;
+     with Inline, Pre => Mode (WF) = In_File;
 
    procedure Display_Info (WF : in Wavefile)
-     with Pre => File_Mode (WF) = In_File;
+     with Pre => Mode (WF) = In_File;
 
    procedure Close (WF : in out Wavefile);
 
    procedure Set_Format_Of_Wavefile
      (WF     : in out Wavefile;
       Format :        Wave_Format_Extensible)
-     with Pre => not Is_Opened (WF);
+     with Pre => not Is_Open (WF);
 
    function Format_Of_Wavefile
      (W : Wavefile) return Wave_Format_Extensible;
@@ -68,8 +75,11 @@ package Audio.Wavefiles is
    function Number_Of_Channels
      (W : Wavefile) return Positive;
 
-   function File_Mode
-     (W : Wavefile) return Wav_File_Mode;
+   function Mode
+     (W : Wavefile) return File_Mode;
+
+   function Name
+     (W : Wavefile) return String;
 
    function Is_Supported_Format
      (W : Wave_Format_Extensible) return Boolean;
@@ -89,7 +99,7 @@ private
          Samples_Read     : Long_Integer;
       end record;
 
-   function Is_Opened
+   function Is_Open
      (WF : Wavefile) return Boolean is (WF.Is_Opened);
 
 end Audio.Wavefiles;

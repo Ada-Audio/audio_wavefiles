@@ -37,9 +37,8 @@ package body Audio.Wavefiles.Write is
 
    use Ada.Streams.Stream_IO;
 
-   procedure Open
-     (WF          : in out Wavefile;
-      File_Name   : String)
+   procedure Write_Until_Data_Start
+     (WF          : in out Wavefile)
    is
       RIFF_Tag    : RIFF_Tag_Type;
       RIFF_Chunk  : RIFF_Chunk_Type;
@@ -48,15 +47,6 @@ package body Audio.Wavefiles.Write is
 
       use Audio.RIFF.Wav.Formats.Report;
    begin
-      if WF.Is_Opened then
-         raise Wavefile_Error;
-      end if;
-
-      --  Open output wavefile
-      Create (WF.File, Out_File, File_Name);
-      WF.File_Access := Stream (WF.File);
-      WF.Is_Opened := True;
-
       --  Write RIFF chunk
       RIFF_Tag.FOURCC := "RIFF";
       RIFF_Tag.Size   := 0;
@@ -99,18 +89,14 @@ package body Audio.Wavefiles.Write is
       RIFF_Tag.FOURCC := "data";
       RIFF_Tag.Size   := 0;
       RIFF_Tag_Type'Write (WF.File_Access, RIFF_Tag);
+   end Write_Until_Data_Start;
 
-      WF.Samples := 0;
-   end Open;
-
-   procedure Close (WF  : in out Wavefile) is
+   procedure Update_Data_Size
+     (WF  : in out Wavefile)
+   is
       RIFF_Tag    : RIFF_Tag_Type;
       Size        : Unsigned_32;
    begin
-      if not WF.Is_Opened then
-         raise Wavefile_Error;
-      end if;
-
       Size := Unsigned_32 (WF.Samples)
         * Unsigned_32 (To_Unsigned_16 (WF.Wave_Format.Bits_Per_Sample) / 8);
 
@@ -125,12 +111,8 @@ package body Audio.Wavefiles.Write is
       RIFF_Tag.FOURCC := "data";
       RIFF_Tag.Size   := Size;
 
-      --  WF.Num_Samples is already multiplied by WF.Wave_Format.Channels
+      --  WF.Samples is already multiplied by WF.Wave_Format.Channels
       RIFF_Tag_Type'Write (WF.File_Access, RIFF_Tag);
-
-      Close (WF.File);
-
-      WF.Is_Opened := False;
-   end Close;
+   end Update_Data_Size;
 
 end Audio.Wavefiles.Write;
