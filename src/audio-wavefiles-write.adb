@@ -111,7 +111,7 @@ package body Audio.Wavefiles.Write is
       RIFF_Tag.FOURCC := "data";
       RIFF_Tag.Size   := Size;
 
-      --  WF.Num_Samples is already multiplied by WF.Wave_Format.Channels
+      --  WF.Samples is already multiplied by WF.Wave_Format.Channels
       RIFF_Tag_Type'Write (WF.File_Access, RIFF_Tag);
    end Update_Data_Size;
 
