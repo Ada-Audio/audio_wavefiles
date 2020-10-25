@@ -127,7 +127,7 @@ package body Audio.Wavefiles is
       end case;
    end Open;
 
-   function Is_EOF
+   function End_Of_File
      (WF : in out Wavefile) return Boolean
    is
    begin
@@ -138,7 +138,7 @@ package body Audio.Wavefiles is
       else
          return False;
       end if;
-   end Is_EOF;
+   end End_Of_File;
 
    procedure Display_Info (WF : in Wavefile) is
    begin

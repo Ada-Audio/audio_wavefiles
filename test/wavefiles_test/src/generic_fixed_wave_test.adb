@@ -72,7 +72,7 @@ package body Generic_Fixed_Wave_Test is
       procedure Copy_PCM_MC_Sample is
          PCM_Buf : constant PCM_MC_Sample := Get (WF_In);
       begin
-         EOF := Wav.Is_EOF (WF_In);
+         EOF := Wav.End_Of_File (WF_In);
          Put (WF_Out, PCM_Buf);
       end Copy_PCM_MC_Sample;
 
@@ -123,8 +123,8 @@ package body Generic_Fixed_Wave_Test is
          PCM_Ref : constant PCM_MC_Sample := Get (WF_Ref);
          PCM_DUT : constant PCM_MC_Sample := Get (WF_DUT);
       begin
-         EOF_Ref := Wav.Is_EOF (WF_Ref);
-         EOF_DUT := Wav.Is_EOF (WF_DUT);
+         EOF_Ref := Wav.End_Of_File (WF_Ref);
+         EOF_DUT := Wav.End_Of_File (WF_DUT);
 
          if PCM_Ref /= PCM_DUT then
             Diff_Sample := Diff_Sample + 1;
@@ -175,8 +175,8 @@ package body Generic_Fixed_Wave_Test is
          PCM_Diff : constant PCM_MC_Sample :=
                       PCM_Ref - PCM_DUT;
       begin
-         EOF_Ref := Wav.Is_EOF (WF_Ref);
-         EOF_DUT := Wav.Is_EOF (WF_DUT);
+         EOF_Ref := Wav.End_Of_File (WF_Ref);
+         EOF_DUT := Wav.End_Of_File (WF_DUT);
 
          Put (WF_Diff, PCM_Diff);
       end Diff_PCM_MC_Sample;
@@ -217,8 +217,8 @@ package body Generic_Fixed_Wave_Test is
          PCM_Mix : constant PCM_MC_Sample :=
                      PCM_Ref + PCM_DUT;
       begin
-         EOF_Ref := Wav.Is_EOF (WF_Ref);
-         EOF_DUT := Wav.Is_EOF (WF_DUT);
+         EOF_Ref := Wav.End_Of_File (WF_Ref);
+         EOF_DUT := Wav.End_Of_File (WF_DUT);
          Put (WF_Mix, PCM_Mix);
       end Mix_PCM_MC_Sample;
 

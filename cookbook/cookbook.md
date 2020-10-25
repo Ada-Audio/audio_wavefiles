@@ -141,7 +141,7 @@ begin
                end loop;
             end Display_Sample;
 
-            exit when Is_EOF (WF);
+            exit when End_Of_File (WF);
 
          end Read_One_Sample;
       end loop;
@@ -552,7 +552,7 @@ begin
          PCM_Buf : constant Wav_Buffer_Float_64 := Get (WF_In);
       begin
          Put (WF_Append, PCM_Buf);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Append_PCM_MC_Sample;
    end loop;
 
@@ -594,7 +594,7 @@ begin
          PCM_Buf : constant Wav_Buffer_Float_64 := Get (WF_In);
       begin
          Put (WF_Out, PCM_Buf);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Copy_PCM_MC_Sample;
    end loop;
 
@@ -635,7 +635,7 @@ begin
          PCM_Buf : constant Wav_Buffer_Fixed_16 := Get (WF_In);
       begin
          Put (WF_Out, PCM_Buf);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Copy_PCM_MC_Sample;
    end loop;
 
@@ -683,7 +683,7 @@ begin
          PCM_Buf : constant Wav_Buffer_Float_32 := Get (WF_In);
       begin
          Put (WF_Out, PCM_Buf);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Copy_PCM_MC_Sample;
    end loop;
 
@@ -738,7 +738,7 @@ begin
 
          PCM_Buf_Out (1) := PCM_Buf_In (L) * 0.5 + PCM_Buf_In (R) * 0.5;
          Put (WF_Out, PCM_Buf_Out);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Downmix_PCM_MC_Sample;
    end loop;
 
@@ -804,7 +804,7 @@ begin
                               + PCM_Buf_In (LFE) * 0.15
                               + PCM_Buf_In (B_R) * 0.25;
          Put (WF_Out, PCM_Buf_Out);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Downmix_PCM_MC_Sample;
    end loop;
 
@@ -888,7 +888,7 @@ begin
                               + PCM_Buf_In (S_R)   * 0.2
                               + PCM_Buf_In (T_B_R) * 0.4;
          Put (WF_Out, PCM_Buf_Out);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Downmix_PCM_MC_Sample;
    end loop;
 
@@ -934,7 +934,7 @@ begin
          Wav_Buf : constant Wav_Buffer_Fixed_16 := Get (WF_In);
       begin
          Put (WF_Out, Wav_Buf);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Copy_Wav_MC_Sample;
    end loop;
 
@@ -980,7 +980,7 @@ begin
          Wav_Buf : constant Wav_Buffer_Float_32 := Get (WF_In);
       begin
          Put (WF_Out, Wav_Buf);
-         exit when Is_EOF (WF_In);
+         exit when End_Of_File (WF_In);
       end Copy_Wav_MC_Sample;
    end loop;
 

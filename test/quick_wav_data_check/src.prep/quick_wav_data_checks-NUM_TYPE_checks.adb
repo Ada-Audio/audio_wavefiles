@@ -339,7 +339,7 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
          begin
             PCM_DUT (Samples) := PCM_Buf (PCM_Buf'First);
          end;
-         EOF := Is_EOF (WF_In);
+         EOF := End_Of_File (WF_In);
 
          exit when EOF;
       end loop;

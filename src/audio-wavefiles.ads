@@ -55,7 +55,7 @@ package Audio.Wavefiles is
    function Is_Open
      (WF : Wavefile) return Boolean;
 
-   function Is_EOF
+   function End_Of_File
      (WF   : in out Wavefile) return Boolean
      with Inline, Pre => Mode (WF) = In_File;
 
