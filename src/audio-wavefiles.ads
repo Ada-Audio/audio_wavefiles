@@ -78,6 +78,9 @@ package Audio.Wavefiles is
    function Mode
      (W : Wavefile) return File_Mode;
 
+   function Name
+     (W : Wavefile) return String;
+
    function Is_Supported_Format
      (W : Wave_Format_Extensible) return Boolean;
 

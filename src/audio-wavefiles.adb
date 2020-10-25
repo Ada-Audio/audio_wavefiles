@@ -180,6 +180,10 @@ package body Audio.Wavefiles is
    function Mode (W : Wavefile) return File_Mode is
      (if Mode (W.File) = In_File then In_File else Out_File);
 
+   function Name
+     (W : Wavefile) return String is
+     (Ada.Streams.Stream_IO.Name (W.File));
+
    function Is_Supported_Format (W : Wave_Format_Extensible)
                                  return Boolean is
    begin
