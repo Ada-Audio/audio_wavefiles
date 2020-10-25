@@ -130,6 +130,14 @@ package body Audio.Wavefiles.Read is
          Skip_Bytes (WF.File, RIFF_Tag.Size);
       end loop;
 
+      Set_Index_For_Appending : declare
+         use Ada.Streams;
+         use type Stream_IO.Count;
+      begin
+         WF.File_Index := Stream_IO.Index (WF.File) -
+           Stream_IO.Count (RIFF_Tag'Size / 8);
+      end Set_Index_For_Appending;
+
       WF.Samples := Long_Integer (RIFF_Tag.Size)
         / (Long_Integer (To_Positive (WF.Wave_Format.Bits_Per_Sample)) / 8);
 

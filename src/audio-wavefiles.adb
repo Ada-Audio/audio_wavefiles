@@ -91,9 +91,23 @@ package body Audio.Wavefiles is
 
       Init_Data_For_File_Opening (WF);
 
-      if Mode in In_File | Append_File then
-         WF.Wave_Format := Default;
-      end if;
+      case Mode is
+         when In_File =>
+            WF.Wave_Format := Default;
+         when Append_File =>
+            Parse_Wavefile : declare
+               use Ada.Streams.Stream_IO;
+               Stream_Mode : constant Ada.Streams.Stream_IO.File_Mode :=
+                               Ada.Streams.Stream_IO.File_Mode'(In_File);
+            begin
+               Open (WF.File, Stream_Mode, Name);
+               WF.File_Access := Stream (WF.File);
+               Audio.Wavefiles.Read.Read_Until_Data_Start (WF);
+               Close (WF.File);
+            end Parse_Wavefile;
+         when Out_File =>
+            null;
+      end case;
 
       Open_Wavefile : declare
          Stream_Mode : constant Ada.Streams.Stream_IO.File_Mode :=
@@ -104,8 +118,10 @@ package body Audio.Wavefiles is
       end Open_Wavefile;
 
       case Mode is
-         when In_File | Append_File =>
+         when In_File =>
             Audio.Wavefiles.Read.Read_Until_Data_Start (WF);
+         when Append_File =>
+            null;
          when Out_File =>
             Audio.Wavefiles.Write.Write_Until_Data_Start (WF);
       end case;
