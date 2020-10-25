@@ -20,7 +20,7 @@ begin
 
    Create (WF, Out_File, Wav_File_Name);
 
-   if Is_Opened (WF) then
+   if Is_Open (WF) then
 
       Write_Stereo_Random_Noise : declare
          package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
