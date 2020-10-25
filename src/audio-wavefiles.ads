@@ -41,9 +41,10 @@ package Audio.Wavefiles is
    Wavefile_Unsupported : exception;
 
    procedure Open
-     (WF          : in out Wavefile;
-      Mode        : File_Mode;
-      File_Name   : String);
+     (WF   : in out Wavefile;
+      Mode :        File_Mode;
+      Name :        String;
+      Form :        String    := "");
 
    function Is_Opened
      (WF : Wavefile) return Boolean;

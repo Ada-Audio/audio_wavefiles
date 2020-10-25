@@ -33,32 +33,15 @@ with Interfaces;
 with Audio.RIFF;                   use Audio.RIFF;
 with Audio.Wavefiles.Internals;    use Audio.Wavefiles.Internals;
 
-with Audio.RIFF.Wav.Formats.Report;
-
 package body Audio.Wavefiles.Read is
 
-   use Ada.Streams.Stream_IO;
-
-   procedure Open
-     (WF          : in out Wavefile;
-      File_Name   : String)
+   procedure Read_Until_Data_Start
+     (WF          : in out Wavefile)
    is
       RIFF_Tag    : RIFF_Tag_Type;
       RIFF_Chunk  : RIFF_Chunk_Type;
       Verbose     : constant Boolean := False;
    begin
-      if WF.Is_Opened then
-         raise Wavefile_Error;
-      end if;
-      WF.Wave_Format := Default;
-
-      --  Open input wavefile
-      Ada.Streams.Stream_IO.Open (WF.File, In_File, File_Name);
-      WF.File_Access := Stream (WF.File);
-
-      WF.Is_Opened := True;
-      WF.Samples_Read := 0;
-
       --  Read/check RIFF Chunk
       RIFF_Tag_Type'Read (WF.File_Access, RIFF_Tag);
       if RIFF_Tag.FOURCC /= "RIFF" then
@@ -157,36 +140,6 @@ package body Audio.Wavefiles.Read is
          Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples
                    / Long_Integer (WF.Wave_Format.Channels)));
       end if;
-   end Open;
-
-   function Is_EOF
-     (WF   : in out Wavefile) return Boolean is
-   begin
-      if WF.Samples_Read >= WF.Samples or
-        Ada.Streams.Stream_IO.End_Of_File (WF.File)
-      then
-         return True;
-      else
-         return False;
-      end if;
-   end Is_EOF;
-
-   procedure Display_Info (WF : in Wavefile) is
-      use Audio.RIFF.Wav.Formats.Report;
-   begin
-      Print (WF.Wave_Format);
-
-   end Display_Info;
-
-   procedure Close (WF  : in out Wavefile) is
-   begin
-      if not WF.Is_Opened then
-         raise Wavefile_Error;
-      end if;
-
-      Close (WF.File);
-
-      WF.Is_Opened := False;
-   end Close;
+   end Read_Until_Data_Start;
 
 end Audio.Wavefiles.Read;
