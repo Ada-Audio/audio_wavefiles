@@ -18,7 +18,7 @@ begin
                                  Number_Of_Channels => Num_Channels,
                                  Use_Float          => False));
 
-   Open (WF, Out_File, Wav_File_Name);
+   Create (WF, Out_File, Wav_File_Name);
 
    if Is_Opened (WF) then
 

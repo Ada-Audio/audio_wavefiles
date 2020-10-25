@@ -105,7 +105,7 @@ package body Generic_Fixed_Wave_Test is
         (WF_Out,
          Wav.Format_Of_Wavefile (WF_In));
 
-      Wav.Open (WF_Out, Wav.Out_File, File_Out);
+      Wav.Create (WF_Out, Wav.Out_File, File_Out);
 
       if Verbose then
          Put_Line ("Input File:");
@@ -211,7 +211,7 @@ package body Generic_Fixed_Wave_Test is
         (WF_Diff,
          Wav.Format_Of_Wavefile (WF_Ref));
 
-      Wav.Open (WF_Diff, Wav.Out_File, File_Diff);
+      Wav.Create (WF_Diff, Wav.Out_File, File_Diff);
       loop
          Diff_PCM_MC_Sample;
          exit when EOF_Ref or EOF_DUT;
@@ -252,7 +252,7 @@ package body Generic_Fixed_Wave_Test is
         (WF_Mix,
          Wav.Format_Of_Wavefile (WF_Ref));
 
-      Wav.Open (WF_Mix, Wav.Out_File, File_Mix);
+      Wav.Create (WF_Mix, Wav.Out_File, File_Mix);
       loop
          Mix_PCM_MC_Sample;
          exit when EOF_Ref or EOF_DUT;

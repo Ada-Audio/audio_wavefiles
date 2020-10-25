@@ -211,7 +211,7 @@ package body Quick_Wav_Data_Checks.Float_Checks is
                            Use_Float          => True);
 
       Set_Format_Of_Wavefile (WF_Out, Wave_Format);
-      Open (WF_Out, Out_File, Wav_File_Name);
+      Create (WF_Out, Out_File, Wav_File_Name);
 
       Write_PCM_Vals (WF_Out, PCM_Ref);
 
