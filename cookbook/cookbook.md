@@ -26,7 +26,7 @@ begin
    --
    --  Verifying that the wavefile is opened
    --
-   if Is_Opened (WF) then
+   if Is_Open (WF) then
       Put_Line ("File is open!");
    end if;
 
@@ -38,7 +38,7 @@ begin
    --
    --  Verifying that the wavefile is closed
    --
-   if not Is_Opened (WF) then
+   if not Is_Open (WF) then
       Put_Line ("File is closed!");
    end if;
 
@@ -80,7 +80,7 @@ begin
    --
    --  Verifying that the wavefile is opened
    --
-   if Is_Opened (WF) then
+   if Is_Open (WF) then
       Put_Line ("File is open!");
    end if;
 
@@ -92,7 +92,7 @@ begin
    --
    --  Verifying that the wavefile is closed
    --
-   if not Is_Opened (WF) then
+   if not Is_Open (WF) then
       Put_Line ("File is closed!");
    end if;
 
@@ -121,7 +121,7 @@ procedure Read_Display_Wavefile_Data is
 begin
    Open (WF, In_File, Wav_File_Name);
 
-   if Is_Opened (WF) then
+   if Is_Open (WF) then
       Put_Line ("Start reading: " & Wav_File_Name);
       New_Line;
 
@@ -189,7 +189,7 @@ begin
 
    Create (WF, Out_File, Wav_File_Name);
 
-   if Is_Opened (WF) then
+   if Is_Open (WF) then
 
       Write_Silence : declare
          Last_Sample : constant Positive
@@ -284,7 +284,7 @@ begin
 
    Create (WF, Out_File, Wav_File_Name);
 
-   if Is_Opened (WF) then
+   if Is_Open (WF) then
       Write_Stereo_Sine_Tone
         (WF           => WF,
          Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),
@@ -387,7 +387,7 @@ begin
 
    Create (WF, Out_File, Wav_File_Name);
 
-   if Is_Opened (WF) then
+   if Is_Open (WF) then
       Write_5_1_Channel_Sine_Tone
         (WF           => WF,
          Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),
@@ -503,7 +503,7 @@ begin
 
    Create (WF, Out_File, Wav_File_Name);
 
-   if Is_Opened (WF) then
+   if Is_Open (WF) then
       Write_7_1_4_Channel_Sine_Tone
         (WF           => WF,
          Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),

@@ -52,7 +52,7 @@ package Audio.Wavefiles is
       Name :        String;
       Form :        String    := "");
 
-   function Is_Opened
+   function Is_Open
      (WF : Wavefile) return Boolean;
 
    function Is_EOF
@@ -67,7 +67,7 @@ package Audio.Wavefiles is
    procedure Set_Format_Of_Wavefile
      (WF     : in out Wavefile;
       Format :        Wave_Format_Extensible)
-     with Pre => not Is_Opened (WF);
+     with Pre => not Is_Open (WF);
 
    function Format_Of_Wavefile
      (W : Wavefile) return Wave_Format_Extensible;
@@ -96,7 +96,7 @@ private
          Samples_Read     : Long_Integer;
       end record;
 
-   function Is_Opened
+   function Is_Open
      (WF : Wavefile) return Boolean is (WF.Is_Opened);
 
 end Audio.Wavefiles;
