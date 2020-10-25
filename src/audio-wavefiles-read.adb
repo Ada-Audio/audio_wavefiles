@@ -53,7 +53,7 @@ package body Audio.Wavefiles.Read is
       WF.Wave_Format := Default;
 
       --  Open input wavefile
-      Open (WF.File, In_File, File_Name);
+      Ada.Streams.Stream_IO.Open (WF.File, In_File, File_Name);
       WF.File_Access := Stream (WF.File);
 
       WF.Is_Opened := True;

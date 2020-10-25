@@ -39,7 +39,7 @@ package body Audio.Wavefiles is
 
    procedure Open
      (WF          : in out Wavefile;
-      Mode        : Wav_File_Mode;
+      Mode        : File_Mode;
       File_Name   : String) is
    begin
       if Mode = In_File then
@@ -60,7 +60,7 @@ package body Audio.Wavefiles is
 
    procedure Close (WF : in out Wavefile) is
    begin
-      if File_Mode (WF) = In_File then
+      if Mode (WF) = In_File then
          Audio.Wavefiles.Read.Close (WF);
       else
          Audio.Wavefiles.Write.Close (WF);
@@ -83,8 +83,8 @@ package body Audio.Wavefiles is
    function Number_Of_Channels
      (W : Wavefile) return Positive is (Positive (W.Wave_Format.Channels));
 
-   function File_Mode (W : Wavefile) return Wav_File_Mode is
-     (if Mode (W.File) = In_File then In_File else Out_File);
+   function Mode (W : Wavefile) return File_Mode is
+     (if Mode (W.File) = Wavefiles.File_Mode'(In_File) then In_File else Out_File);
 
    function Is_Supported_Format (W : Wave_Format_Extensible)
                                  return Boolean is

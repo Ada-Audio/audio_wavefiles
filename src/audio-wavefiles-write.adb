@@ -53,7 +53,7 @@ package body Audio.Wavefiles.Write is
       end if;
 
       --  Open output wavefile
-      Create (WF.File, Out_File, File_Name);
+      Ada.Streams.Stream_IO.Create (WF.File, Out_File, File_Name);
       WF.File_Access := Stream (WF.File);
       WF.Is_Opened := True;
 

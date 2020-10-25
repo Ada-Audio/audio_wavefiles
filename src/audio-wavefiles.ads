@@ -35,14 +35,14 @@ package Audio.Wavefiles is
 
    type Wavefile is limited private;
 
-   type Wav_File_Mode is (In_File, Out_File);
+   type File_Mode is new Ada.Streams.Stream_IO.File_Mode;
 
    Wavefile_Error       : exception;
    Wavefile_Unsupported : exception;
 
    procedure Open
      (WF          : in out Wavefile;
-      Mode        : Wav_File_Mode;
+      Mode        : File_Mode;
       File_Name   : String);
 
    function Is_Opened
@@ -50,10 +50,10 @@ package Audio.Wavefiles is
 
    function Is_EOF
      (WF   : in out Wavefile) return Boolean
-     with Inline, Pre => File_Mode (WF) = In_File;
+     with Inline, Pre => Mode (WF) = In_File;
 
    procedure Display_Info (WF : in Wavefile)
-     with Pre => File_Mode (WF) = In_File;
+     with Pre => Mode (WF) = In_File;
 
    procedure Close (WF : in out Wavefile);
 
@@ -68,8 +68,8 @@ package Audio.Wavefiles is
    function Number_Of_Channels
      (W : Wavefile) return Positive;
 
-   function File_Mode
-     (W : Wavefile) return Wav_File_Mode;
+   function Mode
+     (W : Wavefile) return File_Mode;
 
    function Is_Supported_Format
      (W : Wave_Format_Extensible) return Boolean;
