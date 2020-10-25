@@ -514,6 +514,54 @@ begin
 end Write_7_1_4_Channel_Sine_Wavefile;
 ~~~~~~~~~~
 
+## Append wavefile
+
+~~~~~~~~~~ada
+with Ada.Directories;
+
+with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
+with Audio.Wavefiles.Generic_Float_PCM_IO;
+
+procedure Append_Wavefile is
+   Wav_Ref_File_Name    : constant String := "ref/2ch_sine.wav";
+   Wav_In_File_Name     : constant String := "ref/2ch_sine.wav";
+   Wav_Append_File_Name : constant String := "out/2ch_sine_append.wav";
+
+   WF_In     : Wavefile;
+   WF_Append : Wavefile;
+begin
+   --  Create a copy of the reference wavefile, which we'll then append
+   Copy_File_For_Appending : declare
+      use Ada.Directories;
+   begin
+      Copy_File (Wav_Ref_File_Name, Wav_Append_File_Name);
+   end Copy_File_For_Appending;
+
+   Open (WF_In, In_File, Wav_In_File_Name);
+
+   Open (WF_Append, Append_File, Wav_Append_File_Name);
+
+   loop
+      Append_PCM_MC_Sample : declare
+         package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
+           (PCM_Sample    => Wav_Float_64,
+            PCM_MC_Sample => Wav_Buffer_Float_64);
+         use PCM_IO;
+
+         PCM_Buf : constant Wav_Buffer_Float_64 := Get (WF_In);
+      begin
+         Put (WF_Append, PCM_Buf);
+         exit when Is_EOF (WF_In);
+      end Append_PCM_MC_Sample;
+   end loop;
+
+   Close (WF_In);
+   Close (WF_Append);
+end Append_Wavefile;
+~~~~~~~~~~
+
+
 ## Copy complete wavefile
 
 ~~~~~~~~~~ada
