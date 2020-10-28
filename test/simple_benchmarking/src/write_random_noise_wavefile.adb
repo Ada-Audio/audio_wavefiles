@@ -12,15 +12,14 @@ procedure Write_Random_Noise_Wavefile is
 
    WF               : Wavefile;
 begin
-   Set_Format_Of_Wavefile (WF,
-                           Init (Bit_Depth          => Bit_Depth_16,
-                                 Sample_Rate        => Sample_Rate_Enum,
-                                 Number_Of_Channels => Num_Channels,
-                                 Use_Float          => False));
+   WF.Set_Format_Of_Wavefile (Init (Bit_Depth          => Bit_Depth_16,
+                                    Sample_Rate        => Sample_Rate_Enum,
+                                    Number_Of_Channels => Num_Channels,
+                                    Use_Float          => False));
 
-   Create (WF, Out_File, Wav_File_Name);
+   WF.Create (Out_File, Wav_File_Name);
 
-   if Is_Open (WF) then
+   if WF.Is_Open then
 
       Write_Stereo_Random_Noise : declare
          package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
@@ -48,7 +47,7 @@ begin
          end loop;
       end Write_Stereo_Random_Noise;
 
-      Close (WF);
+      WF.Close;
    end if;
 
 end Write_Random_Noise_Wavefile;

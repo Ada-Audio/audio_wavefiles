@@ -194,7 +194,7 @@ package body Quick_Wav_Data_Checks.Float_Checks is
    begin
       Put_Line (Separator);
       Put_Line (Header);
-      Display_Info (WF);
+      WF.Display_Info;
       Put_Line (Separator);
    end Display_Info;
 
@@ -210,12 +210,12 @@ package body Quick_Wav_Data_Checks.Float_Checks is
                            Number_Of_Channels => 2,
                            Use_Float          => True);
 
-      Set_Format_Of_Wavefile (WF_Out, Wave_Format);
-      Create (WF_Out, Out_File, Wav_File_Name);
+      WF_Out.Set_Format_Of_Wavefile (Wave_Format);
+      WF_Out.Create (Out_File, Wav_File_Name);
 
       Write_PCM_Vals (WF_Out, PCM_Ref);
 
-      Close (WF_Out);
+      WF_Out.Close;
    end Write_Wavefile;
 
    procedure Read_Wavefile
@@ -227,8 +227,8 @@ package body Quick_Wav_Data_Checks.Float_Checks is
       EOF         : Boolean;
       Samples     : Integer := 0;
    begin
-      Open (WF_In, In_File, Wav_File_Name);
-      --  Wave_Format := Format_Of_Wavefile (WF_In);
+      WF_In.Open (In_File, Wav_File_Name);
+      --  Wave_Format := WF_In.Format_Of_Wavefile;
 
       if Verbose then
          Display_Info (WF_In, "Input File:");
@@ -245,7 +245,7 @@ package body Quick_Wav_Data_Checks.Float_Checks is
          begin
             PCM_DUT (Samples) := PCM_Buf (PCM_Buf'First);
          end;
-         EOF := End_Of_File (WF_In);
+         EOF := WF_In.End_Of_File;
 
          exit when EOF;
       end loop;
@@ -258,7 +258,7 @@ package body Quick_Wav_Data_Checks.Float_Checks is
                            "Read PCM values:");
       end if;
 
-      Close (WF_In);
+      WF_In.Close;
    end Read_Wavefile;
 
    function PCM_Data_Is_OK
