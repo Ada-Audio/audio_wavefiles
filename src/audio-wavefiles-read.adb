@@ -38,41 +38,44 @@ package body Audio.Wavefiles.Read is
    procedure Read_Until_Data_Start
      (WF          : in out Wavefile)
    is
-      RIFF_Tag    : RIFF_Tag_Type;
-      RIFF_Chunk  : RIFF_Chunk_Type;
-      Verbose     : constant Boolean := False;
+      Chunk_Header : RIFF_Chunk_Header;
+      Verbose      : constant Boolean := False;
    begin
       --  Read/check RIFF Chunk
-      RIFF_Tag_Type'Read (WF.File_Access, RIFF_Tag);
-      if RIFF_Tag.FOURCC /= "RIFF" then
+      RIFF_Chunk_Header'Read (WF.File_Access, Chunk_Header);
+      if Chunk_Header.ID /= "RIFF" then
          raise Wavefile_Error;
       end if;
       if Verbose then
-         Put_Line ("RIFF Tag: " & RIFF_Tag.FOURCC);
+         Put_Line ("RIFF Tag: " & Chunk_Header.ID);
          Put_Line ("RIFF/WAVE chunk size: "
-                   & Interfaces.Unsigned_32'Image (RIFF_Tag.Size));
+                   & Interfaces.Unsigned_32'Image (Chunk_Header.Size));
       end if;
 
       --  Read/check WAVE tag
-      RIFF_Chunk_Type'Read (WF.File_Access, RIFF_Chunk);
-      if RIFF_Chunk.FOURCC /= "WAVE" then
-         raise Wavefile_Error;
-      end if;
-      if Verbose then
-         Put_Line ("RIFF Tag: " & RIFF_Chunk.FOURCC);
-      end if;
+      declare
+         ID : FOURCC_String;
+      begin
+         FOURCC_String'Read (WF.File_Access, ID);
+         if ID /= "WAVE" then
+            raise Wavefile_Error;
+         end if;
+         if Verbose then
+            Put_Line ("RIFF Tag: " & ID);
+         end if;
+      end;
 
       --  Read/skip chunks until fmt chunk
       loop
-         RIFF_Tag_Type'Read (WF.File_Access, RIFF_Tag);
+         RIFF_Chunk_Header'Read (WF.File_Access, Chunk_Header);
          if Verbose then
-            Put_Line ("RIFF Tag: " & RIFF_Tag.FOURCC);
+            Put_Line ("RIFF Tag: " & Chunk_Header.ID);
          end if;
-         exit when RIFF_Tag.FOURCC = "fmt ";
-         Skip_Bytes (WF.File, RIFF_Tag.Size);
+         exit when Chunk_Header.ID = "fmt ";
+         Skip_Bytes (WF.File, Chunk_Header.Size);
       end loop;
 
-      case RIFF_Tag.Size is
+      case Chunk_Header.Size is
          when Wave_Format_Chunk_Size'Enum_Rep (Wave_Format_16_Size) =>
             Wave_Format_16'Read (WF.File_Access,
                                  Wave_Format_16 (WF.Wave_Format));
@@ -117,17 +120,17 @@ package body Audio.Wavefiles.Read is
       if Verbose then
          Display_Info (WF);
          Put_Line ("fmt chunk size: " & Interfaces.Unsigned_32'Image
-                   (RIFF_Tag.Size));
+                   (Chunk_Header.Size));
       end if;
 
       --  Read/skip chunks until data chunk
       loop
-         RIFF_Tag_Type'Read (WF.File_Access, RIFF_Tag);
+         RIFF_Chunk_Header'Read (WF.File_Access, Chunk_Header);
          if Verbose then
-            Put_Line ("RIFF Tag: " & RIFF_Tag.FOURCC);
+            Put_Line ("RIFF Tag: " & Chunk_Header.ID);
          end if;
-         exit when RIFF_Tag.FOURCC = "data";
-         Skip_Bytes (WF.File, RIFF_Tag.Size);
+         exit when Chunk_Header.ID = "data";
+         Skip_Bytes (WF.File, Chunk_Header.Size);
       end loop;
 
       Set_Index_For_Appending : declare
@@ -135,15 +138,15 @@ package body Audio.Wavefiles.Read is
          use type Stream_IO.Count;
       begin
          WF.File_Index := Stream_IO.Index (WF.File) -
-           Stream_IO.Count (RIFF_Tag'Size / 8);
+           Stream_IO.Count (Chunk_Header'Size / 8);
       end Set_Index_For_Appending;
 
-      WF.Samples := Long_Integer (RIFF_Tag.Size)
+      WF.Samples := Long_Integer (Chunk_Header.Size)
         / (Long_Integer (To_Positive (WF.Wave_Format.Bits_Per_Sample)) / 8);
 
       if Verbose then
          Put_Line ("Data chunk size: " & Interfaces.Unsigned_32'Image
-                   (RIFF_Tag.Size));
+                   (Chunk_Header.Size));
          Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples));
          Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples
                    / Long_Integer (WF.Wave_Format.Channels)));

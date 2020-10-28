@@ -33,15 +33,10 @@ package Audio.RIFF with Pure is
 
    subtype FOURCC_String is String (1 .. 4);
 
-   type RIFF_Tag_Type is
+   type RIFF_Chunk_Header is
       record
-         FOURCC  : FOURCC_String;
-         Size    : Unsigned_32;
-      end record;
-
-   type RIFF_Chunk_Type is
-      record
-         FOURCC  : FOURCC_String;
+         ID   : FOURCC_String;
+         Size : Unsigned_32;
       end record;
 
 end Audio.RIFF;
