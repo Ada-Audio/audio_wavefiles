@@ -107,7 +107,7 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
 
       WF.Samples_Read := WF.Samples_Read + Long_Integer (Ch);
 
-      if Is_Float_Format (WF.Wave_Format) then
+      if WF.Wave_Format.Is_Float_Format then
          case WF.Wave_Format.Bits_Per_Sample is
             when Bit_Depth_8 | Bit_Depth_16 | Bit_Depth_24 =>
                raise Wavefile_Unsupported;
@@ -146,7 +146,7 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
          raise Wavefile_Unsupported;
       end if;
 
-      if Is_Float_Format (WF.Wave_Format) then
+      if WF.Wave_Format.Is_Float_Format then
          case WF.Wave_Format.Bits_Per_Sample is
             when Bit_Depth_8 | Bit_Depth_16 | Bit_Depth_24 =>
                raise Wavefile_Unsupported;
