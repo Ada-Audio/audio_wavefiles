@@ -39,19 +39,18 @@ package body Wavefile_Benchmarking is
       Wav_Out_File_Name : constant String := "dummy.wav";
 
    begin
-      Open (WF_In, In_File, Wav_In_File_Name);
+      WF_In.Open (In_File, Wav_In_File_Name);
 
-      Set_Format_Of_Wavefile
-        (WF_Out,
-         Format_Of_Wavefile (WF_In));
+      WF_Out.Set_Format_Of_Wavefile
+        (WF_In.Format_Of_Wavefile);
 
-      Create (WF_Out, Out_File, Wav_Out_File_Name);
+      WF_Out.Create (Out_File, Wav_Out_File_Name);
    end Open_Wavefile;
 
    procedure Close_Wavefile is
    begin
-      Close (WF_In);
-      Close (WF_Out);
+      WF_In.Close;
+      WF_Out.Close;
    end Close_Wavefile;
 
    function kHz_Per_Sample
@@ -130,11 +129,11 @@ package body Wavefile_Benchmarking is
       Open_Wavefile;
 
       Sample_Rate := To_Positive
-        (Format_Of_Wavefile (WF_In).Samples_Per_Sec);
+        (WF_In.Format_Of_Wavefile.Samples_Per_Sec);
 
       pragma Assert
-        (Format_Of_Wavefile (WF_In).Bits_Per_Sample = Bit_Depth_16
-         and not Is_Float_Format (Format_Of_Wavefile (WF_In)));
+        (WF_In.Format_Of_Wavefile.Bits_Per_Sample = Bit_Depth_16
+         and not Is_Float_Format (WF_In.Format_Of_Wavefile));
 
       if Display_Debug_Info then
          Put_Line ("========================================================");
