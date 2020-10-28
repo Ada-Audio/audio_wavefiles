@@ -33,7 +33,7 @@ with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
 
 package Audio.Wavefiles is
 
-   type Wavefile is limited private;
+   type Wavefile is tagged limited private;
 
    type File_Mode is new Ada.Streams.Stream_IO.File_Mode;
 
@@ -88,7 +88,7 @@ private
 
    type Wav_Numeric_Data_Type is (Wav_Fixed_Data, Wav_Float_Data);
 
-   type Wavefile is limited
+   type Wavefile is tagged limited
       record
          Is_Opened        : Boolean      := False;
          File             : Ada.Streams.Stream_IO.File_Type;
