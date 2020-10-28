@@ -21,24 +21,24 @@ begin
    --
    --  Opening the wavefile
    --
-   Open (WF, In_File, Wav_File_Name);
+   WF.Open (In_File, Wav_File_Name);
 
    --
    --  Verifying that the wavefile is opened
    --
-   if Is_Open (WF) then
+   if WF.Is_Open then
       Put_Line ("File is open!");
    end if;
 
    --
    --  Closing the wavefile
    --
-   Close (WF);
+   WF.Close;
 
    --
    --  Verifying that the wavefile is closed
    --
-   if not Is_Open (WF) then
+   if not WF.Is_Open then
       Put_Line ("File is closed!");
    end if;
 
@@ -67,32 +67,31 @@ begin
    --
    --  Set format of the wavefile
    --
-   Set_Format_Of_Wavefile (WF,
-                           Init (Bit_Depth          => Bit_Depth_16,
-                                 Sample_Rate        => Sample_Rate_44100,
-                                 Number_Of_Channels => 2,
-                                 Use_Float          => False));
+   WF.Set_Format_Of_Wavefile (Init (Bit_Depth          => Bit_Depth_16,
+                                    Sample_Rate        => Sample_Rate_44100,
+                                    Number_Of_Channels => 2,
+                                    Use_Float          => False));
    --
    --  Create the wavefile
    --
-   Create (WF, Out_File, Wav_File_Name);
+   WF.Create (Out_File, Wav_File_Name);
 
    --
    --  Verifying that the wavefile is opened
    --
-   if Is_Open (WF) then
+   if WF.Is_Open then
       Put_Line ("File is open!");
    end if;
 
    --
    --  Closing the wavefile
    --
-   Close (WF);
+   WF.Close;
 
    --
    --  Verifying that the wavefile is closed
    --
-   if not Is_Open (WF) then
+   if not WF.Is_Open then
       Put_Line ("File is closed!");
    end if;
 
@@ -119,9 +118,9 @@ procedure Read_Display_Wavefile_Data is
    Wav_File_Name : constant String := "data/2ch_silence.wav";
    Sample_Count  : Natural := 0;
 begin
-   Open (WF, In_File, Wav_File_Name);
+   WF.Open (In_File, Wav_File_Name);
 
-   if Is_Open (WF) then
+   if WF.Is_Open then
       Put_Line ("Start reading: " & Wav_File_Name);
       New_Line;
 
@@ -141,7 +140,7 @@ begin
                end loop;
             end Display_Sample;
 
-            exit when End_Of_File (WF);
+            exit when WF.End_Of_File;
 
          end Read_One_Sample;
       end loop;
@@ -150,7 +149,7 @@ begin
       Put_Line ("Finished reading "
                 & Positive'Image (Sample_Count) & " samples.");
 
-      Close (WF);
+      WF.Close;
    end if;
 
 end Read_Display_Wavefile_Data;
@@ -181,15 +180,14 @@ procedure Write_Mono_Silence_Wavefile is
 
    WF                 : Wavefile;
 begin
-   Set_Format_Of_Wavefile (WF,
-                           Init (Bit_Depth          => Bit_Depth_16,
-                                 Sample_Rate        => Sample_Rate_Enum,
-                                 Number_Of_Channels => Num_Channels,
-                                 Use_Float          => False));
+   WF.Set_Format_Of_Wavefile (Init (Bit_Depth          => Bit_Depth_16,
+                                    Sample_Rate        => Sample_Rate_Enum,
+                                    Number_Of_Channels => Num_Channels,
+                                    Use_Float          => False));
 
-   Create (WF, Out_File, Wav_File_Name);
+   WF.Create (Out_File, Wav_File_Name);
 
-   if Is_Open (WF) then
+   if WF.Is_Open then
 
       Write_Silence : declare
          Last_Sample : constant Positive
@@ -204,7 +202,7 @@ begin
          end loop;
       end Write_Silence;
 
-      Close (WF);
+      WF.Close;
 
    end if;
 end Write_Mono_Silence_Wavefile;
@@ -276,21 +274,20 @@ procedure Write_Stereo_Sine_Wavefile is
 
    WF               : Wavefile;
 begin
-   Set_Format_Of_Wavefile (WF,
-                           Init (Bit_Depth          => Bit_Depth_16,
-                                 Sample_Rate        => Sample_Rate_Enum,
-                                 Number_Of_Channels => Num_Channels,
-                                 Use_Float          => False));
+   WF.Set_Format_Of_Wavefile (Init (Bit_Depth          => Bit_Depth_16,
+                                    Sample_Rate        => Sample_Rate_Enum,
+                                    Number_Of_Channels => Num_Channels,
+                                    Use_Float          => False));
 
-   Create (WF, Out_File, Wav_File_Name);
+   WF.Create (Out_File, Wav_File_Name);
 
-   if Is_Open (WF) then
+   if WF.Is_Open then
       Write_Stereo_Sine_Tone
         (WF           => WF,
          Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),
          Num_Channels => Num_Channels);
 
-      Close (WF);
+      WF.Close;
    end if;
 end Write_Stereo_Sine_Wavefile;
 ~~~~~~~~~~
@@ -383,17 +380,17 @@ begin
                         Use_Float          => False);
    Wave_Format.Channel_Mask := Channel_Config_5_1;
 
-   Set_Format_Of_Wavefile (WF, Wave_Format);
+   WF.Set_Format_Of_Wavefile (Wave_Format);
 
-   Create (WF, Out_File, Wav_File_Name);
+   WF.Create (Out_File, Wav_File_Name);
 
-   if Is_Open (WF) then
+   if WF.Is_Open then
       Write_5_1_Channel_Sine_Tone
         (WF           => WF,
          Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),
          Num_Channels => Num_Channels);
 
-      Close (WF);
+      WF.Close;
    end if;
 end Write_5_1_Channel_Sine_Wavefile;
 ~~~~~~~~~~
@@ -499,17 +496,17 @@ begin
                         Use_Float          => False);
    Wave_Format.Channel_Mask := Channel_Config_7_1_4;
 
-   Set_Format_Of_Wavefile (WF, Wave_Format);
+   WF.Set_Format_Of_Wavefile (Wave_Format);
 
-   Create (WF, Out_File, Wav_File_Name);
+   WF.Create (Out_File, Wav_File_Name);
 
-   if Is_Open (WF) then
+   if WF.Is_Open then
       Write_7_1_4_Channel_Sine_Tone
         (WF           => WF,
          Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),
          Num_Channels => Num_Channels);
 
-      Close (WF);
+      WF.Close;
    end if;
 end Write_7_1_4_Channel_Sine_Wavefile;
 ~~~~~~~~~~
@@ -538,9 +535,9 @@ begin
       Copy_File (Wav_Ref_File_Name, Wav_Append_File_Name);
    end Copy_File_For_Appending;
 
-   Open (WF_In, In_File, Wav_In_File_Name);
+   WF_In.Open (In_File, Wav_In_File_Name);
 
-   Open (WF_Append, Append_File, Wav_Append_File_Name);
+   WF_Append.Open (Append_File, Wav_Append_File_Name);
 
    loop
       Append_PCM_MC_Sample : declare
@@ -552,12 +549,12 @@ begin
          PCM_Buf : constant Wav_Buffer_Float_64 := Get (WF_In);
       begin
          Put (WF_Append, PCM_Buf);
-         exit when End_Of_File (WF_In);
+         exit when WF_In.End_Of_File;
       end Append_PCM_MC_Sample;
    end loop;
 
-   Close (WF_In);
-   Close (WF_Append);
+   WF_In.Close;
+   WF_Append.Close;
 end Append_Wavefile;
 ~~~~~~~~~~
 
@@ -576,13 +573,11 @@ procedure Copy_Wavefile is
    WF_In  : Wavefile;
    WF_Out : Wavefile;
 begin
-   Open (WF_In, In_File, Wav_In_File_Name);
+   WF_In.Open (In_File, Wav_In_File_Name);
 
-   Set_Format_Of_Wavefile
-     (WF_Out,
-      Format_Of_Wavefile (WF_In));
+   WF_Out.Set_Format_Of_Wavefile (WF_In.Format_Of_Wavefile);
 
-   Create (WF_Out, Out_File, Wav_Out_File_Name);
+   WF_Out.Create (Out_File, Wav_Out_File_Name);
 
    loop
       Copy_PCM_MC_Sample : declare
@@ -594,12 +589,12 @@ begin
          PCM_Buf : constant Wav_Buffer_Float_64 := Get (WF_In);
       begin
          Put (WF_Out, PCM_Buf);
-         exit when End_Of_File (WF_In);
+         exit when WF_In.End_Of_File;
       end Copy_PCM_MC_Sample;
    end loop;
 
-   Close (WF_In);
-   Close (WF_Out);
+   WF_In.Close;
+   WF_Out.Close;
 end Copy_Wavefile;
 ~~~~~~~~~~
 
@@ -617,13 +612,11 @@ procedure Copy_Wavefile_Using_Fixed_Point_Buffer is
    WF_In  : Wavefile;
    WF_Out : Wavefile;
 begin
-   Open (WF_In, In_File, Wav_In_File_Name);
+   WF_In.Open (In_File, Wav_In_File_Name);
 
-   Set_Format_Of_Wavefile
-     (WF_Out,
-      Format_Of_Wavefile (WF_In));
+   WF_Out.Set_Format_Of_Wavefile (WF_In.Format_Of_Wavefile);
 
-   Create (WF_Out, Out_File, Wav_Out_File_Name);
+   WF_Out.Create (Out_File, Wav_Out_File_Name);
 
    loop
       Copy_PCM_MC_Sample : declare
@@ -635,12 +628,12 @@ begin
          PCM_Buf : constant Wav_Buffer_Fixed_16 := Get (WF_In);
       begin
          Put (WF_Out, PCM_Buf);
-         exit when End_Of_File (WF_In);
+         exit when WF_In.End_Of_File;
       end Copy_PCM_MC_Sample;
    end loop;
 
-   Close (WF_In);
-   Close (WF_Out);
+   WF_In.Close;
+   WF_Out.Close;
 end Copy_Wavefile_Using_Fixed_Point_Buffer;
 ~~~~~~~~~~
 
@@ -660,18 +653,17 @@ procedure Convert_Fixed_To_Float_Wavefile is
    WF_Out       : Wavefile;
    WF_In_Format : Wave_Format_Extensible;
 begin
-   Open (WF_In,  In_File,  Wav_In_File_Name);
+   WF_In.Open (In_File,  Wav_In_File_Name);
 
-   WF_In_Format := Format_Of_Wavefile (WF_In);
+   WF_In_Format := WF_In.Format_Of_Wavefile;
 
-   Set_Format_Of_Wavefile
-     (WF_Out,
-      Init (Bit_Depth          => Bit_Depth_32,
+   WF_Out.Set_Format_Of_Wavefile
+     (Init (Bit_Depth          => Bit_Depth_32,
             Sample_Rate        => WF_In_Format.Samples_Per_Sec,
             Number_Of_Channels => Positive (WF_In_Format.Channels),
             Use_Float          => True));
 
-   Create (WF_Out, Out_File, Wav_Out_File_Name);
+   WF_Out.Create (Out_File, Wav_Out_File_Name);
 
    loop
       Copy_PCM_MC_Sample : declare
@@ -683,12 +675,12 @@ begin
          PCM_Buf : constant Wav_Buffer_Float_32 := Get (WF_In);
       begin
          Put (WF_Out, PCM_Buf);
-         exit when End_Of_File (WF_In);
+         exit when WF_In.End_Of_File;
       end Copy_PCM_MC_Sample;
    end loop;
 
-   Close (WF_In);
-   Close (WF_Out);
+   WF_In.Close;
+   WF_Out.Close;
 end Convert_Fixed_To_Float_Wavefile;
 ~~~~~~~~~~
 
@@ -708,18 +700,17 @@ procedure Downmix_Stereo_To_Mono_Wavefile is
    WF_Out       : Wavefile;
    WF_In_Format : Wave_Format_Extensible;
 begin
-   Open (WF_In,  In_File,  Wav_In_File_Name);
+   WF_In.Open (In_File,  Wav_In_File_Name);
 
-   WF_In_Format := Format_Of_Wavefile (WF_In);
+   WF_In_Format := WF_In.Format_Of_Wavefile;
 
-   Set_Format_Of_Wavefile
-     (WF_Out,
-      Init (Bit_Depth          => WF_In_Format.Bits_Per_Sample,
+   WF_Out.Set_Format_Of_Wavefile
+     (Init (Bit_Depth          => WF_In_Format.Bits_Per_Sample,
             Sample_Rate        => WF_In_Format.Samples_Per_Sec,
             Number_Of_Channels => 1,
             Use_Float          => Is_Float_Format (WF_In_Format)));
 
-   Create (WF_Out, Out_File, Wav_Out_File_Name);
+   WF_Out.Create (Out_File, Wav_Out_File_Name);
 
    loop
       Downmix_PCM_MC_Sample : declare
@@ -738,12 +729,12 @@ begin
 
          PCM_Buf_Out (1) := PCM_Buf_In (L) * 0.5 + PCM_Buf_In (R) * 0.5;
          Put (WF_Out, PCM_Buf_Out);
-         exit when End_Of_File (WF_In);
+         exit when WF_In.End_Of_File;
       end Downmix_PCM_MC_Sample;
    end loop;
 
-   Close (WF_In);
-   Close (WF_Out);
+   WF_In.Close;
+   WF_Out.Close;
 end Downmix_Stereo_To_Mono_Wavefile;
 ~~~~~~~~~~
 
@@ -763,18 +754,17 @@ procedure Downmix_5_1_To_2_0_Wavefile is
    WF_Out       : Wavefile;
    WF_In_Format : Wave_Format_Extensible;
 begin
-   Open (WF_In,  In_File,  Wav_In_File_Name);
+   WF_In.Open (In_File,  Wav_In_File_Name);
 
-   WF_In_Format := Format_Of_Wavefile (WF_In);
+   WF_In_Format := WF_In.Format_Of_Wavefile;
 
-   Set_Format_Of_Wavefile
-     (WF_Out,
-      Init (Bit_Depth          => WF_In_Format.Bits_Per_Sample,
+   WF_Out.Set_Format_Of_Wavefile
+     (Init (Bit_Depth          => WF_In_Format.Bits_Per_Sample,
             Sample_Rate        => WF_In_Format.Samples_Per_Sec,
             Number_Of_Channels => 2,
             Use_Float          => Is_Float_Format (WF_In_Format)));
 
-   Create (WF_Out, Out_File, Wav_Out_File_Name);
+   WF_Out.Create (Out_File, Wav_Out_File_Name);
 
    loop
       Downmix_PCM_MC_Sample : declare
@@ -804,12 +794,12 @@ begin
                               + PCM_Buf_In (LFE) * 0.15
                               + PCM_Buf_In (B_R) * 0.25;
          Put (WF_Out, PCM_Buf_Out);
-         exit when End_Of_File (WF_In);
+         exit when WF_In.End_Of_File;
       end Downmix_PCM_MC_Sample;
    end loop;
 
-   Close (WF_In);
-   Close (WF_Out);
+   WF_In.Close;
+   WF_Out.Close;
 end Downmix_5_1_To_2_0_Wavefile;
 ~~~~~~~~~~
 
@@ -835,18 +825,18 @@ procedure Downmix_7_1_4_To_5_1_Wavefile is
       Speaker_Back_Left      | Speaker_Back_Right     => True,
       others                                          => False);
 begin
-   Open (WF_In,  In_File,  Wav_In_File_Name);
+   WF_In.Open (In_File,  Wav_In_File_Name);
 
-   WF_Format := Format_Of_Wavefile (WF_In);
+   WF_Format := WF_In.Format_Of_Wavefile;
    WF_Format := Init (Bit_Depth          => WF_Format.Bits_Per_Sample,
                       Sample_Rate        => WF_Format.Samples_Per_Sec,
                       Number_Of_Channels => 5 + 1,
                       Use_Float          => Is_Float_Format (WF_Format));
    WF_Format.Channel_Mask := Channel_Config_5_1;
 
-   Set_Format_Of_Wavefile (WF_Out, WF_Format);
+   WF_Out.Set_Format_Of_Wavefile (WF_Format);
 
-   Create (WF_Out, Out_File, Wav_Out_File_Name);
+   WF_Out.Create (Out_File, Wav_Out_File_Name);
 
    loop
       Downmix_PCM_MC_Sample : declare
@@ -888,12 +878,12 @@ begin
                               + PCM_Buf_In (S_R)   * 0.2
                               + PCM_Buf_In (T_B_R) * 0.4;
          Put (WF_Out, PCM_Buf_Out);
-         exit when End_Of_File (WF_In);
+         exit when WF_In.End_Of_File;
       end Downmix_PCM_MC_Sample;
    end loop;
 
-   Close (WF_In);
-   Close (WF_Out);
+   WF_In.Close;
+   WF_Out.Close;
 end Downmix_7_1_4_To_5_1_Wavefile;
 ~~~~~~~~~~
 
@@ -912,13 +902,11 @@ procedure Direct_Copy_Wavefile is
    WF_In  : Wavefile;
    WF_Out : Wavefile;
 begin
-   Open (WF_In, In_File, Wav_In_File_Name);
+   WF_In.Open (In_File, Wav_In_File_Name);
 
-   Set_Format_Of_Wavefile
-     (WF_Out,
-      Format_Of_Wavefile (WF_In));
+   WF_Out.Set_Format_Of_Wavefile (WF_In.Format_Of_Wavefile);
 
-   Create (WF_Out, Out_File, Wav_Out_File_Name);
+   WF_Out.Create (Out_File, Wav_Out_File_Name);
 
    loop
       Copy_Wav_MC_Sample : declare
@@ -934,12 +922,12 @@ begin
          Wav_Buf : constant Wav_Buffer_Fixed_16 := Get (WF_In);
       begin
          Put (WF_Out, Wav_Buf);
-         exit when End_Of_File (WF_In);
+         exit when WF_In.End_Of_File;
       end Copy_Wav_MC_Sample;
    end loop;
 
-   Close (WF_In);
-   Close (WF_Out);
+   WF_In.Close;
+   WF_Out.Close;
 end Direct_Copy_Wavefile;
 ~~~~~~~~~~
 
@@ -958,13 +946,11 @@ procedure Direct_Copy_Float_Wavefile is
    WF_In  : Wavefile;
    WF_Out : Wavefile;
 begin
-   Open (WF_In, In_File, Wav_In_File_Name);
+   WF_In.Open (In_File, Wav_In_File_Name);
 
-   Set_Format_Of_Wavefile
-     (WF_Out,
-      Format_Of_Wavefile (WF_In));
+   WF_Out.Set_Format_Of_Wavefile (WF_In.Format_Of_Wavefile);
 
-   Create (WF_Out, Out_File, Wav_Out_File_Name);
+   WF_Out.Create (Out_File, Wav_Out_File_Name);
 
    loop
       Copy_Wav_MC_Sample : declare
@@ -980,11 +966,11 @@ begin
          Wav_Buf : constant Wav_Buffer_Float_32 := Get (WF_In);
       begin
          Put (WF_Out, Wav_Buf);
-         exit when End_Of_File (WF_In);
+         exit when WF_In.End_Of_File;
       end Copy_Wav_MC_Sample;
    end loop;
 
-   Close (WF_In);
-   Close (WF_Out);
+   WF_In.Close;
+   WF_Out.Close;
 end Direct_Copy_Float_Wavefile;
 ~~~~~~~~~~
