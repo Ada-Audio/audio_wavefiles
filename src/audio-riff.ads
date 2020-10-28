@@ -31,15 +31,17 @@ with Interfaces; use Interfaces;
 
 package Audio.RIFF with Pure is
 
+   subtype FOURCC_String is String (1 .. 4);
+
    type RIFF_Tag_Type is
       record
-         FOURCC  : String (1 .. 4);
+         FOURCC  : FOURCC_String;
          Size    : Unsigned_32;
       end record;
 
    type RIFF_Chunk_Type is
       record
-         FOURCC  : String (1 .. 4);
+         FOURCC  : FOURCC_String;
       end record;
 
 end Audio.RIFF;
