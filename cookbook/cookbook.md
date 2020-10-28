@@ -708,7 +708,7 @@ begin
      (Init (Bit_Depth          => WF_In_Format.Bits_Per_Sample,
             Sample_Rate        => WF_In_Format.Samples_Per_Sec,
             Number_Of_Channels => 1,
-            Use_Float          => Is_Float_Format (WF_In_Format)));
+            Use_Float          => WF_In_Format.Is_Float_Format));
 
    WF_Out.Create (Out_File, Wav_Out_File_Name);
 
@@ -762,7 +762,7 @@ begin
      (Init (Bit_Depth          => WF_In_Format.Bits_Per_Sample,
             Sample_Rate        => WF_In_Format.Samples_Per_Sec,
             Number_Of_Channels => 2,
-            Use_Float          => Is_Float_Format (WF_In_Format)));
+            Use_Float          => WF_In_Format.Is_Float_Format));
 
    WF_Out.Create (Out_File, Wav_Out_File_Name);
 
