@@ -133,7 +133,7 @@ package body Wavefile_Benchmarking is
 
       pragma Assert
         (WF_In.Format_Of_Wavefile.Bits_Per_Sample = Bit_Depth_16
-         and not Is_Float_Format (WF_In.Format_Of_Wavefile));
+         and not WF_In.Format_Of_Wavefile.Is_Float_Format);
 
       if Display_Debug_Info then
          Put_Line ("========================================================");
