@@ -27,6 +27,8 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
+with Ada.Text_IO;                    use Ada.Text_IO;
+
 with Audio.RIFF.Wav.Formats.Report;
 
 package body Audio.Wavefiles.Report is
@@ -34,6 +36,33 @@ package body Audio.Wavefiles.Report is
    procedure Display_Info (WF : in Wavefile) is
    begin
       Audio.RIFF.Wav.Formats.Report.Print (WF.Wave_Format);
+   end Display_Info;
+
+   procedure Display_Info (RIFF_Info : in RIFF_Information) is
+   begin
+      Put_Line ("---- RIFF Chunks Information ----");
+      Put_Line ("Id:          " & RIFF_Identifier'Image (RIFF_Info.Id));
+      Put_Line ("Format:      " & RIFF_Format'Image (RIFF_Info.Format));
+      Put_Line ("Chunk count: "
+                & Ada.Containers.Count_Type'Image (RIFF_Info.Chunks.Length));
+      New_Line;
+
+      for Chunk_Element of RIFF_Info.Chunks loop
+         Put_Line ("- ID:           "
+                   & Chunk_Element.ID);
+         Put_Line ("  Internal tag: "
+                   & Wav_Chunk_Tag'Image (Chunk_Element.Chunk_Tag));
+         Put_Line ("  Size:         "
+                   & Long_Integer'Image (Chunk_Element.Size));
+         Put_Line ("  Start index:  "
+                   & Ada.Streams.Stream_IO.Positive_Count'Image
+                     (Chunk_Element.Start_Index));
+         Put_Line ("  Consolidated: "
+                   & Boolean'Image (Chunk_Element.Consolidated));
+         New_Line;
+      end loop;
+      Put_Line ("---------------------------------");
+
    end Display_Info;
 
 end Audio.Wavefiles.Report;

@@ -152,19 +152,7 @@ package body Audio.Wavefiles.Read is
       end if;
 
       if Verbose then
-         Put_Line ("--------------------------------");
-         Put_Line (WF.RIFF_Info.Id'Image);
-         Put_Line (WF.RIFF_Info.Format'Image);
-         Put_Line (WF.RIFF_Info.Chunks.Length'Image);
-         for E of WF.RIFF_Info.Chunks loop
-            Put_Line ("---- Chunk");
-            Put_Line (E.Chunk_Tag'Image);
-            Put_Line (E.ID);
-            Put_Line (E.Size'Image);
-            Put_Line (E.Start_Index'Image);
-            Put_Line (E.Consolidated'Image);
-         end loop;
-         Put_Line ("--------------------------------");
+         Audio.Wavefiles.Report.Display_Info (WF.RIFF_Info);
       end if;
 
       Parse_Fmt_Chunk (WF);
