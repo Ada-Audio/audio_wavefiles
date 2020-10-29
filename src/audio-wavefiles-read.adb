@@ -32,6 +32,7 @@ with Interfaces;
 
 with Audio.RIFF;                   use Audio.RIFF;
 with Audio.Wavefiles.Internals;    use Audio.Wavefiles.Internals;
+with Audio.Wavefiles.Report;
 
 package body Audio.Wavefiles.Read is
 
@@ -97,7 +98,7 @@ package body Audio.Wavefiles.Read is
             end case;
 
             if Verbose then
-               Display_Info (WF);
+               Wavefiles.Report.Display_Info (WF);
                Put_Line ("fmt chunk size: " & Long_Integer'Image
                          (Chunk_Element.Size));
             end if;

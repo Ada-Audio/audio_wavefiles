@@ -27,9 +27,10 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO;                   use Ada.Text_IO;
+with Ada.Text_IO;                          use Ada.Text_IO;
 
 with Audio.Wavefiles;
+with Audio.Wavefiles.Report;               use Audio.Wavefiles.Report;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
 
 with Generic_Float_PCM_Buffer_Ops;
@@ -54,7 +55,7 @@ package body Generic_Float_Wave_Test is
       WF_In       : Audio.Wavefiles.Wavefile;
    begin
       WF_In.Open (Wav.In_File, File_In);
-      WF_In.Display_Info;
+      Display_Info (WF_In);
       WF_In.Close;
    end Display_Info_File;
 
@@ -85,9 +86,9 @@ package body Generic_Float_Wave_Test is
 
       if Verbose then
          Put_Line ("Input File:");
-         WF_In.Display_Info;
+         Display_Info (WF_In);
          Put_Line ("Output File:");
-         WF_Out.Display_Info;
+         Display_Info (WF_Out);
       end if;
 
       loop
