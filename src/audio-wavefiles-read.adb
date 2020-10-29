@@ -45,13 +45,13 @@ package body Audio.Wavefiles.Read is
    is
       Verbose : constant Boolean := False;
    begin
-      for Chunk_Header of WF.RIFF_Info.Chunks loop
+      for Chunk_Element of WF.RIFF_Info.Chunks loop
 
-         if Chunk_Header.Chunk_Tag = Wav_Chunk_Fmt then
+         if Chunk_Element.Chunk_Tag = Wav_Chunk_Fmt then
             Ada.Streams.Stream_IO.Set_Index (WF.File,
-                                             Chunk_Header.Start_Index);
+                                             Chunk_Element.Start_Index);
 
-            case Chunk_Header.Size is
+            case Chunk_Element.Size is
             when Wave_Format_Chunk_Size'Enum_Rep (Wave_Format_16_Size) =>
                Wave_Format_16'Read (WF.File_Access,
                                     Wave_Format_16 (WF.Wave_Format));
@@ -97,7 +97,7 @@ package body Audio.Wavefiles.Read is
             if Verbose then
                Display_Info (WF);
                Put_Line ("fmt chunk size: " & Long_Integer'Image
-                         (Chunk_Header.Size));
+                         (Chunk_Element.Size));
             end if;
 
             exit;
@@ -114,26 +114,26 @@ package body Audio.Wavefiles.Read is
       use      Ada.Streams;
       use type Ada.Streams.Stream_IO.Count;
    begin
-      for Chunk_Header of WF.RIFF_Info.Chunks loop
+      for Chunk_Element of WF.RIFF_Info.Chunks loop
 
-         if Chunk_Header.Chunk_Tag = Wav_Chunk_Data then
+         if Chunk_Element.Chunk_Tag = Wav_Chunk_Data then
             Ada.Streams.Stream_IO.Set_Index (WF.File,
-                                             Chunk_Header.Start_Index);
+                                             Chunk_Element.Start_Index);
 
             if Verbose then
-               Put_Line ("RIFF Tag: " & Chunk_Header.ID);
+               Put_Line ("RIFF Tag: " & Chunk_Element.ID);
             end if;
 
-            WF.File_Index := Chunk_Header.Start_Index
+            WF.File_Index := Chunk_Element.Start_Index
               - Stream_IO.Count (RIFF_Chunk_Header'Size / 8);
 
-            WF.Samples := Chunk_Header.Size /
+            WF.Samples := Chunk_Element.Size /
               (Long_Integer (To_Positive (WF.Wave_Format.Bits_Per_Sample))
                / 8);
 
             if Verbose then
                Put_Line ("Data chunk size: " & Long_Integer'Image
-                         (Chunk_Header.Size));
+                         (Chunk_Element.Size));
                Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples));
                Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples
                          / Long_Integer (WF.Wave_Format.Channels)));
