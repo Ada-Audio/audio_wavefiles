@@ -153,4 +153,57 @@ package body Audio.Wavefiles.Read is
       end if;
    end Read_Until_Data_Start;
 
+   procedure Parse_Wav_Chunks
+     (WF     : in out Wavefile)
+   is
+      use Ada.Streams;
+
+      Prev_File_Index : constant Ada.Streams.Stream_IO.Positive_Count :=
+                          Stream_IO.Index (WF.File);
+      Chunk_Header    : RIFF_Chunk_Header;
+
+      Info            : RIFF_Information renames WF.RIFF_Info;
+   begin
+      --  Set index to initial RIFF chunk
+      Ada.Streams.Stream_IO.Set_Index (WF.File, 1);
+
+      Info.Chunks.Clear;
+
+      Parse_RIFF_Header : declare
+         FOURCC : FOURCC_String;
+      begin
+         RIFF_Chunk_Header'Read (WF.File_Access, Chunk_Header);
+         FOURCC_String'Read (WF.File_Access, FOURCC);
+
+         Info.Id     := To_RIFF_Identifier (Chunk_Header.ID);
+         Info.Format := To_RIFF_Format (FOURCC);
+      end Parse_RIFF_Header;
+
+      if Info.Id    /= RIFF_Identifier_Unknown and then
+        Info.Format /= RIFF_Format_Unknown
+      then
+         loop
+            RIFF_Chunk_Header'Read (WF.File_Access, Chunk_Header);
+
+            declare
+               Chunk_Element      : constant Wav_Chunk_Element
+                 := (Chunk_Tag    => To_Wav_Chunk_Tag (Chunk_Header.ID),
+                     ID           => Chunk_Header.ID,
+                     Size         => Long_Integer (Chunk_Header.Size),
+                     File_Index   => Stream_IO.Index (WF.File),
+                     Consolidated => True);
+            begin
+               Info.Chunks.Append (Chunk_Element);
+            end;
+
+            Skip_Bytes (WF.File, Chunk_Header.Size);
+
+            exit when Ada.Streams.Stream_IO.End_Of_File (WF.File);
+         end loop;
+      end if;
+
+      --  Setting file index back to previous location
+      Ada.Streams.Stream_IO.Set_Index (WF.File, Prev_File_Index);
+   end Parse_Wav_Chunks;
+
 end Audio.Wavefiles.Read;

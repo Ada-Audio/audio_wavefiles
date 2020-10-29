@@ -38,6 +38,8 @@ package body Audio.Wavefiles is
 
    procedure Init_Data_For_File_Opening
      (WF   : in out Wavefile);
+   procedure Reset_RIFF_Info
+     (Info :      out RIFF_Information);
 
    procedure Init_Data_For_File_Opening
      (WF   : in out Wavefile) is
@@ -45,6 +47,7 @@ package body Audio.Wavefiles is
       WF.Is_Opened    := True;
       WF.Samples_Read := 0;
       WF.Samples      := 0;
+      Reset_RIFF_Info (WF.RIFF_Info);
    end Init_Data_For_File_Opening;
 
    procedure Create
@@ -159,6 +162,7 @@ package body Audio.Wavefiles is
       Close (WF.File);
 
       WF.Is_Opened := False;
+
    end Close;
 
    procedure Set_Format_Of_Wavefile
@@ -196,5 +200,24 @@ package body Audio.Wavefiles is
 
       return True;
    end Is_Supported_Format;
+
+   procedure Get_RIFF_Info
+     (WF     : in out Wavefile;
+      Info   :    out RIFF_Information)
+   is
+   begin
+      if WF.RIFF_Info.Chunks.Is_Empty then
+         Audio.Wavefiles.Read.Parse_Wav_Chunks (WF);
+      end if;
+      Info := WF.RIFF_Info;
+   end Get_RIFF_Info;
+
+   procedure Reset_RIFF_Info
+     (Info :      out RIFF_Information) is
+   begin
+      Info.Format  := RIFF_Format_Unknown;
+      Info.Id      := RIFF_Identifier_Unknown;
+      Info.Chunks.Clear;
+   end Reset_RIFF_Info;
 
 end Audio.Wavefiles;

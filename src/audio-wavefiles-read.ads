@@ -32,4 +32,7 @@ private package Audio.Wavefiles.Read is
    procedure Read_Until_Data_Start
      (WF          : in out Wavefile);
 
+   procedure Parse_Wav_Chunks
+     (WF     : in out Wavefile);
+
 end Audio.Wavefiles.Read;
