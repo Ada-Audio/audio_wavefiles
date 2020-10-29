@@ -123,8 +123,6 @@ package body Audio.Wavefiles.Read is
                Put_Line ("RIFF Tag: " & Chunk_Element.ID);
             end if;
 
-            WF.File_Index := Chunk_Element.Start_Index;
-
             WF.Samples := Chunk_Element.Size /
               (Long_Integer (To_Positive (WF.Wave_Format.Bits_Per_Sample))
                / 8);

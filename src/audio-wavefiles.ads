@@ -123,7 +123,6 @@ private
          Is_Opened        : Boolean      := False;
          File             : Ada.Streams.Stream_IO.File_Type;
          File_Access      : Ada.Streams.Stream_IO.Stream_Access;
-         File_Index       : Ada.Streams.Stream_IO.Positive_Count;
          Wave_Format      : Wave_Format_Extensible := Default;
          Samples          : Long_Integer;
          Samples_Read     : Long_Integer;
