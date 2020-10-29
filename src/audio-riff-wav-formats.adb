@@ -33,6 +33,64 @@ package body Audio.RIFF.Wav.Formats is
 
    type Channel_Mask_Integer is mod 2**Channel_Mask_Type_Size;
 
+   function To_RIFF_Identifier (FOURCC : FOURCC_String) return RIFF_Identifier
+   is
+   begin
+      if    FOURCC = "RIFF" then return RIFF_Identifier_Standard;
+      elsif FOURCC = "RIFX" then return RIFF_Identifier_Big_Endian;
+      elsif FOURCC = "LIST" then return RIFF_Identifier_List;
+      elsif FOURCC = "RF64" then return RIFF_Identifier_RIFF_64;
+      elsif FOURCC = "BW64" then return RIFF_Identifier_Broadcast_Wave_64;
+      else                       return RIFF_Identifier_Unknown;
+      end if;
+   end To_RIFF_Identifier;
+
+   function To_RIFF_Format (FOURCC : FOURCC_String) return RIFF_Format is
+   begin
+      if    FOURCC = "WAVE" then return RIFF_Format_Wave;
+      elsif FOURCC = "AVI " then return RIFF_Format_AVI;
+      elsif FOURCC = "MIDI" then return RIFF_Format_MIDI;
+      elsif FOURCC = "PAL " then return RIFF_Format_Pallete;
+      elsif FOURCC = "RDIB" then return RIFF_Format_DIB;
+      elsif FOURCC = "RMMP" then return RIFF_Format_MMP;
+      else                       return RIFF_Format_Unknown;
+      end if;
+   end To_RIFF_Format;
+
+   function To_Wav_Chunk_Tag (FOURCC : FOURCC_String) return Wav_Chunk_Tag is
+   begin
+      if    FOURCC = "fmt " then return Wav_Chunk_Fmt;
+      elsif FOURCC = "data" then return Wav_Chunk_Data;
+      elsif FOURCC = "INFO" then return Wav_Chunk_Info;
+      elsif FOURCC = "JUNK" then return Wav_Chunk_Junk;
+      elsif FOURCC = "PAD " then return Wav_Chunk_Pad;
+      elsif FOURCC = "fact" then return Wav_Chunk_Fact;
+      elsif FOURCC = "cue " then return Wav_Chunk_Cue;
+      elsif FOURCC = "wavl" then return Wav_Chunk_Wave_List;
+      elsif FOURCC = "slnt" then return Wav_Chunk_Silent;
+      elsif FOURCC = "plst" then return Wav_Chunk_Playlist;
+      elsif FOURCC = "list" then return Wav_Chunk_Associated_Data_List;
+      elsif FOURCC = "labl" then return Wav_Chunk_Label;
+      elsif FOURCC = "ltxt" then return Wav_Chunk_Labeled_Text;
+      elsif FOURCC = "note" then return Wav_Chunk_Note;
+      elsif FOURCC = "smpl" then return Wav_Chunk_Sample;
+      elsif FOURCC = "inst" then return Wav_Chunk_Instrument;
+      elsif FOURCC = "bext" then return Wav_Chunk_Broadcast_Extension;
+      elsif FOURCC = "iXML" then return Wav_Chunk_IXML;
+      elsif FOURCC = "axml" then return Wav_Chunk_AXML;
+      elsif FOURCC = "qlty" then return Wav_Chunk_Quality;
+      elsif FOURCC = "mext" then return Wav_Chunk_MPEG_Audio_Extension;
+      elsif FOURCC = "levl" then return Wav_Chunk_Peak_Envelope;
+      elsif FOURCC = "link" then return Wav_Chunk_Link;
+      elsif FOURCC = "ds64" then return Wav_Chunk_Data_Size_64;
+      elsif FOURCC = "bxml" then return
+           Wav_Chunk_Compressed_Broadcast_Extension;
+      elsif FOURCC = "sxml" then return Wav_Chunk_Sound_Related_XML;
+      elsif FOURCC = "chna" then return Wav_Chunk_Channel_Info;
+      else                       return Wav_Chunk_Unknown;
+      end if;
+   end To_Wav_Chunk_Tag;
+
    function Default return Wave_Format_16 is
    begin
       return W : Wave_Format_16 do

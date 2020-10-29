@@ -32,6 +32,59 @@ with System;
 
 package Audio.RIFF.Wav.Formats is
 
+   type RIFF_Identifier is
+     (RIFF_Identifier_Unknown,
+      RIFF_Identifier_Standard,
+      RIFF_Identifier_Big_Endian,
+      RIFF_Identifier_List,
+      RIFF_Identifier_RIFF_64,
+      RIFF_Identifier_Broadcast_Wave_64);
+
+   function To_RIFF_Identifier (FOURCC : FOURCC_String) return RIFF_Identifier;
+
+   type RIFF_Format is
+     (RIFF_Format_Unknown,
+      RIFF_Format_Wave,
+      RIFF_Format_AVI,      --  Audio/Video Interleaved
+      RIFF_Format_MIDI,
+      RIFF_Format_Pallete,
+      RIFF_Format_DIB,      --  Device-Independent Bitmap
+      RIFF_Format_MMP);     --  Multimedia Movie File
+
+   function To_RIFF_Format (FOURCC : FOURCC_String) return RIFF_Format;
+
+   type Wav_Chunk_Tag is
+     (Wav_Chunk_Unknown,
+      Wav_Chunk_Fmt,
+      Wav_Chunk_Data,
+      Wav_Chunk_Info,
+      Wav_Chunk_Junk,
+      Wav_Chunk_Pad,
+      Wav_Chunk_Fact,
+      Wav_Chunk_Cue,
+      Wav_Chunk_Wave_List,
+      Wav_Chunk_Silent,
+      Wav_Chunk_Playlist,
+      Wav_Chunk_Associated_Data_List,
+      Wav_Chunk_Label,
+      Wav_Chunk_Labeled_Text,
+      Wav_Chunk_Note,
+      Wav_Chunk_Sample,
+      Wav_Chunk_Instrument,
+      Wav_Chunk_Broadcast_Extension,
+      Wav_Chunk_IXML,
+      Wav_Chunk_AXML,
+      Wav_Chunk_Quality,
+      Wav_Chunk_MPEG_Audio_Extension,
+      Wav_Chunk_Peak_Envelope,
+      Wav_Chunk_Link,
+      Wav_Chunk_Data_Size_64,
+      Wav_Chunk_Compressed_Broadcast_Extension,
+      Wav_Chunk_Sound_Related_XML,
+      Wav_Chunk_Channel_Info);
+
+   function To_Wav_Chunk_Tag (FOURCC : FOURCC_String) return Wav_Chunk_Tag;
+
    type Sub_GUID is array (1 .. 8) of Unsigned_8;
 
    type GUID is
