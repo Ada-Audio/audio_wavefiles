@@ -30,7 +30,6 @@
 with Interfaces;                   use Interfaces;
 
 with Audio.RIFF;                   use Audio.RIFF;
-
 with Audio.RIFF.Wav.Formats.Report;
 
 package body Audio.Wavefiles.Write is
