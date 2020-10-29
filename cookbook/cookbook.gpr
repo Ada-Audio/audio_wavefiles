@@ -38,6 +38,7 @@ project Cookbook is
 
    for Main use ("open_close_wavefile_for_reading.adb",
                  "open_close_wavefile_for_writing.adb",
+                 "display_riff_chunks.adb",
                  "read_display_wavefile_data.adb",
                  "write_mono_silence_wavefile.adb",
                  "write_stereo_sine_wavefile.adb",

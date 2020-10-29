@@ -98,6 +98,29 @@ begin
 end Open_Close_Wavefile_For_Writing;
 ~~~~~~~~~~
 
+## Displaying RIFF chunks of a wavefile
+
+~~~~~~~~~~ada
+with Audio.Wavefiles;        use Audio.Wavefiles;
+with Audio.Wavefiles.Report; use Audio.Wavefiles.Report;
+
+procedure Display_RIFF_Chunks is
+   WF            : Wavefile;
+   Wav_File_Name : constant String := "data/2ch_silence.wav";
+   RIFF_Info     : RIFF_Information;
+begin
+   WF.Open (In_File, Wav_File_Name);
+
+   if WF.Is_Open then
+      WF.Get_RIFF_Info (RIFF_Info);
+
+      Display_Info (RIFF_Info);
+   end if;
+
+   WF.Close;
+end Display_RIFF_Chunks;
+~~~~~~~~~~
+
 ## Reading data from a wavefile
 
 ~~~~~~~~~~ada
