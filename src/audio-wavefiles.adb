@@ -29,6 +29,7 @@
 
 with Audio.Wavefiles.Read;
 with Audio.Wavefiles.Write;
+with Audio.Wavefiles.Internals;
 
 with Audio.RIFF.Wav.GUIDs;          use Audio.RIFF.Wav.GUIDs;
 
@@ -212,5 +213,26 @@ package body Audio.Wavefiles is
       Info.Id      := RIFF_Identifier_Unknown;
       Info.Chunks.Clear;
    end Reset_RIFF_Info;
+
+   function Chunk_Element_Data
+     (WF            : Wavefile;
+      Chunk_Element : Wav_Chunk_Element) return Byte_Array
+   is
+      subtype Bounded_Byte_Array is Byte_Array (1 .. Chunk_Element.Size);
+
+      Data            : Bounded_Byte_Array;
+      Prev_File_Index : constant Ada.Streams.Stream_IO.Positive_Count :=
+                          Ada.Streams.Stream_IO.Index (WF.File);
+
+      use Audio.Wavefiles.Internals;
+   begin
+      Set_File_Index_To_Chunk_Data_Start (WF.File, Chunk_Element.Start_Index);
+      Bounded_Byte_Array'Read (WF.File_Access, Data);
+
+      --  Set index to previous position
+      Ada.Streams.Stream_IO.Set_Index (WF.File, Prev_File_Index);
+
+      return Data;
+   end Chunk_Element_Data;
 
 end Audio.Wavefiles;

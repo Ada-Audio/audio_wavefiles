@@ -29,6 +29,7 @@
 
 with Ada.Streams.Stream_IO;
 with Ada.Containers.Vectors;
+with Interfaces;
 
 with Audio.RIFF;
 with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
@@ -42,6 +43,9 @@ package Audio.Wavefiles is
    Wavefile_Error       : exception;
    Wavefile_Unsupported : exception;
 
+   subtype Byte is Interfaces.Unsigned_8;
+   type Byte_Array is array (Long_Integer range <>) of Byte;
+
    type Wav_Chunk_Element is
       record
          Chunk_Tag    : Wav_Chunk_Tag;
@@ -50,6 +54,10 @@ package Audio.Wavefiles is
          Start_Index  : Ada.Streams.Stream_IO.Positive_Count;
          Consolidated : Boolean;
       end record;
+
+   function Chunk_Element_Data
+     (WF            : Wavefile;
+      Chunk_Element : Wav_Chunk_Element) return Byte_Array;
 
    package Wav_Chunk_Element_Vectors is new Ada.Containers.Vectors
      (Index_Type   => Positive,
