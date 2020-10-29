@@ -31,8 +31,6 @@ with Audio.Wavefiles.Read;
 with Audio.Wavefiles.Write;
 
 with Audio.RIFF.Wav.GUIDs;          use Audio.RIFF.Wav.GUIDs;
-with Audio.RIFF.Wav.Formats.Report;
-
 
 package body Audio.Wavefiles is
 
@@ -142,11 +140,6 @@ package body Audio.Wavefiles is
          return False;
       end if;
    end End_Of_File;
-
-   procedure Display_Info (WF : in Wavefile) is
-   begin
-      Audio.RIFF.Wav.Formats.Report.Print (WF.Wave_Format);
-   end Display_Info;
 
    procedure Close (WF : in out Wavefile) is
       use Ada.Streams.Stream_IO;

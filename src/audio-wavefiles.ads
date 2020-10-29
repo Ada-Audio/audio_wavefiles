@@ -84,9 +84,6 @@ package Audio.Wavefiles is
      (WF   : in out Wavefile) return Boolean
      with Inline, Pre => Mode (WF) = In_File;
 
-   procedure Display_Info (WF : in Wavefile)
-     with Pre => Mode (WF) = In_File;
-
    procedure Close (WF : in out Wavefile);
 
    procedure Set_Format_Of_Wavefile
