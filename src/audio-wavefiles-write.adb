@@ -50,6 +50,10 @@ package body Audio.Wavefiles.Write is
       Chunk_Header.Size := 0;
       RIFF_Chunk_Header'Write (WF.File_Access, Chunk_Header);
 
+      --  Update RIFF_Info
+      WF.RIFF_Info.Id     := To_RIFF_Identifier (Chunk_Header.ID);
+      WF.RIFF_Info.Format := To_RIFF_Format ("WAVE");
+
       --  Write WAVE tag
       FOURCC_String'Write (WF.File_Access, FOURCC_String'("WAVE"));
 
@@ -63,6 +67,17 @@ package body Audio.Wavefiles.Write is
            (Wave_Format_Extensible_Size);
       end if;
       RIFF_Chunk_Header'Write (WF.File_Access, Chunk_Header);
+
+      Append_Fmt_Chunk : declare
+         Chunk_Element      : constant Wav_Chunk_Element
+           := (Chunk_Tag    => To_Wav_Chunk_Tag (Chunk_Header.ID),
+               ID           => Chunk_Header.ID,
+               Size         => Long_Integer (Chunk_Header.Size),
+               File_Index   => Ada.Streams.Stream_IO.Index (WF.File),
+               Consolidated => True);
+      begin
+         WF.RIFF_Info.Chunks.Append (Chunk_Element);
+      end Append_Fmt_Chunk;
 
       case Chunk_Header.Size is
          when Wave_Format_Chunk_Size'Enum_Rep (Wave_Format_16_Size) =>
@@ -86,6 +101,18 @@ package body Audio.Wavefiles.Write is
       Chunk_Header.ID   := "data";
       Chunk_Header.Size := 0;
       RIFF_Chunk_Header'Write (WF.File_Access, Chunk_Header);
+
+      Append_Data_Chunk : declare
+         Chunk_Element      : constant Wav_Chunk_Element
+           := (Chunk_Tag    => To_Wav_Chunk_Tag (Chunk_Header.ID),
+               ID           => Chunk_Header.ID,
+               Size         => Long_Integer (Chunk_Header.Size),
+               File_Index   => Ada.Streams.Stream_IO.Index (WF.File),
+               Consolidated => True);
+      begin
+         WF.RIFF_Info.Chunks.Append (Chunk_Element);
+      end Append_Data_Chunk;
+
    end Write_Until_Data_Start;
 
    procedure Update_Data_Size
