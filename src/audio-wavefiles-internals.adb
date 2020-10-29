@@ -27,6 +27,8 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
+with Audio.RIFF;
+
 package body Audio.Wavefiles.Internals is
 
    use Ada.Streams.Stream_IO;
@@ -38,5 +40,19 @@ package body Audio.Wavefiles.Internals is
                  Ada.Streams.Stream_IO.Index (F)
                  + Ada.Streams.Stream_IO.Count (Bytes));
    end Skip_Bytes;
+
+   procedure Set_File_Index_To_Chunk_Data_Start
+     (File              : Ada.Streams.Stream_IO.File_Type;
+      Chunk_Start_Index : Ada.Streams.Stream_IO.Positive_Count)
+   is
+      Chunk_Data_Index : Ada.Streams.Stream_IO.Positive_Count;
+   begin
+      --  Calculate file index corresponding to a position after the
+      --  RIFF chunk header
+      Chunk_Data_Index := Chunk_Start_Index +
+        Audio.RIFF.RIFF_Chunk_Header'Size / 8;
+
+      Ada.Streams.Stream_IO.Set_Index (File, Chunk_Data_Index);
+   end Set_File_Index_To_Chunk_Data_Start;
 
 end Audio.Wavefiles.Internals;
