@@ -47,7 +47,7 @@ package Audio.Wavefiles is
          Chunk_Tag    : Wav_Chunk_Tag;
          ID           : Audio.RIFF.FOURCC_String;
          Size         : Long_Integer;
-         File_Index   : Ada.Streams.Stream_IO.Positive_Count;
+         Start_Index  : Ada.Streams.Stream_IO.Positive_Count;
          Consolidated : Boolean;
       end record;
 

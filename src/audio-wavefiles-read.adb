@@ -48,7 +48,8 @@ package body Audio.Wavefiles.Read is
       for Chunk_Header of WF.RIFF_Info.Chunks loop
 
          if Chunk_Header.Chunk_Tag = Wav_Chunk_Fmt then
-            Ada.Streams.Stream_IO.Set_Index (WF.File, Chunk_Header.File_Index);
+            Ada.Streams.Stream_IO.Set_Index (WF.File,
+                                             Chunk_Header.Start_Index);
 
             case Chunk_Header.Size is
             when Wave_Format_Chunk_Size'Enum_Rep (Wave_Format_16_Size) =>
@@ -116,13 +117,14 @@ package body Audio.Wavefiles.Read is
       for Chunk_Header of WF.RIFF_Info.Chunks loop
 
          if Chunk_Header.Chunk_Tag = Wav_Chunk_Data then
-            Ada.Streams.Stream_IO.Set_Index (WF.File, Chunk_Header.File_Index);
+            Ada.Streams.Stream_IO.Set_Index (WF.File,
+                                             Chunk_Header.Start_Index);
 
             if Verbose then
                Put_Line ("RIFF Tag: " & Chunk_Header.ID);
             end if;
 
-            WF.File_Index := Chunk_Header.File_Index
+            WF.File_Index := Chunk_Header.Start_Index
               - Stream_IO.Count (RIFF_Chunk_Header'Size / 8);
 
             WF.Samples := Chunk_Header.Size /
@@ -162,7 +164,7 @@ package body Audio.Wavefiles.Read is
             Put_Line (E.Chunk_Tag'Image);
             Put_Line (E.ID);
             Put_Line (E.Size'Image);
-            Put_Line (E.File_Index'Image);
+            Put_Line (E.Start_Index'Image);
             Put_Line (E.Consolidated'Image);
          end loop;
          Put_Line ("--------------------------------");
@@ -211,7 +213,7 @@ package body Audio.Wavefiles.Read is
                  := (Chunk_Tag    => To_Wav_Chunk_Tag (Chunk_Header.ID),
                      ID           => Chunk_Header.ID,
                      Size         => Long_Integer (Chunk_Header.Size),
-                     File_Index   => Stream_IO.Index (WF.File),
+                     Start_Index  => Stream_IO.Index (WF.File),
                      Consolidated => True);
             begin
                Info.Chunks.Append (Chunk_Element);
