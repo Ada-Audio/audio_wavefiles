@@ -161,6 +161,8 @@ simple_testcase Direct_Copy_Float_Wavefile
 check_wavinfo   Direct_Copy_Float_Wavefile              "2ch_float_sine.wav"
 check_wavefile  Direct_Copy_Float_Wavefile              "2ch_float_sine.wav"
 
+simple_testcase Read_Raw_Data_Chunk
+
 ################
 # FINALIZATION #
 ################
