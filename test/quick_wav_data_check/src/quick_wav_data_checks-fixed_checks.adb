@@ -31,6 +31,7 @@ with Ada.Text_IO;                          use Ada.Text_IO;
 with Ada.Strings.Fixed;                    use Ada.Strings.Fixed;
 
 with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles.Report;               use Audio.Wavefiles.Report;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 
 with Audio.Wavefiles.Data_Types.Text_IO;
@@ -198,7 +199,7 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
    begin
       Put_Line (Separator);
       Put_Line (Header);
-      WF.Display_Info;
+      Display_Info (WF);
       Put_Line (Separator);
    end Display_Info;
 
