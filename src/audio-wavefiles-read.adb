@@ -44,12 +44,14 @@ package body Audio.Wavefiles.Read is
      (WF : in out Wavefile)
    is
       Verbose : constant Boolean := False;
+
+      use type Ada.Streams.Stream_IO.Count;
    begin
       for Chunk_Element of WF.RIFF_Info.Chunks loop
 
          if Chunk_Element.Chunk_Tag = Wav_Chunk_Fmt then
-            Ada.Streams.Stream_IO.Set_Index (WF.File,
-                                             Chunk_Element.Start_Index);
+            Set_File_Index_To_Chunk_Data_Start (WF.File,
+                                                Chunk_Element.Start_Index);
 
             case Chunk_Element.Size is
             when Wave_Format_Chunk_Size'Enum_Rep (Wave_Format_16_Size) =>
@@ -110,22 +112,18 @@ package body Audio.Wavefiles.Read is
      (WF : in out Wavefile)
    is
       Verbose : constant Boolean := False;
-
-      use      Ada.Streams;
-      use type Ada.Streams.Stream_IO.Count;
    begin
       for Chunk_Element of WF.RIFF_Info.Chunks loop
 
          if Chunk_Element.Chunk_Tag = Wav_Chunk_Data then
-            Ada.Streams.Stream_IO.Set_Index (WF.File,
-                                             Chunk_Element.Start_Index);
+            Set_File_Index_To_Chunk_Data_Start (WF.File,
+                                                Chunk_Element.Start_Index);
 
             if Verbose then
                Put_Line ("RIFF Tag: " & Chunk_Element.ID);
             end if;
 
-            WF.File_Index := Chunk_Element.Start_Index
-              - Stream_IO.Count (RIFF_Chunk_Header'Size / 8);
+            WF.File_Index := Chunk_Element.Start_Index;
 
             WF.Samples := Chunk_Element.Size /
               (Long_Integer (To_Positive (WF.Wave_Format.Bits_Per_Sample))
@@ -183,6 +181,8 @@ package body Audio.Wavefiles.Read is
 
       Prev_File_Index : constant Ada.Streams.Stream_IO.Positive_Count :=
                           Stream_IO.Index (WF.File);
+      Curr_File_Index :          Ada.Streams.Stream_IO.Positive_Count;
+
       Chunk_Header    : RIFF_Chunk_Header;
 
       Info            : RIFF_Information renames WF.RIFF_Info;
@@ -206,6 +206,8 @@ package body Audio.Wavefiles.Read is
         Info.Format /= RIFF_Format_Unknown
       then
          loop
+            Curr_File_Index := Ada.Streams.Stream_IO.Index (WF.File);
+
             RIFF_Chunk_Header'Read (WF.File_Access, Chunk_Header);
 
             declare
@@ -213,7 +215,7 @@ package body Audio.Wavefiles.Read is
                  := (Chunk_Tag    => To_Wav_Chunk_Tag (Chunk_Header.ID),
                      ID           => Chunk_Header.ID,
                      Size         => Long_Integer (Chunk_Header.Size),
-                     Start_Index  => Stream_IO.Index (WF.File),
+                     Start_Index  => Curr_File_Index,
                      Consolidated => True);
             begin
                Info.Chunks.Append (Chunk_Element);

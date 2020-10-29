@@ -100,10 +100,14 @@ package body Audio.Wavefiles.Write is
                        ("fmt ",
                         Chunk_Size (WF.Wave_Format.Size));
 
+      File_Index   : Ada.Streams.Stream_IO.Positive_Count;
+
       Verbose      : constant Boolean := False;
 
       use Audio.RIFF.Wav.Formats.Report;
    begin
+      File_Index := Ada.Streams.Stream_IO.Index (WF.File);
+
       RIFF_Chunk_Header'Write (WF.File_Access, Chunk_Header);
 
       Append_Chunk : declare
@@ -111,7 +115,7 @@ package body Audio.Wavefiles.Write is
            := (Chunk_Tag    => To_Wav_Chunk_Tag (Chunk_Header.ID),
                ID           => Chunk_Header.ID,
                Size         => Long_Integer (Chunk_Header.Size),
-               Start_Index  => Ada.Streams.Stream_IO.Index (WF.File),
+               Start_Index  => File_Index,
                Consolidated => True);
       begin
          WF.RIFF_Info.Chunks.Append (Chunk_Element);
@@ -128,8 +132,12 @@ package body Audio.Wavefiles.Write is
      (WF : in out Wavefile)
    is
       Chunk_Header : constant RIFF_Chunk_Header := ("data", 0);
+
+      File_Index   : Ada.Streams.Stream_IO.Positive_Count;
    begin
-      WF.File_Index := Ada.Streams.Stream_IO.Index (WF.File);
+      File_Index := Ada.Streams.Stream_IO.Index (WF.File);
+      WF.File_Index := File_Index;
+
       RIFF_Chunk_Header'Write (WF.File_Access, Chunk_Header);
 
       Append_Chunk : declare
@@ -137,7 +145,7 @@ package body Audio.Wavefiles.Write is
            := (Chunk_Tag    => To_Wav_Chunk_Tag (Chunk_Header.ID),
                ID           => Chunk_Header.ID,
                Size         => Long_Integer (Chunk_Header.Size),
-               Start_Index  => Ada.Streams.Stream_IO.Index (WF.File),
+               Start_Index  => File_Index,
                Consolidated => True);
       begin
          WF.RIFF_Info.Chunks.Append (Chunk_Element);
