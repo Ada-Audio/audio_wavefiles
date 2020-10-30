@@ -208,6 +208,9 @@ package body Audio.Wavefiles.Read is
                Info.Chunks.Append (Chunk_Element);
             end;
 
+            --  This is most probably an error in the wavefile:
+            exit when Natural (Chunk_Header.Size) = 0;
+
             Skip_Bytes (WF.File, Chunk_Header.Size);
 
             exit when Ada.Streams.Stream_IO.End_Of_File (WF.File);

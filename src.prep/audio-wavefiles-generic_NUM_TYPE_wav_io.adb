@@ -37,6 +37,15 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
    is
       N_Ch   : constant Positive := Number_Of_Channels (WF);
       Sample : Wav_Sample;
+
+      use Ada.Streams.Stream_IO;
+
+      Prev_File_Index  : constant Positive_Count := Index (WF.File)
+        with Ghost;
+      Expected_Byte_IO : constant Positive_Count
+        := Positive_Count
+          (To_Positive (WF.Wave_Format.Bits_Per_Sample) * N_Ch / 8)
+        with Ghost;
    begin
       return Wav : Wav_MC_Sample (1 .. N_Ch) do
          for J in 1 .. N_Ch loop
@@ -50,15 +59,30 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
                raise Wavefile_Error;
             end if;
          end loop;
+
+         pragma Assert (Ada.Streams.Stream_IO.Index (WF.File) =
+                          Prev_File_Index + Expected_Byte_IO);
       end return;
    end Get;
 
    procedure Put (WF  : in out Wavefile;
                   Wav :        Wav_MC_Sample) is
       N_Ch : constant Positive := Number_Of_Channels (WF);
+
+      use Ada.Streams.Stream_IO;
+
+      Prev_File_Index  : constant Positive_Count := Index (WF.File)
+        with Ghost;
+      Expected_Byte_IO : constant Positive_Count
+        := Positive_Count
+          (To_Positive (WF.Wave_Format.Bits_Per_Sample) * N_Ch / 8)
+        with Ghost;
    begin
       Wav_MC_Sample'Write (WF.File_Access, Wav);
       WF.Samples := WF.Samples + Long_Integer (N_Ch);
+
+      pragma Assert (Ada.Streams.Stream_IO.Index (WF.File) =
+                       Prev_File_Index + Expected_Byte_IO);
    end Put;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
