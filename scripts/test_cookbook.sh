@@ -162,6 +162,7 @@ check_wavinfo   Direct_Copy_Float_Wavefile              "2ch_float_sine.wav"
 check_wavefile  Direct_Copy_Float_Wavefile              "2ch_float_sine.wav"
 
 simple_testcase Read_Raw_Data_Chunk
+check_wavefile  Read_Raw_Data_Chunk                     "2020-08-09.xml"
 
 ################
 # FINALIZATION #

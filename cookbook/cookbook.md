@@ -1006,17 +1006,19 @@ with Ada.Text_IO;     use Ada.Text_IO;
 
 with Audio.Wavefiles; use Audio.Wavefiles;
 
-procedure Display_Data (Data : Byte_Array) is
+procedure Display_Data (Xml_File : File_Type;
+                        Data     : Byte_Array) is
 begin
    for B of Data loop
       declare
          C : Character with Address => B'Address;
       begin
-         Put (C);
+         Put (Xml_File, C);
       end;
    end loop;
-   New_Line;
 end Display_Data;
+
+with Ada.Text_IO;            use Ada.Text_IO;
 
 with Audio.Wavefiles;        use Audio.Wavefiles;
 with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
@@ -1025,21 +1027,35 @@ with Display_Data;
 
 procedure Read_Raw_Data_Chunk is
    WF            : Wavefile;
+   Xml_File      : Ada.Text_IO.File_Type;
    Wav_File_Name : constant String := "data/2020-08-09.wav";
+   Xml_File_Name : constant String := "out/2020-08-09.xml";
    RIFF_Info     : RIFF_Information;
 begin
    WF.Open (In_File, Wav_File_Name);
 
+   Create (Xml_File, Out_File, Xml_File_Name);
+
    if WF.Is_Open then
       WF.Get_RIFF_Info (RIFF_Info);
 
-      for Chunk_Element of RIFF_Info.Chunks loop
-         if Chunk_Element.Chunk_Tag = Wav_Chunk_IXML then
-            Display_Data (Chunk_Element_Data (WF, Chunk_Element));
+      declare
+         Chunk_Element  : Wav_Chunk_Element;
+         Success        : Boolean;
+      begin
+         Get_First_Chunk (Chunks        => RIFF_Info.Chunks,
+                          Chunk_Tag     => Wav_Chunk_IXML,
+                          Chunk_Element => Chunk_Element,
+                          Success       => Success);
+
+         if Success then
+            Display_Data (Xml_File,
+                          Chunk_Element_Data (WF, Chunk_Element));
          end if;
-      end loop;
+      end;
    end if;
 
    WF.Close;
+   Close (Xml_File);
 end Read_Raw_Data_Chunk;
 ~~~~~~~~~~
