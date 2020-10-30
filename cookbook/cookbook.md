@@ -998,7 +998,7 @@ begin
 end Direct_Copy_Float_Wavefile;
 ~~~~~~~~~~
 
-## Reading iXML chunk from a wavefile
+## Extract iXML chunk from a wavefile
 
 ~~~~~~~~~~ada
 
@@ -1006,8 +1006,8 @@ with Ada.Text_IO;     use Ada.Text_IO;
 
 with Audio.Wavefiles; use Audio.Wavefiles;
 
-procedure Display_Data (Xml_File : File_Type;
-                        Data     : Byte_Array) is
+procedure Write_XML (Xml_File : File_Type;
+                     Data     : Byte_Array) is
 begin
    for B of Data loop
       declare
@@ -1016,16 +1016,16 @@ begin
          Put (Xml_File, C);
       end;
    end loop;
-end Display_Data;
+end Write_XML;
 
 with Ada.Text_IO;            use Ada.Text_IO;
 
 with Audio.Wavefiles;        use Audio.Wavefiles;
 with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
 
-with Display_Data;
+with Write_XML;
 
-procedure Read_Raw_Data_Chunk is
+procedure Extract_XML_Chunk is
    WF            : Wavefile;
    Xml_File      : Ada.Text_IO.File_Type;
    Wav_File_Name : constant String := "data/2020-08-09.wav";
@@ -1049,13 +1049,13 @@ begin
                           Success       => Success);
 
          if Success then
-            Display_Data (Xml_File,
-                          Chunk_Element_Data (WF, Chunk_Element));
+            Write_XML (Xml_File,
+                       Chunk_Element_Data (WF, Chunk_Element));
          end if;
       end;
    end if;
 
    WF.Close;
    Close (Xml_File);
-end Read_Raw_Data_Chunk;
+end Extract_XML_Chunk;
 ~~~~~~~~~~

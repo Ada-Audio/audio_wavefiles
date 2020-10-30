@@ -53,7 +53,7 @@ project Cookbook is
                  "downmix_7_1_4_to_5_1_wavefile.adb",
                  "direct_copy_wavefile.adb",
                  "direct_copy_float_wavefile.adb",
-                 "read_raw_data_chunk.adb");
+                 "extract_xml_chunk.adb");
 
    package Ide is
       for Vcs_Kind use "Git";
