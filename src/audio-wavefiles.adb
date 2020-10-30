@@ -235,4 +235,20 @@ package body Audio.Wavefiles is
       return Data;
    end Chunk_Element_Data;
 
+   procedure Get_First_Chunk (Chunks         :     Wav_Chunk_Elements;
+                              Chunk_Tag      :     Wav_Chunk_Tag;
+                              Chunk_Element  : out Wav_Chunk_Element;
+                              Success        : out Boolean) is
+   begin
+      Success := False;
+
+      for C of Chunks loop
+         if C.Chunk_Tag = Chunk_Tag then
+            Chunk_Element := C;
+            Success := True;
+            exit;
+         end if;
+      end loop;
+   end Get_First_Chunk;
+
 end Audio.Wavefiles;

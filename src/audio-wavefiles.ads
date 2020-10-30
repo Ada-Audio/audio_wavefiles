@@ -66,6 +66,11 @@ package Audio.Wavefiles is
 
    subtype Wav_Chunk_Elements is Wav_Chunk_Element_Vectors.Vector;
 
+   procedure Get_First_Chunk (Chunks         :     Wav_Chunk_Elements;
+                              Chunk_Tag      :     Wav_Chunk_Tag;
+                              Chunk_Element  : out Wav_Chunk_Element;
+                              Success        : out Boolean);
+
    type RIFF_Information is
       record
          Id     : RIFF_Identifier;
