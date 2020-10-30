@@ -209,7 +209,7 @@ package body Audio.Wavefiles.Read is
             end;
 
             --  This is most probably an error in the wavefile:
-            exit when Chunk_Header.Size = 0;
+            exit when Natural (Chunk_Header.Size) = 0;
 
             Skip_Bytes (WF.File, Chunk_Header.Size);
 
