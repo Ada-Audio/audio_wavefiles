@@ -140,7 +140,7 @@ package body Audio.Wavefiles.Write is
       RIFF_Chunk_Header'Write (WF.File_Access, Chunk_Header);
 
       Append_Chunk : declare
-         Chunk_Element      : constant Wav_Chunk_Element
+         Chunk_Element : constant Wav_Chunk_Element
            := (Chunk_Tag    => To_Wav_Chunk_Tag (Chunk_Header.ID),
                ID           => Chunk_Header.ID,
                Size         => Long_Integer (Chunk_Header.Size),
