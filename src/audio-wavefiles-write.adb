@@ -111,7 +111,7 @@ package body Audio.Wavefiles.Write is
       RIFF_Chunk_Header'Write (WF.File_Access, Chunk_Header);
 
       Append_Chunk : declare
-         Chunk_Element      : constant Wav_Chunk_Element
+         Chunk_Element : constant Wav_Chunk_Element
            := (Chunk_Tag    => To_Wav_Chunk_Tag (Chunk_Header.ID),
                ID           => Chunk_Header.ID,
                Size         => Long_Integer (Chunk_Header.Size),
@@ -169,10 +169,13 @@ package body Audio.Wavefiles.Write is
         * Unsigned_32 (To_Unsigned_16 (WF.Wave_Format.Bits_Per_Sample) / 8);
 
       --  Update/finalize RIFF chunk
-      Ada.Streams.Stream_IO.Set_Index (WF.File, 1);
-      Chunk_Header.ID   := "RIFF";
-      Chunk_Header.Size := Size + 36;
-      RIFF_Chunk_Header'Write (WF.File_Access, Chunk_Header);
+      Update_RIFF_Header_Chunk : declare
+      begin
+         Ada.Streams.Stream_IO.Set_Index (WF.File, 1);
+         Chunk_Header.ID   := "RIFF";
+         Chunk_Header.Size := Size + 36;
+         RIFF_Chunk_Header'Write (WF.File_Access, Chunk_Header);
+      end Update_RIFF_Header_Chunk;
 
       --  Update/finalize RIFF tag of data chunk
       Update_Data_Chunk : declare
