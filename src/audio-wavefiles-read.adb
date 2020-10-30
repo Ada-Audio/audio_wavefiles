@@ -47,14 +47,22 @@ package body Audio.Wavefiles.Read is
       Verbose : constant Boolean := False;
 
       use type Ada.Streams.Stream_IO.Count;
+
+      Chunk_Element  : Wav_Chunk_Element;
+      Success        : Boolean;
    begin
-      for Chunk_Element of WF.RIFF_Info.Chunks loop
+      Get_First_Chunk (Chunks        => WF.RIFF_Info.Chunks,
+                       Chunk_Tag     => Wav_Chunk_Fmt,
+                       Chunk_Element => Chunk_Element,
+                       Success       => Success);
 
-         if Chunk_Element.Chunk_Tag = Wav_Chunk_Fmt then
-            Set_File_Index_To_Chunk_Data_Start (WF.File,
-                                                Chunk_Element.Start_Index);
+      if not Success then
+         raise Wavefile_Error;
+      else
+         Set_File_Index_To_Chunk_Data_Start (WF.File,
+                                             Chunk_Element.Start_Index);
 
-            case Chunk_Element.Size is
+         case Chunk_Element.Size is
             when Wave_Format_Chunk_Size'Enum_Rep (Wave_Format_16_Size) =>
                Wave_Format_16'Read (WF.File_Access,
                                     Wave_Format_16 (WF.Wave_Format));
@@ -95,51 +103,51 @@ package body Audio.Wavefiles.Read is
 
             when others =>
                raise Wavefile_Error;
-            end case;
+         end case;
 
-            if Verbose then
-               Wavefiles.Report.Display_Info (WF);
-               Put_Line ("fmt chunk size: " & Long_Integer'Image
-                         (Chunk_Element.Size));
-            end if;
-
-            exit;
+         if Verbose then
+            Wavefiles.Report.Display_Info (WF);
+            Put_Line ("fmt chunk size: " & Long_Integer'Image
+                      (Chunk_Element.Size));
          end if;
-
-      end loop;
+      end if;
    end Parse_Fmt_Chunk;
 
    procedure Parse_Data_Chunk
      (WF : in out Wavefile)
    is
       Verbose : constant Boolean := False;
+
+      Chunk_Element  : Wav_Chunk_Element;
+      Success        : Boolean;
    begin
-      for Chunk_Element of WF.RIFF_Info.Chunks loop
+      Get_First_Chunk (Chunks        => WF.RIFF_Info.Chunks,
+                       Chunk_Tag     => Wav_Chunk_Data,
+                       Chunk_Element => Chunk_Element,
+                       Success       => Success);
 
-         if Chunk_Element.Chunk_Tag = Wav_Chunk_Data then
-            Set_File_Index_To_Chunk_Data_Start (WF.File,
-                                                Chunk_Element.Start_Index);
+      if not Success then
+         raise Wavefile_Error;
+      else
+         Set_File_Index_To_Chunk_Data_Start (WF.File,
+                                             Chunk_Element.Start_Index);
 
-            if Verbose then
-               Put_Line ("RIFF Tag: " & Chunk_Element.ID);
-            end if;
-
-            WF.Samples := Chunk_Element.Size /
-              (Long_Integer (To_Positive (WF.Wave_Format.Bits_Per_Sample))
-               / 8);
-
-            if Verbose then
-               Put_Line ("Data chunk size: " & Long_Integer'Image
-                         (Chunk_Element.Size));
-               Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples));
-               Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples
-                         / Long_Integer (WF.Wave_Format.Channels)));
-            end if;
-
-            exit;
+         if Verbose then
+            Put_Line ("RIFF Tag: " & Chunk_Element.ID);
          end if;
 
-      end loop;
+         WF.Samples := Chunk_Element.Size /
+           (Long_Integer (To_Positive (WF.Wave_Format.Bits_Per_Sample))
+            / 8);
+
+         if Verbose then
+            Put_Line ("Data chunk size: " & Long_Integer'Image
+                      (Chunk_Element.Size));
+            Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples));
+            Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples
+                      / Long_Integer (WF.Wave_Format.Channels)));
+         end if;
+      end if;
    end Parse_Data_Chunk;
 
    procedure Read_Until_Data_Start

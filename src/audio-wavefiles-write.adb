@@ -175,9 +175,18 @@ package body Audio.Wavefiles.Write is
       RIFF_Chunk_Header'Write (WF.File_Access, Chunk_Header);
 
       --  Update/finalize RIFF tag of data chunk
-      for Chunk_Element of WF.RIFF_Info.Chunks loop
+      Update_Data_Chunk : declare
+         Chunk_Element : Wav_Chunk_Element;
+         Success       : Boolean;
+      begin
+         Get_First_Chunk (Chunks        => WF.RIFF_Info.Chunks,
+                          Chunk_Tag     => Wav_Chunk_Data,
+                          Chunk_Element => Chunk_Element,
+                          Success       => Success);
 
-         if Chunk_Element.Chunk_Tag = Wav_Chunk_Data then
+         if not Success then
+            raise Wavefile_Error;
+         else
             Ada.Streams.Stream_IO.Set_Index (WF.File,
                                              Chunk_Element.Start_Index);
             Chunk_Header.ID   := "data";
@@ -185,10 +194,8 @@ package body Audio.Wavefiles.Write is
 
             --  WF.Samples is already multiplied by WF.Wave_Format.Channels
             RIFF_Chunk_Header'Write (WF.File_Access, Chunk_Header);
-
-            exit;
          end if;
-      end loop;
+      end Update_Data_Chunk;
 
    end Update_Data_Size;
 
