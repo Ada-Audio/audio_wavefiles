@@ -1,0 +1,68 @@
+-------------------------------------------------------------------------------
+--
+--                                WAVEFILES
+--
+--                           Report procedures
+--
+--  The MIT License (MIT)
+--
+--  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
+--
+--  Permission is hereby granted, free of charge, to any person obtaining a
+--  copy of this software and associated documentation files (the "Software"),
+--  to deal in the Software without restriction, including without limitation
+--  the rights to use, copy, modify, merge, publish, distribute, sublicense,
+--  and / or sell copies of the Software, and to permit persons to whom the
+--  Software is furnished to do so, subject to the following conditions:
+--
+--  The above copyright notice and this permission notice shall be included in
+--  all copies or substantial portions of the Software.
+--
+--  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+--  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+--  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+--  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+--  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+--  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+--  DEALINGS IN THE SOFTWARE.
+-------------------------------------------------------------------------------
+
+with Ada.Text_IO;                    use Ada.Text_IO;
+
+with Audio.RIFF.Wav.Formats.Report;
+
+package body Audio.Wavefiles.Report is
+
+   procedure Display_Info (WF : in Wavefile) is
+   begin
+      Audio.RIFF.Wav.Formats.Report.Print (WF.Wave_Format);
+   end Display_Info;
+
+   procedure Display_Info (RIFF_Info : in RIFF_Information) is
+   begin
+      Put_Line ("---- RIFF Chunks Information ----");
+      Put_Line ("Id:          " & RIFF_Identifier'Image (RIFF_Info.Id));
+      Put_Line ("Format:      " & RIFF_Format'Image (RIFF_Info.Format));
+      Put_Line ("Chunk count: "
+                & Ada.Containers.Count_Type'Image (RIFF_Info.Chunks.Length));
+      New_Line;
+
+      for Chunk_Element of RIFF_Info.Chunks loop
+         Put_Line ("- ID:           "
+                   & Chunk_Element.ID);
+         Put_Line ("  Internal tag: "
+                   & Wav_Chunk_Tag'Image (Chunk_Element.Chunk_Tag));
+         Put_Line ("  Size:         "
+                   & Long_Integer'Image (Chunk_Element.Size));
+         Put_Line ("  Start index:  "
+                   & Ada.Streams.Stream_IO.Positive_Count'Image
+                     (Chunk_Element.Start_Index));
+         Put_Line ("  Consolidated: "
+                   & Boolean'Image (Chunk_Element.Consolidated));
+         New_Line;
+      end loop;
+      Put_Line ("---------------------------------");
+
+   end Display_Info;
+
+end Audio.Wavefiles.Report;

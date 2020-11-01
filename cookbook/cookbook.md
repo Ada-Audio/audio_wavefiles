@@ -98,6 +98,29 @@ begin
 end Open_Close_Wavefile_For_Writing;
 ~~~~~~~~~~
 
+## Displaying RIFF chunks of a wavefile
+
+~~~~~~~~~~ada
+with Audio.Wavefiles;        use Audio.Wavefiles;
+with Audio.Wavefiles.Report; use Audio.Wavefiles.Report;
+
+procedure Display_RIFF_Chunks is
+   WF            : Wavefile;
+   Wav_File_Name : constant String := "data/2ch_silence.wav";
+   RIFF_Info     : RIFF_Information;
+begin
+   WF.Open (In_File, Wav_File_Name);
+
+   if WF.Is_Open then
+      WF.Get_RIFF_Info (RIFF_Info);
+
+      Display_Info (RIFF_Info);
+   end if;
+
+   WF.Close;
+end Display_RIFF_Chunks;
+~~~~~~~~~~
+
 ## Reading data from a wavefile
 
 ~~~~~~~~~~ada
@@ -973,4 +996,66 @@ begin
    WF_In.Close;
    WF_Out.Close;
 end Direct_Copy_Float_Wavefile;
+~~~~~~~~~~
+
+## Extract iXML chunk from a wavefile
+
+~~~~~~~~~~ada
+
+with Ada.Text_IO;     use Ada.Text_IO;
+
+with Audio.Wavefiles; use Audio.Wavefiles;
+
+procedure Write_XML (Xml_File : File_Type;
+                     Data     : Byte_Array) is
+begin
+   for B of Data loop
+      declare
+         C : Character with Address => B'Address;
+      begin
+         Put (Xml_File, C);
+      end;
+   end loop;
+end Write_XML;
+
+with Ada.Text_IO;            use Ada.Text_IO;
+
+with Audio.Wavefiles;        use Audio.Wavefiles;
+with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
+
+with Write_XML;
+
+procedure Extract_XML_Chunk is
+   WF            : Wavefile;
+   Xml_File      : Ada.Text_IO.File_Type;
+   Wav_File_Name : constant String := "data/2020-08-09.wav";
+   Xml_File_Name : constant String := "out/2020-08-09.xml";
+   RIFF_Info     : RIFF_Information;
+begin
+   WF.Open (In_File, Wav_File_Name);
+
+   Create (Xml_File, Out_File, Xml_File_Name);
+
+   if WF.Is_Open then
+      WF.Get_RIFF_Info (RIFF_Info);
+
+      declare
+         Chunk_Element  : Wav_Chunk_Element;
+         Success        : Boolean;
+      begin
+         Get_First_Chunk (Chunks        => RIFF_Info.Chunks,
+                          Chunk_Tag     => Wav_Chunk_IXML,
+                          Chunk_Element => Chunk_Element,
+                          Success       => Success);
+
+         if Success then
+            Write_XML (Xml_File,
+                       Chunk_Element_Data (WF, Chunk_Element));
+         end if;
+      end;
+   end if;
+
+   WF.Close;
+   Close (Xml_File);
+end Extract_XML_Chunk;
 ~~~~~~~~~~

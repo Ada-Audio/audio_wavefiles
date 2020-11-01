@@ -105,6 +105,8 @@ simple_testcase Open_Close_Wavefile_For_Reading
 simple_testcase Open_Close_Wavefile_For_Writing
 check_wavinfo   Open_Close_Wavefile_For_Writing     "test.wav"
 
+simple_testcase Display_RIFF_Chunks
+
 simple_testcase Read_Display_Wavefile_Data
 
 simple_testcase Write_Mono_Silence_Wavefile
@@ -158,6 +160,9 @@ check_wavefile  Direct_Copy_Wavefile                    "2ch_sine.wav"
 simple_testcase Direct_Copy_Float_Wavefile
 check_wavinfo   Direct_Copy_Float_Wavefile              "2ch_float_sine.wav"
 check_wavefile  Direct_Copy_Float_Wavefile              "2ch_float_sine.wav"
+
+simple_testcase Extract_XML_Chunk
+check_wavefile  Extract_XML_Chunk                       "2020-08-09.xml"
 
 ################
 # FINALIZATION #

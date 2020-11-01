@@ -28,7 +28,10 @@
 -------------------------------------------------------------------------------
 
 with Ada.Streams.Stream_IO;
+with Ada.Containers.Vectors;
+with Interfaces;
 
+with Audio.RIFF;
 with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
 
 package Audio.Wavefiles is
@@ -39,6 +42,41 @@ package Audio.Wavefiles is
 
    Wavefile_Error       : exception;
    Wavefile_Unsupported : exception;
+
+   subtype Byte is Interfaces.Unsigned_8;
+   type Byte_Array is array (Long_Integer range <>) of Byte;
+
+   type Wav_Chunk_Element is
+      record
+         Chunk_Tag    : Wav_Chunk_Tag;
+         ID           : Audio.RIFF.FOURCC_String;
+         Size         : Long_Integer;
+         Start_Index  : Ada.Streams.Stream_IO.Positive_Count;
+         Consolidated : Boolean;
+      end record;
+
+   function Chunk_Element_Data
+     (WF            : Wavefile;
+      Chunk_Element : Wav_Chunk_Element) return Byte_Array;
+
+   package Wav_Chunk_Element_Vectors is new Ada.Containers.Vectors
+     (Index_Type   => Positive,
+      Element_Type => Wav_Chunk_Element);
+   use Wav_Chunk_Element_Vectors;
+
+   subtype Wav_Chunk_Elements is Wav_Chunk_Element_Vectors.Vector;
+
+   procedure Get_First_Chunk (Chunks         :     Wav_Chunk_Elements;
+                              Chunk_Tag      :     Wav_Chunk_Tag;
+                              Chunk_Element  : out Wav_Chunk_Element;
+                              Success        : out Boolean);
+
+   type RIFF_Information is
+      record
+         Id     : RIFF_Identifier;
+         Format : RIFF_Format;
+         Chunks : Wav_Chunk_Elements;
+      end record;
 
    procedure Create
      (WF   : in out Wavefile;
@@ -59,9 +97,6 @@ package Audio.Wavefiles is
      (WF   : in out Wavefile) return Boolean
      with Inline, Pre => Mode (WF) = In_File;
 
-   procedure Display_Info (WF : in Wavefile)
-     with Pre => Mode (WF) = In_File;
-
    procedure Close (WF : in out Wavefile);
 
    procedure Set_Format_Of_Wavefile
@@ -81,6 +116,11 @@ package Audio.Wavefiles is
    function Name
      (W : Wavefile) return String;
 
+   procedure Get_RIFF_Info
+     (WF     : in out Wavefile;
+      Info   :    out RIFF_Information)
+     with Pre => Is_Open (WF);
+
    function Is_Supported_Format
      (W : Wave_Format_Extensible) return Boolean;
 
@@ -93,10 +133,10 @@ private
          Is_Opened        : Boolean      := False;
          File             : Ada.Streams.Stream_IO.File_Type;
          File_Access      : Ada.Streams.Stream_IO.Stream_Access;
-         File_Index       : Ada.Streams.Stream_IO.Positive_Count;
          Wave_Format      : Wave_Format_Extensible := Default;
          Samples          : Long_Integer;
          Samples_Read     : Long_Integer;
+         RIFF_Info        : RIFF_Information;
       end record;
 
    function Is_Open

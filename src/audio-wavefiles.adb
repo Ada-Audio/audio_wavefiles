@@ -29,15 +29,16 @@
 
 with Audio.Wavefiles.Read;
 with Audio.Wavefiles.Write;
+with Audio.Wavefiles.Internals;
 
 with Audio.RIFF.Wav.GUIDs;          use Audio.RIFF.Wav.GUIDs;
-with Audio.RIFF.Wav.Formats.Report;
-
 
 package body Audio.Wavefiles is
 
    procedure Init_Data_For_File_Opening
      (WF   : in out Wavefile);
+   procedure Reset_RIFF_Info
+     (Info :      out RIFF_Information);
 
    procedure Init_Data_For_File_Opening
      (WF   : in out Wavefile) is
@@ -45,6 +46,7 @@ package body Audio.Wavefiles is
       WF.Is_Opened    := True;
       WF.Samples_Read := 0;
       WF.Samples      := 0;
+      Reset_RIFF_Info (WF.RIFF_Info);
    end Init_Data_For_File_Opening;
 
    procedure Create
@@ -140,11 +142,6 @@ package body Audio.Wavefiles is
       end if;
    end End_Of_File;
 
-   procedure Display_Info (WF : in Wavefile) is
-   begin
-      Audio.RIFF.Wav.Formats.Report.Print (WF.Wave_Format);
-   end Display_Info;
-
    procedure Close (WF : in out Wavefile) is
       use Ada.Streams.Stream_IO;
    begin
@@ -159,6 +156,7 @@ package body Audio.Wavefiles is
       Close (WF.File);
 
       WF.Is_Opened := False;
+
    end Close;
 
    procedure Set_Format_Of_Wavefile
@@ -196,5 +194,61 @@ package body Audio.Wavefiles is
 
       return True;
    end Is_Supported_Format;
+
+   procedure Get_RIFF_Info
+     (WF     : in out Wavefile;
+      Info   :    out RIFF_Information)
+   is
+   begin
+      if WF.RIFF_Info.Chunks.Is_Empty then
+         Audio.Wavefiles.Read.Parse_Wav_Chunks (WF);
+      end if;
+      Info := WF.RIFF_Info;
+   end Get_RIFF_Info;
+
+   procedure Reset_RIFF_Info
+     (Info :      out RIFF_Information) is
+   begin
+      Info.Format  := RIFF_Format_Unknown;
+      Info.Id      := RIFF_Identifier_Unknown;
+      Info.Chunks.Clear;
+   end Reset_RIFF_Info;
+
+   function Chunk_Element_Data
+     (WF            : Wavefile;
+      Chunk_Element : Wav_Chunk_Element) return Byte_Array
+   is
+      subtype Bounded_Byte_Array is Byte_Array (1 .. Chunk_Element.Size);
+
+      Data            : Bounded_Byte_Array;
+      Prev_File_Index : constant Ada.Streams.Stream_IO.Positive_Count :=
+                          Ada.Streams.Stream_IO.Index (WF.File);
+
+      use Audio.Wavefiles.Internals;
+   begin
+      Set_File_Index_To_Chunk_Data_Start (WF.File, Chunk_Element.Start_Index);
+      Bounded_Byte_Array'Read (WF.File_Access, Data);
+
+      --  Set index to previous position
+      Ada.Streams.Stream_IO.Set_Index (WF.File, Prev_File_Index);
+
+      return Data;
+   end Chunk_Element_Data;
+
+   procedure Get_First_Chunk (Chunks         :     Wav_Chunk_Elements;
+                              Chunk_Tag      :     Wav_Chunk_Tag;
+                              Chunk_Element  : out Wav_Chunk_Element;
+                              Success        : out Boolean) is
+   begin
+      Success := False;
+
+      for C of Chunks loop
+         if C.Chunk_Tag = Chunk_Tag then
+            Chunk_Element := C;
+            Success := True;
+            exit;
+         end if;
+      end loop;
+   end Get_First_Chunk;
 
 end Audio.Wavefiles;

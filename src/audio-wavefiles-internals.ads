@@ -37,4 +37,8 @@ package Audio.Wavefiles.Internals is
      (F     : in out Ada.Streams.Stream_IO.File_Type;
       Bytes : in Unsigned_32);
 
+   procedure Set_File_Index_To_Chunk_Data_Start
+     (File              : Ada.Streams.Stream_IO.File_Type;
+      Chunk_Start_Index : Ada.Streams.Stream_IO.Positive_Count);
+
 end Audio.Wavefiles.Internals;

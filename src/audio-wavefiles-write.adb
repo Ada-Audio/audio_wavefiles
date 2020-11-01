@@ -30,44 +30,58 @@
 with Interfaces;                   use Interfaces;
 
 with Audio.RIFF;                   use Audio.RIFF;
-
 with Audio.RIFF.Wav.Formats.Report;
 
 package body Audio.Wavefiles.Write is
 
+   procedure Write_RIFF_Header
+     (WF            : in out Wavefile;
+      Id_FOURCC     :        FOURCC_String;
+      Format_FOURCC :        FOURCC_String);
+   procedure Write_Fmt_Chunk
+     (WF : in out Wavefile);
+   procedure Write_Data_Chunk
+     (WF : in out Wavefile);
+
    use Ada.Streams.Stream_IO;
 
-   procedure Write_Until_Data_Start
-     (WF          : in out Wavefile)
+   procedure Write_RIFF_Header
+     (WF            : in out Wavefile;
+      Id_FOURCC     :        FOURCC_String;
+      Format_FOURCC :        FOURCC_String)
    is
-      RIFF_Tag    : RIFF_Tag_Type;
-      RIFF_Chunk  : RIFF_Chunk_Type;
-
-      Verbose     : constant Boolean := False;
-
-      use Audio.RIFF.Wav.Formats.Report;
+      Chunk_Header  : constant RIFF_Chunk_Header := (Id_FOURCC, 0);
    begin
       --  Write RIFF chunk
-      RIFF_Tag.FOURCC := "RIFF";
-      RIFF_Tag.Size   := 0;
-      RIFF_Tag_Type'Write (WF.File_Access, RIFF_Tag);
+      RIFF_Chunk_Header'Write (WF.File_Access, Chunk_Header);
 
       --  Write WAVE tag
-      RIFF_Chunk.FOURCC := "WAVE";
-      RIFF_Chunk_Type'Write (WF.File_Access, RIFF_Chunk);
+      FOURCC_String'Write (WF.File_Access, Format_FOURCC);
 
-      --  Write fmt chunk
-      RIFF_Tag.FOURCC := "fmt ";
-      if WF.Wave_Format.Size = 0 then
-         RIFF_Tag.Size   := Wave_Format_Chunk_Size'Enum_Rep
-           (Wave_Format_18_Size);
-      else
-         RIFF_Tag.Size   := Wave_Format_Chunk_Size'Enum_Rep
-           (Wave_Format_Extensible_Size);
-      end if;
-      RIFF_Tag_Type'Write (WF.File_Access, RIFF_Tag);
+      --  Update RIFF_Info
+      WF.RIFF_Info.Id     := To_RIFF_Identifier (Chunk_Header.ID);
+      WF.RIFF_Info.Format := To_RIFF_Format (Format_FOURCC);
+   end Write_RIFF_Header;
 
-      case RIFF_Tag.Size is
+   procedure Write_Fmt_Chunk
+     (WF : in out Wavefile)
+   is
+      function Chunk_Size (Format_Size : Unsigned_16) return Unsigned_32;
+      procedure Write_Chunk (Chunk_Size : Unsigned_32);
+
+      function Chunk_Size (Format_Size : Unsigned_16) return Unsigned_32 is
+      begin
+         if Format_Size = 0 then
+            return Wave_Format_Chunk_Size'Enum_Rep (Wave_Format_18_Size);
+         else
+            return Wave_Format_Chunk_Size'Enum_Rep
+              (Wave_Format_Extensible_Size);
+         end if;
+      end Chunk_Size;
+
+      procedure Write_Chunk (Chunk_Size : Unsigned_32) is
+      begin
+         case Chunk_Size is
          when Wave_Format_Chunk_Size'Enum_Rep (Wave_Format_16_Size) =>
             Wave_Format_16'Write (WF.File_Access,
                                   Wave_Format_16 (WF.Wave_Format));
@@ -79,40 +93,113 @@ package body Audio.Wavefiles.Write is
                                           WF.Wave_Format);
          when others =>
             raise Wavefile_Error;
-      end case;
+         end case;
+      end Write_Chunk;
+
+      Chunk_Header : constant RIFF_Chunk_Header :=
+                       ("fmt ",
+                        Chunk_Size (WF.Wave_Format.Size));
+
+      File_Index   : Ada.Streams.Stream_IO.Positive_Count;
+
+      Verbose      : constant Boolean := False;
+
+      use Audio.RIFF.Wav.Formats.Report;
+   begin
+      File_Index := Ada.Streams.Stream_IO.Index (WF.File);
+
+      RIFF_Chunk_Header'Write (WF.File_Access, Chunk_Header);
+
+      Append_Chunk : declare
+         Chunk_Element : constant Wav_Chunk_Element
+           := (Chunk_Tag    => To_Wav_Chunk_Tag (Chunk_Header.ID),
+               ID           => Chunk_Header.ID,
+               Size         => Long_Integer (Chunk_Header.Size),
+               Start_Index  => File_Index,
+               Consolidated => True);
+      begin
+         WF.RIFF_Info.Chunks.Append (Chunk_Element);
+      end Append_Chunk;
+
+      Write_Chunk (Chunk_Header.Size);
+
       if Verbose then
          Print (WF.Wave_Format);
       end if;
+   end Write_Fmt_Chunk;
 
-      --  Write data chunk
-      WF.File_Index := Ada.Streams.Stream_IO.Index (WF.File);
-      RIFF_Tag.FOURCC := "data";
-      RIFF_Tag.Size   := 0;
-      RIFF_Tag_Type'Write (WF.File_Access, RIFF_Tag);
+   procedure Write_Data_Chunk
+     (WF : in out Wavefile)
+   is
+      Chunk_Header : constant RIFF_Chunk_Header := ("data", 0);
+
+      File_Index   : Ada.Streams.Stream_IO.Positive_Count;
+   begin
+      File_Index := Ada.Streams.Stream_IO.Index (WF.File);
+
+      RIFF_Chunk_Header'Write (WF.File_Access, Chunk_Header);
+
+      Append_Chunk : declare
+         Chunk_Element : constant Wav_Chunk_Element
+           := (Chunk_Tag    => To_Wav_Chunk_Tag (Chunk_Header.ID),
+               ID           => Chunk_Header.ID,
+               Size         => Long_Integer (Chunk_Header.Size),
+               Start_Index  => File_Index,
+               Consolidated => True);
+      begin
+         WF.RIFF_Info.Chunks.Append (Chunk_Element);
+      end Append_Chunk;
+   end Write_Data_Chunk;
+
+   procedure Write_Until_Data_Start
+     (WF          : in out Wavefile) is
+   begin
+      Write_RIFF_Header (WF, "RIFF", "WAVE");
+      Write_Fmt_Chunk (WF);
+      Write_Data_Chunk (WF);
    end Write_Until_Data_Start;
 
    procedure Update_Data_Size
      (WF  : in out Wavefile)
    is
-      RIFF_Tag    : RIFF_Tag_Type;
-      Size        : Unsigned_32;
+      Chunk_Header : RIFF_Chunk_Header;
+      Size         : Unsigned_32;
    begin
       Size := Unsigned_32 (WF.Samples)
         * Unsigned_32 (To_Unsigned_16 (WF.Wave_Format.Bits_Per_Sample) / 8);
 
       --  Update/finalize RIFF chunk
-      Ada.Streams.Stream_IO.Set_Index (WF.File, 1);
-      RIFF_Tag.FOURCC := "RIFF";
-      RIFF_Tag.Size   := Size + 36;
-      RIFF_Tag_Type'Write (WF.File_Access, RIFF_Tag);
+      Update_RIFF_Header_Chunk : declare
+      begin
+         Ada.Streams.Stream_IO.Set_Index (WF.File, 1);
+         Chunk_Header.ID   := "RIFF";
+         Chunk_Header.Size := Size + 36;
+         RIFF_Chunk_Header'Write (WF.File_Access, Chunk_Header);
+      end Update_RIFF_Header_Chunk;
 
       --  Update/finalize RIFF tag of data chunk
-      Ada.Streams.Stream_IO.Set_Index (WF.File, WF.File_Index);
-      RIFF_Tag.FOURCC := "data";
-      RIFF_Tag.Size   := Size;
+      Update_Data_Chunk : declare
+         Chunk_Element : Wav_Chunk_Element;
+         Success       : Boolean;
+      begin
+         Get_First_Chunk (Chunks        => WF.RIFF_Info.Chunks,
+                          Chunk_Tag     => Wav_Chunk_Data,
+                          Chunk_Element => Chunk_Element,
+                          Success       => Success);
 
-      --  WF.Samples is already multiplied by WF.Wave_Format.Channels
-      RIFF_Tag_Type'Write (WF.File_Access, RIFF_Tag);
+         if not Success then
+            raise Wavefile_Error;
+         else
+            Ada.Streams.Stream_IO.Set_Index (WF.File,
+                                             Chunk_Element.Start_Index);
+            Chunk_Header.ID   := "data";
+            Chunk_Header.Size := Size;
+
+            --  WF.Samples is already multiplied by WF.Wave_Format.Channels
+            RIFF_Chunk_Header'Write (WF.File_Access, Chunk_Header);
+         end if;
+      end Update_Data_Chunk;
+
    end Update_Data_Size;
 
 end Audio.Wavefiles.Write;

@@ -38,6 +38,7 @@ project Cookbook is
 
    for Main use ("open_close_wavefile_for_reading.adb",
                  "open_close_wavefile_for_writing.adb",
+                 "display_riff_chunks.adb",
                  "read_display_wavefile_data.adb",
                  "write_mono_silence_wavefile.adb",
                  "write_stereo_sine_wavefile.adb",
@@ -51,7 +52,8 @@ project Cookbook is
                  "downmix_5_1_to_2_0_wavefile.adb",
                  "downmix_7_1_4_to_5_1_wavefile.adb",
                  "direct_copy_wavefile.adb",
-                 "direct_copy_float_wavefile.adb");
+                 "direct_copy_float_wavefile.adb",
+                 "extract_xml_chunk.adb");
 
    package Ide is
       for Vcs_Kind use "Git";
