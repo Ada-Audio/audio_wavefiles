@@ -39,8 +39,23 @@ package Audio.Wavefiles.Data_Types is
      with Size => 8,  Stream_Size => 8;
    type Wav_Fixed_16 is delta D_16 range -1.0 .. 1.0 - D_16
      with Size => 16, Stream_Size => 16;
+
+   --  Originally:
+   --
+   --     type Wav_Fixed_24 is delta D_24 range -1.0 .. 1.0 - D_24
+   --       with Size => 24, Stream_Size => 24;
+   --
+   --  Using "Stream_Size => 24" only works for GNAT Community 2020 or newer!
+   --  The error message for older versions of GNAT is: "stream size for
+   --  elementary type must be a power of 2 and at least 8."
+   --
+   --  For the moment, we use a patch in packages
+   --  Audio.Wavefiles.Generic_<Fixed|Float>_Wav_IO, see procedures Get_Bytes
+   --  and Put_Bytes.
+   --
    type Wav_Fixed_24 is delta D_24 range -1.0 .. 1.0 - D_24
-     with Size => 24, Stream_Size => 24;
+     with Size => 24;
+
    type Wav_Fixed_32 is delta D_32 range -1.0 .. 1.0 - D_32
      with Size => 32, Stream_Size => 32;
    type Wav_Fixed_64 is delta D_64 range -1.0 .. 1.0 - D_64
