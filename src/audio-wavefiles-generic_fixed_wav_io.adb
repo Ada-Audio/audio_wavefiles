@@ -50,10 +50,9 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
       --  Account for sign bit in internal representation,
       --  which might not match the wavefile representation.
       if Sample'Size > Wav_Sample'Size then
-         for I in Last_Valid_Byte + 1 .. Bytes'Last loop
-            Bytes (I) := (if Bytes (Last_Valid_Byte) >= 16#80#
-                          then 16#FF# else 16#00#);
-         end loop;
+         Bytes (Last_Valid_Byte + 1 .. Bytes'Last) :=
+           (others => (if Bytes (Last_Valid_Byte) >= 16#80#
+                       then 16#FF# else 16#00#));
       end if;
    end Read_Bytes;
 
