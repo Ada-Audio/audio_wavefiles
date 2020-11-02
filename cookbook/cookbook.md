@@ -139,7 +139,6 @@ procedure Read_Display_Wavefile_Data is
 
    WF            : Wavefile;
    Wav_File_Name : constant String := "data/2ch_silence.wav";
-   Sample_Count  : Natural := 0;
 begin
    WF.Open (In_File, Wav_File_Name);
 
@@ -151,11 +150,9 @@ begin
          Read_One_Sample : declare
             PCM_Buf : constant Float_Array := Get (WF);
          begin
-            Sample_Count := Sample_Count + 1;
-
             Display_Sample : begin
                Put_Line ("Read sample #"
-                         & Natural'Image (Sample_Count) & ".");
+                         & Sample_Count'Image (WF.Current_Sample) & ".");
 
                for Channel_Number in PCM_Buf'Range loop
                   Put_Line ("    Channel # " & Positive'Image (Channel_Number)
@@ -170,7 +167,7 @@ begin
 
       New_Line;
       Put_Line ("Finished reading "
-                & Positive'Image (Sample_Count) & " samples.");
+                & Sample_Count'Image (WF.Total_Samples) & " samples.");
 
       WF.Close;
    end if;
