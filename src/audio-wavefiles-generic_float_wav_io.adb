@@ -124,7 +124,7 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
          Wav_MC_Sample'Write (WF.File_Access, Wav);
       end if;
 
-      WF.Samples := WF.Samples + Long_Integer (N_Ch);
+      WF.Total_Samples := WF.Total_Samples + 1;
 
       pragma Assert (Ada.Streams.Stream_IO.Index (WF.File) =
                        Prev_File_Index + Expected_Byte_IO);

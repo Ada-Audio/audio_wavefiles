@@ -136,16 +136,14 @@ package body Audio.Wavefiles.Read is
             Put_Line ("RIFF Tag: " & Chunk_Element.ID);
          end if;
 
-         WF.Samples := Chunk_Element.Size /
-           (Long_Integer (To_Positive (WF.Wave_Format.Bits_Per_Sample))
-            / 8);
+         WF.Total_Samples := Sample_Count (Chunk_Element.Size) /
+           (Sample_Count (To_Positive (WF.Wave_Format.Bits_Per_Sample))
+            / 8) / Sample_Count (WF.Wave_Format.Channels);
 
          if Verbose then
             Put_Line ("Data chunk size: " & Long_Integer'Image
                       (Chunk_Element.Size));
-            Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples));
-            Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples
-                      / Long_Integer (WF.Wave_Format.Channels)));
+            Put_Line ("Num samples: " & Sample_Count'Image (WF.Total_Samples));
          end if;
       end if;
    end Parse_Data_Chunk;

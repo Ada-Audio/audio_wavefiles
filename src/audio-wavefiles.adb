@@ -43,9 +43,9 @@ package body Audio.Wavefiles is
    procedure Init_Data_For_File_Opening
      (WF   : in out Wavefile) is
    begin
-      WF.Is_Opened    := True;
-      WF.Samples_Read := 0;
-      WF.Samples      := 0;
+      WF.Is_Opened      := True;
+      WF.Current_Sample := 0;
+      WF.Total_Samples  := 0;
       Reset_RIFF_Info (WF.RIFF_Info);
    end Init_Data_For_File_Opening;
 
@@ -133,7 +133,7 @@ package body Audio.Wavefiles is
      (WF : in out Wavefile) return Boolean
    is
    begin
-      if WF.Samples_Read >= WF.Samples or
+      if WF.Current_Sample >= WF.Total_Samples or
         Ada.Streams.Stream_IO.End_Of_File (WF.File)
       then
          return True;

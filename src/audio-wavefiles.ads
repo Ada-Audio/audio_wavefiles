@@ -121,6 +121,8 @@ package Audio.Wavefiles is
       Info   :    out RIFF_Information)
      with Pre => Is_Open (WF);
 
+   subtype Sample_Count is Long_Long_Integer;
+
    function Is_Supported_Format
      (W : Wave_Format_Extensible) return Boolean;
 
@@ -134,8 +136,8 @@ private
          File             : Ada.Streams.Stream_IO.File_Type;
          File_Access      : Ada.Streams.Stream_IO.Stream_Access;
          Wave_Format      : Wave_Format_Extensible := Default;
-         Samples          : Long_Integer;
-         Samples_Read     : Long_Integer;
+         Current_Sample   : Sample_Count;
+         Total_Samples    : Sample_Count;
          RIFF_Info        : RIFF_Information;
       end record;
 
