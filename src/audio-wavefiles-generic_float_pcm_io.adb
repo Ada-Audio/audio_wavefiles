@@ -74,7 +74,7 @@ package body Audio.Wavefiles.Generic_Float_PCM_IO is
          raise Wavefile_Unsupported;
       end if;
 
-      WF.Current_Sample := WF.Current_Sample + 1;
+      WF.Sample.Current := WF.Sample.Current + 1;
 
       if WF.Wave_Format.Is_Float_Format then
          case WF.Wave_Format.Bits_Per_Sample is

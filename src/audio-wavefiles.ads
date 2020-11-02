@@ -130,14 +130,20 @@ private
 
    type Wav_Numeric_Data_Type is (Wav_Fixed_Data, Wav_Float_Data);
 
+   type Sample_Info is
+      record
+         Current : Sample_Count;
+         Total   : Sample_Count;
+      end record
+     with Dynamic_Predicate => Sample_Info.Current <= Sample_Info.Total;
+
    type Wavefile is tagged limited
       record
          Is_Opened        : Boolean      := False;
          File             : Ada.Streams.Stream_IO.File_Type;
          File_Access      : Ada.Streams.Stream_IO.Stream_Access;
          Wave_Format      : Wave_Format_Extensible := Default;
-         Current_Sample   : Sample_Count;
-         Total_Samples    : Sample_Count;
+         Sample           : Sample_Info;
          RIFF_Info        : RIFF_Information;
       end record;
 
