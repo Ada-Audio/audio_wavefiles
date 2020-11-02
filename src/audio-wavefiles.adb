@@ -250,4 +250,9 @@ package body Audio.Wavefiles is
       end loop;
    end Get_First_Chunk;
 
+   function Current_Sample
+     (WF : Wavefile) return Sample_Count is (WF.Sample.Current);
+   function Total_Samples
+     (WF : Wavefile) return Sample_Count is (WF.Sample.Total);
+
 end Audio.Wavefiles;

@@ -123,6 +123,11 @@ package Audio.Wavefiles is
 
    subtype Sample_Count is Long_Long_Integer;
 
+   function Current_Sample
+     (WF : Wavefile) return Sample_Count;
+   function Total_Samples
+     (WF : Wavefile) return Sample_Count;
+
    function Is_Supported_Format
      (W : Wave_Format_Extensible) return Boolean;
 
