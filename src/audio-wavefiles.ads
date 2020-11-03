@@ -128,6 +128,13 @@ package Audio.Wavefiles is
    function Last_Sample
      (WF : Wavefile) return Sample_Count;
 
+   subtype Wavefile_Time_In_Seconds is Long_Long_Float;
+
+   function Current_Time
+     (WF : Wavefile) return Wavefile_Time_In_Seconds;
+   function End_Time
+     (WF : Wavefile) return Wavefile_Time_In_Seconds;
+
    function Is_Supported_Format
      (W : Wave_Format_Extensible) return Boolean;
 
