@@ -252,7 +252,7 @@ package body Audio.Wavefiles is
 
    function Current_Sample
      (WF : Wavefile) return Sample_Count is (WF.Sample.Current);
-   function Total_Samples
+   function Last_Sample
      (WF : Wavefile) return Sample_Count is (WF.Sample.Total);
 
 end Audio.Wavefiles;

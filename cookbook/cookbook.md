@@ -167,7 +167,7 @@ begin
 
       New_Line;
       Put_Line ("Finished reading "
-                & Sample_Count'Image (WF.Total_Samples) & " samples.");
+                & Sample_Count'Image (WF.Last_Sample) & " samples.");
 
       WF.Close;
    end if;
