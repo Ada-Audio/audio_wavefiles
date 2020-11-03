@@ -127,7 +127,22 @@ end Display_RIFF_Chunks;
 with Ada.Text_IO;                          use Ada.Text_IO;
 
 with Audio.Wavefiles;                      use Audio.Wavefiles;
+
+procedure Put_Time (Item : Wavefile_Time_In_Seconds)
+is
+   package Time_Text_IO is new Ada.Text_IO.Float_IO
+     (Wavefile_Time_In_Seconds);
+begin
+   Time_Text_IO.Put (Item, Fore => 3, Aft => 6, Exp => 0);
+   Put_Line (" seconds.");
+end Put_Time;
+
+with Ada.Text_IO;                          use Ada.Text_IO;
+
+with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
+
+with Put_Time;
 
 procedure Read_Display_Wavefile_Data is
    type Float_Array is array (Positive range <>) of Float;
@@ -153,6 +168,8 @@ begin
             Display_Sample : begin
                Put_Line ("Read sample #"
                          & Sample_Count'Image (WF.Current_Sample) & ".");
+               Put ("Current time: ");
+               Put_Time (WF.Current_Time);
 
                for Channel_Number in PCM_Buf'Range loop
                   Put_Line ("    Channel # " & Positive'Image (Channel_Number)
@@ -168,6 +185,8 @@ begin
       New_Line;
       Put_Line ("Finished reading "
                 & Sample_Count'Image (WF.Last_Sample) & " samples.");
+      Put ("End time: ");
+      Put_Time (WF.End_Time);
 
       WF.Close;
    end if;
