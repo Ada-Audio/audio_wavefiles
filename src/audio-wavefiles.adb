@@ -266,6 +266,14 @@ package body Audio.Wavefiles is
          Wavefile_Time_In_Seconds
            (To_Positive (WF.Wave_Format.Samples_Per_Sec)));
 
+   function To_Sample_Count
+     (WF      : Wavefile;
+      At_Time : Wavefile_Time_In_Seconds) return Sample_Count
+   is (Sample_Count
+       (At_Time *
+          Wavefile_Time_In_Seconds
+            (To_Positive (WF.Wave_Format.Samples_Per_Sec))));
+
    function Current_Time
      (WF : Wavefile) return Wavefile_Time_In_Seconds
    is (To_Wavefile_Time_In_Seconds (WF, WF.Sample.Current));
