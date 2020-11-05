@@ -102,6 +102,8 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
             end if;
          end loop;
 
+         WF.Sample_Pos.Current := WF.Sample_Pos.Current + 1;
+
          pragma Assert (Ada.Streams.Stream_IO.Index (WF.File) =
                           Prev_File_Index + Expected_Byte_IO);
       end return;
