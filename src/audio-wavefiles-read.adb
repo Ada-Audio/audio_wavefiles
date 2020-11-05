@@ -46,6 +46,12 @@ package body Audio.Wavefiles.Read is
       Channels_In_Total : Interfaces.Unsigned_16;
       Bits_Per_Sample   : Wav_Bit_Depth) return Sample_Count;
 
+   function Number_Of_Bytes
+     (Position          : Sample_Count;
+      Channels_In_Total : Interfaces.Unsigned_16;
+      Bits_Per_Sample   : Wav_Bit_Depth)
+      return Ada.Streams.Stream_IO.Count;
+
    procedure Parse_Fmt_Chunk
      (WF : in out Wavefile)
    is
@@ -125,6 +131,16 @@ package body Audio.Wavefiles.Read is
    is (Sample_Count (Chunk_Size)
        / (Sample_Count (To_Positive (Bits_Per_Sample)) / 8)
        / Sample_Count (Channels_In_Total));
+
+   function Number_Of_Bytes
+     (Position          : Sample_Count;
+      Channels_In_Total : Interfaces.Unsigned_16;
+      Bits_Per_Sample   : Wav_Bit_Depth)
+      return Ada.Streams.Stream_IO.Count
+   is (Ada.Streams.Stream_IO.Count
+       (Long_Integer (Position)
+        * (Long_Integer (To_Positive (Bits_Per_Sample)) / 8)
+        * Long_Integer (Channels_In_Total)));
 
    procedure Parse_Data_Chunk
      (WF : in out Wavefile)
