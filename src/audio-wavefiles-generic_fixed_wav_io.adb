@@ -124,7 +124,9 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
          Wav_MC_Sample'Write (WF.File_Access, Wav);
       end if;
 
-      WF.Sample.Total := WF.Sample.Total + 1;
+      WF.Sample := (Total   => WF.Sample.Total   + 1,
+                    Current => WF.Sample.Current + 1);
+
 
       pragma Assert (Ada.Streams.Stream_IO.Index (WF.File) =
                        Prev_File_Index + Expected_Byte_IO);
