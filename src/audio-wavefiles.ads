@@ -132,12 +132,24 @@ package Audio.Wavefiles is
    function Total_Sample_Count
      (WF : Wavefile) return Sample_Count;
 
+   procedure Set_Current_Sample
+     (WF       : in out Wavefile;
+      Position :        Sample_Count)
+     with Pre => (Mode (WF) = In_File
+                  and Position >= WF.First_Sample
+                  and Position <= WF.Last_Sample);
+
    subtype Wavefile_Time_In_Seconds is Long_Long_Float;
 
    function Current_Time
      (WF : Wavefile) return Wavefile_Time_In_Seconds;
    function End_Time
      (WF : Wavefile) return Wavefile_Time_In_Seconds;
+
+   procedure Set_Current_Time
+     (WF      : in out Wavefile;
+      At_Time :        Wavefile_Time_In_Seconds)
+     with Pre => Mode (WF) = In_File;
 
    function Is_Supported_Format
      (W : Wave_Format_Extensible) return Boolean;

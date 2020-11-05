@@ -259,6 +259,13 @@ package body Audio.Wavefiles is
    function Total_Sample_Count
      (WF : Wavefile) return Sample_Count is (WF.Last_Sample);
 
+   procedure Set_Current_Sample
+     (WF       : in out Wavefile;
+      Position :        Sample_Count) is
+   begin
+      Wavefiles.Read.Set_Current_Sample (WF, Position);
+   end Set_Current_Sample;
+
    function To_Wavefile_Time_In_Seconds
      (WF     : Wavefile;
       Sample : Sample_Count) return Wavefile_Time_In_Seconds
@@ -281,5 +288,14 @@ package body Audio.Wavefiles is
    function End_Time
      (WF : Wavefile) return Wavefile_Time_In_Seconds
    is (To_Wavefile_Time_In_Seconds (WF, WF.Sample.Total));
+
+   procedure Set_Current_Time
+     (WF      : in out Wavefile;
+      At_Time :        Wavefile_Time_In_Seconds)
+   is
+      Position : constant Sample_Count := To_Sample_Count (WF, At_Time);
+   begin
+      Set_Current_Sample (WF, Position);
+   end Set_Current_Time;
 
 end Audio.Wavefiles;
