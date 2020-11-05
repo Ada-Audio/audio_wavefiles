@@ -171,7 +171,7 @@ private
          File             : Ada.Streams.Stream_IO.File_Type;
          File_Access      : Ada.Streams.Stream_IO.Stream_Access;
          Wave_Format      : Wave_Format_Extensible := Default;
-         Sample           : Sample_Info;
+         Sample_Pos       : Sample_Info;
          RIFF_Info        : RIFF_Information;
       end record;
 

@@ -43,8 +43,8 @@ package body Audio.Wavefiles is
    procedure Init_Data_For_File_Opening
      (WF   : in out Wavefile) is
    begin
-      WF.Is_Opened := True;
-      WF.Sample    := (others => 0);
+      WF.Is_Opened  := True;
+      WF.Sample_Pos := (others => 0);
       Reset_RIFF_Info (WF.RIFF_Info);
    end Init_Data_For_File_Opening;
 
@@ -132,7 +132,7 @@ package body Audio.Wavefiles is
      (WF : in out Wavefile) return Boolean
    is
    begin
-      if WF.Sample.Current >= WF.Sample.Total or
+      if WF.Sample_Pos.Current >= WF.Sample_Pos.Total or
         Ada.Streams.Stream_IO.End_Of_File (WF.File)
       then
          return True;
@@ -251,11 +251,11 @@ package body Audio.Wavefiles is
    end Get_First_Chunk;
 
    function Current_Sample
-     (WF : Wavefile) return Sample_Count is (WF.Sample.Current);
+     (WF : Wavefile) return Sample_Count is (WF.Sample_Pos.Current);
    function First_Sample
      (WF : Wavefile) return Sample_Count is (1);
    function Last_Sample
-     (WF : Wavefile) return Sample_Count is (WF.Sample.Total);
+     (WF : Wavefile) return Sample_Count is (WF.Sample_Pos.Total);
    function Total_Sample_Count
      (WF : Wavefile) return Sample_Count is (WF.Last_Sample);
 
@@ -283,11 +283,11 @@ package body Audio.Wavefiles is
 
    function Current_Time
      (WF : Wavefile) return Wavefile_Time_In_Seconds
-   is (To_Wavefile_Time_In_Seconds (WF, WF.Sample.Current));
+   is (To_Wavefile_Time_In_Seconds (WF, WF.Sample_Pos.Current));
 
    function End_Time
      (WF : Wavefile) return Wavefile_Time_In_Seconds
-   is (To_Wavefile_Time_In_Seconds (WF, WF.Sample.Total));
+   is (To_Wavefile_Time_In_Seconds (WF, WF.Sample_Pos.Total));
 
    procedure Set_Current_Time
      (WF      : in out Wavefile;
