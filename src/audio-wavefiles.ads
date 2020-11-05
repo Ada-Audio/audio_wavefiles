@@ -158,12 +158,31 @@ private
 
    type Wav_Numeric_Data_Type is (Wav_Fixed_Data, Wav_Float_Data);
 
+   --
+   --  Constants that indicate a range of
+   --  "First_Sample_Count .. <total_sample_count> - Total_To_Last_Diff"
+   --
+   --  Range used in this implementation: "0 .. <total_sample_count> - 1"
+   --
+   --  You can change this range to "1 .. <total_sample_count>" by changing
+   --  the constants as follows:
+   --
+   --     First_Sample_Count : constant Sample_Count := 1;
+   --     Total_To_Last_Diff : constant Sample_Count := 0;
+   --
+   First_Sample_Count : constant Sample_Count := 0;
+   Total_To_Last_Diff : constant Sample_Count := 1;
+
    type Sample_Info is
       record
          Current : Sample_Count;
          Total   : Sample_Count;
       end record
-     with Dynamic_Predicate => Sample_Info.Current <= Sample_Info.Total;
+     with Dynamic_Predicate =>
+       Sample_Info.Current in
+         First_Sample_Count .. Sample_Info.Total - Total_To_Last_Diff + 1;
+   --  Note: the "+ 1" above indicates that the Current counter can be in the
+   --        "end of file" position after a call to Get.
 
    type Wavefile is tagged limited
       record
@@ -174,6 +193,9 @@ private
          Sample_Pos       : Sample_Info;
          RIFF_Info        : RIFF_Information;
       end record;
+
+   function First_Sample
+     (WF : Wavefile) return Sample_Count is (First_Sample_Count);
 
    function Is_Open
      (WF : Wavefile) return Boolean is (WF.Is_Opened);

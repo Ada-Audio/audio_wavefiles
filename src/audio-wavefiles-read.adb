@@ -137,7 +137,7 @@ package body Audio.Wavefiles.Read is
          end if;
 
          WF.Sample_Pos :=
-           (Current => 0,
+           (Current => First_Sample_Count,
             Total   =>
               Number_Of_Samples
                 (Chunk_Size        => Chunk_Element.Size,
@@ -251,11 +251,11 @@ package body Audio.Wavefiles.Read is
            (File              => WF.File,
             Chunk_Start_Index => Chunk_Element.Start_Index,
             Position_In_Chunk => Number_Of_Bytes
-              (Position          => Position - 1,
+              (Position          => Position - WF.First_Sample,
                Channels_In_Total => WF.Wave_Format.Channels,
                Bits_Per_Sample   => WF.Wave_Format.Bits_Per_Sample));
 
-         WF.Sample_Pos.Current := Position - 1;
+         WF.Sample_Pos.Current := Position;
       end if;
    end Set_Current_Sample;
 

@@ -44,7 +44,8 @@ package body Audio.Wavefiles is
      (WF   : in out Wavefile) is
    begin
       WF.Is_Opened  := True;
-      WF.Sample_Pos := (others => 0);
+      WF.Sample_Pos := (Current => First_Sample_Count,
+                        Total   => 0);
       Reset_RIFF_Info (WF.RIFF_Info);
    end Init_Data_For_File_Opening;
 
@@ -129,10 +130,14 @@ package body Audio.Wavefiles is
    end Open;
 
    function End_Of_File
+     (Sample_Pos : Sample_Info) return Boolean
+   is (Sample_Pos.Current > (Sample_Pos.Total - Total_To_Last_Diff));
+
+   function End_Of_File
      (WF : in out Wavefile) return Boolean
    is
    begin
-      if WF.Sample_Pos.Current >= WF.Sample_Pos.Total or
+      if End_Of_File (WF.Sample_Pos) or
         Ada.Streams.Stream_IO.End_Of_File (WF.File)
       then
          return True;
@@ -252,12 +257,13 @@ package body Audio.Wavefiles is
 
    function Current_Sample
      (WF : Wavefile) return Sample_Count is (WF.Sample_Pos.Current);
-   function First_Sample
-     (WF : Wavefile) return Sample_Count is (1);
+
    function Last_Sample
-     (WF : Wavefile) return Sample_Count is (WF.Sample_Pos.Total);
+     (WF : Wavefile) return Sample_Count
+   is (WF.Sample_Pos.Total - Total_To_Last_Diff);
+
    function Total_Sample_Count
-     (WF : Wavefile) return Sample_Count is (WF.Last_Sample);
+     (WF : Wavefile) return Sample_Count is (WF.Sample_Pos.Total);
 
    procedure Set_Current_Sample
      (WF       : in out Wavefile;
@@ -279,11 +285,13 @@ package body Audio.Wavefiles is
    is (Sample_Count
        (At_Time *
           Wavefile_Time_In_Seconds
-            (To_Positive (WF.Wave_Format.Samples_Per_Sec))));
+            (To_Positive (WF.Wave_Format.Samples_Per_Sec)))
+       + WF.First_Sample);
 
    function Current_Time
      (WF : Wavefile) return Wavefile_Time_In_Seconds
-   is (To_Wavefile_Time_In_Seconds (WF, WF.Sample_Pos.Current));
+   is (To_Wavefile_Time_In_Seconds (WF,
+                                    WF.Sample_Pos.Current - WF.First_Sample));
 
    function End_Time
      (WF : Wavefile) return Wavefile_Time_In_Seconds
