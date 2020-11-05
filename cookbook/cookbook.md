@@ -692,10 +692,10 @@ procedure Copy_Parts_Of_Wavefile is
    WF_In  : Wavefile;
    WF_Out : Wavefile;
 
-   Start_Sample : constant Sample_Count := 4_608;
+   Start_Sample : constant Sample_Count := 4_607;
 
-   Start_Time  : constant Wavefile_Time_In_Seconds := 0.096000;
-   Stop_Time   : constant Wavefile_Time_In_Seconds := 0.117125;
+   Start_Time  : constant Wavefile_Time_In_Seconds := 0.095979166;
+   Stop_Time   : constant Wavefile_Time_In_Seconds := 0.117084166;
    Repetitions : constant := 10;
 begin
    WF_In.Open (In_File, Wav_In_File_Name);
@@ -726,8 +726,8 @@ begin
 
             PCM_Buf : constant Wav_Buffer_Float_64 := Get (WF_In);
          begin
-            exit when WF_In.Current_Time >= Stop_Time;
             Put (WF_Out, PCM_Buf);
+            exit when WF_In.Current_Time >= Stop_Time;
          end Copy_PCM_MC_Sample;
       end loop;
    end loop;
@@ -1120,6 +1120,11 @@ begin
         Wav_Bounded_Buffer_Float_32;
 
       PCM_Data : PCM_Container (WF_In.First_Sample .. WF_In.Last_Sample);
+
+      Max_Samples_To_Display : constant := 10;
+      Last_Sample_To_Display : constant Long_Long_Integer
+        := Long_Long_Integer'Min (Max_Samples_To_Display + PCM_Data'First - 1,
+                                  PCM_Data'Last);
    begin
       for Sample_Count in PCM_Data'Range loop
          pragma Assert (not WF_In.End_Of_File);
@@ -1129,7 +1134,7 @@ begin
       --  At this point, we have all PCM data from the wavefile stored in
       --  PCM_Data. Let's display a couple of samples:
 
-      for Sample_Count in 1 .. Long_Long_Integer'Min (10, PCM_Data'Last) loop
+      for Sample_Count in PCM_Data'First .. Last_Sample_To_Display loop
          Display_Sample (PCM_Data (Sample_Count), Sample_Count);
       end loop;
 
@@ -1194,6 +1199,12 @@ begin
         Bounded_Channel_PCM_Data;
 
       PCM_Data : PCM_Container (1 .. WF_In.Number_Of_Channels);
+
+      Max_Samples_To_Display : constant := 10;
+      Last_Sample_To_Display : constant Long_Long_Integer
+        := Long_Long_Integer'Min (Max_Samples_To_Display
+                                  + Bounded_Channel_PCM_Data'First - 1,
+                                  Bounded_Channel_PCM_Data'Last);
    begin
       for Sample_Count in Bounded_Channel_PCM_Data'Range loop
          pragma Assert (not WF_In.End_Of_File);
@@ -1214,7 +1225,7 @@ begin
       for Channel_Count in PCM_Data'Range loop
          Display_Samples (Samples                => PCM_Data (Channel_Count),
                           Channel_Index          => Channel_Count,
-                          Last_Sample_To_Display => 10);
+                          Last_Sample_To_Display => Last_Sample_To_Display);
       end loop;
    end Read_To_Memory;
 
