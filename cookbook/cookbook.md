@@ -162,15 +162,15 @@ begin
       New_Line;
 
       loop
+         Put_Line ("Reading sample #"
+                   & Sample_Count'Image (WF.Current_Sample) & ".");
+         Put ("Current time: ");
+         Put_Time (WF.Current_Time);
+
          Read_One_Sample : declare
             PCM_Buf : constant Float_Array := Get (WF);
          begin
             Display_Sample : begin
-               Put_Line ("Read sample #"
-                         & Sample_Count'Image (WF.Current_Sample) & ".");
-               Put ("Current time: ");
-               Put_Time (WF.Current_Time);
-
                for Channel_Number in PCM_Buf'Range loop
                   Put_Line ("    Channel # " & Positive'Image (Channel_Number)
                             & ": "  & Float'Image (PCM_Buf (Channel_Number)));
