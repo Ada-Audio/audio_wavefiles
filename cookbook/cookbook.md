@@ -679,11 +679,27 @@ end Copy_Wavefile_Using_Fixed_Point_Buffer;
 ## Copy parts of wavefile multiple times
 
 ~~~~~~~~~~ada
+with Audio.Wavefiles; use Audio.Wavefiles;
+
+with Ada.Text_IO;
+
+procedure Display_Time_Info (WF       : Wavefile;
+                             Preamble : String) is
+begin
+   Ada.Text_IO.Put_Line (Preamble & " at "
+                         & Wavefile_Time_In_Seconds'Image
+                           (WF.Current_Time) & " seconds (at sample #"
+                         & Sample_Count'Image (WF.Current_Sample)
+                         & ")");
+
+end Display_Time_Info;
+
+
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
 
-with Ada.Text_IO;
+with Display_Time_Info;
 
 procedure Copy_Parts_Of_Wavefile is
    Wav_In_File_Name    : constant String := "data/2020-08-09.wav";
@@ -704,6 +720,8 @@ begin
 
    WF_Out.Create (Out_File, Wav_Out_File_Name);
 
+   Display_Time_Info (WF_Out, "Writing wavefile");
+
    for I in 1 .. Repetitions loop
       --  We use Set_Current_Time to set the file index of the input wavefile
       --  to a specific position (indicated in seconds).
@@ -716,6 +734,8 @@ begin
       --     WF_In.Set_Current_Sample (Start_Sample);
       --
       WF_In.Set_Current_Time (Start_Time);
+
+      Display_Time_Info (WF_In, "Starting loop");
 
       loop
          Copy_PCM_MC_Sample : declare
@@ -730,6 +750,9 @@ begin
             exit when WF_In.Current_Time >= Stop_Time;
          end Copy_PCM_MC_Sample;
       end loop;
+
+      Display_Time_Info (WF_In,  "Stopping loop");
+      Display_Time_Info (WF_Out, "Writing wavefile");
    end loop;
 
    WF_In.Close;
