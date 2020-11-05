@@ -47,12 +47,15 @@ project Cookbook is
                  "append_wavefile.adb",
                  "copy_wavefile.adb",
                  "copy_wavefile_using_fixed_point_buffer.adb",
+                 "copy_parts_of_wavefile.adb",
                  "convert_fixed_to_float_wavefile.adb",
                  "downmix_stereo_to_mono_wavefile.adb",
                  "downmix_5_1_to_2_0_wavefile.adb",
                  "downmix_7_1_4_to_5_1_wavefile.adb",
                  "direct_copy_wavefile.adb",
                  "direct_copy_float_wavefile.adb",
+                 "read_to_memory_channel_interleaved.adb",
+                 "read_to_memory_per_channel.adb",
                  "extract_xml_chunk.adb");
 
    package Ide is

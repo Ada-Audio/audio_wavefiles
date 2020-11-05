@@ -65,9 +65,7 @@ package body Audio.Wavefiles.Generic_Float_PCM_IO is
       PCM_MC_Sample => PCM_MC_Sample);
 
    function Get
-     (WF   : in out Wavefile) return PCM_MC_Sample
-   is
-      Ch : constant Positive := Positive (WF.Wave_Format.Channels);
+     (WF   : in out Wavefile) return PCM_MC_Sample is
    begin
       if not WF.Is_Opened then
          raise Wavefile_Error;
@@ -75,8 +73,6 @@ package body Audio.Wavefiles.Generic_Float_PCM_IO is
       if not Is_Supported_Format (WF.Wave_Format) then
          raise Wavefile_Unsupported;
       end if;
-
-      WF.Samples_Read := WF.Samples_Read + Long_Integer (Ch);
 
       if WF.Wave_Format.Is_Float_Format then
          case WF.Wave_Format.Bits_Per_Sample is

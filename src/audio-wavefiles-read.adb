@@ -136,16 +136,19 @@ package body Audio.Wavefiles.Read is
             Put_Line ("RIFF Tag: " & Chunk_Element.ID);
          end if;
 
-         WF.Samples := Chunk_Element.Size /
-           (Long_Integer (To_Positive (WF.Wave_Format.Bits_Per_Sample))
-            / 8);
+         WF.Sample_Pos :=
+           (Current => First_Sample_Count,
+            Total   =>
+              Number_Of_Samples
+                (Chunk_Size        => Chunk_Element.Size,
+                 Channels_In_Total => WF.Wave_Format.Channels,
+                 Bits_Per_Sample   => WF.Wave_Format.Bits_Per_Sample));
 
          if Verbose then
-            Put_Line ("Data chunk size: " & Long_Integer'Image
-                      (Chunk_Element.Size));
-            Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples));
-            Put_Line ("Num samples: " & Long_Integer'Image (WF.Samples
-                      / Long_Integer (WF.Wave_Format.Channels)));
+            Put_Line ("Data chunk size: "
+                      & Long_Integer'Image (Chunk_Element.Size));
+            Put_Line ("Num samples: "
+                      & Sample_Count'Image (WF.Sample_Pos.Total));
          end if;
       end if;
    end Parse_Data_Chunk;
@@ -228,5 +231,32 @@ package body Audio.Wavefiles.Read is
       --  Setting file index back to previous location
       Ada.Streams.Stream_IO.Set_Index (WF.File, Prev_File_Index);
    end Parse_Wav_Chunks;
+
+   procedure Set_Current_Sample
+     (WF       : in out Wavefile;
+      Position :        Sample_Count)
+   is
+      Chunk_Element  : Wav_Chunk_Element;
+      Success        : Boolean;
+   begin
+      Get_First_Chunk (Chunks        => WF.RIFF_Info.Chunks,
+                       Chunk_Tag     => Wav_Chunk_Data,
+                       Chunk_Element => Chunk_Element,
+                       Success       => Success);
+
+      if not Success then
+         raise Wavefile_Error;
+      else
+         Set_File_Index_To_Chunk_Data_Start
+           (File              => WF.File,
+            Chunk_Start_Index => Chunk_Element.Start_Index,
+            Position_In_Chunk => Number_Of_Bytes
+              (Position          => Position - WF.First_Sample,
+               Channels_In_Total => WF.Wave_Format.Channels,
+               Bits_Per_Sample   => WF.Wave_Format.Bits_Per_Sample));
+
+         WF.Sample_Pos.Current := Position;
+      end if;
+   end Set_Current_Sample;
 
 end Audio.Wavefiles.Read;

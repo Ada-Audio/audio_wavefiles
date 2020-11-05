@@ -35,4 +35,8 @@ private package Audio.Wavefiles.Read is
    procedure Parse_Wav_Chunks
      (WF     : in out Wavefile);
 
+   procedure Set_Current_Sample
+     (WF       : in out Wavefile;
+      Position :        Sample_Count);
+
 end Audio.Wavefiles.Read;

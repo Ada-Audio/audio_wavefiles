@@ -43,9 +43,9 @@ package body Audio.Wavefiles is
    procedure Init_Data_For_File_Opening
      (WF   : in out Wavefile) is
    begin
-      WF.Is_Opened    := True;
-      WF.Samples_Read := 0;
-      WF.Samples      := 0;
+      WF.Is_Opened  := True;
+      WF.Sample_Pos := (Current => First_Sample_Count,
+                        Total   => 0);
       Reset_RIFF_Info (WF.RIFF_Info);
    end Init_Data_For_File_Opening;
 
@@ -130,10 +130,14 @@ package body Audio.Wavefiles is
    end Open;
 
    function End_Of_File
+     (Sample_Pos : Sample_Info) return Boolean
+   is (Sample_Pos.Current > (Sample_Pos.Total - Total_To_Last_Diff));
+
+   function End_Of_File
      (WF : in out Wavefile) return Boolean
    is
    begin
-      if WF.Samples_Read >= WF.Samples or
+      if End_Of_File (WF.Sample_Pos) or
         Ada.Streams.Stream_IO.End_Of_File (WF.File)
       then
          return True;
@@ -250,5 +254,56 @@ package body Audio.Wavefiles is
          end if;
       end loop;
    end Get_First_Chunk;
+
+   function Current_Sample
+     (WF : Wavefile) return Sample_Count is (WF.Sample_Pos.Current);
+
+   function Last_Sample
+     (WF : Wavefile) return Sample_Count
+   is (WF.Sample_Pos.Total - Total_To_Last_Diff);
+
+   function Total_Sample_Count
+     (WF : Wavefile) return Sample_Count is (WF.Sample_Pos.Total);
+
+   procedure Set_Current_Sample
+     (WF       : in out Wavefile;
+      Position :        Sample_Count) is
+   begin
+      Wavefiles.Read.Set_Current_Sample (WF, Position);
+   end Set_Current_Sample;
+
+   function To_Wavefile_Time_In_Seconds
+     (WF     : Wavefile;
+      Sample : Sample_Count) return Wavefile_Time_In_Seconds
+   is (Wavefile_Time_In_Seconds (Sample) /
+         Wavefile_Time_In_Seconds
+           (To_Positive (WF.Wave_Format.Samples_Per_Sec)));
+
+   function To_Sample_Count
+     (WF      : Wavefile;
+      At_Time : Wavefile_Time_In_Seconds) return Sample_Count
+   is (Sample_Count
+       (At_Time *
+          Wavefile_Time_In_Seconds
+            (To_Positive (WF.Wave_Format.Samples_Per_Sec)))
+       + WF.First_Sample);
+
+   function Current_Time
+     (WF : Wavefile) return Wavefile_Time_In_Seconds
+   is (To_Wavefile_Time_In_Seconds (WF,
+                                    WF.Sample_Pos.Current - WF.First_Sample));
+
+   function End_Time
+     (WF : Wavefile) return Wavefile_Time_In_Seconds
+   is (To_Wavefile_Time_In_Seconds (WF, WF.Sample_Pos.Total));
+
+   procedure Set_Current_Time
+     (WF      : in out Wavefile;
+      At_Time :        Wavefile_Time_In_Seconds)
+   is
+      Position : constant Sample_Count := To_Sample_Count (WF, At_Time);
+   begin
+      Set_Current_Sample (WF, Position);
+   end Set_Current_Time;
 
 end Audio.Wavefiles;

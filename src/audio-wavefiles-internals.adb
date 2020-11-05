@@ -43,16 +43,38 @@ package body Audio.Wavefiles.Internals is
 
    procedure Set_File_Index_To_Chunk_Data_Start
      (File              : Ada.Streams.Stream_IO.File_Type;
-      Chunk_Start_Index : Ada.Streams.Stream_IO.Positive_Count)
+      Chunk_Start_Index : Ada.Streams.Stream_IO.Positive_Count;
+      Position_In_Chunk : Ada.Streams.Stream_IO.Count := 0)
    is
       Chunk_Data_Index : Ada.Streams.Stream_IO.Positive_Count;
+
+      Chunk_Header_Size : constant Ada.Streams.Stream_IO.Positive_Count :=
+                            Audio.RIFF.RIFF_Chunk_Header'Size / 8;
    begin
       --  Calculate file index corresponding to a position after the
       --  RIFF chunk header
-      Chunk_Data_Index := Chunk_Start_Index +
-        Audio.RIFF.RIFF_Chunk_Header'Size / 8;
+      Chunk_Data_Index := Chunk_Start_Index + Chunk_Header_Size
+        + Position_In_Chunk;
 
       Ada.Streams.Stream_IO.Set_Index (File, Chunk_Data_Index);
    end Set_File_Index_To_Chunk_Data_Start;
+
+   function Number_Of_Bytes
+     (Position          : Sample_Count;
+      Channels_In_Total : Interfaces.Unsigned_16;
+      Bits_Per_Sample   : Wav_Bit_Depth)
+      return Ada.Streams.Stream_IO.Count
+   is (Ada.Streams.Stream_IO.Count
+       (Long_Integer (Position)
+        * (Long_Integer (To_Positive (Bits_Per_Sample)) / 8)
+        * Long_Integer (Channels_In_Total)));
+
+   function Number_Of_Samples
+     (Chunk_Size        : Long_Integer;
+      Channels_In_Total : Interfaces.Unsigned_16;
+      Bits_Per_Sample   : Wav_Bit_Depth) return Sample_Count
+   is (Sample_Count (Chunk_Size)
+       / (Sample_Count (To_Positive (Bits_Per_Sample)) / 8)
+       / Sample_Count (Channels_In_Total));
 
 end Audio.Wavefiles.Internals;

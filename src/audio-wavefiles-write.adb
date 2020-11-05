@@ -29,6 +29,7 @@
 
 with Interfaces;                   use Interfaces;
 
+with Audio.Wavefiles.Internals;    use Audio.Wavefiles.Internals;
 with Audio.RIFF;                   use Audio.RIFF;
 with Audio.RIFF.Wav.Formats.Report;
 
@@ -163,11 +164,12 @@ package body Audio.Wavefiles.Write is
      (WF  : in out Wavefile)
    is
       Chunk_Header : RIFF_Chunk_Header;
-      Size         : Unsigned_32;
+      Size         : constant Unsigned_32
+        := Unsigned_32 (Number_Of_Bytes
+                        (Position          => WF.Sample_Pos.Total,
+                         Channels_In_Total => WF.Wave_Format.Channels,
+                         Bits_Per_Sample   => WF.Wave_Format.Bits_Per_Sample));
    begin
-      Size := Unsigned_32 (WF.Samples)
-        * Unsigned_32 (To_Unsigned_16 (WF.Wave_Format.Bits_Per_Sample) / 8);
-
       --  Update/finalize RIFF chunk
       Update_RIFF_Header_Chunk : declare
       begin

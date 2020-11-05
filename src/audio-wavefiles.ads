@@ -121,6 +121,36 @@ package Audio.Wavefiles is
       Info   :    out RIFF_Information)
      with Pre => Is_Open (WF);
 
+   subtype Sample_Count is Long_Long_Integer;
+
+   function Current_Sample
+     (WF : Wavefile) return Sample_Count;
+   function First_Sample
+     (WF : Wavefile) return Sample_Count;
+   function Last_Sample
+     (WF : Wavefile) return Sample_Count;
+   function Total_Sample_Count
+     (WF : Wavefile) return Sample_Count;
+
+   procedure Set_Current_Sample
+     (WF       : in out Wavefile;
+      Position :        Sample_Count)
+     with Pre => (Mode (WF) = In_File
+                  and Position >= WF.First_Sample
+                  and Position <= WF.Last_Sample);
+
+   subtype Wavefile_Time_In_Seconds is Long_Long_Float;
+
+   function Current_Time
+     (WF : Wavefile) return Wavefile_Time_In_Seconds;
+   function End_Time
+     (WF : Wavefile) return Wavefile_Time_In_Seconds;
+
+   procedure Set_Current_Time
+     (WF      : in out Wavefile;
+      At_Time :        Wavefile_Time_In_Seconds)
+     with Pre => Mode (WF) = In_File;
+
    function Is_Supported_Format
      (W : Wave_Format_Extensible) return Boolean;
 
@@ -128,16 +158,44 @@ private
 
    type Wav_Numeric_Data_Type is (Wav_Fixed_Data, Wav_Float_Data);
 
+   --
+   --  Constants that indicate a range of
+   --  "First_Sample_Count .. <total_sample_count> - Total_To_Last_Diff"
+   --
+   --  Range used in this implementation: "0 .. <total_sample_count> - 1"
+   --
+   --  You can change this range to "1 .. <total_sample_count>" by changing
+   --  the constants as follows:
+   --
+   --     First_Sample_Count : constant Sample_Count := 1;
+   --     Total_To_Last_Diff : constant Sample_Count := 0;
+   --
+   First_Sample_Count : constant Sample_Count := 0;
+   Total_To_Last_Diff : constant Sample_Count := 1;
+
+   type Sample_Info is
+      record
+         Current : Sample_Count;
+         Total   : Sample_Count;
+      end record
+     with Dynamic_Predicate =>
+       Sample_Info.Current in
+         First_Sample_Count .. Sample_Info.Total - Total_To_Last_Diff + 1;
+   --  Note: the "+ 1" above indicates that the Current counter can be in the
+   --        "end of file" position after a call to Get.
+
    type Wavefile is tagged limited
       record
          Is_Opened        : Boolean      := False;
          File             : Ada.Streams.Stream_IO.File_Type;
          File_Access      : Ada.Streams.Stream_IO.Stream_Access;
          Wave_Format      : Wave_Format_Extensible := Default;
-         Samples          : Long_Integer;
-         Samples_Read     : Long_Integer;
+         Sample_Pos       : Sample_Info;
          RIFF_Info        : RIFF_Information;
       end record;
+
+   function First_Sample
+     (WF : Wavefile) return Sample_Count is (First_Sample_Count);
 
    function Is_Open
      (WF : Wavefile) return Boolean is (WF.Is_Opened);
