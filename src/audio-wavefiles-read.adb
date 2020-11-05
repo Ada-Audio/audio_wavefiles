@@ -41,6 +41,11 @@ package body Audio.Wavefiles.Read is
    procedure Parse_Data_Chunk
      (WF : in out Wavefile);
 
+   function Number_Of_Samples
+     (Chunk_Size        : Long_Integer;
+      Channels_In_Total : Interfaces.Unsigned_16;
+      Bits_Per_Sample   : Wav_Bit_Depth) return Sample_Count;
+
    procedure Parse_Fmt_Chunk
      (WF : in out Wavefile)
    is
@@ -112,6 +117,14 @@ package body Audio.Wavefiles.Read is
          end if;
       end if;
    end Parse_Fmt_Chunk;
+
+   function Number_Of_Samples
+     (Chunk_Size        : Long_Integer;
+      Channels_In_Total : Interfaces.Unsigned_16;
+      Bits_Per_Sample   : Wav_Bit_Depth) return Sample_Count
+   is (Sample_Count (Chunk_Size)
+       / (Sample_Count (To_Positive (Bits_Per_Sample)) / 8)
+       / Sample_Count (Channels_In_Total));
 
    procedure Parse_Data_Chunk
      (WF : in out Wavefile)
