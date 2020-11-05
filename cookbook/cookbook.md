@@ -1178,30 +1178,30 @@ with Audio.Wavefiles.Generic_Float_PCM_IO;
 
 procedure Read_To_Memory_Per_Channel is
 
-      type Channel_PCM_Data is array (Long_Long_Integer range <>) of
-        Wav_Float_32;
+   type Channel_PCM_Data is array (Long_Long_Integer range <>) of
+     Wav_Float_32;
 
-      procedure Display_Samples (Samples                : Channel_PCM_Data;
-                                 Channel_Index          : Positive;
-                                 Last_Sample_To_Display : Long_Long_Integer);
+   procedure Display_Samples (Samples                : Channel_PCM_Data;
+                              Channel_Index          : Positive;
+                              Last_Sample_To_Display : Long_Long_Integer);
 
-      procedure Display_Samples (Samples                : Channel_PCM_Data;
-                                 Channel_Index          : Positive;
-                                 Last_Sample_To_Display : Long_Long_Integer)
-      is
-         use Ada.Text_IO;
+   procedure Display_Samples (Samples                : Channel_PCM_Data;
+                              Channel_Index          : Positive;
+                              Last_Sample_To_Display : Long_Long_Integer)
+   is
+      use Ada.Text_IO;
 
-         Samples_Last : constant Long_Long_Integer :=
-                          Long_Long_Integer'Min (Samples'Last,
+      Samples_Last : constant Long_Long_Integer :=
+                       Long_Long_Integer'Min (Samples'Last,
                                                  Last_Sample_To_Display);
-      begin
-         Put_Line ("Channel #" & Positive'Image (Channel_Index));
-         for Sample_Count in Samples'First .. Samples_Last loop
-            Put_Line ("    Sample # " & Long_Long_Integer'Image (Sample_Count)
-                      & ": "
-                      & Wav_Float_32'Image (Samples (Sample_Count)));
-         end loop;
-      end Display_Samples;
+   begin
+      Put_Line ("Channel #" & Positive'Image (Channel_Index));
+      for Sample_Count in Samples'First .. Samples_Last loop
+         Put_Line ("    Sample # " & Long_Long_Integer'Image (Sample_Count)
+                   & ": "
+                   & Wav_Float_32'Image (Samples (Sample_Count)));
+      end loop;
+   end Display_Samples;
 
    Wav_In_File_Name  : constant String := "ref/2ch_float_sine.wav";
 
