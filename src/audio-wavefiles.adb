@@ -259,18 +259,18 @@ package body Audio.Wavefiles is
    function Total_Sample_Count
      (WF : Wavefile) return Sample_Count is (WF.Last_Sample);
 
-   function Sample_To_Time
-     (WF    : Wavefile;
-     Sample : Sample_Count) return Wavefile_Time_In_Seconds
+   function To_Wavefile_Time_In_Seconds
+     (WF     : Wavefile;
+      Sample : Sample_Count) return Wavefile_Time_In_Seconds
    is (Long_Long_Float (Sample) /
          Long_Long_Float (To_Positive (WF.Wave_Format.Samples_Per_Sec)));
 
    function Current_Time
      (WF : Wavefile) return Wavefile_Time_In_Seconds
-   is (Sample_To_Time (WF, WF.Sample.Current));
+   is (To_Wavefile_Time_In_Seconds (WF, WF.Sample.Current));
 
    function End_Time
      (WF : Wavefile) return Wavefile_Time_In_Seconds
-   is (Sample_To_Time (WF, WF.Sample.Total));
+   is (To_Wavefile_Time_In_Seconds (WF, WF.Sample.Total));
 
 end Audio.Wavefiles;
