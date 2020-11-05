@@ -125,7 +125,11 @@ package Audio.Wavefiles is
 
    function Current_Sample
      (WF : Wavefile) return Sample_Count;
+   function First_Sample
+     (WF : Wavefile) return Sample_Count;
    function Last_Sample
+     (WF : Wavefile) return Sample_Count;
+   function Total_Sample_Count
      (WF : Wavefile) return Sample_Count;
 
    subtype Wavefile_Time_In_Seconds is Long_Long_Float;

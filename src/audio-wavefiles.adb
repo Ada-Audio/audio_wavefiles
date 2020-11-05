@@ -252,8 +252,12 @@ package body Audio.Wavefiles is
 
    function Current_Sample
      (WF : Wavefile) return Sample_Count is (WF.Sample.Current);
+   function First_Sample
+     (WF : Wavefile) return Sample_Count is (1);
    function Last_Sample
      (WF : Wavefile) return Sample_Count is (WF.Sample.Total);
+   function Total_Sample_Count
+     (WF : Wavefile) return Sample_Count is (WF.Last_Sample);
 
    function Sample_To_Time
      (WF    : Wavefile;
