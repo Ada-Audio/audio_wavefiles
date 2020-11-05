@@ -260,4 +260,31 @@ package body Audio.Wavefiles.Read is
       Ada.Streams.Stream_IO.Set_Index (WF.File, Prev_File_Index);
    end Parse_Wav_Chunks;
 
+   procedure Set_Current_Sample
+     (WF       : in out Wavefile;
+      Position :        Sample_Count)
+   is
+      Chunk_Element  : Wav_Chunk_Element;
+      Success        : Boolean;
+   begin
+      Get_First_Chunk (Chunks        => WF.RIFF_Info.Chunks,
+                       Chunk_Tag     => Wav_Chunk_Data,
+                       Chunk_Element => Chunk_Element,
+                       Success       => Success);
+
+      if not Success then
+         raise Wavefile_Error;
+      else
+         Set_File_Index_To_Chunk_Data_Start
+           (File              => WF.File,
+            Chunk_Start_Index => Chunk_Element.Start_Index,
+            Position_In_Chunk => Number_Of_Bytes
+              (Position          => Position - 1,
+               Channels_In_Total => WF.Wave_Format.Channels,
+               Bits_Per_Sample   => WF.Wave_Format.Bits_Per_Sample));
+
+         WF.Sample.Current := Position - 1;
+      end if;
+   end Set_Current_Sample;
+
 end Audio.Wavefiles.Read;
