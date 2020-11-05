@@ -1014,6 +1014,153 @@ begin
 end Direct_Copy_Float_Wavefile;
 ~~~~~~~~~~
 
+## Read complete wavefile into memory (channel-interleaved data)
+
+~~~~~~~~~~ada
+with Ada.Text_IO;
+
+with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
+with Audio.Wavefiles.Generic_Float_PCM_IO;
+
+procedure Read_To_Memory_Channel_Interleaved is
+   Wav_In_File_Name  : constant String := "ref/2ch_float_sine.wav";
+
+   WF_In  : Wavefile;
+begin
+   WF_In.Open (In_File, Wav_In_File_Name);
+
+   Read_To_Memory : declare
+      subtype Wav_Bounded_Buffer_Float_32 is
+        Wav_Buffer_Float_32 (1 .. WF_In.Number_Of_Channels);
+
+      package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
+        (PCM_Sample    => Wav_Float_32,
+         PCM_MC_Sample => Wav_Buffer_Float_32);
+      use PCM_IO;
+
+      procedure Display_Sample (MC_Sample    : Wav_Bounded_Buffer_Float_32;
+                                Sample_Count : Long_Long_Integer);
+
+      procedure Display_Sample (MC_Sample    : Wav_Bounded_Buffer_Float_32;
+                                Sample_Count : Long_Long_Integer)
+      is
+         use Ada.Text_IO;
+      begin
+         Put_Line ("Sample #" & Long_Long_Integer'Image (Sample_Count));
+         for Channel_Count in MC_Sample'Range loop
+            Put_Line ("    Channel # " & Positive'Image (Channel_Count)
+                      & ": "
+                      & Wav_Float_32'Image (MC_Sample (Channel_Count)));
+         end loop;
+      end Display_Sample;
+
+      type PCM_Container is array (Long_Long_Integer range <>) of
+        Wav_Bounded_Buffer_Float_32;
+
+      PCM_Data : PCM_Container (WF_In.First_Sample .. WF_In.Last_Sample);
+   begin
+      for Sample_Count in PCM_Data'Range loop
+         pragma Assert (not WF_In.End_Of_File);
+         PCM_Data (Sample_Count) := Get (WF_In);
+      end loop;
+
+      --  At this point, we have all PCM data from the wavefile stored in
+      --  PCM_Data. Let's display a couple of samples:
+
+      for Sample_Count in 1 .. Long_Long_Integer'Min (10, PCM_Data'Last) loop
+         Display_Sample (PCM_Data (Sample_Count), Sample_Count);
+      end loop;
+
+   end Read_To_Memory;
+
+   WF_In.Close;
+end Read_To_Memory_Channel_Interleaved;
+~~~~~~~~~~
+
+## Read complete wavefile into memory (data per channel)
+
+~~~~~~~~~~ada
+with Ada.Text_IO;
+
+with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
+with Audio.Wavefiles.Generic_Float_PCM_IO;
+
+procedure Read_To_Memory_Per_Channel is
+
+      type Channel_PCM_Data is array (Long_Long_Integer range <>) of
+        Wav_Float_32;
+
+      procedure Display_Samples (Samples                : Channel_PCM_Data;
+                                 Channel_Index          : Positive;
+                                 Last_Sample_To_Display : Long_Long_Integer);
+
+      procedure Display_Samples (Samples                : Channel_PCM_Data;
+                                 Channel_Index          : Positive;
+                                 Last_Sample_To_Display : Long_Long_Integer)
+      is
+         use Ada.Text_IO;
+
+         Samples_Last : constant Long_Long_Integer :=
+                          Long_Long_Integer'Min (Samples'Last,
+                                                 Last_Sample_To_Display);
+      begin
+         Put_Line ("Channel #" & Positive'Image (Channel_Index));
+         for Sample_Count in Samples'First .. Samples_Last loop
+            Put_Line ("    Sample # " & Long_Long_Integer'Image (Sample_Count)
+                      & ": "
+                      & Wav_Float_32'Image (Samples (Sample_Count)));
+         end loop;
+      end Display_Samples;
+
+   Wav_In_File_Name  : constant String := "ref/2ch_float_sine.wav";
+
+   WF_In  : Wavefile;
+begin
+   WF_In.Open (In_File, Wav_In_File_Name);
+
+   Read_To_Memory : declare
+      package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
+        (PCM_Sample    => Wav_Float_32,
+         PCM_MC_Sample => Wav_Buffer_Float_32);
+      use PCM_IO;
+
+      subtype Bounded_Channel_PCM_Data is
+        Channel_PCM_Data (WF_In.First_Sample .. WF_In.Last_Sample);
+
+      type PCM_Container is array (Positive range <>) of
+        Bounded_Channel_PCM_Data;
+
+      PCM_Data : PCM_Container (1 .. WF_In.Number_Of_Channels);
+   begin
+      for Sample_Count in Bounded_Channel_PCM_Data'Range loop
+         pragma Assert (not WF_In.End_Of_File);
+
+         Read_Sample : declare
+            Wav_Buf : constant Wav_Buffer_Float_32 := Get (WF_In);
+         begin
+            for Channel_Count in PCM_Data'Range loop
+               PCM_Data (Channel_Count) (Sample_Count) :=
+                 Wav_Buf (Channel_Count);
+            end loop;
+         end Read_Sample;
+      end loop;
+
+      --  At this point, we have all PCM data from the wavefile stored in
+      --  PCM_Data. Let's display a couple of samples:
+
+      for Channel_Count in PCM_Data'Range loop
+         Display_Samples (Samples                => PCM_Data (Channel_Count),
+                          Channel_Index          => Channel_Count,
+                          Last_Sample_To_Display => 10);
+      end loop;
+   end Read_To_Memory;
+
+   WF_In.Close;
+end Read_To_Memory_Per_Channel;
+~~~~~~~~~~
+
 ## Extract iXML chunk from a wavefile
 
 ~~~~~~~~~~ada

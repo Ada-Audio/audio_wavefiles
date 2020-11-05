@@ -53,6 +53,8 @@ project Cookbook is
                  "downmix_7_1_4_to_5_1_wavefile.adb",
                  "direct_copy_wavefile.adb",
                  "direct_copy_float_wavefile.adb",
+                 "read_to_memory_channel_interleaved.adb",
+                 "read_to_memory_per_channel.adb",
                  "extract_xml_chunk.adb");
 
    package Ide is
