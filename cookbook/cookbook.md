@@ -184,7 +184,7 @@ begin
 
       New_Line;
       Put_Line ("Finished reading "
-                & Sample_Count'Image (WF.Last_Sample) & " samples.");
+                & Sample_Count'Image (WF.Total_Sample_Count) & " samples.");
       Put ("End time: ");
       Put_Time (WF.End_Time);
 
