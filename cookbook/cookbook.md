@@ -676,6 +676,67 @@ begin
 end Copy_Wavefile_Using_Fixed_Point_Buffer;
 ~~~~~~~~~~
 
+## Copy parts of wavefile multiple times
+
+~~~~~~~~~~ada
+with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
+with Audio.Wavefiles.Generic_Float_PCM_IO;
+
+with Ada.Text_IO;
+
+procedure Copy_Parts_Of_Wavefile is
+   Wav_In_File_Name    : constant String := "data/2020-08-09.wav";
+   Wav_Out_File_Name   : constant String := "out/looped_clip.wav";
+
+   WF_In  : Wavefile;
+   WF_Out : Wavefile;
+
+   Start_Sample : constant Sample_Count := 4_608;
+
+   Start_Time  : constant Wavefile_Time_In_Seconds := 0.096000;
+   Stop_Time   : constant Wavefile_Time_In_Seconds := 0.117125;
+   Repetitions : constant := 10;
+begin
+   WF_In.Open (In_File, Wav_In_File_Name);
+
+   WF_Out.Set_Format_Of_Wavefile (WF_In.Format_Of_Wavefile);
+
+   WF_Out.Create (Out_File, Wav_Out_File_Name);
+
+   for I in 1 .. Repetitions loop
+      --  We use Set_Current_Time to set the file index of the input wavefile
+      --  to a specific position (indicated in seconds).
+      --
+      --  Note that Set_Current_Time performs an internal conversion of the
+      --  time in seconds to retrieve the specific position in term of
+      --  samples. We could set the wavefile position by indicating a sample
+      --  position directly instead of a specific time. For example:
+      --
+      --     WF_In.Set_Current_Sample (Start_Sample);
+      --
+      WF_In.Set_Current_Time (Start_Time);
+
+      loop
+         Copy_PCM_MC_Sample : declare
+            package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
+              (PCM_Sample    => Wav_Float_64,
+               PCM_MC_Sample => Wav_Buffer_Float_64);
+            use PCM_IO;
+
+            PCM_Buf : constant Wav_Buffer_Float_64 := Get (WF_In);
+         begin
+            exit when WF_In.Current_Time >= Stop_Time;
+            Put (WF_Out, PCM_Buf);
+         end Copy_PCM_MC_Sample;
+      end loop;
+   end loop;
+
+   WF_In.Close;
+   WF_Out.Close;
+end Copy_Parts_Of_Wavefile;
+~~~~~~~~~~
+
 ## Convert PCM wavefile to 32-bit floating-point PCM wavefile
 
 ~~~~~~~~~~ada
