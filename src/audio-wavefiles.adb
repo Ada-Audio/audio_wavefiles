@@ -262,8 +262,9 @@ package body Audio.Wavefiles is
    function To_Wavefile_Time_In_Seconds
      (WF     : Wavefile;
       Sample : Sample_Count) return Wavefile_Time_In_Seconds
-   is (Long_Long_Float (Sample) /
-         Long_Long_Float (To_Positive (WF.Wave_Format.Samples_Per_Sec)));
+   is (Wavefile_Time_In_Seconds (Sample) /
+         Wavefile_Time_In_Seconds
+           (To_Positive (WF.Wave_Format.Samples_Per_Sec)));
 
    function Current_Time
      (WF : Wavefile) return Wavefile_Time_In_Seconds
