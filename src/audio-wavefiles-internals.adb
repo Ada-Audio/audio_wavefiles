@@ -59,4 +59,22 @@ package body Audio.Wavefiles.Internals is
       Ada.Streams.Stream_IO.Set_Index (File, Chunk_Data_Index);
    end Set_File_Index_To_Chunk_Data_Start;
 
+   function Number_Of_Bytes
+     (Position          : Sample_Count;
+      Channels_In_Total : Interfaces.Unsigned_16;
+      Bits_Per_Sample   : Wav_Bit_Depth)
+      return Ada.Streams.Stream_IO.Count
+   is (Ada.Streams.Stream_IO.Count
+       (Long_Integer (Position)
+        * (Long_Integer (To_Positive (Bits_Per_Sample)) / 8)
+        * Long_Integer (Channels_In_Total)));
+
+   function Number_Of_Samples
+     (Chunk_Size        : Long_Integer;
+      Channels_In_Total : Interfaces.Unsigned_16;
+      Bits_Per_Sample   : Wav_Bit_Depth) return Sample_Count
+   is (Sample_Count (Chunk_Size)
+       / (Sample_Count (To_Positive (Bits_Per_Sample)) / 8)
+       / Sample_Count (Channels_In_Total));
+
 end Audio.Wavefiles.Internals;
