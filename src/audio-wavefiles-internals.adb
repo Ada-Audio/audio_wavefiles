@@ -43,7 +43,8 @@ package body Audio.Wavefiles.Internals is
 
    procedure Set_File_Index_To_Chunk_Data_Start
      (File              : Ada.Streams.Stream_IO.File_Type;
-      Chunk_Start_Index : Ada.Streams.Stream_IO.Positive_Count)
+      Chunk_Start_Index : Ada.Streams.Stream_IO.Positive_Count;
+      Position_In_Chunk : Ada.Streams.Stream_IO.Count := 0)
    is
       Chunk_Data_Index : Ada.Streams.Stream_IO.Positive_Count;
 
@@ -52,7 +53,8 @@ package body Audio.Wavefiles.Internals is
    begin
       --  Calculate file index corresponding to a position after the
       --  RIFF chunk header
-      Chunk_Data_Index := Chunk_Start_Index + Chunk_Header_Size;
+      Chunk_Data_Index := Chunk_Start_Index + Chunk_Header_Size
+        + Position_In_Chunk;
 
       Ada.Streams.Stream_IO.Set_Index (File, Chunk_Data_Index);
    end Set_File_Index_To_Chunk_Data_Start;
