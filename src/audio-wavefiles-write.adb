@@ -93,7 +93,8 @@ package body Audio.Wavefiles.Write is
             Wave_Format_Extensible'Write (WF.File_Access,
                                           WF.Wave_Format);
          when others =>
-            raise Wavefile_Error;
+            WF.Set_Error (Wavefile_Error_Unsupported_Format_Size);
+            return;
          end case;
       end Write_Chunk;
 
@@ -190,7 +191,8 @@ package body Audio.Wavefiles.Write is
                           Success       => Success);
 
          if not Success then
-            raise Wavefile_Error;
+            WF.Set_Error (Wavefile_Error_Data_Chuck_Not_Found);
+            return;
          else
             Ada.Streams.Stream_IO.Set_Index (WF.File,
                                              Chunk_Element.Start_Index);

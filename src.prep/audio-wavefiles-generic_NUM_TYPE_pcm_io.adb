@@ -94,19 +94,25 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
       PCM_MC_Sample => PCM_MC_Sample);
 
    function Get
-     (WF   : in out Wavefile) return PCM_MC_Sample is
+     (WF   : in out Wavefile) return PCM_MC_Sample
+   is
+      Invalid_MC_Sample : PCM_MC_Sample (1 .. 0);
    begin
       if not WF.Is_Opened then
-         raise Wavefile_Error;
+         WF.Set_Error (Wavefile_Error_File_Not_Opened);
+         return Invalid_MC_Sample;
       end if;
+
       if not Is_Supported_Format (WF.Wave_Format) then
-         raise Wavefile_Unsupported;
+         WF.Set_Error (Wavefile_Error_Unsupported_Wavefile_Format);
+         return Invalid_MC_Sample;
       end if;
 
       if WF.Wave_Format.Is_Float_Format then
          case WF.Wave_Format.Bits_Per_Sample is
             when Bit_Depth_8 | Bit_Depth_16 | Bit_Depth_24 =>
-               raise Wavefile_Unsupported;
+               WF.Set_Error (Wavefile_Error_Unsupported_Bit_Depth);
+               return Invalid_MC_Sample;
             when Bit_Depth_32 =>
                return PCM_Float_Wav_32.Get (WF);
             when Bit_Depth_64 =>
@@ -116,7 +122,8 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
          --  Always assume fixed-point PCM format
          case WF.Wave_Format.Bits_Per_Sample is
             when Bit_Depth_8 =>
-               raise Wavefile_Unsupported;
+               WF.Set_Error (Wavefile_Error_Unsupported_Bit_Depth);
+               return Invalid_MC_Sample;
             when Bit_Depth_16 =>
                return PCM_Fixed_Wav_16.Get (WF);
             when Bit_Depth_24 =>
@@ -124,7 +131,8 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
             when Bit_Depth_32 =>
                return PCM_Fixed_Wav_32.Get (WF);
             when Bit_Depth_64 =>
-               raise Wavefile_Unsupported;
+               WF.Set_Error (Wavefile_Error_Unsupported_Bit_Depth);
+               return Invalid_MC_Sample;
          end case;
       end if;
 
@@ -135,17 +143,20 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
       PCM  :        PCM_MC_Sample) is
    begin
       if not WF.Is_Opened then
-         raise Wavefile_Error;
+         WF.Set_Error (Wavefile_Error_File_Not_Opened);
+         return;
       end if;
 
       if not Is_Supported_Format (WF.Wave_Format) then
-         raise Wavefile_Unsupported;
+         WF.Set_Error (Wavefile_Error_Unsupported_Wavefile_Format);
+         return;
       end if;
 
       if WF.Wave_Format.Is_Float_Format then
          case WF.Wave_Format.Bits_Per_Sample is
             when Bit_Depth_8 | Bit_Depth_16 | Bit_Depth_24 =>
-               raise Wavefile_Unsupported;
+               WF.Set_Error (Wavefile_Error_Unsupported_Bit_Depth);
+               return;
             when Bit_Depth_32 =>
                PCM_Float_Wav_32.Put (WF, PCM);
             when Bit_Depth_64 =>
@@ -155,7 +166,8 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
          --  Always assume fixed-point PCM format
          case WF.Wave_Format.Bits_Per_Sample is
             when Bit_Depth_8 =>
-               raise Wavefile_Unsupported;
+               WF.Set_Error (Wavefile_Error_Unsupported_Bit_Depth);
+               return;
             when Bit_Depth_16 =>
                PCM_Fixed_Wav_16.Put (WF, PCM);
             when Bit_Depth_24 =>
@@ -163,7 +175,8 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
             when Bit_Depth_32 =>
                PCM_Fixed_Wav_32.Put (WF, PCM);
             when Bit_Depth_64 =>
-               raise Wavefile_Unsupported;
+               WF.Set_Error (Wavefile_Error_Unsupported_Bit_Depth);
+               return;
          end case;
       end if;
 

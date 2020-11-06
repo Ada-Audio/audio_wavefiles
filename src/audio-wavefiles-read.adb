@@ -57,7 +57,8 @@ package body Audio.Wavefiles.Read is
                        Success       => Success);
 
       if not Success then
-         raise Wavefile_Error;
+         WF.Set_Error (Wavefile_Error_Format_Chuck_Not_Found);
+         return;
       else
          Set_File_Index_To_Chunk_Data_Start (WF.File,
                                              Chunk_Element.Start_Index);
@@ -102,7 +103,8 @@ package body Audio.Wavefiles.Read is
                end if;
 
             when others =>
-               raise Wavefile_Error;
+               WF.Set_Error (Wavefile_Error_Unsupported_Format_Size);
+               return;
          end case;
 
          if Verbose then
@@ -127,7 +129,8 @@ package body Audio.Wavefiles.Read is
                        Success       => Success);
 
       if not Success then
-         raise Wavefile_Error;
+         WF.Set_Error (Wavefile_Error_Data_Chuck_Not_Found);
+         return;
       else
          Set_File_Index_To_Chunk_Data_Start (WF.File,
                                              Chunk_Element.Start_Index);
@@ -245,7 +248,8 @@ package body Audio.Wavefiles.Read is
                        Success       => Success);
 
       if not Success then
-         raise Wavefile_Error;
+         WF.Set_Error (Wavefile_Error_Data_Chuck_Not_Found);
+         return;
       else
          Set_File_Index_To_Chunk_Data_Start
            (File              => WF.File,

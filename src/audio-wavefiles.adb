@@ -40,10 +40,13 @@ package body Audio.Wavefiles is
    procedure Reset_RIFF_Info
      (Info :      out RIFF_Information);
 
+   function No_Errors
+     (WF   : in out Wavefile) return Boolean
+   is (for all Error of WF.Errors => Error = False);
+
    procedure Init_Data_For_File_Opening
      (WF   : in out Wavefile) is
    begin
-      WF.Is_Opened  := True;
       WF.Sample_Pos := (Current => First_Sample_Count,
                         Total   => 0);
       Reset_RIFF_Info (WF.RIFF_Info);
@@ -77,6 +80,8 @@ package body Audio.Wavefiles is
          when Out_File =>
             Audio.Wavefiles.Write.Write_Until_Data_Start (WF);
       end case;
+
+      WF.Is_Opened := WF.No_Errors;
    end Create;
 
    procedure Open
@@ -87,8 +92,11 @@ package body Audio.Wavefiles is
    is
       pragma Unreferenced (Form);
    begin
+      WF.Reset_Errors;
+
       if WF.Is_Opened then
-         raise Wavefile_Error;
+         WF.Set_Error (Wavefile_Error_File_Already_Opened);
+         return;
       end if;
 
       Init_Data_For_File_Opening (WF);
@@ -127,6 +135,14 @@ package body Audio.Wavefiles is
          when Out_File =>
             Audio.Wavefiles.Write.Write_Until_Data_Start (WF);
       end case;
+
+      WF.Is_Opened := WF.No_Errors;
+
+      if not WF.Is_Opened
+        and then Ada.Streams.Stream_IO.Is_Open (WF.File)
+      then
+         Ada.Streams.Stream_IO.Close (WF.File);
+      end if;
    end Open;
 
    function End_Of_File
@@ -149,8 +165,11 @@ package body Audio.Wavefiles is
    procedure Close (WF : in out Wavefile) is
       use Ada.Streams.Stream_IO;
    begin
+      WF.Reset_Errors;
+
       if not WF.Is_Opened then
-         raise Wavefile_Error;
+         WF.Set_Error (Wavefile_Error_File_Not_Opened);
+         return;
       end if;
 
       if Mode (WF) = Out_File then

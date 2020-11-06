@@ -94,7 +94,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
               J < N_Ch
             then
                --  Cannot read data for all channels
-               raise Wavefile_Error;
+               WF.Set_Error (Wavefile_Error_Premature_End_Of_File);
             end if;
          end loop;
 
