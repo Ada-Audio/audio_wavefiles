@@ -197,6 +197,10 @@ private
    --  Note: the "+ 1" above indicates that the Current counter can be in the
    --        "end of file" position after a call to Get.
 
+   procedure Set_Error (WF         : in out Wavefile;
+                        Error_Code :        Wavefile_Error_Codes);
+   procedure Reset_Errors (WF      : in out Wavefile);
+
    type Wavefile is tagged limited
       record
          Is_Opened        : Boolean      := False;
@@ -205,6 +209,7 @@ private
          Wave_Format      : Wave_Format_Extensible := Default;
          Sample_Pos       : Sample_Info;
          RIFF_Info        : RIFF_Information;
+         Errors           : Wavefile_Errors;
       end record;
 
    function First_Sample

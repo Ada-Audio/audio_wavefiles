@@ -306,4 +306,15 @@ package body Audio.Wavefiles is
       Set_Current_Sample (WF, Position);
    end Set_Current_Time;
 
+   procedure Set_Error (WF         : in out Wavefile;
+                        Error_Code :        Wavefile_Error_Codes) is
+   begin
+      WF.Errors (Error_Code) := True;
+   end Set_Error;
+
+   procedure Reset_Errors (WF      : in out Wavefile) is
+   begin
+      WF.Errors := (others => False);
+   end Reset_Errors;
+
 end Audio.Wavefiles;
