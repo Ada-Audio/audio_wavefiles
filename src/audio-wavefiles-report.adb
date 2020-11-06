@@ -33,6 +33,8 @@ with Audio.RIFF.Wav.Formats.Report;
 
 package body Audio.Wavefiles.Report is
 
+   function To_String (Err : Wavefile_Error_Codes) return String;
+
    procedure Display_Info (WF : in Wavefile) is
    begin
       Audio.RIFF.Wav.Formats.Report.Print (WF.Wave_Format);
@@ -65,6 +67,28 @@ package body Audio.Wavefiles.Report is
 
    end Display_Info;
 
+   function To_String (Err : Wavefile_Error_Codes) return String is
+   begin
+      case Err is
+      when Wavefile_Error_File_Not_Open =>
+         return "File not open";
+      when Wavefile_Error_File_Already_Open =>
+         return "File already open";
+      when Wavefile_Error_Premature_End_Of_File =>
+         return "Premature end of file";
+      when Wavefile_Error_Format_Chuck_Not_Found =>
+         return "Format chunk not found";
+      when Wavefile_Error_Data_Chuck_Not_Found =>
+         return "Data chunk not found";
+      when Wavefile_Error_Unsupported_Wavefile_Format =>
+         return "Unsupported wavefile format";
+      when Wavefile_Error_Unsupported_Bit_Depth =>
+         return "Unsupported bit depth";
+      when Wavefile_Error_Unsupported_Format_Size =>
+         return "Unsupported format size";
+      end case;
+   end To_String;
+
    procedure Display_Errors (WF : Wavefile) is
    begin
       Put_Line ("---------------- Wavefile errors ----------------");
@@ -72,7 +96,7 @@ package body Audio.Wavefiles.Report is
 
       for Error_Code in WF.Errors'Range loop
          if WF.Errors (Error_Code) then
-            Put_Line ("- " & Wavefile_Error_Codes'Image (Error_Code));
+            Put_Line ("- " & To_String (Error_Code));
          end if;
       end loop;
 
