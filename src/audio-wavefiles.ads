@@ -41,8 +41,8 @@ package Audio.Wavefiles is
    type File_Mode is new Ada.Streams.Stream_IO.File_Mode;
 
    type Wavefile_Error_Codes is
-     (Wavefile_Error_File_Not_Opened,
-      Wavefile_Error_File_Already_Opened,
+     (Wavefile_Error_File_Not_Open,
+      Wavefile_Error_File_Already_Open,
       Wavefile_Error_Premature_End_Of_File,
       Wavefile_Error_Format_Chuck_Not_Found,
       Wavefile_Error_Data_Chuck_Not_Found,

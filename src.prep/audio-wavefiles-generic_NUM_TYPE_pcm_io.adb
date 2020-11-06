@@ -99,7 +99,7 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
       Invalid_MC_Sample : PCM_MC_Sample (1 .. 0);
    begin
       if not WF.Is_Opened then
-         WF.Set_Error (Wavefile_Error_File_Not_Opened);
+         WF.Set_Error (Wavefile_Error_File_Not_Open);
          return Invalid_MC_Sample;
       end if;
 
@@ -143,7 +143,7 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
       PCM  :        PCM_MC_Sample) is
    begin
       if not WF.Is_Opened then
-         WF.Set_Error (Wavefile_Error_File_Not_Opened);
+         WF.Set_Error (Wavefile_Error_File_Not_Open);
          return;
       end if;
 

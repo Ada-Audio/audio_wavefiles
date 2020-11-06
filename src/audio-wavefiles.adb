@@ -95,9 +95,11 @@ package body Audio.Wavefiles is
       WF.Reset_Errors;
 
       if WF.Is_Opened then
-         WF.Set_Error (Wavefile_Error_File_Already_Opened);
+         WF.Set_Error (Wavefile_Error_File_Already_Open);
          return;
       end if;
+
+      --  WF.Set_Error (Wavefile_Error_File_Already_Open);
 
       Init_Data_For_File_Opening (WF);
 
@@ -168,7 +170,7 @@ package body Audio.Wavefiles is
       WF.Reset_Errors;
 
       if not WF.Is_Opened then
-         WF.Set_Error (Wavefile_Error_File_Not_Opened);
+         WF.Set_Error (Wavefile_Error_File_Not_Open);
          return;
       end if;
 
@@ -179,7 +181,6 @@ package body Audio.Wavefiles is
       Close (WF.File);
 
       WF.Is_Opened := False;
-
    end Close;
 
    procedure Set_Format_Of_Wavefile
