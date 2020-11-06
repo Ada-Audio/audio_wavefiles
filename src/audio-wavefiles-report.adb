@@ -65,4 +65,17 @@ package body Audio.Wavefiles.Report is
 
    end Display_Info;
 
+   procedure Display_Errors (WF : Wavefile) is
+   begin
+      Put_Line ("---- WAVEFILE ERRORS ----");
+
+      for Error_Code in WF.Errors'Range loop
+         if WF.Errors (Error_Code) then
+            Put_Line ("- " & Wavefile_Error_Codes'Image (Error_Code));
+         end if;
+      end loop;
+
+      Put_Line ("-------------------------");
+   end Display_Errors;
+
 end Audio.Wavefiles.Report;
