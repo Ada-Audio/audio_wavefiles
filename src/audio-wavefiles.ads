@@ -209,7 +209,7 @@ private
          Wave_Format      : Wave_Format_Extensible := Default;
          Sample_Pos       : Sample_Info;
          RIFF_Info        : RIFF_Information;
-         Errors           : Wavefile_Errors;
+         Errors           : Wavefile_Errors := (others => False);
       end record;
 
    function First_Sample
