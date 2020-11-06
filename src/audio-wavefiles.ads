@@ -43,6 +43,19 @@ package Audio.Wavefiles is
    Wavefile_Error       : exception;
    Wavefile_Unsupported : exception;
 
+   type Wavefile_Error_Codes is
+     (Wavefile_Error_File_Not_Opened,
+      Wavefile_Error_File_Already_Opened,
+      Wavefile_Error_Premature_End_Of_File,
+      Wavefile_Error_Format_Chuck_Not_Found,
+      Wavefile_Error_Data_Chuck_Not_Found,
+      Wavefile_Error_Unsupported_Wavefile_Format,
+      Wavefile_Error_Unsupported_Bit_Depth,
+      Wavefile_Error_Unsupported_Format_Size);
+
+   type Wavefile_Errors is array (Wavefile_Error_Codes) of Boolean
+     with Pack;
+
    subtype Byte is Interfaces.Unsigned_8;
    type Byte_Array is array (Long_Integer range <>) of Byte;
 
