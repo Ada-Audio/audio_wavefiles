@@ -99,8 +99,6 @@ package body Audio.Wavefiles is
          return;
       end if;
 
-      --  WF.Set_Error (Wavefile_Error_File_Already_Open);
-
       Init_Data_For_File_Opening (WF);
 
       case Mode is
