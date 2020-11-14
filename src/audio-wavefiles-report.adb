@@ -74,8 +74,8 @@ package body Audio.Wavefiles.Report is
          return "File not open";
       when Wavefile_Error_File_Already_Open =>
          return "File already open";
-      when Wavefile_Error_Premature_End_Of_File =>
-         return "Premature end of file";
+      when Wavefile_Error_File_Too_Short =>
+         return "File too short";
       when Wavefile_Error_Format_Chuck_Not_Found =>
          return "Format chunk not found";
       when Wavefile_Error_Data_Chuck_Not_Found =>

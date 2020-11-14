@@ -43,7 +43,7 @@ package Audio.Wavefiles is
    type Wavefile_Error_Codes is
      (Wavefile_Error_File_Not_Open,
       Wavefile_Error_File_Already_Open,
-      Wavefile_Error_Premature_End_Of_File,
+      Wavefile_Error_File_Too_Short,
       Wavefile_Error_Format_Chuck_Not_Found,
       Wavefile_Error_Data_Chuck_Not_Found,
       Wavefile_Error_Unsupported_Wavefile_Format,
