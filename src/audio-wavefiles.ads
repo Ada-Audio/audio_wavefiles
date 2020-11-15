@@ -204,6 +204,10 @@ private
                         Error_Code :        Wavefile_Error_Codes);
    procedure Reset_Errors (WF      : in out Wavefile);
 
+   procedure Set_Warning (WF           : in out Wavefile;
+                          Warning_Code :        Wavefile_Warning_Codes);
+   procedure Reset_Warnings (WF        : in out Wavefile);
+
    type Wavefile is tagged limited
       record
          Is_Opened        : Boolean      := False;
@@ -212,7 +216,8 @@ private
          Wave_Format      : Wave_Format_Extensible := Default;
          Sample_Pos       : Sample_Info;
          RIFF_Info        : RIFF_Information;
-         Errors           : Wavefile_Errors := (others => False);
+         Errors           : Wavefile_Errors   := (others => False);
+         Warnings         : Wavefile_Warnings := (others => False);
       end record;
 
    function First_Sample

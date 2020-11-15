@@ -335,4 +335,15 @@ package body Audio.Wavefiles is
       WF.Errors := (others => False);
    end Reset_Errors;
 
+   procedure Set_Warning (WF           : in out Wavefile;
+                          Warning_Code :        Wavefile_Warning_Codes) is
+   begin
+      WF.Warnings (Warning_Code) := True;
+   end Set_Warning;
+
+   procedure Reset_Warnings (WF        : in out Wavefile) is
+   begin
+      WF.Warnings := (others => False);
+   end Reset_Warnings;
+
 end Audio.Wavefiles;
