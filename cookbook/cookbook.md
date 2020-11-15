@@ -98,7 +98,7 @@ begin
 end Open_Close_Wavefile_For_Writing;
 ~~~~~~~~~~
 
-## Displaying errors while handling wavefiles
+## Displaying errors and warnings while handling wavefiles
 
 ~~~~~~~~~~ada
 with Audio.Wavefiles;        use Audio.Wavefiles;
@@ -110,11 +110,15 @@ procedure Display_Errors_For_Wavefiles is
 begin
    WF.Open (In_File, Wav_File_Name);
 
+   Display_Errors (WF);
+   Display_Warnings (WF);
+
    --  Trying to open a file twice
    --  This will be detected and indicated as an error
    WF.Open (In_File, Wav_File_Name);
 
    Display_Errors (WF);
+   Display_Warnings (WF);
 
    WF.Close;
 end Display_Errors_For_Wavefiles;
