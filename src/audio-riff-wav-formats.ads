@@ -134,6 +134,10 @@ package Audio.RIFF.Wav.Formats is
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
       Item   : Channel_Mask_Type);
 
+   function Channel_Mask_Is_Consistent
+     (Channels            : Channel_Mask_Type;
+      Number_Of_Channels  : Unsigned_16) return Boolean;
+
    type Wav_Sample_Rate is
      (Sample_Rate_8000,
       Sample_Rate_11025,  Sample_Rate_12000,  Sample_Rate_16000,
