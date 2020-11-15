@@ -53,6 +53,12 @@ package Audio.Wavefiles is
    type Wavefile_Errors is array (Wavefile_Error_Codes) of Boolean
      with Pack;
 
+   type Wavefile_Warning_Codes is
+     (Wavefile_Warning_Inconsistent_Channel_Mask);
+
+   type Wavefile_Warnings is array (Wavefile_Warning_Codes) of Boolean
+     with Pack;
+
    subtype Byte is Interfaces.Unsigned_8;
    type Byte_Array is array (Long_Integer range <>) of Byte;
 
