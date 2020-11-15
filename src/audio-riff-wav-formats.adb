@@ -120,7 +120,10 @@ package body Audio.RIFF.Wav.Formats is
          W.Size                  := 22;
          W.Valid_Bits_Per_Sample := To_Unsigned_16 (W.Bits_Per_Sample);
          W.Sub_Format            := GUID_Undefined;
-         W.Channel_Mask          := (others => False);
+         W.Channel_Mask          :=
+           (Speaker_Front_Left  |
+            Speaker_Front_Right   => True,
+            others                => False);
       end return;
    end Default;
 
