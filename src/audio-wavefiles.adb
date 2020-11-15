@@ -60,6 +60,9 @@ package body Audio.Wavefiles is
    is
       pragma Unreferenced (Form);
    begin
+      WF.Reset_Errors;
+      WF.Reset_Warnings;
+
       Init_Data_For_File_Opening (WF);
 
       if Mode in In_File | Append_File then
@@ -93,6 +96,7 @@ package body Audio.Wavefiles is
       pragma Unreferenced (Form);
    begin
       WF.Reset_Errors;
+      WF.Reset_Warnings;
 
       if WF.Is_Opened then
          WF.Set_Error (Wavefile_Error_File_Already_Open);
