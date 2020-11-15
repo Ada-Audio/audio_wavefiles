@@ -120,7 +120,10 @@ package body Audio.RIFF.Wav.Formats is
          W.Size                  := 22;
          W.Valid_Bits_Per_Sample := To_Unsigned_16 (W.Bits_Per_Sample);
          W.Sub_Format            := GUID_Undefined;
-         W.Channel_Mask          := (others => False);
+         W.Channel_Mask          :=
+           (Speaker_Front_Left  |
+            Speaker_Front_Right   => True,
+            others                => False);
       end return;
    end Default;
 
@@ -193,6 +196,27 @@ package body Audio.RIFF.Wav.Formats is
          return Wav_Format_Unknown;
       end if;
    end To_Wav_Format_Tag;
+
+   function Channel_Mask_Is_Consistent
+     (Channels            : Channel_Mask_Type;
+      Number_Of_Channels  : Unsigned_16) return Boolean
+   is
+      type Channel_Mask_Array is array (1 .. Channel_Mask_Type'Size) of Boolean
+        with Pack;
+
+      Channels_In_Mask : Unsigned_16 := 0;
+
+      Channel_Array : Channel_Mask_Array
+        with Import, Volatile, Address => Channels'Address;
+   begin
+      for Ch of Channel_Array loop
+         if Ch then
+            Channels_In_Mask := Channels_In_Mask + 1;
+         end if;
+      end loop;
+
+      return Number_Of_Channels = Channels_In_Mask;
+   end Channel_Mask_Is_Consistent;
 
    function Should_Use_Extensible_Format
      (Bit_Depth          : Wav_Bit_Depth;

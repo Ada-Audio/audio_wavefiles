@@ -98,6 +98,32 @@ begin
 end Open_Close_Wavefile_For_Writing;
 ~~~~~~~~~~
 
+## Displaying errors and warnings while handling wavefiles
+
+~~~~~~~~~~ada
+with Audio.Wavefiles;        use Audio.Wavefiles;
+with Audio.Wavefiles.Report; use Audio.Wavefiles.Report;
+
+procedure Display_Errors_For_Wavefiles is
+   WF            : Wavefile;
+   Wav_File_Name : constant String := "data/2ch_silence.wav";
+begin
+   WF.Open (In_File, Wav_File_Name);
+
+   Display_Errors (WF);
+   Display_Warnings (WF);
+
+   --  Trying to open a file twice
+   --  This will be detected and indicated as an error
+   WF.Open (In_File, Wav_File_Name);
+
+   Display_Errors (WF);
+   Display_Warnings (WF);
+
+   WF.Close;
+end Display_Errors_For_Wavefiles;
+~~~~~~~~~~
+
 ## Displaying RIFF chunks of a wavefile
 
 ~~~~~~~~~~ada

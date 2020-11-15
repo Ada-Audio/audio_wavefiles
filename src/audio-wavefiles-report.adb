@@ -33,6 +33,10 @@ with Audio.RIFF.Wav.Formats.Report;
 
 package body Audio.Wavefiles.Report is
 
+   function To_String (Err : Wavefile_Error_Codes) return String;
+
+   function To_String (Err : Wavefile_Warning_Codes) return String;
+
    procedure Display_Info (WF : in Wavefile) is
    begin
       Audio.RIFF.Wav.Formats.Report.Print (WF.Wave_Format);
@@ -64,5 +68,65 @@ package body Audio.Wavefiles.Report is
       Put_Line ("---------------------------------");
 
    end Display_Info;
+
+   function To_String (Err : Wavefile_Error_Codes) return String is
+   begin
+      case Err is
+      when Wavefile_Error_File_Not_Open =>
+         return "File not open";
+      when Wavefile_Error_File_Already_Open =>
+         return "File already open";
+      when Wavefile_Error_File_Too_Short =>
+         return "File too short";
+      when Wavefile_Error_Format_Chuck_Not_Found =>
+         return "Format chunk not found";
+      when Wavefile_Error_Data_Chuck_Not_Found =>
+         return "Data chunk not found";
+      when Wavefile_Error_Unsupported_Wavefile_Format =>
+         return "Unsupported wavefile format";
+      when Wavefile_Error_Unsupported_Bit_Depth =>
+         return "Unsupported bit depth";
+      when Wavefile_Error_Unsupported_Format_Size =>
+         return "Unsupported format size";
+      end case;
+   end To_String;
+
+   function To_String (Err : Wavefile_Warning_Codes) return String is
+   begin
+      case Err is
+      when Wavefile_Warning_Inconsistent_Channel_Mask =>
+         return "Inconsistent channel mask";
+      end case;
+   end To_String;
+
+   procedure Display_Errors (WF : Wavefile) is
+   begin
+      Put_Line ("---------------- Wavefile errors ----------------");
+      New_Line;
+
+      for Error_Code in WF.Errors'Range loop
+         if WF.Errors (Error_Code) then
+            Put_Line ("- " & To_String (Error_Code));
+         end if;
+      end loop;
+
+      New_Line;
+      Put_Line ("-------------------------------------------------");
+   end Display_Errors;
+
+   procedure Display_Warnings (WF : Wavefile) is
+   begin
+      Put_Line ("-------------- Wavefile warnings ----------------");
+      New_Line;
+
+      for Warning_Code in WF.Warnings'Range loop
+         if WF.Warnings (Warning_Code) then
+            Put_Line ("- " & To_String (Warning_Code));
+         end if;
+      end loop;
+
+      New_Line;
+      Put_Line ("-------------------------------------------------");
+   end Display_Warnings;
 
 end Audio.Wavefiles.Report;

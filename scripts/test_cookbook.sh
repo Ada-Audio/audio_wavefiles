@@ -105,6 +105,8 @@ simple_testcase Open_Close_Wavefile_For_Reading
 simple_testcase Open_Close_Wavefile_For_Writing
 check_wavinfo   Open_Close_Wavefile_For_Writing     "test.wav"
 
+simple_testcase Display_Errors_For_Wavefiles
+
 simple_testcase Display_RIFF_Chunks
 
 simple_testcase Read_Display_Wavefile_Data

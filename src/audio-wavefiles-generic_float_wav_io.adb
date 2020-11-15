@@ -94,7 +94,7 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
               J < N_Ch
             then
                --  Cannot read data for all channels
-               raise Wavefile_Error;
+               WF.Set_Error (Wavefile_Error_File_Too_Short);
             end if;
          end loop;
 

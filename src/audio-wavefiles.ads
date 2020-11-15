@@ -40,8 +40,24 @@ package Audio.Wavefiles is
 
    type File_Mode is new Ada.Streams.Stream_IO.File_Mode;
 
-   Wavefile_Error       : exception;
-   Wavefile_Unsupported : exception;
+   type Wavefile_Error_Codes is
+     (Wavefile_Error_File_Not_Open,
+      Wavefile_Error_File_Already_Open,
+      Wavefile_Error_File_Too_Short,
+      Wavefile_Error_Format_Chuck_Not_Found,
+      Wavefile_Error_Data_Chuck_Not_Found,
+      Wavefile_Error_Unsupported_Wavefile_Format,
+      Wavefile_Error_Unsupported_Bit_Depth,
+      Wavefile_Error_Unsupported_Format_Size);
+
+   type Wavefile_Errors is array (Wavefile_Error_Codes) of Boolean
+     with Pack;
+
+   type Wavefile_Warning_Codes is
+     (Wavefile_Warning_Inconsistent_Channel_Mask);
+
+   type Wavefile_Warnings is array (Wavefile_Warning_Codes) of Boolean
+     with Pack;
 
    subtype Byte is Interfaces.Unsigned_8;
    type Byte_Array is array (Long_Integer range <>) of Byte;
@@ -184,6 +200,14 @@ private
    --  Note: the "+ 1" above indicates that the Current counter can be in the
    --        "end of file" position after a call to Get.
 
+   procedure Set_Error (WF         : in out Wavefile;
+                        Error_Code :        Wavefile_Error_Codes);
+   procedure Reset_Errors (WF      : in out Wavefile);
+
+   procedure Set_Warning (WF           : in out Wavefile;
+                          Warning_Code :        Wavefile_Warning_Codes);
+   procedure Reset_Warnings (WF        : in out Wavefile);
+
    type Wavefile is tagged limited
       record
          Is_Opened        : Boolean      := False;
@@ -192,6 +216,8 @@ private
          Wave_Format      : Wave_Format_Extensible := Default;
          Sample_Pos       : Sample_Info;
          RIFF_Info        : RIFF_Information;
+         Errors           : Wavefile_Errors   := (others => False);
+         Warnings         : Wavefile_Warnings := (others => False);
       end record;
 
    function First_Sample

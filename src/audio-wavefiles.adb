@@ -37,17 +37,33 @@ package body Audio.Wavefiles is
 
    procedure Init_Data_For_File_Opening
      (WF   : in out Wavefile);
+   procedure Check_Consistency
+     (WF   : in out Wavefile);
    procedure Reset_RIFF_Info
      (Info :      out RIFF_Information);
+
+   function No_Errors
+     (WF   : in out Wavefile) return Boolean
+   is (for all Error of WF.Errors => Error = False);
 
    procedure Init_Data_For_File_Opening
      (WF   : in out Wavefile) is
    begin
-      WF.Is_Opened  := True;
       WF.Sample_Pos := (Current => First_Sample_Count,
                         Total   => 0);
       Reset_RIFF_Info (WF.RIFF_Info);
    end Init_Data_For_File_Opening;
+
+   procedure Check_Consistency
+     (WF   : in out Wavefile) is
+   begin
+      if not Channel_Mask_Is_Consistent
+        (Channels            => WF.Wave_Format.Channel_Mask,
+         Number_Of_Channels  => WF.Wave_Format.Channels)
+      then
+         WF.Set_Warning (Wavefile_Warning_Inconsistent_Channel_Mask);
+      end if;
+   end Check_Consistency;
 
    procedure Create
      (WF   : in out Wavefile;
@@ -57,11 +73,16 @@ package body Audio.Wavefiles is
    is
       pragma Unreferenced (Form);
    begin
+      WF.Reset_Errors;
+      WF.Reset_Warnings;
+
       Init_Data_For_File_Opening (WF);
 
       if Mode in In_File | Append_File then
          WF.Wave_Format := Default;
       end if;
+
+      Check_Consistency (WF);
 
       Create_Wavefile : declare
          Stream_Mode : constant Ada.Streams.Stream_IO.File_Mode :=
@@ -77,6 +98,8 @@ package body Audio.Wavefiles is
          when Out_File =>
             Audio.Wavefiles.Write.Write_Until_Data_Start (WF);
       end case;
+
+      WF.Is_Opened := WF.No_Errors;
    end Create;
 
    procedure Open
@@ -87,8 +110,12 @@ package body Audio.Wavefiles is
    is
       pragma Unreferenced (Form);
    begin
+      WF.Reset_Errors;
+      WF.Reset_Warnings;
+
       if WF.Is_Opened then
-         raise Wavefile_Error;
+         WF.Set_Error (Wavefile_Error_File_Already_Open);
+         return;
       end if;
 
       Init_Data_For_File_Opening (WF);
@@ -127,6 +154,19 @@ package body Audio.Wavefiles is
          when Out_File =>
             Audio.Wavefiles.Write.Write_Until_Data_Start (WF);
       end case;
+
+      WF.Is_Opened := WF.No_Errors;
+
+      if WF.Is_Opened then
+         Check_Consistency (WF);
+      else
+         --
+         --  Close file in case of error
+         --
+         if Ada.Streams.Stream_IO.Is_Open (WF.File) then
+            Ada.Streams.Stream_IO.Close (WF.File);
+         end if;
+      end if;
    end Open;
 
    function End_Of_File
@@ -149,8 +189,11 @@ package body Audio.Wavefiles is
    procedure Close (WF : in out Wavefile) is
       use Ada.Streams.Stream_IO;
    begin
+      WF.Reset_Errors;
+
       if not WF.Is_Opened then
-         raise Wavefile_Error;
+         WF.Set_Error (Wavefile_Error_File_Not_Open);
+         return;
       end if;
 
       if Mode (WF) = Out_File then
@@ -160,7 +203,6 @@ package body Audio.Wavefiles is
       Close (WF.File);
 
       WF.Is_Opened := False;
-
    end Close;
 
    procedure Set_Format_Of_Wavefile
@@ -305,5 +347,27 @@ package body Audio.Wavefiles is
    begin
       Set_Current_Sample (WF, Position);
    end Set_Current_Time;
+
+   procedure Set_Error (WF         : in out Wavefile;
+                        Error_Code :        Wavefile_Error_Codes) is
+   begin
+      WF.Errors (Error_Code) := True;
+   end Set_Error;
+
+   procedure Reset_Errors (WF      : in out Wavefile) is
+   begin
+      WF.Errors := (others => False);
+   end Reset_Errors;
+
+   procedure Set_Warning (WF           : in out Wavefile;
+                          Warning_Code :        Wavefile_Warning_Codes) is
+   begin
+      WF.Warnings (Warning_Code) := True;
+   end Set_Warning;
+
+   procedure Reset_Warnings (WF        : in out Wavefile) is
+   begin
+      WF.Warnings := (others => False);
+   end Reset_Warnings;
 
 end Audio.Wavefiles;
