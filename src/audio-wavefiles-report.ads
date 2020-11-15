@@ -36,4 +36,6 @@ package Audio.Wavefiles.Report is
 
    procedure Display_Errors (WF : Wavefile);
 
+   procedure Display_Warnings (WF : Wavefile);
+
 end Audio.Wavefiles.Report;
