@@ -443,7 +443,7 @@ begin
                         Sample_Rate        => Sample_Rate_Enum,
                         Number_Of_Channels => Num_Channels,
                         Use_Float          => False);
-   Wave_Format.Channel_Mask := Channel_Config_5_1;
+   Wave_Format.Channel_Config := Channel_Config_5_1;
 
    WF.Set_Format_Of_Wavefile (Wave_Format);
 
@@ -559,7 +559,7 @@ begin
                         Sample_Rate        => Sample_Rate_Enum,
                         Number_Of_Channels => Num_Channels,
                         Use_Float          => False);
-   Wave_Format.Channel_Mask := Channel_Config_7_1_4;
+   Wave_Format.Channel_Config := Channel_Config_7_1_4;
 
    WF.Set_Format_Of_Wavefile (Wave_Format);
 
@@ -981,7 +981,7 @@ begin
                       Sample_Rate        => WF_Format.Samples_Per_Sec,
                       Number_Of_Channels => 5 + 1,
                       Use_Float          => Is_Float_Format (WF_Format));
-   WF_Format.Channel_Mask := Channel_Config_5_1;
+   WF_Format.Channel_Config := Channel_Config_5_1;
 
    WF_Out.Set_Format_Of_Wavefile (WF_Format);
 

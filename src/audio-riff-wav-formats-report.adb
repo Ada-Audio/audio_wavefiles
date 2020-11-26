@@ -56,58 +56,58 @@ package body Audio.RIFF.Wav.Formats.Report is
          Put_Line ("ValidBitsPerSample: "
                    & Unsigned_16'Image (W.Valid_Bits_Per_Sample));
          Put ("Channel Mask:      ");
-         if W.Channel_Mask (Speaker_Front_Left) then
+         if W.Channel_Config (Speaker_Front_Left) then
             Put (" Front_Left");
          end if;
-         if W.Channel_Mask (Speaker_Front_Right) then
+         if W.Channel_Config (Speaker_Front_Right) then
             Put (" Front_Right");
          end if;
-         if W.Channel_Mask (Speaker_Front_Center) then
+         if W.Channel_Config (Speaker_Front_Center) then
             Put (" Front_Center");
          end if;
-         if W.Channel_Mask (Speaker_Low_Frequency) then
+         if W.Channel_Config (Speaker_Low_Frequency) then
             Put (" Low_Frequency");
          end if;
-         if W.Channel_Mask (Speaker_Back_Left) then
+         if W.Channel_Config (Speaker_Back_Left) then
             Put (" Back_Left");
          end if;
-         if W.Channel_Mask (Speaker_Back_Right) then
+         if W.Channel_Config (Speaker_Back_Right) then
             Put (" Back_Right");
          end if;
-         if W.Channel_Mask (Speaker_Front_Left_Of_Center) then
+         if W.Channel_Config (Speaker_Front_Left_Of_Center) then
             Put (" Front_Left_Of_Center");
          end if;
-         if W.Channel_Mask (Speaker_Front_Right_Of_Center) then
+         if W.Channel_Config (Speaker_Front_Right_Of_Center) then
             Put (" Front_Right_Of_Center");
          end if;
-         if W.Channel_Mask (Speaker_Back_Center) then
+         if W.Channel_Config (Speaker_Back_Center) then
             Put (" Back_Center");
          end if;
-         if W.Channel_Mask (Speaker_Side_Left) then
+         if W.Channel_Config (Speaker_Side_Left) then
             Put (" Side_Left");
          end if;
-         if W.Channel_Mask (Speaker_Side_Right) then
+         if W.Channel_Config (Speaker_Side_Right) then
             Put (" Side_Right");
          end if;
-         if W.Channel_Mask (Speaker_Top_Center) then
+         if W.Channel_Config (Speaker_Top_Center) then
             Put (" Top_Center");
          end if;
-         if W.Channel_Mask (Speaker_Top_Front_Left) then
+         if W.Channel_Config (Speaker_Top_Front_Left) then
             Put (" Top_Front_Left");
          end if;
-         if W.Channel_Mask (Speaker_Top_Front_Center) then
+         if W.Channel_Config (Speaker_Top_Front_Center) then
             Put (" Top_Front_Center");
          end if;
-         if W.Channel_Mask (Speaker_Top_Front_Right) then
+         if W.Channel_Config (Speaker_Top_Front_Right) then
             Put (" Top_Front_Right");
          end if;
-         if W.Channel_Mask (Speaker_Top_Back_Left) then
+         if W.Channel_Config (Speaker_Top_Back_Left) then
             Put (" Top_Back_Left");
          end if;
-         if W.Channel_Mask (Speaker_Top_Back_Center) then
+         if W.Channel_Config (Speaker_Top_Back_Center) then
             Put (" Top_Back_Center");
          end if;
-         if W.Channel_Mask (Speaker_Top_Back_Right) then
+         if W.Channel_Config (Speaker_Top_Back_Right) then
             Put (" Top_Back_Right");
          end if;
 

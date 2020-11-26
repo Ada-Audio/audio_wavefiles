@@ -427,7 +427,7 @@ package Audio.RIFF.Wav.Formats is
    type Wave_Format_Extensible is new Wave_Format_18 with
       record
          Valid_Bits_Per_Sample : Unsigned_16;
-         Channel_Mask          : Channel_Configuration;
+         Channel_Config        : Channel_Configuration;
          Sub_Format            : GUID;
       end record;
 

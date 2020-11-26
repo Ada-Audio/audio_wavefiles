@@ -120,7 +120,7 @@ package body Audio.RIFF.Wav.Formats is
          W.Size                  := 22;
          W.Valid_Bits_Per_Sample := To_Unsigned_16 (W.Bits_Per_Sample);
          W.Sub_Format            := GUID_Undefined;
-         W.Channel_Mask          :=
+         W.Channel_Config        :=
            (Speaker_Front_Left  |
             Speaker_Front_Right   => True,
             others                => False);
@@ -138,7 +138,7 @@ package body Audio.RIFF.Wav.Formats is
    begin
       W.Valid_Bits_Per_Sample := To_Unsigned_16 (W.Bits_Per_Sample);
       W.Sub_Format            := GUID_Undefined;
-      W.Channel_Mask          := (others => False);
+      W.Channel_Config        := (others => False);
    end Reset_For_Wave_Format_18;
 
    function To_GUID (Format : Wav_Format_Tag) return GUID is
@@ -267,11 +267,11 @@ package body Audio.RIFF.Wav.Formats is
             W.Size                  := 0;
             W.Valid_Bits_Per_Sample := 0;
             W.Sub_Format            := GUID_Undefined;
-            W.Channel_Mask          := (others => False);
+            W.Channel_Config        := (others => False);
          else
             W.Size                  := 22;
             W.Valid_Bits_Per_Sample := To_Unsigned_16 (W.Bits_Per_Sample);
-            W.Channel_Mask          := (others => False);
+            W.Channel_Config        := (others => False);
 
             Init_Formats : declare
                Sub_Format : constant GUID := To_GUID (Format);
