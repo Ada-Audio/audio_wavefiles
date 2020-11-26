@@ -28,7 +28,6 @@
 -------------------------------------------------------------------------------
 
 with Ada.Streams;
-with System;
 
 package Audio.RIFF.Wav.Formats is
 
@@ -95,36 +94,33 @@ package Audio.RIFF.Wav.Formats is
          Data_4 : Sub_GUID;
       end record;
 
-   type Channel_Mask_Bit is new Boolean with Size => 1;
-
    Channel_Mask_Type_Size : constant Integer := 32;
 
-   type Channel_Mask_Type is
-      record
-         Speaker_Front_Left            : Channel_Mask_Bit;
-         Speaker_Front_Right           : Channel_Mask_Bit;
-         Speaker_Front_Center          : Channel_Mask_Bit;
-         Speaker_Low_Frequency         : Channel_Mask_Bit;
-         Speaker_Back_Left             : Channel_Mask_Bit;
-         Speaker_Back_Right            : Channel_Mask_Bit;
-         Speaker_Front_Left_Of_Center  : Channel_Mask_Bit;
-         Speaker_Front_Right_Of_Center : Channel_Mask_Bit;
-         Speaker_Back_Center           : Channel_Mask_Bit;
-         Speaker_Side_Left             : Channel_Mask_Bit;
-         Speaker_Side_Right            : Channel_Mask_Bit;
-         Speaker_Top_Center            : Channel_Mask_Bit;
-         Speaker_Top_Front_Left        : Channel_Mask_Bit;
-         Speaker_Top_Front_Center      : Channel_Mask_Bit;
-         Speaker_Top_Front_Right       : Channel_Mask_Bit;
-         Speaker_Top_Back_Left         : Channel_Mask_Bit;
-         Speaker_Top_Back_Center       : Channel_Mask_Bit;
-         Speaker_Top_Back_Right        : Channel_Mask_Bit;
-      end record
+   type Speaker_Position is
+     (Speaker_Front_Left,
+      Speaker_Front_Right,
+      Speaker_Front_Center,
+      Speaker_Low_Frequency,
+      Speaker_Back_Left,
+      Speaker_Back_Right,
+      Speaker_Front_Left_Of_Center,
+      Speaker_Front_Right_Of_Center,
+      Speaker_Back_Center,
+      Speaker_Side_Left,
+      Speaker_Side_Right,
+      Speaker_Top_Center,
+      Speaker_Top_Front_Left,
+      Speaker_Top_Front_Center,
+      Speaker_Top_Front_Right,
+      Speaker_Top_Back_Left,
+      Speaker_Top_Back_Center,
+      Speaker_Top_Back_Right);
+
+   type Channel_Mask_Type is array (Speaker_Position) of Boolean
      with
        Pack, Size => Channel_Mask_Type_Size,
        Read       => Read_Channel_Mask,
-       Write      => Write_Channel_Mask,
-       Bit_Order  => System.Low_Order_First;
+       Write      => Write_Channel_Mask;
 
    procedure Read_Channel_Mask
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
