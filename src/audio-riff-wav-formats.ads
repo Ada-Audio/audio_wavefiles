@@ -130,7 +130,7 @@ package Audio.RIFF.Wav.Formats is
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
       Item   : Channel_Configuration);
 
-   function Channel_Mask_Is_Consistent
+   function Is_Consistent
      (Channel_Config      : Channel_Configuration;
       Number_Of_Channels  : Unsigned_16) return Boolean;
 

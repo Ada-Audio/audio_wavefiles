@@ -197,7 +197,7 @@ package body Audio.RIFF.Wav.Formats is
       end if;
    end To_Wav_Format_Tag;
 
-   function Channel_Mask_Is_Consistent
+   function Is_Consistent
      (Channel_Config      : Channel_Configuration;
       Number_Of_Channels  : Unsigned_16) return Boolean
    is
@@ -216,7 +216,7 @@ package body Audio.RIFF.Wav.Formats is
       end loop;
 
       return Number_Of_Channels = Channels_In_Mask;
-   end Channel_Mask_Is_Consistent;
+   end Is_Consistent;
 
    function Should_Use_Extensible_Format
      (Bit_Depth          : Wav_Bit_Depth;
