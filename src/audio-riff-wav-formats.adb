@@ -31,7 +31,7 @@ with Audio.RIFF.Wav.GUIDs;
 
 package body Audio.RIFF.Wav.Formats is
 
-   type Channel_Mask_Integer is mod 2**Channel_Mask_Type_Size;
+   type Channel_Mask_Integer is mod 2 ** Channel_Mask_Type_Size;
 
    function To_RIFF_Identifier (FOURCC : FOURCC_String) return RIFF_Identifier
    is
