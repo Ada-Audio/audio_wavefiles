@@ -94,7 +94,7 @@ package Audio.RIFF.Wav.Formats is
          Data_4 : Sub_GUID;
       end record;
 
-   Channel_Mask_Type_Size : constant Integer := 32;
+   Channel_Configuration_Size : constant Integer := 32;
 
    type Speaker_Position is
      (Speaker_Front_Left,
@@ -118,7 +118,7 @@ package Audio.RIFF.Wav.Formats is
 
    type Channel_Configuration is array (Speaker_Position) of Boolean
      with
-       Pack, Size => Channel_Mask_Type_Size,
+       Pack, Size => Channel_Configuration_Size,
        Read       => Read_Channel_Configuration,
        Write      => Write_Channel_Configuration;
 

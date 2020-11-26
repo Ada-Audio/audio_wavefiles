@@ -31,7 +31,7 @@ with Audio.RIFF.Wav.GUIDs;
 
 package body Audio.RIFF.Wav.Formats is
 
-   type Channel_Mask_Integer is mod 2 ** Channel_Mask_Type_Size;
+   type Channel_Configuration_Integer is mod 2 ** Channel_Configuration_Size;
 
    function To_RIFF_Identifier (FOURCC : FOURCC_String) return RIFF_Identifier
    is
@@ -295,11 +295,11 @@ package body Audio.RIFF.Wav.Formats is
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
       Item   : out Channel_Configuration)
    is
-      V : Channel_Mask_Integer;
+      V : Channel_Configuration_Integer;
       X : Channel_Configuration;
       for X'Address use V'Address;
    begin
-      Channel_Mask_Integer'Read (Stream, V);
+      Channel_Configuration_Integer'Read (Stream, V);
       Item := X;
    end Read_Channel_Configuration;
 
@@ -307,12 +307,12 @@ package body Audio.RIFF.Wav.Formats is
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
       Item   : Channel_Configuration)
    is
-      V : Channel_Mask_Integer;
+      V : Channel_Configuration_Integer;
       X : Channel_Configuration;
       for X'Address use V'Address;
    begin
       X := Item;
-      Channel_Mask_Integer'Write (Stream, V);
+      Channel_Configuration_Integer'Write (Stream, V);
    end Write_Channel_Configuration;
 
 end Audio.RIFF.Wav.Formats;
