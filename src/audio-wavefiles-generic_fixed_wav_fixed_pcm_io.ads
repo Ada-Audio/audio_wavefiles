@@ -30,7 +30,8 @@
 private generic
    type Wav_Sample is delta <>;
    type PCM_Sample is delta <>;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Sample;
+   type Channel_Range is (<>);
+   type PCM_MC_Sample is array (Channel_Range range <>) of PCM_Sample;
 package Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
 
    function Get (WF   : in out Wavefile) return PCM_MC_Sample

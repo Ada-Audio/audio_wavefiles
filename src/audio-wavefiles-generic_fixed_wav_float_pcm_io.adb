@@ -33,10 +33,11 @@ with Audio.Wavefiles.Generic_Fixed_Wav_IO;
 
 package body Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO is
 
-   type Wav_MC_Sample is array (Positive range <>) of Wav_Sample;
+   type Wav_MC_Sample is array (Channel_Range range <>) of Wav_Sample;
 
    package Wav_IO is new Audio.Wavefiles.Generic_Fixed_Wav_IO
      (Wav_Sample    => Wav_Sample,
+      Channel_Range => Channel_Range,
       Wav_MC_Sample => Wav_MC_Sample);
    use Wav_IO;
 

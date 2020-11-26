@@ -38,7 +38,8 @@ private generic
 #else
    type PCM_Sample is delta <>;
 #end if;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Sample;
+   type Channel_Range is (<>);
+   type PCM_MC_Sample is array (Channel_Range range <>) of PCM_Sample;
 #if (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FLOAT") then
 package Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO is
 #elsif (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FIXED") then
