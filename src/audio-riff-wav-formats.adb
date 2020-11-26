@@ -201,15 +201,9 @@ package body Audio.RIFF.Wav.Formats is
      (Channel_Config      : Channel_Configuration;
       Number_Of_Channels  : Unsigned_16) return Boolean
    is
-      type Channel_Mask_Array is
-        array (1 .. Channel_Configuration'Size) of Boolean with Pack;
-
       Channels_In_Mask : Unsigned_16 := 0;
-
-      Channel_Array : Channel_Mask_Array
-        with Import, Volatile, Address => Channel_Config'Address;
    begin
-      for Ch of Channel_Array loop
+      for Ch of Channel_Config loop
          if Ch then
             Channels_In_Mask := Channels_In_Mask + 1;
          end if;
