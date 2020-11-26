@@ -198,11 +198,11 @@ package body Audio.RIFF.Wav.Formats is
    end To_Wav_Format_Tag;
 
    function Channel_Mask_Is_Consistent
-     (Channels            : Channel_Mask_Type;
+     (Channels            : Channel_Configuration;
       Number_Of_Channels  : Unsigned_16) return Boolean
    is
-      type Channel_Mask_Array is array (1 .. Channel_Mask_Type'Size) of Boolean
-        with Pack;
+      type Channel_Mask_Array is
+        array (1 .. Channel_Configuration'Size) of Boolean with Pack;
 
       Channels_In_Mask : Unsigned_16 := 0;
 
@@ -297,28 +297,28 @@ package body Audio.RIFF.Wav.Formats is
         W.Sub_Format = GUID_IEEE_Float;
    end Is_Float_Format;
 
-   procedure Read_Channel_Mask
+   procedure Read_Channel_Configuration
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-      Item   : out Channel_Mask_Type)
+      Item   : out Channel_Configuration)
    is
       V : Channel_Mask_Integer;
-      X : Channel_Mask_Type;
+      X : Channel_Configuration;
       for X'Address use V'Address;
    begin
       Channel_Mask_Integer'Read (Stream, V);
       Item := X;
-   end Read_Channel_Mask;
+   end Read_Channel_Configuration;
 
-   procedure Write_Channel_Mask
+   procedure Write_Channel_Configuration
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-      Item   : Channel_Mask_Type)
+      Item   : Channel_Configuration)
    is
       V : Channel_Mask_Integer;
-      X : Channel_Mask_Type;
+      X : Channel_Configuration;
       for X'Address use V'Address;
    begin
       X := Item;
       Channel_Mask_Integer'Write (Stream, V);
-   end Write_Channel_Mask;
+   end Write_Channel_Configuration;
 
 end Audio.RIFF.Wav.Formats;

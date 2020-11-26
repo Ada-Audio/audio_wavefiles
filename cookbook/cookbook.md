@@ -432,7 +432,7 @@ procedure Write_5_1_Channel_Sine_Wavefile is
 
    WF               : Wavefile;
    Wave_Format      : Wave_Format_Extensible;
-   Channel_Config_5_1 : constant Channel_Mask_Type :=
+   Channel_Config_5_1 : constant Channel_Configuration :=
      (Speaker_Front_Left     | Speaker_Front_Right     |
       Speaker_Front_Center   | Speaker_Low_Frequency   |
       Speaker_Back_Left      | Speaker_Back_Right     => True,
@@ -545,7 +545,7 @@ procedure Write_7_1_4_Channel_Sine_Wavefile is
 
    WF               : Wavefile;
    Wave_Format      : Wave_Format_Extensible;
-   Channel_Config_7_1_4 : constant Channel_Mask_Type :=
+   Channel_Config_7_1_4 : constant Channel_Configuration :=
      (Speaker_Front_Left     | Speaker_Front_Right      |
       Speaker_Front_Center   | Speaker_Low_Frequency    |
       Speaker_Back_Left      | Speaker_Back_Right       |
@@ -968,7 +968,7 @@ procedure Downmix_7_1_4_To_5_1_Wavefile is
    WF_Out    : Wavefile;
    WF_Format : Wave_Format_Extensible;
 
-   Channel_Config_5_1 : constant Channel_Mask_Type :=
+   Channel_Config_5_1 : constant Channel_Configuration :=
      (Speaker_Front_Left     | Speaker_Front_Right     |
       Speaker_Front_Center   | Speaker_Low_Frequency   |
       Speaker_Back_Left      | Speaker_Back_Right     => True,

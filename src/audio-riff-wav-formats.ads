@@ -116,22 +116,22 @@ package Audio.RIFF.Wav.Formats is
       Speaker_Top_Back_Center,
       Speaker_Top_Back_Right);
 
-   type Channel_Mask_Type is array (Speaker_Position) of Boolean
+   type Channel_Configuration is array (Speaker_Position) of Boolean
      with
        Pack, Size => Channel_Mask_Type_Size,
-       Read       => Read_Channel_Mask,
-       Write      => Write_Channel_Mask;
+       Read       => Read_Channel_Configuration,
+       Write      => Write_Channel_Configuration;
 
-   procedure Read_Channel_Mask
+   procedure Read_Channel_Configuration
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-      Item   : out Channel_Mask_Type);
+      Item   : out Channel_Configuration);
 
-   procedure Write_Channel_Mask
+   procedure Write_Channel_Configuration
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-      Item   : Channel_Mask_Type);
+      Item   : Channel_Configuration);
 
    function Channel_Mask_Is_Consistent
-     (Channels            : Channel_Mask_Type;
+     (Channels            : Channel_Configuration;
       Number_Of_Channels  : Unsigned_16) return Boolean;
 
    type Wav_Sample_Rate is
@@ -427,7 +427,7 @@ package Audio.RIFF.Wav.Formats is
    type Wave_Format_Extensible is new Wave_Format_18 with
       record
          Valid_Bits_Per_Sample : Unsigned_16;
-         Channel_Mask          : Channel_Mask_Type;
+         Channel_Mask          : Channel_Configuration;
          Sub_Format            : GUID;
       end record;
 
