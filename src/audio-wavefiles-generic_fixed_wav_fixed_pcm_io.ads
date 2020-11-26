@@ -39,6 +39,7 @@ package Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
 
    procedure Put (WF  : in out Wavefile;
                   PCM :        PCM_MC_Sample)
-     with Pre => Mode (WF) = Out_File;
+     with Pre => Mode (WF) = Out_File and
+                 Number_Of_Channels (WF) = PCM'Length;
 
 end Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO;

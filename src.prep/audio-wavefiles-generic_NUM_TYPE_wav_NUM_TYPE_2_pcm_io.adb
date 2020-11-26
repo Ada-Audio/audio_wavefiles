@@ -27,8 +27,6 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Assertions;
-
 #if (NUM_TYPE = "FLOAT") then
 with Audio.Wavefiles.Generic_Float_Wav_IO;
 #else
@@ -131,11 +129,8 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
 
    procedure Put (WF  : in out Wavefile;
                   PCM :        PCM_MC_Sample) is
-      N_Ch : constant Positive := Number_Of_Channels (WF);
       Wav  : constant Wav_MC_Sample := Convert (PCM);
    begin
-      Ada.Assertions.Assert (N_Ch = PCM'Length,
-                             "Wrong number of channels in buffer");
       Put (WF, Wav);
    end Put;
 
