@@ -198,9 +198,9 @@ package body Audio.RIFF.Wav.Formats is
 
    function Is_Consistent
      (Channel_Config      : Channel_Configuration;
-      Number_Of_Channels  : Unsigned_16) return Boolean
+      Number_Of_Channels  : Positive) return Boolean
    is
-      Counted_Channels : Unsigned_16 := 0;
+      Counted_Channels : Natural := 0;
    begin
       for Channel_Is_Active of Channel_Config loop
          if Channel_Is_Active then

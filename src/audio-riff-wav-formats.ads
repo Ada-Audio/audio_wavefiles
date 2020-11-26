@@ -132,7 +132,7 @@ package Audio.RIFF.Wav.Formats is
 
    function Is_Consistent
      (Channel_Config      : Channel_Configuration;
-      Number_Of_Channels  : Unsigned_16) return Boolean;
+      Number_Of_Channels  : Positive) return Boolean;
 
    type Wav_Sample_Rate is
      (Sample_Rate_8000,
