@@ -28,6 +28,7 @@
 -------------------------------------------------------------------------------
 
 with Audio.RIFF.Wav.GUIDs;
+with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
 
 package body Audio.RIFF.Wav.Formats is
 
@@ -114,16 +115,14 @@ package body Audio.RIFF.Wav.Formats is
 
    function Default return Wave_Format_Extensible is
       use Audio.RIFF.Wav.GUIDs;
+      use Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
    begin
       return W : Wave_Format_Extensible do
          Wave_Format_18 (W)      := Default;
          W.Size                  := 22;
          W.Valid_Bits_Per_Sample := To_Unsigned_16 (W.Bits_Per_Sample);
          W.Sub_Format            := GUID_Undefined;
-         W.Channel_Config        :=
-           (Speaker_Front_Left  |
-            Speaker_Front_Right   => True,
-            others                => False);
+         W.Channel_Config        := Channel_Config_2_0;
       end return;
    end Default;
 
