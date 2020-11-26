@@ -198,7 +198,7 @@ package body Audio.RIFF.Wav.Formats is
    end To_Wav_Format_Tag;
 
    function Channel_Mask_Is_Consistent
-     (Channels            : Channel_Configuration;
+     (Channel_Config      : Channel_Configuration;
       Number_Of_Channels  : Unsigned_16) return Boolean
    is
       type Channel_Mask_Array is
@@ -207,7 +207,7 @@ package body Audio.RIFF.Wav.Formats is
       Channels_In_Mask : Unsigned_16 := 0;
 
       Channel_Array : Channel_Mask_Array
-        with Import, Volatile, Address => Channels'Address;
+        with Import, Volatile, Address => Channel_Config'Address;
    begin
       for Ch of Channel_Array loop
          if Ch then

@@ -131,7 +131,7 @@ package Audio.RIFF.Wav.Formats is
       Item   : Channel_Configuration);
 
    function Channel_Mask_Is_Consistent
-     (Channels            : Channel_Configuration;
+     (Channel_Config      : Channel_Configuration;
       Number_Of_Channels  : Unsigned_16) return Boolean;
 
    type Wav_Sample_Rate is
