@@ -203,8 +203,8 @@ package body Audio.RIFF.Wav.Formats is
    is
       Counted_Channels : Unsigned_16 := 0;
    begin
-      for Ch of Channel_Config loop
-         if Ch then
+      for Channel_Is_Active of Channel_Config loop
+         if Channel_Is_Active then
             Counted_Channels := Counted_Channels + 1;
          end if;
       end loop;
