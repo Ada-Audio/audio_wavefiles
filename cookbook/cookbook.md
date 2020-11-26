@@ -175,6 +175,7 @@ procedure Read_Display_Wavefile_Data is
 
    package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
      (PCM_Sample    => Float,
+      Channel_Range => Positive,
       PCM_MC_Sample => Float_Array);
    use PCM_IO;
 
@@ -233,6 +234,7 @@ with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
 procedure Write_Mono_Silence_Wavefile is
    package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
      (PCM_Sample    => Wav_Float_32,
+      Channel_Range => Wav_Buffer_Range,
       PCM_MC_Sample => Wav_Buffer_Float_32);
    use PCM_IO;
 
@@ -294,6 +296,7 @@ procedure Write_Stereo_Sine_Tone (WF           : in out Wavefile;
 is
    package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
      (PCM_Sample    => Wav_Float_32,
+      Channel_Range => Wav_Buffer_Range,
       PCM_MC_Sample => Wav_Buffer_Float_32);
    use PCM_IO;
 
@@ -378,6 +381,7 @@ procedure Write_5_1_Channel_Sine_Tone (WF           : in out Wavefile;
 is
    package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
      (PCM_Sample    => Wav_Float_32,
+      Channel_Range => Wav_Buffer_Range,
       PCM_MC_Sample => Wav_Buffer_Float_32);
    use PCM_IO;
 
@@ -478,6 +482,7 @@ procedure Write_7_1_4_Channel_Sine_Tone (WF           : in out Wavefile;
 is
    package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
      (PCM_Sample    => Wav_Float_32,
+      Channel_Range => Wav_Buffer_Range,
       PCM_MC_Sample => Wav_Buffer_Float_32);
    use PCM_IO;
 
@@ -600,6 +605,7 @@ begin
       Append_PCM_MC_Sample : declare
          package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
            (PCM_Sample    => Wav_Float_64,
+            Channel_Range => Wav_Buffer_Range,
             PCM_MC_Sample => Wav_Buffer_Float_64);
          use PCM_IO;
 
@@ -640,6 +646,7 @@ begin
       Copy_PCM_MC_Sample : declare
          package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
            (PCM_Sample    => Wav_Float_64,
+            Channel_Range => Wav_Buffer_Range,
             PCM_MC_Sample => Wav_Buffer_Float_64);
          use PCM_IO;
 
@@ -679,6 +686,7 @@ begin
       Copy_PCM_MC_Sample : declare
          package PCM_IO is new Audio.Wavefiles.Generic_Fixed_PCM_IO
            (PCM_Sample    => Wav_Fixed_16,
+            Channel_Range => Wav_Buffer_Range,
             PCM_MC_Sample => Wav_Buffer_Fixed_16);
          use PCM_IO;
 
@@ -759,6 +767,7 @@ begin
          Copy_PCM_MC_Sample : declare
             package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
               (PCM_Sample    => Wav_Float_64,
+               Channel_Range => Wav_Buffer_Range,
                PCM_MC_Sample => Wav_Buffer_Float_64);
             use PCM_IO;
 
@@ -810,6 +819,7 @@ begin
       Copy_PCM_MC_Sample : declare
          package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
            (PCM_Sample    => Wav_Float_32,
+            Channel_Range => Wav_Buffer_Range,
             PCM_MC_Sample => Wav_Buffer_Float_32);
          use PCM_IO;
 
@@ -857,6 +867,7 @@ begin
       Downmix_PCM_MC_Sample : declare
          package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
            (PCM_Sample    => Wav_Float_64,
+            Channel_Range => Wav_Buffer_Range,
             PCM_MC_Sample => Wav_Buffer_Float_64);
          use PCM_IO;
 
@@ -911,6 +922,7 @@ begin
       Downmix_PCM_MC_Sample : declare
          package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
            (PCM_Sample    => Wav_Float_64,
+            Channel_Range => Wav_Buffer_Range,
             PCM_MC_Sample => Wav_Buffer_Float_64);
          use PCM_IO;
 
@@ -980,6 +992,7 @@ begin
       Downmix_PCM_MC_Sample : declare
          package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
            (PCM_Sample    => Wav_Float_64,
+            Channel_Range => Wav_Buffer_Range,
             PCM_MC_Sample => Wav_Buffer_Float_64);
          use PCM_IO;
 
@@ -1054,6 +1067,7 @@ begin
 
          package Wav_IO is new Audio.Wavefiles.Generic_Fixed_Wav_IO
            (Wav_Sample    => Wav_Fixed_16,
+            Channel_Range => Wav_Buffer_Range,
             Wav_MC_Sample => Wav_Buffer_Fixed_16);
          use Wav_IO;
 
@@ -1098,6 +1112,7 @@ begin
 
          package Wav_IO is new Audio.Wavefiles.Generic_Float_Wav_IO
            (Wav_Sample    => Wav_Float_32,
+            Channel_Range => Wav_Buffer_Range,
             Wav_MC_Sample => Wav_Buffer_Float_32);
          use Wav_IO;
 
@@ -1135,6 +1150,7 @@ begin
 
       package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
         (PCM_Sample    => Wav_Float_32,
+         Channel_Range => Wav_Buffer_Range,
          PCM_MC_Sample => Wav_Buffer_Float_32);
       use PCM_IO;
 
@@ -1227,6 +1243,7 @@ begin
    Read_To_Memory : declare
       package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
         (PCM_Sample    => Wav_Float_32,
+         Channel_Range => Wav_Buffer_Range,
          PCM_MC_Sample => Wav_Buffer_Float_32);
       use PCM_IO;
 
