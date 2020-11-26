@@ -201,15 +201,15 @@ package body Audio.RIFF.Wav.Formats is
      (Channel_Config      : Channel_Configuration;
       Number_Of_Channels  : Unsigned_16) return Boolean
    is
-      Channels_In_Mask : Unsigned_16 := 0;
+      Counted_Channels : Unsigned_16 := 0;
    begin
       for Ch of Channel_Config loop
          if Ch then
-            Channels_In_Mask := Channels_In_Mask + 1;
+            Counted_Channels := Counted_Channels + 1;
          end if;
       end loop;
 
-      return Number_Of_Channels = Channels_In_Mask;
+      return Number_Of_Channels = Counted_Channels;
    end Is_Consistent;
 
    function Should_Use_Extensible_Format
