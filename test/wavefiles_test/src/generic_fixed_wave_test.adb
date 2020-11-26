@@ -41,6 +41,7 @@ package body Generic_Fixed_Wave_Test is
 
    package PCM_IO    is new   Audio.Wavefiles.Generic_Fixed_PCM_IO
      (PCM_Sample    => PCM_Sample,
+      Channel_Range => Positive,
       PCM_MC_Sample => PCM_MC_Sample);
    use PCM_IO;
 

@@ -118,6 +118,7 @@ package body Wavefile_Benchmarking is
 
       package Wav_IO is new Audio.Wavefiles.Generic_Fixed_Wav_IO
         (Wav_Sample    => Wav_Fixed_16,
+         Channel_Range => Positive,
          Wav_MC_Sample => Wav_Buffer_Fixed_16);
       use Wav_IO;
 
