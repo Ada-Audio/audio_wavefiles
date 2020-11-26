@@ -134,10 +134,11 @@ package body Audio.RIFF.Wav.Formats is
 
    procedure Reset_For_Wave_Format_18 (W : in out Wave_Format_Extensible) is
       use Audio.RIFF.Wav.GUIDs;
+      use Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
    begin
       W.Valid_Bits_Per_Sample := To_Unsigned_16 (W.Bits_Per_Sample);
       W.Sub_Format            := GUID_Undefined;
-      W.Channel_Config        := (others => False);
+      W.Channel_Config        := Channel_Config_Empty;
    end Reset_For_Wave_Format_18;
 
    function To_GUID (Format : Wav_Format_Tag) return GUID is
@@ -245,7 +246,9 @@ package body Audio.RIFF.Wav.Formats is
         := (if Use_Float then Wav_Format_IEEE_Float else Wav_Format_PCM);
       Use_Wav_Extensible : constant Boolean
         := Should_Use_Extensible_Format (Bit_Depth, Number_Of_Channels);
+
       use Audio.RIFF.Wav.GUIDs;
+      use Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
    begin
       return W : Wave_Format_Extensible do
          W.Channels          := Unsigned_16 (Number_Of_Channels);
@@ -260,11 +263,11 @@ package body Audio.RIFF.Wav.Formats is
             W.Size                  := 0;
             W.Valid_Bits_Per_Sample := 0;
             W.Sub_Format            := GUID_Undefined;
-            W.Channel_Config        := (others => False);
+            W.Channel_Config        := Channel_Config_Empty;
          else
             W.Size                  := 22;
             W.Valid_Bits_Per_Sample := To_Unsigned_16 (W.Bits_Per_Sample);
-            W.Channel_Config        := (others => False);
+            W.Channel_Config        := Channel_Config_Empty;
 
             Init_Formats : declare
                Sub_Format : constant GUID := To_GUID (Format);
