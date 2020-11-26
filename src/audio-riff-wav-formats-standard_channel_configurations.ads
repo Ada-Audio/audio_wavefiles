@@ -96,4 +96,12 @@ package Audio.RIFF.Wav.Formats.Standard_Channel_Configurations is
       Speaker_Top_Back_Left  | Speaker_Top_Back_Right  => True,
       others                                           => False);
 
+   function Guess_Channel_Configuration
+     (Number_Of_Channels : Positive) return Channel_Configuration
+     with Post =>
+       (if Guess_Channel_Configuration'Result /= Channel_Config_Empty then
+          Is_Consistent
+            (Guess_Channel_Configuration'Result,
+             Number_Of_Channels));
+
 end Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
