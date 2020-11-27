@@ -52,13 +52,15 @@ package body Quick_Wav_Data_Checks.Float_Checks is
    package Fixed_64_PCM_As_Integer_Text_IO is new
      Ada.Text_IO.Integer_IO (Integer_64);
 
-   subtype PCM_Sample is Wav_Float_128;
-   subtype PCM_Buffer is Wav_Buffer_Float_128;
+   subtype PCM_Sample    is Wav_Float_128;
+   subtype PCM_Buffer    is Wav_Buffer_Float_128;
+   subtype Channel_Range is Wav_Buffer_Range;
 
    package PCM_Sample_Text_IO renames Wav_Float_128_Text_IO;
 
    package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
      (PCM_Sample    => PCM_Sample,
+      Channel_Range => Channel_Range,
       PCM_MC_Sample => PCM_Buffer);
    use PCM_IO;
 

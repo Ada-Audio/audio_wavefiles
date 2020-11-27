@@ -61,13 +61,15 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
      Ada.Text_IO.Integer_IO (Integer_64);
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   subtype PCM_Sample is Wav_Float_128;
-   subtype PCM_Buffer is Wav_Buffer_Float_128;
+   subtype PCM_Sample    is Wav_Float_128;
+   subtype PCM_Buffer    is Wav_Buffer_Float_128;
+   subtype Channel_Range is Wav_Buffer_Range;
 
    package PCM_Sample_Text_IO renames Wav_Float_128_Text_IO;
 
    package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
      (PCM_Sample    => PCM_Sample,
+      Channel_Range => Channel_Range,
       PCM_MC_Sample => PCM_Buffer);
    use PCM_IO;
 
@@ -114,13 +116,15 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
                    10     => (-2#1.0#e-0),
                    others => 0.0);
 #else
-   subtype PCM_Sample is Wav_Fixed_64;
-   subtype PCM_Buffer is Wav_Buffer_Fixed_64;
+   subtype PCM_Sample    is Wav_Fixed_64;
+   subtype PCM_Buffer    is Wav_Buffer_Fixed_64;
+   subtype Channel_Range is Wav_Buffer_Range;
 
    package PCM_Sample_Text_IO renames Wav_Fixed_64_Text_IO;
 
    package PCM_IO is new Audio.Wavefiles.Generic_Fixed_PCM_IO
      (PCM_Sample    => PCM_Sample,
+      Channel_Range => Channel_Range,
       PCM_MC_Sample => PCM_Buffer);
    use PCM_IO;
 

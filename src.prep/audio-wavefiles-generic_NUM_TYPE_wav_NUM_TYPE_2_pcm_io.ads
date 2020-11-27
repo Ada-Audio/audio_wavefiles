@@ -38,7 +38,8 @@ private generic
 #else
    type PCM_Sample is delta <>;
 #end if;
-   type PCM_MC_Sample is array (Positive range <>) of PCM_Sample;
+   type Channel_Range is (<>);
+   type PCM_MC_Sample is array (Channel_Range range <>) of PCM_Sample;
 #if (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FLOAT") then
 package Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO is
 #elsif (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FIXED") then
@@ -54,7 +55,8 @@ package Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
 
    procedure Put (WF  : in out Wavefile;
                   PCM :        PCM_MC_Sample)
-     with Pre => Mode (WF) = Out_File;
+     with Pre => Mode (WF) = Out_File and
+                 Number_Of_Channels (WF) <= PCM'Length;
 
 #if (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FLOAT") then
 end Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO;

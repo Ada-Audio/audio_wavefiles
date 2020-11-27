@@ -24,6 +24,7 @@ begin
       Write_Stereo_Random_Noise : declare
          package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
            (PCM_Sample    => Wav_Float_32,
+            Channel_Range => Positive,
             PCM_MC_Sample => Wav_Buffer_Float_32);
          use PCM_IO;
 
