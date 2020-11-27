@@ -375,31 +375,30 @@ with Ada.Numerics.Generic_Elementary_Functions;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
 
+with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
+use  Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
+
 procedure Write_5_1_Channel_Sine_Tone (WF           : in out Wavefile;
                                        Sample_Rate  :        Float;
                                        Num_Channels :        Positive)
 is
+   type Wav_Buffer_5_1_Float_32  is
+     array (Channel_Position_5_1 range <>) of Wav_Float_32;
+
    package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
      (PCM_Sample    => Wav_Float_32,
-      Channel_Range => Wav_Buffer_Range,
-      PCM_MC_Sample => Wav_Buffer_Float_32);
+      Channel_Range => Channel_Position_5_1,
+      PCM_MC_Sample => Wav_Buffer_5_1_Float_32);
    use PCM_IO;
 
    package PCM_Elementary_Functions is new
      Ada.Numerics.Generic_Elementary_Functions (Wav_Float_32);
    use PCM_Elementary_Functions;
 
-   F_L   : constant := 1;
-   F_R   : constant := 2;
-   F_C   : constant := 3;
-   LFE   : constant := 4;
-   B_L   : constant := 5;
-   B_R   : constant := 6;
-
-   Freq  : constant Wav_Buffer_Float_32 (1 .. Num_Channels)
+   Freq  : constant Wav_Buffer_5_1_Float_32
      := (F_L => 440.0, F_R => 220.0, F_C => 110.0, LFE =>  55.0,
          B_L => 660.0, B_R => 880.0);
-   Amp   : constant Wav_Buffer_Float_32 (1 .. Num_Channels)
+   Amp   : constant Wav_Buffer_5_1_Float_32
      := (F_L => 0.50, F_R => 0.25, F_C => 0.10, LFE => 0.05,
          B_L => 0.25, B_R => 0.50);
    Duration_In_Secs : constant := 0.2;
@@ -407,7 +406,7 @@ is
      := Positive (Sample_Rate * Duration_In_Secs);
    Two_Pi           : constant := 2.0 * Ada.Numerics.Pi;
 
-   PCM_Buf          : Wav_Buffer_Float_32 (1 .. Num_Channels);
+   PCM_Buf          : Wav_Buffer_5_1_Float_32 (Channel_Position_5_1);
 begin
    for Sample in 1 .. Last_Sample loop
 
@@ -476,39 +475,32 @@ with Ada.Numerics.Generic_Elementary_Functions;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
 
+with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
+use  Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
+
 procedure Write_7_1_4_Channel_Sine_Tone (WF           : in out Wavefile;
                                          Sample_Rate  :        Float;
                                          Num_Channels :        Positive)
 is
+   type Wav_Buffer_7_1_4_Float_32  is
+     array (Channel_Position_7_1_4 range <>) of Wav_Float_32;
+
    package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
      (PCM_Sample    => Wav_Float_32,
-      Channel_Range => Wav_Buffer_Range,
-      PCM_MC_Sample => Wav_Buffer_Float_32);
+      Channel_Range => Channel_Position_7_1_4,
+      PCM_MC_Sample => Wav_Buffer_7_1_4_Float_32);
    use PCM_IO;
 
    package PCM_Elementary_Functions is new
      Ada.Numerics.Generic_Elementary_Functions (Wav_Float_32);
    use PCM_Elementary_Functions;
 
-   F_L   : constant := 1;
-   F_R   : constant := 2;
-   F_C   : constant := 3;
-   LFE   : constant := 4;
-   B_L   : constant := 5;
-   B_R   : constant := 6;
-   S_L   : constant := 7;
-   S_R   : constant := 8;
-   T_F_L : constant := 9;
-   T_F_R : constant := 10;
-   T_B_L : constant := 11;
-   T_B_R : constant := 12;
-
-   Freq  : constant Wav_Buffer_Float_32 (1 .. Num_Channels)
+   Freq  : constant Wav_Buffer_7_1_4_Float_32
      := (F_L   =>  440.0, F_R   =>  220.0, F_C =>  110.0, LFE =>   55.0,
          B_L   =>  660.0, B_R   =>  880.0, S_L =>  330.0, S_R =>  550.0,
          T_F_L => 1320.0, T_F_R => 1540.0,
          T_B_L => 1760.0, T_B_R => 2200.0);
-   Amp   : constant Wav_Buffer_Float_32 (1 .. Num_Channels)
+   Amp   : constant Wav_Buffer_7_1_4_Float_32
      := (F_L   => 0.50, F_R   => 0.25, F_C => 0.10, LFE =>  0.05,
          B_L   => 0.25, B_R   => 0.50, S_L => 0.20, S_R =>  0.60,
          T_F_L => 0.30, T_F_R => 0.40,
@@ -518,7 +510,7 @@ is
      := Positive (Sample_Rate * Duration_In_Secs);
    Two_Pi           : constant := 2.0 * Ada.Numerics.Pi;
 
-   PCM_Buf          : Wav_Buffer_Float_32 (1 .. Num_Channels);
+   PCM_Buf : Wav_Buffer_7_1_4_Float_32 (Channel_Position_7_1_4);
 begin
    for Sample in 1 .. Last_Sample loop
 
@@ -898,6 +890,11 @@ with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
 with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
 
+with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
+use  Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
+
+with Ada.Text_IO; use Ada.Text_IO;
+
 procedure Downmix_5_1_To_2_0_Wavefile is
    Wav_In_File_Name    : constant String := "out/5_1ch_sine.wav";
    Wav_Out_File_Name   : constant String := "out/2_0ch_dmx_sine.wav";
@@ -920,21 +917,25 @@ begin
 
    loop
       Downmix_PCM_MC_Sample : declare
-         package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
+         type Wav_Buffer_2_0_Float_64  is
+           array (Channel_Position_2_0 range <>) of Wav_Float_64;
+         type Wav_Buffer_5_1_Float_64  is
+           array (Channel_Position_5_1 range <>) of Wav_Float_64;
+
+         package PCM_IO_2_0 is new Audio.Wavefiles.Generic_Float_PCM_IO
            (PCM_Sample    => Wav_Float_64,
-            Channel_Range => Wav_Buffer_Range,
-            PCM_MC_Sample => Wav_Buffer_Float_64);
-         use PCM_IO;
+            Channel_Range => Channel_Position_2_0,
+            PCM_MC_Sample => Wav_Buffer_2_0_Float_64);
+         use PCM_IO_2_0;
 
-         PCM_Buf_In  : constant Wav_Buffer_Float_64 := Get (WF_In);
-         PCM_Buf_Out :          Wav_Buffer_Float_64 (1 .. 2);
+         package PCM_IO_5_1 is new Audio.Wavefiles.Generic_Float_PCM_IO
+           (PCM_Sample    => Wav_Float_64,
+            Channel_Range => Channel_Position_5_1,
+            PCM_MC_Sample => Wav_Buffer_5_1_Float_64);
+         use PCM_IO_5_1;
 
-         F_L : constant := 1;
-         F_R : constant := 2;
-         F_C : constant := 3;
-         LFE : constant := 4;
-         B_L : constant := 5;
-         B_R : constant := 6;
+         PCM_Buf_In  : constant Wav_Buffer_5_1_Float_64 := Get (WF_In);
+         PCM_Buf_Out : Wav_Buffer_2_0_Float_64 (Channel_Position_2_0);
       begin
          pragma Assert (PCM_Buf_In'Length = 6);
 
@@ -990,27 +991,25 @@ begin
 
    loop
       Downmix_PCM_MC_Sample : declare
-         package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
+         type Wav_Buffer_5_1_Float_64  is
+           array (Channel_Position_5_1 range <>) of Wav_Float_64;
+         type Wav_Buffer_7_1_4_Float_64  is
+           array (Channel_Position_7_1_4 range <>) of Wav_Float_64;
+
+         package PCM_IO_5_1 is new Audio.Wavefiles.Generic_Float_PCM_IO
            (PCM_Sample    => Wav_Float_64,
-            Channel_Range => Wav_Buffer_Range,
-            PCM_MC_Sample => Wav_Buffer_Float_64);
-         use PCM_IO;
+            Channel_Range => Channel_Position_5_1,
+            PCM_MC_Sample => Wav_Buffer_5_1_Float_64);
+         use PCM_IO_5_1;
 
-         PCM_Buf_In  : constant Wav_Buffer_Float_64 := Get (WF_In);
-         PCM_Buf_Out :          Wav_Buffer_Float_64 (1 .. 6);
+         package PCM_IO_7_1_4 is new Audio.Wavefiles.Generic_Float_PCM_IO
+           (PCM_Sample    => Wav_Float_64,
+            Channel_Range => Channel_Position_7_1_4,
+            PCM_MC_Sample => Wav_Buffer_7_1_4_Float_64);
+         use PCM_IO_7_1_4;
 
-         F_L   : constant := 1;
-         F_R   : constant := 2;
-         F_C   : constant := 3;
-         LFE   : constant := 4;
-         B_L   : constant := 5;
-         B_R   : constant := 6;
-         S_L   : constant := 7;
-         S_R   : constant := 8;
-         T_F_L : constant := 9;
-         T_F_R : constant := 10;
-         T_B_L : constant := 11;
-         T_B_R : constant := 12;
+         PCM_Buf_In  : constant Wav_Buffer_7_1_4_Float_64 := Get (WF_In);
+         PCM_Buf_Out : Wav_Buffer_5_1_Float_64 (Channel_Position_5_1);
       begin
          pragma Assert (PCM_Buf_In'Length = 12);
 
