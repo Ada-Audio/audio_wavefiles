@@ -1,6 +1,6 @@
 package body Audio.RIFF.Wav.Formats.Standard_Channel_Configurations is
 
-   function Guess_Channel_Configuration
+   function Guessed_Channel_Configuration
      (Number_Of_Channels : Positive) return Channel_Configuration is
    begin
       case Number_Of_Channels is
@@ -19,6 +19,6 @@ package body Audio.RIFF.Wav.Formats.Standard_Channel_Configurations is
          when 12 => return Channel_Config_7_1_4;
          when others => return Channel_Config_Empty;
       end case;
-   end Guess_Channel_Configuration;
+   end Guessed_Channel_Configuration;
 
 end Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
