@@ -45,6 +45,7 @@ project Cookbook is
                  "write_stereo_sine_wavefile.adb",
                  "write_5_1_channel_sine_wavefile.adb",
                  "write_7_1_4_channel_sine_wavefile.adb",
+                 "display_channel_config.adb",
                  "append_wavefile.adb",
                  "copy_wavefile.adb",
                  "copy_wavefile_using_fixed_point_buffer.adb",

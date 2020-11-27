@@ -565,6 +565,81 @@ begin
 end Write_7_1_4_Channel_Sine_Wavefile;
 ~~~~~~~~~~
 
+## Display channel configuration of a wavefile
+
+~~~~~~~~~~ada
+with Ada.Text_IO;            use Ada.Text_IO;
+
+with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
+
+with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
+use  Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
+
+procedure Display (Channel_Config : Channel_Configuration) is
+begin
+   if Channel_Config = Channel_Config_1_0 then
+      Put_Line ("1.0 channels (mono)");
+   elsif Channel_Config = Channel_Config_2_0 then
+      Put_Line ("2.0 channels (stereo)");
+   elsif Channel_Config = Channel_Config_3_0 then
+      Put_Line ("3.0 channels");
+   elsif Channel_Config = Channel_Config_4_0 then
+      Put_Line ("4.0 channels (quad)");
+   elsif Channel_Config = Channel_Config_5_0 then
+      Put_Line ("5.0 channels");
+   elsif Channel_Config = Channel_Config_5_1 then
+      Put_Line ("5.1 channels");
+   elsif Channel_Config = Channel_Config_7_0 then
+      Put_Line ("7.0 channels");
+   elsif Channel_Config = Channel_Config_7_1 then
+      Put_Line ("7.1 channels");
+   elsif Channel_Config = Channel_Config_7_1_BC then
+      Put_Line ("7.1 channels + back channel");
+   elsif Channel_Config = Channel_Config_5_1_2 then
+      Put_Line ("5.1.2 channels");
+   elsif Channel_Config = Channel_Config_5_1_4 then
+      Put_Line ("5.1.4 channels");
+   elsif Channel_Config = Channel_Config_7_0_4 then
+      Put_Line ("7.0.4 channels");
+   elsif Channel_Config = Channel_Config_7_1_2 then
+      Put_Line ("7.1.2 channels");
+   elsif Channel_Config = Channel_Config_7_1_4 then
+      Put_Line ("7.1.4 channels");
+   elsif Channel_Config = Channel_Config_Empty then
+      Put_Line ("Unknown configuration");
+   else
+      Put_Line ("WARNING: configuration is not listed!");
+   end if;
+end Display;
+
+with Audio.Wavefiles;        use Audio.Wavefiles;
+with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
+
+with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
+use  Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
+
+with Display;
+
+procedure Display_Channel_Config is
+   WF            : Wavefile;
+   Wav_File_Name : constant String := "ref/7_1_4ch_sine.wav";
+begin
+   WF.Open (In_File, Wav_File_Name);
+
+   if WF.Is_Open then
+      declare
+         Channel_Config : Channel_Configuration :=
+           Guessed_Channel_Configuration
+             (WF.Number_Of_Channels);
+      begin
+         Display (Channel_Config);
+      end;
+   end if;
+
+   WF.Close;
+end Display_Channel_Config;
+~~~~~~~~~~
+
 ## Append wavefile
 
 ~~~~~~~~~~ada
