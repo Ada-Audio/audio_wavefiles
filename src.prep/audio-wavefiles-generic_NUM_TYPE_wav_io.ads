@@ -33,7 +33,8 @@ generic
 #else
    type Wav_Sample is delta <>;
 #end if;
-   type Wav_MC_Sample is array (Positive range <>) of Wav_Sample;
+   type Channel_Range is (<>);
+   type Wav_MC_Sample is array (Channel_Range range <>) of Wav_Sample;
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 package Audio.Wavefiles.Generic_Float_Wav_IO is
 #else

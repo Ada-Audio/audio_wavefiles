@@ -28,10 +28,11 @@
 -------------------------------------------------------------------------------
 
 with Audio.RIFF.Wav.GUIDs;
+with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
 
 package body Audio.RIFF.Wav.Formats is
 
-   type Channel_Mask_Integer is mod 2**Channel_Mask_Type_Size;
+   type Channel_Configuration_Integer is mod 2 ** Channel_Configuration_Size;
 
    function To_RIFF_Identifier (FOURCC : FOURCC_String) return RIFF_Identifier
    is
@@ -114,16 +115,14 @@ package body Audio.RIFF.Wav.Formats is
 
    function Default return Wave_Format_Extensible is
       use Audio.RIFF.Wav.GUIDs;
+      use Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
    begin
       return W : Wave_Format_Extensible do
          Wave_Format_18 (W)      := Default;
          W.Size                  := 22;
          W.Valid_Bits_Per_Sample := To_Unsigned_16 (W.Bits_Per_Sample);
          W.Sub_Format            := GUID_Undefined;
-         W.Channel_Mask          :=
-           (Speaker_Front_Left  |
-            Speaker_Front_Right   => True,
-            others                => False);
+         W.Channel_Config        := Channel_Config_2_0;
       end return;
    end Default;
 
@@ -135,10 +134,11 @@ package body Audio.RIFF.Wav.Formats is
 
    procedure Reset_For_Wave_Format_18 (W : in out Wave_Format_Extensible) is
       use Audio.RIFF.Wav.GUIDs;
+      use Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
    begin
       W.Valid_Bits_Per_Sample := To_Unsigned_16 (W.Bits_Per_Sample);
       W.Sub_Format            := GUID_Undefined;
-      W.Channel_Mask          := (others => False);
+      W.Channel_Config        := Channel_Config_Empty;
    end Reset_For_Wave_Format_18;
 
    function To_GUID (Format : Wav_Format_Tag) return GUID is
@@ -197,26 +197,20 @@ package body Audio.RIFF.Wav.Formats is
       end if;
    end To_Wav_Format_Tag;
 
-   function Channel_Mask_Is_Consistent
-     (Channels            : Channel_Mask_Type;
-      Number_Of_Channels  : Unsigned_16) return Boolean
+   function Is_Consistent
+     (Channel_Config      : Channel_Configuration;
+      Number_Of_Channels  : Positive) return Boolean
    is
-      type Channel_Mask_Array is array (1 .. Channel_Mask_Type'Size) of Boolean
-        with Pack;
-
-      Channels_In_Mask : Unsigned_16 := 0;
-
-      Channel_Array : Channel_Mask_Array
-        with Import, Volatile, Address => Channels'Address;
+      Counted_Channels : Natural := 0;
    begin
-      for Ch of Channel_Array loop
-         if Ch then
-            Channels_In_Mask := Channels_In_Mask + 1;
+      for Channel_Is_Active of Channel_Config loop
+         if Channel_Is_Active then
+            Counted_Channels := Counted_Channels + 1;
          end if;
       end loop;
 
-      return Number_Of_Channels = Channels_In_Mask;
-   end Channel_Mask_Is_Consistent;
+      return Number_Of_Channels = Counted_Channels;
+   end Is_Consistent;
 
    function Should_Use_Extensible_Format
      (Bit_Depth          : Wav_Bit_Depth;
@@ -252,7 +246,9 @@ package body Audio.RIFF.Wav.Formats is
         := (if Use_Float then Wav_Format_IEEE_Float else Wav_Format_PCM);
       Use_Wav_Extensible : constant Boolean
         := Should_Use_Extensible_Format (Bit_Depth, Number_Of_Channels);
+
       use Audio.RIFF.Wav.GUIDs;
+      use Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
    begin
       return W : Wave_Format_Extensible do
          W.Channels          := Unsigned_16 (Number_Of_Channels);
@@ -267,11 +263,11 @@ package body Audio.RIFF.Wav.Formats is
             W.Size                  := 0;
             W.Valid_Bits_Per_Sample := 0;
             W.Sub_Format            := GUID_Undefined;
-            W.Channel_Mask          := (others => False);
+            W.Channel_Config        := Channel_Config_Empty;
          else
             W.Size                  := 22;
             W.Valid_Bits_Per_Sample := To_Unsigned_16 (W.Bits_Per_Sample);
-            W.Channel_Mask          := (others => False);
+            W.Channel_Config        := Channel_Config_Empty;
 
             Init_Formats : declare
                Sub_Format : constant GUID := To_GUID (Format);
@@ -297,28 +293,28 @@ package body Audio.RIFF.Wav.Formats is
         W.Sub_Format = GUID_IEEE_Float;
    end Is_Float_Format;
 
-   procedure Read_Channel_Mask
+   procedure Read_Channel_Configuration
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-      Item   : out Channel_Mask_Type)
+      Item   : out Channel_Configuration)
    is
-      V : Channel_Mask_Integer;
-      X : Channel_Mask_Type;
+      V : Channel_Configuration_Integer;
+      X : Channel_Configuration;
       for X'Address use V'Address;
    begin
-      Channel_Mask_Integer'Read (Stream, V);
+      Channel_Configuration_Integer'Read (Stream, V);
       Item := X;
-   end Read_Channel_Mask;
+   end Read_Channel_Configuration;
 
-   procedure Write_Channel_Mask
+   procedure Write_Channel_Configuration
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-      Item   : Channel_Mask_Type)
+      Item   : Channel_Configuration)
    is
-      V : Channel_Mask_Integer;
-      X : Channel_Mask_Type;
+      V : Channel_Configuration_Integer;
+      X : Channel_Configuration;
       for X'Address use V'Address;
    begin
       X := Item;
-      Channel_Mask_Integer'Write (Stream, V);
-   end Write_Channel_Mask;
+      Channel_Configuration_Integer'Write (Stream, V);
+   end Write_Channel_Configuration;
 
 end Audio.RIFF.Wav.Formats;

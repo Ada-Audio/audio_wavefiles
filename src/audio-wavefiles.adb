@@ -57,9 +57,9 @@ package body Audio.Wavefiles is
    procedure Check_Consistency
      (WF   : in out Wavefile) is
    begin
-      if not Channel_Mask_Is_Consistent
-        (Channels            => WF.Wave_Format.Channel_Mask,
-         Number_Of_Channels  => WF.Wave_Format.Channels)
+      if not Is_Consistent
+        (Channel_Config      => WF.Wave_Format.Channel_Config,
+         Number_Of_Channels  => Positive (WF.Wave_Format.Channels))
       then
          WF.Set_Warning (Wavefile_Warning_Inconsistent_Channel_Mask);
       end if;

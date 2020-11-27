@@ -127,6 +127,8 @@ simple_testcase Write_7_1_4_Channel_Sine_Wavefile
 check_wavinfo   Write_7_1_4_Channel_Sine_Wavefile   "7_1_4ch_sine.wav"
 check_wavefile  Write_7_1_4_Channel_Sine_Wavefile   "7_1_4ch_sine.wav"
 
+simple_testcase Display_Channel_Config
+
 simple_testcase Append_Wavefile
 check_wavinfo   Append_Wavefile                         "2ch_sine_append.wav"
 check_wavefile  Append_Wavefile                         "2ch_sine_append.wav"

@@ -28,7 +28,6 @@
 -------------------------------------------------------------------------------
 
 with Ada.Streams;
-with System;
 
 package Audio.RIFF.Wav.Formats is
 
@@ -95,48 +94,45 @@ package Audio.RIFF.Wav.Formats is
          Data_4 : Sub_GUID;
       end record;
 
-   type Channel_Mask_Bit is new Boolean with Size => 1;
+   Channel_Configuration_Size : constant Integer := 32;
 
-   Channel_Mask_Type_Size : constant Integer := 32;
+   type Speaker_Position is
+     (Speaker_Front_Left,
+      Speaker_Front_Right,
+      Speaker_Front_Center,
+      Speaker_Low_Frequency,
+      Speaker_Back_Left,
+      Speaker_Back_Right,
+      Speaker_Front_Left_Of_Center,
+      Speaker_Front_Right_Of_Center,
+      Speaker_Back_Center,
+      Speaker_Side_Left,
+      Speaker_Side_Right,
+      Speaker_Top_Center,
+      Speaker_Top_Front_Left,
+      Speaker_Top_Front_Center,
+      Speaker_Top_Front_Right,
+      Speaker_Top_Back_Left,
+      Speaker_Top_Back_Center,
+      Speaker_Top_Back_Right);
 
-   type Channel_Mask_Type is
-      record
-         Speaker_Front_Left            : Channel_Mask_Bit;
-         Speaker_Front_Right           : Channel_Mask_Bit;
-         Speaker_Front_Center          : Channel_Mask_Bit;
-         Speaker_Low_Frequency         : Channel_Mask_Bit;
-         Speaker_Back_Left             : Channel_Mask_Bit;
-         Speaker_Back_Right            : Channel_Mask_Bit;
-         Speaker_Front_Left_Of_Center  : Channel_Mask_Bit;
-         Speaker_Front_Right_Of_Center : Channel_Mask_Bit;
-         Speaker_Back_Center           : Channel_Mask_Bit;
-         Speaker_Side_Left             : Channel_Mask_Bit;
-         Speaker_Side_Right            : Channel_Mask_Bit;
-         Speaker_Top_Center            : Channel_Mask_Bit;
-         Speaker_Top_Front_Left        : Channel_Mask_Bit;
-         Speaker_Top_Front_Center      : Channel_Mask_Bit;
-         Speaker_Top_Front_Right       : Channel_Mask_Bit;
-         Speaker_Top_Back_Left         : Channel_Mask_Bit;
-         Speaker_Top_Back_Center       : Channel_Mask_Bit;
-         Speaker_Top_Back_Right        : Channel_Mask_Bit;
-      end record
+   type Channel_Configuration is array (Speaker_Position) of Boolean
      with
-       Pack, Size => Channel_Mask_Type_Size,
-       Read       => Read_Channel_Mask,
-       Write      => Write_Channel_Mask,
-       Bit_Order  => System.Low_Order_First;
+       Pack, Size => Channel_Configuration_Size,
+       Read       => Read_Channel_Configuration,
+       Write      => Write_Channel_Configuration;
 
-   procedure Read_Channel_Mask
+   procedure Read_Channel_Configuration
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-      Item   : out Channel_Mask_Type);
+      Item   : out Channel_Configuration);
 
-   procedure Write_Channel_Mask
+   procedure Write_Channel_Configuration
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-      Item   : Channel_Mask_Type);
+      Item   : Channel_Configuration);
 
-   function Channel_Mask_Is_Consistent
-     (Channels            : Channel_Mask_Type;
-      Number_Of_Channels  : Unsigned_16) return Boolean;
+   function Is_Consistent
+     (Channel_Config      : Channel_Configuration;
+      Number_Of_Channels  : Positive) return Boolean;
 
    type Wav_Sample_Rate is
      (Sample_Rate_8000,
@@ -431,7 +427,7 @@ package Audio.RIFF.Wav.Formats is
    type Wave_Format_Extensible is new Wave_Format_18 with
       record
          Valid_Bits_Per_Sample : Unsigned_16;
-         Channel_Mask          : Channel_Mask_Type;
+         Channel_Config        : Channel_Configuration;
          Sub_Format            : GUID;
       end record;
 
