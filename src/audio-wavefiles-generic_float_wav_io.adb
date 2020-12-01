@@ -33,6 +33,8 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
                          Sample      : out Wav_Sample);
    procedure Write_Bytes (File_Access :    Ada.Streams.Stream_IO.Stream_Access;
                           Sample      :    Wav_Sample);
+   procedure Read_Samples (WF  : in out Wavefile;
+                           Wav :    out Wav_MC_Sample);
 
    procedure Read_Bytes (File_Access :     Ada.Streams.Stream_IO.Stream_Access;
                          Sample      : out Wav_Sample)
@@ -65,7 +67,8 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
       Byte_Array'Write (File_Access, Bytes);
    end Write_Bytes;
 
-   function Get (WF  : in out Wavefile) return Wav_MC_Sample
+   procedure Read_Samples (WF  : in out Wavefile;
+                           Wav :    out Wav_MC_Sample)
    is
       N_Ch   : constant Positive := Number_Of_Channels (WF);
       Sample : Wav_Sample;
@@ -78,6 +81,34 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
         := Positive_Count
           (To_Positive (WF.Wave_Format.Bits_Per_Sample) * N_Ch / 8)
         with Ghost;
+   begin
+      for J in Wav'Range loop
+
+         --  Patch for 24-bit wavefiles
+         if Wav_Sample'Size = 24 then
+            Read_Bytes (WF.File_Access, Sample);
+         else
+            Wav_Sample'Read (WF.File_Access, Sample);
+         end if;
+
+         Wav (J) := Sample;
+         if Ada.Streams.Stream_IO.End_Of_File (WF.File) and then
+           J < Wav'Last
+         then
+            --  Cannot read data for all channels
+            WF.Set_Error (Wavefile_Error_File_Too_Short);
+         end if;
+      end loop;
+
+      WF.Sample_Pos.Current := WF.Sample_Pos.Current + 1;
+
+      pragma Assert (Ada.Streams.Stream_IO.Index (WF.File) =
+                       Prev_File_Index + Expected_Byte_IO);
+   end Read_Samples;
+
+   function Get (WF  : in out Wavefile) return Wav_MC_Sample
+   is
+      N_Ch   : constant Positive := Number_Of_Channels (WF);
 
       Channel_Range_Valid_Last : constant Channel_Range :=
         Channel_Range'Val (N_Ch - 1
@@ -87,29 +118,14 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
         Channel_Range'First .. Channel_Range_Valid_Last;
    begin
       return Wav : Wav_MC_Sample (Valid_Channel_Range) do
-         for J in Valid_Channel_Range loop
-
-            --  Patch for 24-bit wavefiles
-            if Wav_Sample'Size = 24 then
-               Read_Bytes (WF.File_Access, Sample);
-            else
-               Wav_Sample'Read (WF.File_Access, Sample);
-            end if;
-
-            Wav (J) := Sample;
-            if Ada.Streams.Stream_IO.End_Of_File (WF.File) and then
-              J < Channel_Range_Valid_Last
-            then
-               --  Cannot read data for all channels
-               WF.Set_Error (Wavefile_Error_File_Too_Short);
-            end if;
-         end loop;
-
-         WF.Sample_Pos.Current := WF.Sample_Pos.Current + 1;
-
-         pragma Assert (Ada.Streams.Stream_IO.Index (WF.File) =
-                          Prev_File_Index + Expected_Byte_IO);
+         Read_Samples (WF, Wav);
       end return;
+   end Get;
+
+   procedure Get (WF  : in out Wavefile;
+                  Wav :    out Wav_MC_Sample) is
+   begin
+      Read_Samples (WF, Wav);
    end Get;
 
    procedure Put (WF  : in out Wavefile;

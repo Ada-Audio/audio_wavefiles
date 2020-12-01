@@ -37,6 +37,11 @@ package Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO is
    function Get (WF   : in out Wavefile) return PCM_MC_Sample
      with Pre => Mode (WF) = In_File;
 
+   procedure Get (WF   : in out Wavefile;
+                  PCM  :    out PCM_MC_Sample)
+     with Pre => Mode (WF) = In_File and
+                 Number_Of_Channels (WF) <= PCM'Length;
+
    procedure Put (WF  : in out Wavefile;
                   PCM :        PCM_MC_Sample)
      with Pre => Mode (WF) = Out_File and

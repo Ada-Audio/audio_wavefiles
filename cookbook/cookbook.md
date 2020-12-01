@@ -717,8 +717,9 @@ begin
             PCM_MC_Sample => Wav_Buffer_Float_64);
          use PCM_IO;
 
-         PCM_Buf : constant Wav_Buffer_Float_64 := Get (WF_In);
+         PCM_Buf : Wav_Buffer_Float_64 (1 .. WF_In.Number_Of_Channels);
       begin
+         Get (WF_In,  PCM_Buf);
          Put (WF_Out, PCM_Buf);
          exit when WF_In.End_Of_File;
       end Copy_PCM_MC_Sample;
@@ -728,6 +729,20 @@ begin
    WF_Out.Close;
 end Copy_Wavefile;
 ~~~~~~~~~~
+
+Alternatively:
+
+```
+      Copy_PCM_MC_Sample : declare
+         --  ...
+
+         PCM_Buf : constant Wav_Buffer_Float_64 := Get (WF_In);
+      begin
+         Put (WF_Out, PCM_Buf);
+         exit when WF_In.End_Of_File;
+      end Copy_PCM_MC_Sample;
+```
+
 
 ## Copy complete wavefile using fixed-point buffer
 
@@ -757,8 +772,9 @@ begin
             PCM_MC_Sample => Wav_Buffer_Fixed_16);
          use PCM_IO;
 
-         PCM_Buf : constant Wav_Buffer_Fixed_16 := Get (WF_In);
+         PCM_Buf : Wav_Buffer_Fixed_16 (1 .. WF_In.Number_Of_Channels);
       begin
+         Get (WF_In,  PCM_Buf);
          Put (WF_Out, PCM_Buf);
          exit when WF_In.End_Of_File;
       end Copy_PCM_MC_Sample;
@@ -838,8 +854,9 @@ begin
                PCM_MC_Sample => Wav_Buffer_Float_64);
             use PCM_IO;
 
-            PCM_Buf : constant Wav_Buffer_Float_64 := Get (WF_In);
+            PCM_Buf : Wav_Buffer_Float_64 (1 .. WF_In.Number_Of_Channels);
          begin
+            Get (WF_In,  PCM_Buf);
             Put (WF_Out, PCM_Buf);
             exit when WF_In.Current_Time >= Stop_Time;
          end Copy_PCM_MC_Sample;
@@ -890,8 +907,9 @@ begin
             PCM_MC_Sample => Wav_Buffer_Float_32);
          use PCM_IO;
 
-         PCM_Buf : constant Wav_Buffer_Float_32 := Get (WF_In);
+         PCM_Buf : Wav_Buffer_Float_32 (1 .. WF_In.Number_Of_Channels);
       begin
+         Get (WF_In,  PCM_Buf);
          Put (WF_Out, PCM_Buf);
          exit when WF_In.End_Of_File;
       end Copy_PCM_MC_Sample;
@@ -938,14 +956,15 @@ begin
             PCM_MC_Sample => Wav_Buffer_Float_64);
          use PCM_IO;
 
-         PCM_Buf_In  : constant Wav_Buffer_Float_64 := Get (WF_In);
-         PCM_Buf_Out :          Wav_Buffer_Float_64 (1 .. 1);
+         PCM_Buf_In  : Wav_Buffer_Float_64 (1 .. WF_In.Number_Of_Channels);
+         PCM_Buf_Out : Wav_Buffer_Float_64 (1 .. 1);
 
          L : constant := 1;
          R : constant := 2;
       begin
          pragma Assert (PCM_Buf_In'Length = 2);
 
+         Get (WF_In, PCM_Buf_In);
          PCM_Buf_Out (1) := PCM_Buf_In (L) * 0.5 + PCM_Buf_In (R) * 0.5;
          Put (WF_Out, PCM_Buf_Out);
          exit when WF_In.End_Of_File;
@@ -1009,11 +1028,12 @@ begin
             PCM_MC_Sample => Wav_Buffer_5_1_Float_64);
          use PCM_IO_5_1;
 
-         PCM_Buf_In  : constant Wav_Buffer_5_1_Float_64 := Get (WF_In);
+         PCM_Buf_In  : Wav_Buffer_5_1_Float_64 (Channel_Position_5_1);
          PCM_Buf_Out : Wav_Buffer_2_0_Float_64 (Channel_Position_2_0);
       begin
          pragma Assert (PCM_Buf_In'Length = 6);
 
+         Get (WF_In, PCM_Buf_In);
          PCM_Buf_Out (F_L) :=   PCM_Buf_In (F_L) * 0.35
                               + PCM_Buf_In (F_C) * 0.25
                               + PCM_Buf_In (LFE) * 0.15
@@ -1083,11 +1103,12 @@ begin
             PCM_MC_Sample => Wav_Buffer_7_1_4_Float_64);
          use PCM_IO_7_1_4;
 
-         PCM_Buf_In  : constant Wav_Buffer_7_1_4_Float_64 := Get (WF_In);
+         PCM_Buf_In  : Wav_Buffer_7_1_4_Float_64 (Channel_Position_7_1_4);
          PCM_Buf_Out : Wav_Buffer_5_1_Float_64 (Channel_Position_5_1);
       begin
          pragma Assert (PCM_Buf_In'Length = 12);
 
+         Get (WF_In, PCM_Buf_In);
          PCM_Buf_Out (F_L) :=   PCM_Buf_In (F_L)   * 0.4
                               + PCM_Buf_In (S_L)   * 0.2
                               + PCM_Buf_In (T_F_L) * 0.4;
@@ -1145,8 +1166,9 @@ begin
             Wav_MC_Sample => Wav_Buffer_Fixed_16);
          use Wav_IO;
 
-         Wav_Buf : constant Wav_Buffer_Fixed_16 := Get (WF_In);
+         Wav_Buf : Wav_Buffer_Fixed_16 (1 .. WF_In.Number_Of_Channels);
       begin
+         Get (WF_In,  Wav_Buf);
          Put (WF_Out, Wav_Buf);
          exit when WF_In.End_Of_File;
       end Copy_Wav_MC_Sample;

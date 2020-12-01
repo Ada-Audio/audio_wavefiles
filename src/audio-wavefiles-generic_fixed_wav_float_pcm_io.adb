@@ -39,10 +39,17 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO is
       Wav_MC_Sample => Wav_MC_Sample);
    use Wav_IO;
 
+   procedure Convert (Wav :     Wav_MC_Sample;
+                      PCM : out PCM_MC_Sample)
+     with Inline;
+   procedure Convert (PCM :     PCM_MC_Sample;
+                      Wav : out Wav_MC_Sample)
+     with Inline;
    function Convert (Wav : Wav_MC_Sample) return PCM_MC_Sample
      with Inline;
    function Convert (PCM : PCM_MC_Sample) return Wav_MC_Sample
      with Inline;
+   pragma Unreferenced (Convert);
    function Saturate (PCM : PCM_Sample) return Wav_Sample
      with Inline;
 
@@ -57,21 +64,33 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO is
       end if;
    end Saturate;
 
+   procedure Convert (Wav :     Wav_MC_Sample;
+                      PCM : out PCM_MC_Sample) is
+   begin
+      for I in PCM'Range loop
+         PCM (I) := PCM_Sample (Wav (I));
+      end loop;
+   end Convert;
+
+   procedure Convert (PCM :     PCM_MC_Sample;
+                      Wav : out Wav_MC_Sample) is
+   begin
+      for I in Wav'Range loop
+         Wav (I) := Saturate (PCM (I));
+      end loop;
+   end Convert;
+
    function Convert (Wav : Wav_MC_Sample) return PCM_MC_Sample is
    begin
       return PCM : PCM_MC_Sample (Wav'Range) do
-         for I in PCM'Range loop
-            PCM (I) := PCM_Sample (Wav (I));
-         end loop;
+         Convert (Wav, PCM);
       end return;
    end Convert;
 
    function Convert (PCM : PCM_MC_Sample) return Wav_MC_Sample is
    begin
       return Wav : Wav_MC_Sample (PCM'Range) do
-         for I in Wav'Range loop
-            Wav (I) := Saturate (PCM (I));
-         end loop;
+         Convert (PCM, Wav);
       end return;
    end Convert;
 
@@ -82,10 +101,19 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO is
       return PCM;
    end Get;
 
+   procedure Get (WF   : in out Wavefile;
+                  PCM  :    out PCM_MC_Sample) is
+      Wav : Wav_MC_Sample (PCM'Range);
+   begin
+      Get (WF, Wav);
+      Convert (Wav, PCM);
+   end Get;
+
    procedure Put (WF  : in out Wavefile;
                   PCM :        PCM_MC_Sample) is
-      Wav  : constant Wav_MC_Sample := Convert (PCM);
+      Wav : Wav_MC_Sample (PCM'Range);
    begin
+      Convert (PCM, Wav);
       Put (WF, Wav);
    end Put;
 
