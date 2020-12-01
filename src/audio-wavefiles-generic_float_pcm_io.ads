@@ -37,6 +37,11 @@ package Audio.Wavefiles.Generic_Float_PCM_IO is
      (WF   : in out Wavefile) return PCM_MC_Sample
      with Inline, Pre => Mode (WF) = In_File;
 
+   procedure Get
+     (WF   : in out Wavefile;
+      PCM  :    out PCM_MC_Sample)
+     with Inline, Pre => Mode (WF) = In_File;
+
    procedure Put
      (WF   : in out Wavefile;
       PCM  :        PCM_MC_Sample)

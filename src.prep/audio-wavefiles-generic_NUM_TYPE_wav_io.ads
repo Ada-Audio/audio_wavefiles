@@ -44,6 +44,9 @@ package Audio.Wavefiles.Generic_Fixed_Wav_IO is
    function Get (WF  : in out Wavefile) return Wav_MC_Sample
      with Inline, Pre => Mode (WF) = In_File;
 
+   procedure Get (WF  : in out Wavefile;
+                  Wav :    out Wav_MC_Sample)
+     with Inline, Pre => Mode (WF) = In_File;
 
    procedure Put (WF  : in out Wavefile;
                   Wav :        Wav_MC_Sample)

@@ -116,6 +116,49 @@ package body Audio.Wavefiles.Generic_Float_PCM_IO is
 
    end Get;
 
+   procedure Get
+     (WF   : in out Wavefile;
+      PCM  :    out PCM_MC_Sample) is
+   begin
+      if not WF.Is_Opened then
+         WF.Set_Error (Wavefile_Error_File_Not_Open);
+         PCM := (others => 0.0);
+      end if;
+
+      if not Is_Supported_Format (WF.Wave_Format) then
+         WF.Set_Error (Wavefile_Error_Unsupported_Wavefile_Format);
+         PCM := (others => 0.0);
+      end if;
+
+      if WF.Wave_Format.Is_Float_Format then
+         case WF.Wave_Format.Bits_Per_Sample is
+            when Bit_Depth_8 | Bit_Depth_16 | Bit_Depth_24 =>
+               WF.Set_Error (Wavefile_Error_Unsupported_Bit_Depth);
+               PCM := (others => 0.0);
+            when Bit_Depth_32 =>
+               PCM_Float_Wav_32.Get (WF, PCM);
+            when Bit_Depth_64 =>
+               PCM_Float_Wav_64.Get (WF, PCM);
+         end case;
+      else
+         --  Always assume fixed-point PCM format
+         case WF.Wave_Format.Bits_Per_Sample is
+            when Bit_Depth_8 =>
+               WF.Set_Error (Wavefile_Error_Unsupported_Bit_Depth);
+               PCM := (others => 0.0);
+            when Bit_Depth_16 =>
+               PCM_Fixed_Wav_16.Get (WF, PCM);
+            when Bit_Depth_24 =>
+               PCM_Fixed_Wav_24.Get (WF, PCM);
+            when Bit_Depth_32 =>
+               PCM_Fixed_Wav_32.Get (WF, PCM);
+            when Bit_Depth_64 =>
+               WF.Set_Error (Wavefile_Error_Unsupported_Bit_Depth);
+               PCM := (others => 0.0);
+         end case;
+      end if;
+   end Get;
+
    procedure Put
      (WF   : in out Wavefile;
       PCM  :        PCM_MC_Sample) is
