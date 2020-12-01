@@ -49,6 +49,7 @@ package body Audio.Wavefiles.Generic_Float_Wav_Float_PCM_IO is
      with Inline;
    function Convert (PCM : PCM_MC_Sample) return Wav_MC_Sample
      with Inline;
+   pragma Unreferenced (Convert);
 
    procedure Convert (Wav :     Wav_MC_Sample;
                       PCM : out PCM_MC_Sample) is

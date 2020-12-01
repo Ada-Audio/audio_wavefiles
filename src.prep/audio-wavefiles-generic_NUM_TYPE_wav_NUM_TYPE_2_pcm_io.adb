@@ -65,6 +65,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Fixed_PCM_IO is
      with Inline;
    function Convert (PCM : PCM_MC_Sample) return Wav_MC_Sample
      with Inline;
+   pragma Unreferenced (Convert);
 #if (NUM_TYPE = "FLOAT") and then (NUM_TYPE_2 = "FIXED") then
    function Saturate (Wav : Wav_Sample) return PCM_Sample
      with Inline;
