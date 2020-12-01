@@ -150,9 +150,12 @@ end Display_RIFF_Chunks;
 ## Reading data from a wavefile
 
 ~~~~~~~~~~ada
-with Ada.Text_IO;                          use Ada.Text_IO;
-
 with Audio.Wavefiles;                      use Audio.Wavefiles;
+
+procedure Put_Time (Item : Wavefile_Time_In_Seconds);
+
+
+with Ada.Text_IO;                          use Ada.Text_IO;
 
 procedure Put_Time (Item : Wavefile_Time_In_Seconds)
 is
@@ -366,8 +369,7 @@ end Write_Stereo_Sine_Wavefile;
 with Audio.Wavefiles; use Audio.Wavefiles;
 
 procedure Write_5_1_Channel_Sine_Tone (WF           : in out Wavefile;
-                                       Sample_Rate  :        Float;
-                                       Num_Channels :        Positive);
+                                       Sample_Rate  :        Float);
 
 with Ada.Numerics;
 with Ada.Numerics.Generic_Elementary_Functions;
@@ -379,8 +381,7 @@ with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
 use  Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
 
 procedure Write_5_1_Channel_Sine_Tone (WF           : in out Wavefile;
-                                       Sample_Rate  :        Float;
-                                       Num_Channels :        Positive)
+                                       Sample_Rate  :        Float)
 is
    type Wav_Buffer_5_1_Float_32  is
      array (Channel_Position_5_1 range <>) of Wav_Float_32;
@@ -452,8 +453,7 @@ begin
    if WF.Is_Open then
       Write_5_1_Channel_Sine_Tone
         (WF           => WF,
-         Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),
-         Num_Channels => Num_Channels);
+         Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)));
 
       WF.Close;
    end if;
@@ -466,8 +466,7 @@ end Write_5_1_Channel_Sine_Wavefile;
 with Audio.Wavefiles; use Audio.Wavefiles;
 
 procedure Write_7_1_4_Channel_Sine_Tone (WF           : in out Wavefile;
-                                         Sample_Rate  :        Float;
-                                         Num_Channels :        Positive);
+                                         Sample_Rate  :        Float);
 
 with Ada.Numerics;
 with Ada.Numerics.Generic_Elementary_Functions;
@@ -479,8 +478,7 @@ with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
 use  Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
 
 procedure Write_7_1_4_Channel_Sine_Tone (WF           : in out Wavefile;
-                                         Sample_Rate  :        Float;
-                                         Num_Channels :        Positive)
+                                         Sample_Rate  :        Float)
 is
    type Wav_Buffer_7_1_4_Float_32  is
      array (Channel_Position_7_1_4 range <>) of Wav_Float_32;
@@ -557,8 +555,7 @@ begin
    if WF.Is_Open then
       Write_7_1_4_Channel_Sine_Tone
         (WF           => WF,
-         Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),
-         Num_Channels => Num_Channels);
+         Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)));
 
       WF.Close;
    end if;
@@ -568,9 +565,12 @@ end Write_7_1_4_Channel_Sine_Wavefile;
 ## Display channel configuration of a wavefile
 
 ~~~~~~~~~~ada
-with Ada.Text_IO;            use Ada.Text_IO;
-
 with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
+
+procedure Display (Channel_Config : Channel_Configuration);
+
+
+with Ada.Text_IO;            use Ada.Text_IO;
 
 with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
 use  Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
@@ -628,7 +628,7 @@ begin
 
    if WF.Is_Open then
       declare
-         Channel_Config : Channel_Configuration :=
+         Channel_Config : constant Channel_Configuration :=
            Guessed_Channel_Configuration
              (WF.Number_Of_Channels);
       begin
@@ -790,6 +790,10 @@ end Copy_Wavefile_Using_Fixed_Point_Buffer;
 ~~~~~~~~~~ada
 with Audio.Wavefiles; use Audio.Wavefiles;
 
+procedure Display_Time_Info (WF       : Wavefile;
+                             Preamble : String);
+
+
 with Ada.Text_IO;
 
 procedure Display_Time_Info (WF       : Wavefile;
@@ -817,7 +821,7 @@ procedure Copy_Parts_Of_Wavefile is
    WF_In  : Wavefile;
    WF_Out : Wavefile;
 
-   Start_Sample : constant Sample_Count := 4_607;
+   --  Start_Sample : constant Sample_Count := 4_607;
 
    Start_Time  : constant Wavefile_Time_In_Seconds := 0.095979166;
    Stop_Time   : constant Wavefile_Time_In_Seconds := 0.117084166;
@@ -986,8 +990,6 @@ with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
 
 with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
 use  Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
-
-with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Downmix_5_1_To_2_0_Wavefile is
    Wav_In_File_Name    : constant String := "out/5_1ch_sine.wav";
@@ -1391,6 +1393,10 @@ end Read_To_Memory_Per_Channel;
 with Ada.Text_IO;     use Ada.Text_IO;
 
 with Audio.Wavefiles; use Audio.Wavefiles;
+
+procedure Write_XML (Xml_File : File_Type;
+                     Data     : Byte_Array);
+
 
 procedure Write_XML (Xml_File : File_Type;
                      Data     : Byte_Array) is
