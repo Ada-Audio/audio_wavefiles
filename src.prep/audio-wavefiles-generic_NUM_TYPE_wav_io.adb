@@ -33,6 +33,8 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
 package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
 #end if;
 
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+#else
    procedure Read_Wav_Sample_Bytes
      (File_Access :     Ada.Streams.Stream_IO.Stream_Access;
       Sample      : out Wav_Sample)
@@ -41,6 +43,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
      (File_Access :    Ada.Streams.Stream_IO.Stream_Access;
       Sample      :    Wav_Sample)
      with Inline;
+#end if;
    procedure Read_Wav_MC_Sample (WF  : in out Wavefile;
                                  Wav :    out Wav_MC_Sample)
      with Inline;
@@ -48,6 +51,8 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
                                   Wav :        Wav_MC_Sample)
      with Inline;
 
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+#else
    procedure Read_Wav_Sample_Bytes
      (File_Access :     Ada.Streams.Stream_IO.Stream_Access;
       Sample      : out Wav_Sample)
@@ -81,6 +86,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
       Byte_Array'Write (File_Access, Bytes);
    end Write_Wav_Sample_Bytes;
 
+#end if;
    procedure Read_Wav_MC_Sample
      (WF  : in out Wavefile;
       Wav :    out Wav_MC_Sample)
@@ -98,6 +104,9 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
         with Ghost;
    begin
       for J in Wav'Range loop
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+         Wav_Sample'Read (WF.File_Access, Sample);
+#else
 
          --  Patch for 24-bit wavefiles
          if Wav_Sample'Size = 24 then
@@ -105,6 +114,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
          else
             Wav_Sample'Read (WF.File_Access, Sample);
          end if;
+#end if;
 
          Wav (J) := Sample;
          if Ada.Streams.Stream_IO.End_Of_File (WF.File) and then
@@ -136,6 +146,9 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
           (To_Positive (WF.Wave_Format.Bits_Per_Sample) * N_Ch / 8)
         with Ghost;
    begin
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+      Wav_MC_Sample'Write (WF.File_Access, Wav);
+#else
       if Wav_Sample'Size = 24 then
          for Sample of Wav loop
             Write_Wav_Sample_Bytes (WF.File_Access, Sample);
@@ -143,6 +156,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
       else
          Wav_MC_Sample'Write (WF.File_Access, Wav);
       end if;
+#end if;
 
       WF.Sample_Pos := (Total   => WF.Sample_Pos.Total   + 1,
                         Current => WF.Sample_Pos.Current + 1);
