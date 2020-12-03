@@ -29,11 +29,11 @@
 
 package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
 
-   procedure Read_Wav_Sample
+   procedure Read_Wav_Sample_Bytes
      (File_Access :     Ada.Streams.Stream_IO.Stream_Access;
       Sample      : out Wav_Sample)
      with Inline;
-   procedure Write_Wav_Sample
+   procedure Write_Wav_Sample_Bytes
      (File_Access :    Ada.Streams.Stream_IO.Stream_Access;
       Sample      :    Wav_Sample)
      with Inline;
@@ -44,7 +44,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
                                   Wav :        Wav_MC_Sample)
      with Inline;
 
-   procedure Read_Wav_Sample
+   procedure Read_Wav_Sample_Bytes
      (File_Access :     Ada.Streams.Stream_IO.Stream_Access;
       Sample      : out Wav_Sample)
    is
@@ -65,9 +65,9 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
            (others => (if Bytes (Last_Valid_Byte) >= 16#80#
                        then 16#FF# else 16#00#));
       end if;
-   end Read_Wav_Sample;
+   end Read_Wav_Sample_Bytes;
 
-   procedure Write_Wav_Sample
+   procedure Write_Wav_Sample_Bytes
      (File_Access :    Ada.Streams.Stream_IO.Stream_Access;
       Sample      :    Wav_Sample)
    is
@@ -75,7 +75,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
         with Address => Sample'Address, Import, Volatile;
    begin
       Byte_Array'Write (File_Access, Bytes);
-   end Write_Wav_Sample;
+   end Write_Wav_Sample_Bytes;
 
    procedure Read_Wav_MC_Sample
      (WF  : in out Wavefile;
@@ -97,7 +97,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
 
          --  Patch for 24-bit wavefiles
          if Wav_Sample'Size = 24 then
-            Read_Wav_Sample (WF.File_Access, Sample);
+            Read_Wav_Sample_Bytes (WF.File_Access, Sample);
          else
             Wav_Sample'Read (WF.File_Access, Sample);
          end if;
@@ -134,7 +134,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
    begin
       if Wav_Sample'Size = 24 then
          for Sample of Wav loop
-            Write_Wav_Sample (WF.File_Access, Sample);
+            Write_Wav_Sample_Bytes (WF.File_Access, Sample);
          end loop;
       else
          Wav_MC_Sample'Write (WF.File_Access, Wav);
