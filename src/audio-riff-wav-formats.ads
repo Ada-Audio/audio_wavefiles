@@ -167,6 +167,9 @@ package Audio.RIFF.Wav.Formats is
    function To_Unsigned_32 (SR : Wav_Sample_Rate) return Unsigned_32 is
      (Wav_Sample_Rate'Enum_Rep (SR));
 
+   function To_Float (SR : Wav_Sample_Rate) return Float is
+     (Float (Wav_Sample_Rate'Enum_Rep (SR)));
+
    type Wav_Bit_Depth is
      (Bit_Depth_8, Bit_Depth_16, Bit_Depth_24, Bit_Depth_32, Bit_Depth_64)
      with Size => Unsigned_16'Size;
