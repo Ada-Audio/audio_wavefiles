@@ -35,6 +35,8 @@ package Audio.Wavefiles.Data_Types is
    D_32     : constant := 1.0 / 2.0 ** (32 - 1);
    D_64     : constant := 1.0 / 2.0 ** (64 - 1);
 
+   type Wav_Unsigned_Fixed_8 is delta D_8 range 0.0 .. 2.0 - D_8
+     with Size => 8,  Stream_Size => 8;
    type Wav_Fixed_8 is delta D_8 range -1.0 .. 1.0 - D_8
      with Size => 8,  Stream_Size => 8;
    type Wav_Fixed_16 is delta D_16 range -1.0 .. 1.0 - D_16
@@ -70,6 +72,8 @@ package Audio.Wavefiles.Data_Types is
 
    subtype Wav_Buffer_Range is Positive;
 
+   type Wav_Buffer_Unsigned_Fixed_8   is
+     array (Wav_Buffer_Range range <>) of Wav_Unsigned_Fixed_8;
    type Wav_Buffer_Fixed_8   is
      array (Wav_Buffer_Range range <>) of Wav_Fixed_8;
    type Wav_Buffer_Fixed_16  is

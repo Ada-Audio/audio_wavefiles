@@ -224,7 +224,6 @@ begin
 end Read_Display_Wavefile_Data;
 ~~~~~~~~~~
 
-
 ## Writing mono wavefile with silence
 
 ~~~~~~~~~~ada
@@ -1221,6 +1220,103 @@ begin
    WF_In.Close;
    WF_Out.Close;
 end Direct_Copy_Float_Wavefile;
+~~~~~~~~~~
+
+## Convert 8-bit wavefile to 16-bit wavefile
+
+~~~~~~~~~~ada
+with Ada.Text_IO;                          use Ada.Text_IO;
+
+with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
+with Audio.Wavefiles.Generic_Fixed_Wav_IO;
+with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
+
+procedure Convert_8_Bit_To_16_Bit_Wavefile is
+
+   package Wav_IO_8 is new Audio.Wavefiles.Generic_Fixed_Wav_IO
+     (Wav_Sample    => Wav_Unsigned_Fixed_8,
+      Channel_Range => Wav_Buffer_Range,
+      Wav_MC_Sample => Wav_Buffer_Unsigned_Fixed_8);
+   use Wav_IO_8;
+
+   package Wav_IO_16 is new Audio.Wavefiles.Generic_Fixed_Wav_IO
+     (Wav_Sample    => Wav_Fixed_16,
+      Channel_Range => Wav_Buffer_Range,
+      Wav_MC_Sample => Wav_Buffer_Fixed_16);
+   use Wav_IO_16;
+
+   Wav_In_File_Name  : constant String := "data/2ch_8bit_sine.wav";
+   Wav_Out_File_Name : constant String := "out/2ch_16bit_sine.wav";
+
+   WF_In     : Wavefile;
+   WF_Out    : Wavefile;
+   WF_Format : Wave_Format_Extensible;
+begin
+   WF_In.Open (In_File, Wav_In_File_Name);
+
+   WF_Format := WF_In.Format_Of_Wavefile;
+   WF_Format.Bits_Per_Sample := Bit_Depth_16;
+
+   WF_Out.Set_Format_Of_Wavefile (WF_Format);
+
+   WF_Out.Create (Out_File, Wav_Out_File_Name);
+
+   if WF_In.Is_Open then
+      Put_Line ("Start conversion: " & Wav_In_File_Name);
+      New_Line;
+
+      loop
+         Put_Line ("Converting sample #"
+                   & Sample_Count'Image (WF_In.Current_Sample) & ".");
+
+         Convert_Wav_MC_Sample : declare
+            pragma Assert
+              (WF_In.Format_Of_Wavefile.Bits_Per_Sample = Bit_Depth_8
+               and not WF_In.Format_Of_Wavefile.Is_Float_Format);
+
+            Wav_Buf_In  : Wav_Buffer_Unsigned_Fixed_8
+                            (1 .. WF_In.Number_Of_Channels);
+            Wav_Buf_Out : Wav_Buffer_Fixed_16 (1 .. WF_In.Number_Of_Channels);
+
+            --  Offset to convert from unsigned to signed range.
+            --   8-bit wavefiles: [ 0.0, 2.0);
+            --  16-bit wavefiles: [-1.0, 1.0);
+            Offset : constant := -1.0;
+         begin
+            Get (WF_In,  Wav_Buf_In);
+
+            for I in Wav_Buf_In'Range loop
+               Wav_Buf_Out (I) := Wav_Fixed_16 (Wav_Buf_In (I) + Offset);
+            end loop;
+
+            Put (WF_Out, Wav_Buf_Out);
+
+            Display_Sample : begin
+               for Channel_Number in Wav_Buf_In'Range loop
+                  Put_Line ("    Channel # " & Positive'Image (Channel_Number)
+                            & ": "
+                            & Wav_Unsigned_Fixed_8'Image
+                               (Wav_Buf_In (Channel_Number))
+                            & " => "
+                            & Wav_Fixed_16'Image
+                               (Wav_Buf_Out (Channel_Number)));
+               end loop;
+            end Display_Sample;
+
+            exit when WF_In.End_Of_File;
+         end Convert_Wav_MC_Sample;
+      end loop;
+
+      New_Line;
+      Put_Line ("Finished converting "
+                & Sample_Count'Image (WF_In.Total_Sample_Count) & " samples.");
+      WF_In.Close;
+   end if;
+
+   WF_In.Close;
+   WF_Out.Close;
+end Convert_8_Bit_To_16_Bit_Wavefile;
 ~~~~~~~~~~
 
 ## Read complete wavefile into memory (channel-interleaved data)

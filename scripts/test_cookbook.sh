@@ -169,6 +169,8 @@ simple_testcase Direct_Copy_Float_Wavefile
 check_wavinfo   Direct_Copy_Float_Wavefile              "2ch_float_sine.wav"
 check_wavefile  Direct_Copy_Float_Wavefile              "2ch_float_sine.wav"
 
+simple_testcase Convert_8_Bit_To_16_Bit_Wavefile
+
 simple_testcase Read_To_Memory_Channel_Interleaved
 
 simple_testcase Read_To_Memory_Per_Channel

@@ -29,53 +29,12 @@
 
 package body Audio.Wavefiles.Generic_Float_Wav_IO is
 
-   procedure Read_Wav_Sample_Bytes
-     (File_Access :     Ada.Streams.Stream_IO.Stream_Access;
-      Sample      : out Wav_Sample)
-     with Inline;
-   procedure Write_Wav_Sample_Bytes
-     (File_Access :    Ada.Streams.Stream_IO.Stream_Access;
-      Sample      :    Wav_Sample)
-     with Inline;
    procedure Read_Wav_MC_Sample (WF  : in out Wavefile;
                                  Wav :    out Wav_MC_Sample)
      with Inline;
    procedure Write_Wav_MC_Sample (WF  : in out Wavefile;
                                   Wav :        Wav_MC_Sample)
      with Inline;
-
-   procedure Read_Wav_Sample_Bytes
-     (File_Access :     Ada.Streams.Stream_IO.Stream_Access;
-      Sample      : out Wav_Sample)
-   is
-      Bytes : Byte_Array (1 .. Sample'Size / 8)
-        with Address => Sample'Address, Import, Volatile;
-
-      Last_Valid_Byte : constant Long_Integer := Wav_Sample'Size / 8;
-
-      use type Byte;
-   begin
-      Byte_Array'Read (File_Access,
-                       Bytes (1 .. Wav_Sample'Size / 8));
-
-      --  Account for sign bit in internal representation,
-      --  which might not match the wavefile representation.
-      if Sample'Size > Wav_Sample'Size then
-         Bytes (Last_Valid_Byte + 1 .. Bytes'Last) :=
-           (others => (if Bytes (Last_Valid_Byte) >= 16#80#
-                       then 16#FF# else 16#00#));
-      end if;
-   end Read_Wav_Sample_Bytes;
-
-   procedure Write_Wav_Sample_Bytes
-     (File_Access :    Ada.Streams.Stream_IO.Stream_Access;
-      Sample      :    Wav_Sample)
-   is
-      Bytes : Byte_Array (1 .. Wav_Sample'Size / 8)
-        with Address => Sample'Address, Import, Volatile;
-   begin
-      Byte_Array'Write (File_Access, Bytes);
-   end Write_Wav_Sample_Bytes;
 
    procedure Read_Wav_MC_Sample
      (WF  : in out Wavefile;
@@ -94,13 +53,7 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
         with Ghost;
    begin
       for J in Wav'Range loop
-
-         --  Patch for 24-bit wavefiles
-         if Wav_Sample'Size = 24 then
-            Read_Wav_Sample_Bytes (WF.File_Access, Sample);
-         else
-            Wav_Sample'Read (WF.File_Access, Sample);
-         end if;
+         Wav_Sample'Read (WF.File_Access, Sample);
 
          Wav (J) := Sample;
          if Ada.Streams.Stream_IO.End_Of_File (WF.File) and then
@@ -132,13 +85,7 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
           (To_Positive (WF.Wave_Format.Bits_Per_Sample) * N_Ch / 8)
         with Ghost;
    begin
-      if Wav_Sample'Size = 24 then
-         for Sample of Wav loop
-            Write_Wav_Sample_Bytes (WF.File_Access, Sample);
-         end loop;
-      else
-         Wav_MC_Sample'Write (WF.File_Access, Wav);
-      end if;
+      Wav_MC_Sample'Write (WF.File_Access, Wav);
 
       WF.Sample_Pos := (Total   => WF.Sample_Pos.Total   + 1,
                         Current => WF.Sample_Pos.Current + 1);
