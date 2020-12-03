@@ -221,6 +221,10 @@ package body Audio.Wavefiles is
    function Number_Of_Channels
      (W : Wavefile) return Positive is (Positive (W.Wave_Format.Channels));
 
+   function Sample_Rate
+     (W : Wavefile) return Wav_Sample_Rate is
+     (W.Wave_Format.Samples_Per_Sec);
+
    function Mode (W : Wavefile) return File_Mode is
      (if Mode (W.File) = In_File then In_File else Out_File);
 

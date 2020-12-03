@@ -246,7 +246,7 @@ procedure Write_Mono_Silence_Wavefile is
    Num_Channels     : constant Positive := 1;
    Duration_In_Secs : constant := 0.1;
    Sample_Rate      : constant Wav_Float_32
-     := Wav_Float_32 (To_Positive (Sample_Rate_Enum));
+     := Wav_Float_32 (To_Float (Sample_Rate_Enum));
 
    WF                 : Wavefile;
 begin
@@ -355,7 +355,7 @@ begin
    if WF.Is_Open then
       Write_Stereo_Sine_Tone
         (WF           => WF,
-         Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),
+         Sample_Rate  => To_Float (Sample_Rate_Enum),
          Num_Channels => Num_Channels);
 
       WF.Close;
@@ -453,7 +453,7 @@ begin
    if WF.Is_Open then
       Write_5_1_Channel_Sine_Tone
         (WF           => WF,
-         Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)));
+         Sample_Rate  => To_Float (Sample_Rate_Enum));
 
       WF.Close;
    end if;
@@ -555,7 +555,7 @@ begin
    if WF.Is_Open then
       Write_7_1_4_Channel_Sine_Tone
         (WF           => WF,
-         Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)));
+         Sample_Rate  => To_Float (Sample_Rate_Enum));
 
       WF.Close;
    end if;
@@ -889,16 +889,13 @@ procedure Convert_Fixed_To_Float_Wavefile is
 
    WF_In        : Wavefile;
    WF_Out       : Wavefile;
-   WF_In_Format : Wave_Format_Extensible;
 begin
    WF_In.Open (In_File,  Wav_In_File_Name);
 
-   WF_In_Format := WF_In.Format_Of_Wavefile;
-
    WF_Out.Set_Format_Of_Wavefile
      (Init (Bit_Depth          => Bit_Depth_32,
-            Sample_Rate        => WF_In_Format.Samples_Per_Sec,
-            Number_Of_Channels => Positive (WF_In_Format.Channels),
+            Sample_Rate        => WF_In.Sample_Rate,
+            Number_Of_Channels => WF_In.Number_Of_Channels,
             Use_Float          => True));
 
    WF_Out.Create (Out_File, Wav_Out_File_Name);
@@ -1079,7 +1076,7 @@ begin
    WF_Format := Init (Bit_Depth          => WF_Format.Bits_Per_Sample,
                       Sample_Rate        => WF_Format.Samples_Per_Sec,
                       Number_Of_Channels => 5 + 1,
-                      Use_Float          => Is_Float_Format (WF_Format));
+                      Use_Float          => WF_Format.Is_Float_Format);
    WF_Format.Channel_Config := Channel_Config_5_1;
 
    WF_Out.Set_Format_Of_Wavefile (WF_Format);
@@ -1159,8 +1156,8 @@ begin
    loop
       Copy_Wav_MC_Sample : declare
          pragma Assert
-           (Format_Of_Wavefile (WF_In).Bits_Per_Sample = Bit_Depth_16
-            and not Is_Float_Format (Format_Of_Wavefile (WF_In)));
+           (WF_In.Format_Of_Wavefile.Bits_Per_Sample = Bit_Depth_16
+            and not WF_In.Format_Of_Wavefile.Is_Float_Format);
 
          package Wav_IO is new Audio.Wavefiles.Generic_Fixed_Wav_IO
            (Wav_Sample    => Wav_Fixed_16,
@@ -1205,8 +1202,8 @@ begin
    loop
       Copy_Wav_MC_Sample : declare
          pragma Assert
-           (Format_Of_Wavefile (WF_In).Bits_Per_Sample = Bit_Depth_32
-            and Is_Float_Format (Format_Of_Wavefile (WF_In)));
+           (WF_In.Format_Of_Wavefile.Bits_Per_Sample = Bit_Depth_32
+            and WF_In.Format_Of_Wavefile.Is_Float_Format);
 
          package Wav_IO is new Audio.Wavefiles.Generic_Float_Wav_IO
            (Wav_Sample    => Wav_Float_32,
