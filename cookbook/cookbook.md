@@ -246,7 +246,7 @@ procedure Write_Mono_Silence_Wavefile is
    Num_Channels     : constant Positive := 1;
    Duration_In_Secs : constant := 0.1;
    Sample_Rate      : constant Wav_Float_32
-     := Wav_Float_32 (To_Positive (Sample_Rate_Enum));
+     := Wav_Float_32 (To_Float (Sample_Rate_Enum));
 
    WF                 : Wavefile;
 begin
@@ -355,7 +355,7 @@ begin
    if WF.Is_Open then
       Write_Stereo_Sine_Tone
         (WF           => WF,
-         Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)),
+         Sample_Rate  => To_Float (Sample_Rate_Enum),
          Num_Channels => Num_Channels);
 
       WF.Close;
@@ -453,7 +453,7 @@ begin
    if WF.Is_Open then
       Write_5_1_Channel_Sine_Tone
         (WF           => WF,
-         Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)));
+         Sample_Rate  => To_Float (Sample_Rate_Enum));
 
       WF.Close;
    end if;
@@ -555,7 +555,7 @@ begin
    if WF.Is_Open then
       Write_7_1_4_Channel_Sine_Tone
         (WF           => WF,
-         Sample_Rate  => Float (To_Positive (Sample_Rate_Enum)));
+         Sample_Rate  => To_Float (Sample_Rate_Enum));
 
       WF.Close;
    end if;
