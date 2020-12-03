@@ -174,9 +174,6 @@ package Audio.Wavefiles is
      (W : Wave_Format_Extensible) return Boolean;
 
 private
-
-   type Wav_Numeric_Data_Type is (Wav_Fixed_Data, Wav_Float_Data);
-
    --
    --  Constants that indicate a range of
    --  "First_Sample_Count .. <total_sample_count> - Total_To_Last_Diff"
