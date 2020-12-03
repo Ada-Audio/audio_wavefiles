@@ -31,14 +31,18 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
 
    procedure Read_Wav_Sample
      (File_Access :     Ada.Streams.Stream_IO.Stream_Access;
-      Sample      : out Wav_Sample);
+      Sample      : out Wav_Sample)
+     with Inline;
    procedure Write_Wav_Sample
      (File_Access :    Ada.Streams.Stream_IO.Stream_Access;
-      Sample      :    Wav_Sample);
+      Sample      :    Wav_Sample)
+     with Inline;
    procedure Read_Wav_MC_Sample (WF  : in out Wavefile;
-                                 Wav :    out Wav_MC_Sample);
+                                 Wav :    out Wav_MC_Sample)
+     with Inline;
    procedure Write_Wav_MC_Sample (WF  : in out Wavefile;
-                                  Wav :        Wav_MC_Sample);
+                                  Wav :        Wav_MC_Sample)
+     with Inline;
 
    procedure Read_Wav_Sample
      (File_Access :     Ada.Streams.Stream_IO.Stream_Access;
