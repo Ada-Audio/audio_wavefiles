@@ -889,16 +889,13 @@ procedure Convert_Fixed_To_Float_Wavefile is
 
    WF_In        : Wavefile;
    WF_Out       : Wavefile;
-   WF_In_Format : Wave_Format_Extensible;
 begin
    WF_In.Open (In_File,  Wav_In_File_Name);
 
-   WF_In_Format := WF_In.Format_Of_Wavefile;
-
    WF_Out.Set_Format_Of_Wavefile
      (Init (Bit_Depth          => Bit_Depth_32,
-            Sample_Rate        => WF_In_Format.Samples_Per_Sec,
-            Number_Of_Channels => Positive (WF_In_Format.Channels),
+            Sample_Rate        => WF_In.Sample_Rate,
+            Number_Of_Channels => WF_In.Number_Of_Channels,
             Use_Float          => True));
 
    WF_Out.Create (Out_File, Wav_Out_File_Name);
