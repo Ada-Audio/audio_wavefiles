@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                                                                          --
---           THIS IS AN AUTOMATIC GENERATED FILE! DO NOT EDIT!              --
+--          THIS IS AN AUTOMATICALLY GENERATED FILE! DO NOT EDIT!           --
 --                                                                          --
 --                               WAVEFILES                                  --
 --                                                                          --
