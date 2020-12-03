@@ -1076,7 +1076,7 @@ begin
    WF_Format := Init (Bit_Depth          => WF_Format.Bits_Per_Sample,
                       Sample_Rate        => WF_Format.Samples_Per_Sec,
                       Number_Of_Channels => 5 + 1,
-                      Use_Float          => Is_Float_Format (WF_Format));
+                      Use_Float          => WF_Format.Is_Float_Format);
    WF_Format.Channel_Config := Channel_Config_5_1;
 
    WF_Out.Set_Format_Of_Wavefile (WF_Format);
@@ -1156,8 +1156,8 @@ begin
    loop
       Copy_Wav_MC_Sample : declare
          pragma Assert
-           (Format_Of_Wavefile (WF_In).Bits_Per_Sample = Bit_Depth_16
-            and not Is_Float_Format (Format_Of_Wavefile (WF_In)));
+           (WF_In.Format_Of_Wavefile.Bits_Per_Sample = Bit_Depth_16
+            and not WF_In.Format_Of_Wavefile.Is_Float_Format);
 
          package Wav_IO is new Audio.Wavefiles.Generic_Fixed_Wav_IO
            (Wav_Sample    => Wav_Fixed_16,
@@ -1202,8 +1202,8 @@ begin
    loop
       Copy_Wav_MC_Sample : declare
          pragma Assert
-           (Format_Of_Wavefile (WF_In).Bits_Per_Sample = Bit_Depth_32
-            and Is_Float_Format (Format_Of_Wavefile (WF_In)));
+           (WF_In.Format_Of_Wavefile.Bits_Per_Sample = Bit_Depth_32
+            and WF_In.Format_Of_Wavefile.Is_Float_Format);
 
          package Wav_IO is new Audio.Wavefiles.Generic_Float_Wav_IO
            (Wav_Sample    => Wav_Float_32,
