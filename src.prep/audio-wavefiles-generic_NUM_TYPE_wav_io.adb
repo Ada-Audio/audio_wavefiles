@@ -33,15 +33,24 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
 package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
 #end if;
 
-   procedure Read_Bytes (File_Access :     Ada.Streams.Stream_IO.Stream_Access;
-                         Sample      : out Wav_Sample);
-   procedure Write_Bytes (File_Access :    Ada.Streams.Stream_IO.Stream_Access;
-                          Sample      :    Wav_Sample);
-   procedure Read_Samples (WF  : in out Wavefile;
-                           Wav :    out Wav_MC_Sample);
+   procedure Read_Wav_Sample_Bytes
+     (File_Access :     Ada.Streams.Stream_IO.Stream_Access;
+      Sample      : out Wav_Sample)
+     with Inline;
+   procedure Write_Wav_Sample_Bytes
+     (File_Access :    Ada.Streams.Stream_IO.Stream_Access;
+      Sample      :    Wav_Sample)
+     with Inline;
+   procedure Read_Wav_MC_Sample (WF  : in out Wavefile;
+                                 Wav :    out Wav_MC_Sample)
+     with Inline;
+   procedure Write_Wav_MC_Sample (WF  : in out Wavefile;
+                                  Wav :        Wav_MC_Sample)
+     with Inline;
 
-   procedure Read_Bytes (File_Access :     Ada.Streams.Stream_IO.Stream_Access;
-                         Sample      : out Wav_Sample)
+   procedure Read_Wav_Sample_Bytes
+     (File_Access :     Ada.Streams.Stream_IO.Stream_Access;
+      Sample      : out Wav_Sample)
    is
       Bytes : Byte_Array (1 .. Sample'Size / 8)
         with Address => Sample'Address, Import, Volatile;
@@ -60,19 +69,21 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
            (others => (if Bytes (Last_Valid_Byte) >= 16#80#
                        then 16#FF# else 16#00#));
       end if;
-   end Read_Bytes;
+   end Read_Wav_Sample_Bytes;
 
-   procedure Write_Bytes (File_Access :    Ada.Streams.Stream_IO.Stream_Access;
-                          Sample      :    Wav_Sample)
+   procedure Write_Wav_Sample_Bytes
+     (File_Access :    Ada.Streams.Stream_IO.Stream_Access;
+      Sample      :    Wav_Sample)
    is
       Bytes : Byte_Array (1 .. Wav_Sample'Size / 8)
         with Address => Sample'Address, Import, Volatile;
    begin
       Byte_Array'Write (File_Access, Bytes);
-   end Write_Bytes;
+   end Write_Wav_Sample_Bytes;
 
-   procedure Read_Samples (WF  : in out Wavefile;
-                           Wav :    out Wav_MC_Sample)
+   procedure Read_Wav_MC_Sample
+     (WF  : in out Wavefile;
+      Wav :    out Wav_MC_Sample)
    is
       N_Ch   : constant Positive := Number_Of_Channels (WF);
       Sample : Wav_Sample;
@@ -90,7 +101,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
 
          --  Patch for 24-bit wavefiles
          if Wav_Sample'Size = 24 then
-            Read_Bytes (WF.File_Access, Sample);
+            Read_Wav_Sample_Bytes (WF.File_Access, Sample);
          else
             Wav_Sample'Read (WF.File_Access, Sample);
          end if;
@@ -108,32 +119,12 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
 
       pragma Assert (Ada.Streams.Stream_IO.Index (WF.File) =
                        Prev_File_Index + Expected_Byte_IO);
-   end Read_Samples;
+   end Read_Wav_MC_Sample;
 
-   function Get (WF  : in out Wavefile) return Wav_MC_Sample
+   procedure Write_Wav_MC_Sample
+     (WF  : in out Wavefile;
+      Wav :        Wav_MC_Sample)
    is
-      N_Ch   : constant Positive := Number_Of_Channels (WF);
-
-      Channel_Range_Valid_Last : constant Channel_Range :=
-        Channel_Range'Val (N_Ch - 1
-                           + Channel_Range'Pos (Channel_Range'First));
-
-      subtype Valid_Channel_Range is Channel_Range range
-        Channel_Range'First .. Channel_Range_Valid_Last;
-   begin
-      return Wav : Wav_MC_Sample (Valid_Channel_Range) do
-         Read_Samples (WF, Wav);
-      end return;
-   end Get;
-
-   procedure Get (WF  : in out Wavefile;
-                  Wav :    out Wav_MC_Sample) is
-   begin
-      Read_Samples (WF, Wav);
-   end Get;
-
-   procedure Put (WF  : in out Wavefile;
-                  Wav :        Wav_MC_Sample) is
       N_Ch : constant Positive := Number_Of_Channels (WF);
 
       use Ada.Streams.Stream_IO;
@@ -147,7 +138,7 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
    begin
       if Wav_Sample'Size = 24 then
          for Sample of Wav loop
-            Write_Bytes (WF.File_Access, Sample);
+            Write_Wav_Sample_Bytes (WF.File_Access, Sample);
          end loop;
       else
          Wav_MC_Sample'Write (WF.File_Access, Wav);
@@ -158,6 +149,35 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
 
       pragma Assert (Ada.Streams.Stream_IO.Index (WF.File) =
                        Prev_File_Index + Expected_Byte_IO);
+   end Write_Wav_MC_Sample;
+
+
+   function Get (WF  : in out Wavefile) return Wav_MC_Sample
+   is
+      N_Ch   : constant Positive := Number_Of_Channels (WF);
+
+      Channel_Range_Valid_Last : constant Channel_Range :=
+        Channel_Range'Val (N_Ch - 1
+                           + Channel_Range'Pos (Channel_Range'First));
+
+      subtype Valid_Channel_Range is Channel_Range range
+        Channel_Range'First .. Channel_Range_Valid_Last;
+   begin
+      return Wav : Wav_MC_Sample (Valid_Channel_Range) do
+         Read_Wav_MC_Sample (WF, Wav);
+      end return;
+   end Get;
+
+   procedure Get (WF  : in out Wavefile;
+                  Wav :    out Wav_MC_Sample) is
+   begin
+      Read_Wav_MC_Sample (WF, Wav);
+   end Get;
+
+   procedure Put (WF  : in out Wavefile;
+                  Wav :        Wav_MC_Sample) is
+   begin
+      Write_Wav_MC_Sample (WF, Wav);
    end Put;
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
