@@ -154,7 +154,6 @@ with Audio.Wavefiles;                      use Audio.Wavefiles;
 
 procedure Put_Time (Item : Wavefile_Time_In_Seconds);
 
-
 with Ada.Text_IO;                          use Ada.Text_IO;
 
 procedure Put_Time (Item : Wavefile_Time_In_Seconds)
@@ -568,7 +567,6 @@ with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
 
 procedure Display (Channel_Config : Channel_Configuration);
 
-
 with Ada.Text_IO;            use Ada.Text_IO;
 
 with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
@@ -792,7 +790,6 @@ with Audio.Wavefiles; use Audio.Wavefiles;
 procedure Display_Time_Info (WF       : Wavefile;
                              Preamble : String);
 
-
 with Ada.Text_IO;
 
 procedure Display_Time_Info (WF       : Wavefile;
@@ -805,7 +802,6 @@ begin
                          & ")");
 
 end Display_Time_Info;
-
 
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
@@ -1156,7 +1152,7 @@ begin
       Copy_Wav_MC_Sample : declare
          pragma Assert
            (WF_In.Format_Of_Wavefile.Bits_Per_Sample = Bit_Depth_16
-            and not WF_In.Format_Of_Wavefile.Is_Float_Format);
+            and then not WF_In.Format_Of_Wavefile.Is_Float_Format);
 
          package Wav_IO is new Audio.Wavefiles.Generic_Fixed_Wav_IO
            (Wav_Sample    => Wav_Fixed_16,
@@ -1202,7 +1198,7 @@ begin
       Copy_Wav_MC_Sample : declare
          pragma Assert
            (WF_In.Format_Of_Wavefile.Bits_Per_Sample = Bit_Depth_32
-            and WF_In.Format_Of_Wavefile.Is_Float_Format);
+            and then WF_In.Format_Of_Wavefile.Is_Float_Format);
 
          package Wav_IO is new Audio.Wavefiles.Generic_Float_Wav_IO
            (Wav_Sample    => Wav_Float_32,
@@ -1273,7 +1269,7 @@ begin
          Convert_Wav_MC_Sample : declare
             pragma Assert
               (WF_In.Format_Of_Wavefile.Bits_Per_Sample = Bit_Depth_8
-               and not WF_In.Format_Of_Wavefile.Is_Float_Format);
+               and then not WF_In.Format_Of_Wavefile.Is_Float_Format);
 
             Wav_Buf_In  : Wav_Buffer_Unsigned_Fixed_8
                             (1 .. WF_In.Number_Of_Channels);
@@ -1489,7 +1485,6 @@ with Audio.Wavefiles; use Audio.Wavefiles;
 
 procedure Write_XML (Xml_File : File_Type;
                      Data     : Byte_Array);
-
 
 procedure Write_XML (Xml_File : File_Type;
                      Data     : Byte_Array) is

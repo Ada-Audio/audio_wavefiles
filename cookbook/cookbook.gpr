@@ -62,11 +62,11 @@ project Cookbook is
                  "extract_xml_chunk.adb");
 
    package Ide is
-      for Vcs_Kind use "Git";
+      for Vcs_Kind use "git";
    end Ide;
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnata", "-gnato", "-gnatVa", "-gnatwa", "-fstack-check", "-gnatyy", "-g", "-gnatQ");
+      for Default_Switches ("ada") use ("-gnata", "-gnato", "-gnatVa", "-gnatwa", "-fstack-check", "-gnaty3ABIM79OSabcdefhiklnprstux", "-g", "-gnatQ");
    end Compiler;
 
    package Linker is
@@ -76,5 +76,9 @@ project Cookbook is
    package Builder is
       for Default_Switches ("ada") use ("-g", "-s");
    end Builder;
+
+   package Pretty_Printer is
+      for Default_Switches ("ada") use ("-A0", "-A1", "-A2", "-A3", "-A4", "-A5", "-c4", "-c3", "--separate-loop-then");
+   end Pretty_Printer;
 
 end Cookbook;
