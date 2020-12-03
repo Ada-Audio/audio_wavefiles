@@ -150,7 +150,6 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
                        Prev_File_Index + Expected_Byte_IO);
    end Write_Wav_MC_Sample;
 
-
    function Get (WF  : in out Wavefile) return Wav_MC_Sample
    is
       N_Ch   : constant Positive := Number_Of_Channels (WF);

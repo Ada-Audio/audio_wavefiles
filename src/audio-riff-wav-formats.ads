@@ -426,7 +426,7 @@ package Audio.RIFF.Wav.Formats is
          Size              : Unsigned_16 := 0;
       end record;
 
-   function Default return Wave_Format_18;
+   overriding function Default return Wave_Format_18;
 
    type Wave_Format_Extensible is new Wave_Format_18 with
       record
@@ -435,7 +435,7 @@ package Audio.RIFF.Wav.Formats is
          Sub_Format            : GUID;
       end record;
 
-   function Default return Wave_Format_Extensible;
+   overriding function Default return Wave_Format_Extensible;
 
    procedure Reset_For_Wave_Format_16 (W : in out Wave_Format_Extensible);
 

@@ -36,7 +36,7 @@ package Audio.Wavefiles.Internals is
 
    procedure Skip_Bytes
      (F     : in out Ada.Streams.Stream_IO.File_Type;
-      Bytes : in Unsigned_32);
+      Bytes :        Unsigned_32);
 
    procedure Set_File_Index_To_Chunk_Data_Start
      (File              : Ada.Streams.Stream_IO.File_Type;

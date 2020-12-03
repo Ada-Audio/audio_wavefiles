@@ -28,7 +28,6 @@
 --  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                  --
 ------------------------------------------------------------------------------
 
-
 with Ada.Text_IO;
 
 package Audio.Wavefiles.Data_Types.Text_IO is

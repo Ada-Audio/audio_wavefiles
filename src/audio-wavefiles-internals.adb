@@ -35,7 +35,7 @@ package body Audio.Wavefiles.Internals is
    use Ada.Streams.Stream_IO;
    procedure Skip_Bytes
      (F     : in out Ada.Streams.Stream_IO.File_Type;
-      Bytes : in Unsigned_32) is
+      Bytes :        Unsigned_32) is
    begin
       Set_Index (F,
                  Ada.Streams.Stream_IO.Index (F)

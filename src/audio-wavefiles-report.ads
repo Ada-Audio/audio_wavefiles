@@ -30,10 +30,10 @@
 
 package Audio.Wavefiles.Report is
 
-   procedure Display_Info (WF : in Wavefile)
+   procedure Display_Info (WF : Wavefile)
      with Pre => Mode (WF) = In_File;
 
-   procedure Display_Info (RIFF_Info : in RIFF_Information);
+   procedure Display_Info (RIFF_Info : RIFF_Information);
 
    procedure Display_Errors (WF : Wavefile);
 

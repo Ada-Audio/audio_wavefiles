@@ -38,12 +38,12 @@ package body Audio.Wavefiles.Report is
 
    function To_String (Err : Wavefile_Warning_Codes) return String;
 
-   procedure Display_Info (WF : in Wavefile) is
+   procedure Display_Info (WF : Wavefile) is
    begin
       Audio.RIFF.Wav.Formats.Report.Print (WF.Wave_Format);
    end Display_Info;
 
-   procedure Display_Info (RIFF_Info : in RIFF_Information) is
+   procedure Display_Info (RIFF_Info : RIFF_Information) is
    begin
       Put_Line ("---- RIFF Chunks Information ----");
       Put_Line ("Id:          " & RIFF_Identifier'Image (RIFF_Info.Id));

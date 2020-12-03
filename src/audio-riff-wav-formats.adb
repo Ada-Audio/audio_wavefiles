@@ -106,7 +106,7 @@ package body Audio.RIFF.Wav.Formats is
       end return;
    end Default;
 
-   function Default return Wave_Format_18 is
+   overriding function Default return Wave_Format_18 is
    begin
       return W : Wave_Format_18 do
          Wave_Format_16 (W) := Default;
@@ -114,7 +114,7 @@ package body Audio.RIFF.Wav.Formats is
       end return;
    end Default;
 
-   function Default return Wave_Format_Extensible is
+   overriding function Default return Wave_Format_Extensible is
       use Audio.RIFF.Wav.GUIDs;
       use Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
    begin
