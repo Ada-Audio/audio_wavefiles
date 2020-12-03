@@ -444,7 +444,6 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
         := Wav_Filename_Prefix & "check_extremes_float";
 #else
         := Wav_Filename_Prefix & "check_extremes_fixed";
-
 #end if;
 
       Success : Boolean := True;

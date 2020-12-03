@@ -48,5 +48,4 @@ package body Quick_Wav_Data_Checks is
       return Success;
    end Wav_IO_OK;
 
-
 end Quick_Wav_Data_Checks;

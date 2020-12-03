@@ -339,7 +339,6 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
       Wav_Test_File_Name : constant String
         := Wav_Filename_Prefix & "check_extremes_fixed";
 
-
       Success : Boolean := True;
    begin
       for Test_Bits of Test_Bits_Per_Sample loop

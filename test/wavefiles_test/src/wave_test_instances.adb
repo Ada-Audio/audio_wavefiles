@@ -135,7 +135,6 @@ package body Wave_Test_Instances is
    begin
       Status := False;
 
-
       case Fixed is
          when False =>  -- Floating-point PCM buffer
             case Bits is

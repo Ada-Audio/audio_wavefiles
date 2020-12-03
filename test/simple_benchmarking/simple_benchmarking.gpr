@@ -17,11 +17,16 @@ project Simple_Benchmarking is
          when "DEBUG" =>
             for Switches ("ada") use ("-g", "-O0",
                                       "-gnata", "-gnato", "-gnatVa",
-                                      "-gnatwa", "-fstack-check", "-gnaty");
+                                      "-gnatwa", "-fstack-check", "-gnaty3ABIM79OSabcdefhiklnprstux");
          when "RELEASE" =>
-            for Switches ("Ada") use ("-O2", "-gnatn", "-gnatp", "-gnatwa");
+            for Switches ("Ada") use ("-O2", "-gnatn", "-gnatp", "-gnatwa",
+                                      "-gnaty3ABIM79OSabcdefhiklnprstux");
       end case;
 --       for Switches ("Ada") use ("-gnatp", "-O3");
    end Compiler;
+
+   package Pretty_Printer is
+      for Default_Switches ("ada") use ("-A0", "-A1", "-A2", "-A3", "-A4", "-A5", "-c4", "-c3", "--separate-loop-then");
+   end Pretty_Printer;
 
 end Simple_Benchmarking;

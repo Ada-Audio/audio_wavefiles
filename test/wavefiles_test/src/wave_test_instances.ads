@@ -58,5 +58,4 @@ package Wave_Test_Instances is
 
    function Is_Fixed return Boolean;
 
-
 end Wave_Test_Instances;
