@@ -44,7 +44,7 @@ project Quick_Wav_Data_Check is
    end Ide;
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnata", "-gnato", "-gnatVa", "-gnatwa", "-fstack-check", "-gnaty3ABIM79OSabcdefhiklnprstux", "-g", "-gnatQ");
+      for Default_Switches ("ada") use ("-gnata", "-gnato", "-gnatVa", "-gnatwa", "-fstack-check", "-gnaty3ACIM79Oabcdefhiklnprstux", "-g", "-gnatQ");
    end Compiler;
 
    package Linker is

@@ -19,11 +19,11 @@ library project Wavefiles_Lib is
       case Build is
 
          when "DEBUG" =>
-            for Switches ("ada") use ("-g", "-O0", "-gnata", "-gnato", "-fstack-check", "-gnatVa", "-gnatwa", "-gnaty3ACIM79Oabcdefhiklnprstux");
+            for Switches ("ada") use ("-g", "-O0", "-gnata", "-gnato", "-fstack-check", "-gnatVa", "-gnatw.B.h.o.s_ra", "-gnaty3ACIM79Oabcdefhiklnprstux");
 
          when "RELEASE" =>
             for Switches ("Ada") use ("-O2", "-gnatn", "-gnatwa");
-            for Switches ("ada") use ("-g", "-O0", "-gnata", "-gnato", "-fstack-check", "-gnatVa", "-gnatwa", "-gnaty3ACIM79Oabcdefhiklnprstux");
+            for Switches ("ada") use ("-g", "-O0", "-gnata", "-gnato", "-fstack-check", "-gnatVa", "-gnatw.B.h.o.s_ra", "-gnaty3ACIM79Oabcdefhiklnprstux");
       end case;
    end Compiler;
 
