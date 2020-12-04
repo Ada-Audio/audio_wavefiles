@@ -180,6 +180,16 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
                    others => 0.0);
 #end if;
 
+   type Bits_Per_Sample_List is array (Positive range <>) of Wav_Bit_Depth;
+#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
+   Test_Bits_Per_Sample : constant Bits_Per_Sample_List := (Bit_Depth_32,
+                                                            Bit_Depth_64);
+#else
+   Test_Bits_Per_Sample : constant Bits_Per_Sample_List := (Bit_Depth_16,
+                                                            Bit_Depth_24,
+                                                            Bit_Depth_32);
+#end if;
+
    procedure Display_PCM_Vals
      (PCM_Vals : PCM_Buffer;
       Header   : String);
@@ -273,15 +283,6 @@ package body Quick_Wav_Data_Checks.Fixed_Checks is
       end loop;
    end Write_PCM_Vals;
 
-   type Bits_Per_Sample_List is array (Positive range <>) of Wav_Bit_Depth;
-#if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
-   Test_Bits_Per_Sample : constant Bits_Per_Sample_List := (Bit_Depth_32,
-                                                            Bit_Depth_64);
-#else
-   Test_Bits_Per_Sample : constant Bits_Per_Sample_List := (Bit_Depth_16,
-                                                            Bit_Depth_24,
-                                                            Bit_Depth_32);
-#end if;
 
    procedure Display_Info
      (WF     : Wavefile;
