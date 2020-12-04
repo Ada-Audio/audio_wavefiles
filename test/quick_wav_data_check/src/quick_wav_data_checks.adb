@@ -33,6 +33,10 @@ with Quick_Wav_Data_Checks.Fixed_Checks;
 
 package body Quick_Wav_Data_Checks is
 
+   ---------------
+   -- Wav_IO_OK --
+   ---------------
+
    function Wav_IO_OK
      (Wav_Filename_Prefix : String) return Boolean
    is

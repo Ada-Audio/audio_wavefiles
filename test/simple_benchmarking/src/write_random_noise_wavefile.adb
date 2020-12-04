@@ -35,6 +35,10 @@ with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
 with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
 
+---------------------------------
+-- Write_Random_Noise_Wavefile --
+---------------------------------
+
 procedure Write_Random_Noise_Wavefile is
    Wav_File_Name    : constant String          := "2ch_long_noise.wav";
    Sample_Rate_Enum : constant Wav_Sample_Rate := Sample_Rate_44100;

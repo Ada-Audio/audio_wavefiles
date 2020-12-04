@@ -32,6 +32,10 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Wavefile_Benchmarking.Statistics is
 
+   --------------------------
+   -- Calculate_Statistics --
+   --------------------------
+
    procedure Calculate_Statistics
      (Raw_Info :     Wavefile_Benchmark_Infos;
       Results  : out Wavefile_Benchmark_Statistics)
@@ -57,6 +61,10 @@ package body Wavefile_Benchmarking.Statistics is
          Res.Avg (B) := Total (B) / Float (Raw_Info'Length);
       end loop;
    end Calculate_Statistics;
+
+   -------------
+   -- Display --
+   -------------
 
    procedure Display (Stats : Wavefile_Benchmark_Statistics) is
       package F_IO is new Ada.Text_IO.Float_IO (Float);

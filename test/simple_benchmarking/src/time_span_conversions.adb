@@ -34,6 +34,10 @@ package body Time_Span_Conversions is
 
    Display_Debug_Info : constant Boolean := False;
 
+   ------------
+   -- To_MHz --
+   ------------
+
    function To_MHz (Elapsed_Time : Time_Span;
                     CPU_MHz      : Float;
                     Factor       : Long_Long_Float) return Float
@@ -51,10 +55,18 @@ package body Time_Span_Conversions is
         (Long_Long_Float (CPU_MHz) * Dur / Factor);
    end To_MHz;
 
+   ------------
+   -- To_kHz --
+   ------------
+
    function To_kHz (Elapsed_Time : Time_Span;
                     CPU_MHz      : Float;
                     Factor       : Long_Long_Float) return Float is
      (To_MHz (Elapsed_Time, CPU_MHz, Factor) * 10.0 ** 3);
+
+   --------------------
+   -- To_Miliseconds --
+   --------------------
 
    function To_Miliseconds (Elapsed_Time : Time_Span) return Float is
 
@@ -62,6 +74,10 @@ package body Time_Span_Conversions is
    begin
       return T * 10.0 ** 3;
    end To_Miliseconds;
+
+   --------------------
+   -- To_Nanoseconds --
+   --------------------
 
    function To_Nanoseconds (Elapsed_Time : Time_Span) return Float is
 

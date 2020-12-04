@@ -55,6 +55,10 @@ package body Generic_Float_Wave_Test is
 
    Verbose     : constant Boolean := False;
 
+   -----------------------
+   -- Display_Info_File --
+   -----------------------
+
    procedure Display_Info_File (File_In  : String) is
       WF_In       : Audio.Wavefiles.Wavefile;
    begin
@@ -62,6 +66,10 @@ package body Generic_Float_Wave_Test is
       Display_Info (WF_In);
       WF_In.Close;
    end Display_Info_File;
+
+   ---------------
+   -- Copy_File --
+   ---------------
 
    procedure Copy_File
      (File_In  : String;
@@ -108,6 +116,10 @@ package body Generic_Float_Wave_Test is
       WF_Out.Close;
 
    end Copy_File;
+
+   -------------------
+   -- Compare_Files --
+   -------------------
 
    procedure Compare_Files
      (File_Ref  : String;
@@ -160,6 +172,10 @@ package body Generic_Float_Wave_Test is
       Report_Comparison;
    end Compare_Files;
 
+   ----------------
+   -- Diff_Files --
+   ----------------
+
    procedure Diff_Files
      (File_Ref  : String;
       File_DUT  : String;
@@ -199,6 +215,10 @@ package body Generic_Float_Wave_Test is
       WF_DUT.Close;
       WF_Diff.Close;
    end Diff_Files;
+
+   ---------------
+   -- Mix_Files --
+   ---------------
 
    procedure Mix_Files
      (File_Ref  : String;

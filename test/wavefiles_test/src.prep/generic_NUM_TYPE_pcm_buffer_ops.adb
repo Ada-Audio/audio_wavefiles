@@ -36,6 +36,10 @@ package body Generic_Float_PCM_Buffer_Ops is
 package body Generic_Fixed_PCM_Buffer_Ops is
 #end if;
 
+   ---------
+   -- "+" --
+   ---------
+
    function "+" (PCM_Ref : PCM_MC_Sample;
                  PCM_DUT : PCM_MC_Sample)
                     return PCM_MC_Sample
@@ -49,6 +53,10 @@ package body Generic_Fixed_PCM_Buffer_Ops is
       end loop;
       return PCM_Sum;
    end "+";
+
+   ---------
+   -- "-" --
+   ---------
 
    function "-" (PCM_Ref : PCM_MC_Sample;
                  PCM_DUT : PCM_MC_Sample)

@@ -64,6 +64,10 @@ package body Wavefile_Benchmarking is
                            Number_Samples        : Long_Long_Integer;
                            Sample_Rate           : Positive);
 
+   -------------------
+   -- Open_Wavefile --
+   -------------------
+
    procedure Open_Wavefile is
       Wav_In_File_Name  : constant String := "2ch_long_noise.wav";
       Wav_Out_File_Name : constant String := "dummy.wav";
@@ -77,11 +81,19 @@ package body Wavefile_Benchmarking is
       WF_Out.Create (Out_File, Wav_Out_File_Name);
    end Open_Wavefile;
 
+   --------------------
+   -- Close_Wavefile --
+   --------------------
+
    procedure Close_Wavefile is
    begin
       WF_In.Close;
       WF_Out.Close;
    end Close_Wavefile;
+
+   --------------------
+   -- kHz_Per_Sample --
+   --------------------
 
    function kHz_Per_Sample
      (Elapsed_Time          : Time_Span;
@@ -94,6 +106,10 @@ package body Wavefile_Benchmarking is
    begin
       return Time_Span_Conversions.To_kHz (Elapsed_Time, CPU_MHz, Factor);
    end kHz_Per_Sample;
+
+   ------------------
+   -- Display_Info --
+   ------------------
 
    procedure Display_Info (Elapsed_Time          : Time_Span;
                            CPU_MHz               : Float;
@@ -136,6 +152,10 @@ package body Wavefile_Benchmarking is
       Put (" kHz (per channel and per sample)");
       New_Line;
    end Display_Info;
+
+   ---------------------
+   -- Benchm_CPU_Time --
+   ---------------------
 
    function Benchm_CPU_Time (CPU_MHz : Float) return Wavefile_Benchmark_kHz
    is
@@ -247,6 +267,10 @@ package body Wavefile_Benchmarking is
 
       return Res;
    end Benchm_CPU_Time;
+
+   ---------------------
+   -- Benchm_CPU_Time --
+   ---------------------
 
    procedure Benchm_CPU_Time (CPU_MHz :     Float;
                               Results : out Wavefile_Benchmark_Infos) is

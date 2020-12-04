@@ -148,6 +148,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
    function Image (B : Wav_Bit_Depth) return String renames
      Audio.RIFF.Wav.Formats.Report.Image;
 
+   ----------------------
+   -- Display_PCM_Vals --
+   ----------------------
+
    procedure Display_PCM_Vals (PCM_Vals : PCM_Buffer;
                                Header   : String)
    is
@@ -179,6 +183,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
       end loop;
    end Display_PCM_Vals;
 
+   --------------------
+   -- Write_PCM_Vals --
+   --------------------
+
    procedure Write_PCM_Vals (WF       : in out Wavefile;
                              PCM_Vals : PCM_Buffer) is
       PCM_Buf : PCM_Buffer (1 .. Number_Of_Channels (WF));
@@ -191,6 +199,9 @@ package body Quick_Wav_Data_Checks.Float_Checks is
       end loop;
    end Write_PCM_Vals;
 
+   ------------------
+   -- Display_Info --
+   ------------------
 
    procedure Display_Info
      (WF     : Wavefile;
@@ -204,6 +215,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
       Display_Info (WF);
       Put_Line (Separator);
    end Display_Info;
+
+   --------------------
+   -- Write_Wavefile --
+   --------------------
 
    procedure Write_Wavefile
      (Wav_File_Name : String;
@@ -224,6 +239,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
 
       WF_Out.Close;
    end Write_Wavefile;
+
+   -------------------
+   -- Read_Wavefile --
+   -------------------
 
    procedure Read_Wavefile
      (Wav_File_Name :     String;
@@ -268,6 +287,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
       WF_In.Close;
    end Read_Wavefile;
 
+   --------------------
+   -- PCM_Data_Is_OK --
+   --------------------
+
    function PCM_Data_Is_OK
      (PCM_Ref, PCM_DUT : PCM_Buffer) return Boolean
    is
@@ -283,6 +306,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
       return Success;
 
    end PCM_Data_Is_OK;
+
+   --------------------
+   -- PCM_Data_Is_OK --
+   --------------------
 
    function PCM_Data_Is_OK
      (Test_Bits : Wav_Bit_Depth;
@@ -300,6 +327,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
             return False;
       end case;
    end PCM_Data_Is_OK;
+
+   ------------------------------------
+   -- Wav_IO_OK_For_Audio_Resolution --
+   ------------------------------------
 
    function Wav_IO_OK_For_Audio_Resolution
      (Test_Bits          : Wav_Bit_Depth;
@@ -327,6 +358,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
 
       return Success;
    end Wav_IO_OK_For_Audio_Resolution;
+
+   ---------------
+   -- Wav_IO_OK --
+   ---------------
 
    function Wav_IO_OK
      (Wav_Filename_Prefix : String) return Boolean

@@ -85,10 +85,18 @@ package body Wave_Test_Instances is
       File_DUT        : String;
       File_Mix        : String) := Wave_Test_Fixed_32.Mix_Files'Access;
 
+   -----------------------
+   -- Display_Info_File --
+   -----------------------
+
    procedure Display_Info_File (File_In : String) is
    begin
       Proc_Display_Info_File (File_In);
    end Display_Info_File;
+
+   ---------------
+   -- Copy_File --
+   ---------------
 
    procedure Copy_File
      (File_In         : String;
@@ -97,12 +105,20 @@ package body Wave_Test_Instances is
       Proc_Copy_File (File_In, File_Out);
    end Copy_File;
 
+   -------------------
+   -- Compare_Files --
+   -------------------
+
    procedure Compare_Files
      (File_Ref    : String;
       File_DUT    : String) is
    begin
       Proc_Compare_Files (File_Ref, File_DUT);
    end Compare_Files;
+
+   ----------------
+   -- Diff_Files --
+   ----------------
 
    procedure Diff_Files
      (File_Ref       : String;
@@ -112,6 +128,10 @@ package body Wave_Test_Instances is
       Proc_Diff_Files (File_Ref, File_DUT, File_Diff);
    end Diff_Files;
 
+   ---------------
+   -- Mix_Files --
+   ---------------
+
    procedure Mix_Files
      (File_Ref        : String;
       File_DUT        : String;
@@ -119,6 +139,10 @@ package body Wave_Test_Instances is
    begin
       Proc_Mix_Files (File_Ref, File_DUT, File_Mix);
    end Mix_Files;
+
+   -------------------------
+   -- Set_Test_Procedures --
+   -------------------------
 
    procedure Set_Test_Procedures (Bits   : Positive;
                                   Fixed  : Boolean;
@@ -245,7 +269,15 @@ package body Wave_Test_Instances is
       end case;
    end Set_Test_Procedures;
 
+   --------------
+   -- Get_Bits --
+   --------------
+
    function Get_Bits return Positive is (PCM_Bits);
+
+   --------------
+   -- Is_Fixed --
+   --------------
 
    function Is_Fixed return Boolean is (PCM_Fixed);
 
