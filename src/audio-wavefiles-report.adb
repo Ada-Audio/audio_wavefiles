@@ -38,10 +38,18 @@ package body Audio.Wavefiles.Report is
 
    function To_String (Err : Wavefile_Warning_Codes) return String;
 
+   ------------------
+   -- Display_Info --
+   ------------------
+
    procedure Display_Info (WF : Wavefile) is
    begin
       Audio.RIFF.Wav.Formats.Report.Print (WF.Wave_Format);
    end Display_Info;
+
+   ------------------
+   -- Display_Info --
+   ------------------
 
    procedure Display_Info (RIFF_Info : RIFF_Information) is
    begin
@@ -70,6 +78,10 @@ package body Audio.Wavefiles.Report is
 
    end Display_Info;
 
+   ---------------
+   -- To_String --
+   ---------------
+
    function To_String (Err : Wavefile_Error_Codes) return String is
    begin
       case Err is
@@ -92,6 +104,10 @@ package body Audio.Wavefiles.Report is
       end case;
    end To_String;
 
+   ---------------
+   -- To_String --
+   ---------------
+
    function To_String (Err : Wavefile_Warning_Codes) return String is
    begin
       case Err is
@@ -99,6 +115,10 @@ package body Audio.Wavefiles.Report is
          return "Inconsistent channel mask";
       end case;
    end To_String;
+
+   --------------------
+   -- Display_Errors --
+   --------------------
 
    procedure Display_Errors (WF : Wavefile) is
    begin
@@ -114,6 +134,10 @@ package body Audio.Wavefiles.Report is
       New_Line;
       Put_Line ("-------------------------------------------------");
    end Display_Errors;
+
+   ----------------------
+   -- Display_Warnings --
+   ----------------------
 
    procedure Display_Warnings (WF : Wavefile) is
    begin

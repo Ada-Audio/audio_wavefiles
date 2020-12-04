@@ -56,6 +56,10 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
 
 #if NUM_TYPE'Defined and then (NUM_TYPE = "FLOAT") then
 #else
+   ---------------------------
+   -- Read_Wav_Sample_Bytes --
+   ---------------------------
+
    procedure Read_Wav_Sample_Bytes
      (File_Access :     Ada.Streams.Stream_IO.Stream_Access;
       Sample      : out Wav_Sample)
@@ -79,6 +83,10 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
       end if;
    end Read_Wav_Sample_Bytes;
 
+   ----------------------------
+   -- Write_Wav_Sample_Bytes --
+   ----------------------------
+
    procedure Write_Wav_Sample_Bytes
      (File_Access :    Ada.Streams.Stream_IO.Stream_Access;
       Sample      :    Wav_Sample)
@@ -90,6 +98,10 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
    end Write_Wav_Sample_Bytes;
 
 #end if;
+   ------------------------
+   -- Read_Wav_MC_Sample --
+   ------------------------
+
    procedure Read_Wav_MC_Sample
      (WF  : in out Wavefile;
       Wav :    out Wav_MC_Sample)
@@ -134,6 +146,10 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
                        Prev_File_Index + Expected_Byte_IO);
    end Read_Wav_MC_Sample;
 
+   -------------------------
+   -- Write_Wav_MC_Sample --
+   -------------------------
+
    procedure Write_Wav_MC_Sample
      (WF  : in out Wavefile;
       Wav :        Wav_MC_Sample)
@@ -168,6 +184,10 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
                        Prev_File_Index + Expected_Byte_IO);
    end Write_Wav_MC_Sample;
 
+   ---------
+   -- Get --
+   ---------
+
    function Get (WF  : in out Wavefile) return Wav_MC_Sample
    is
       N_Ch   : constant Positive := Number_Of_Channels (WF);
@@ -184,11 +204,19 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_IO is
       end return;
    end Get;
 
+   ---------
+   -- Get --
+   ---------
+
    procedure Get (WF  : in out Wavefile;
                   Wav :    out Wav_MC_Sample) is
    begin
       Read_Wav_MC_Sample (WF, Wav);
    end Get;
+
+   ---------
+   -- Put --
+   ---------
 
    procedure Put (WF  : in out Wavefile;
                   Wav :        Wav_MC_Sample) is

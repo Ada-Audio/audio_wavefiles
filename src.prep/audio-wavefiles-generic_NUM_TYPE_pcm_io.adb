@@ -101,6 +101,10 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
       Channel_Range => Channel_Range,
       PCM_MC_Sample => PCM_MC_Sample);
 
+   ---------
+   -- Get --
+   ---------
+
    function Get
      (WF   : in out Wavefile) return PCM_MC_Sample
    is
@@ -148,6 +152,10 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
 
    end Get;
 
+   ---------
+   -- Get --
+   ---------
+
    procedure Get
      (WF   : in out Wavefile;
       PCM  :    out PCM_MC_Sample) is
@@ -190,6 +198,10 @@ package body Audio.Wavefiles.Generic_Fixed_PCM_IO is
          end case;
       end if;
    end Get;
+
+   ---------
+   -- Put --
+   ---------
 
    procedure Put
      (WF   : in out Wavefile;

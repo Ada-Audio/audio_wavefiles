@@ -47,6 +47,10 @@ package body Audio.Wavefiles.Write is
 
    use Ada.Streams.Stream_IO;
 
+   -----------------------
+   -- Write_RIFF_Header --
+   -----------------------
+
    procedure Write_RIFF_Header
      (WF            : in out Wavefile;
       Id_FOURCC     :        FOURCC_String;
@@ -65,11 +69,19 @@ package body Audio.Wavefiles.Write is
       WF.RIFF_Info.Format := To_RIFF_Format (Format_FOURCC);
    end Write_RIFF_Header;
 
+   ---------------------
+   -- Write_Fmt_Chunk --
+   ---------------------
+
    procedure Write_Fmt_Chunk
      (WF : in out Wavefile)
    is
       function Chunk_Size (Format_Size : Unsigned_16) return Unsigned_32;
       procedure Write_Chunk (Chunk_Size : Unsigned_32);
+
+      ----------------
+      -- Chunk_Size --
+      ----------------
 
       function Chunk_Size (Format_Size : Unsigned_16) return Unsigned_32 is
       begin
@@ -80,6 +92,10 @@ package body Audio.Wavefiles.Write is
               (Wave_Format_Extensible_Size);
          end if;
       end Chunk_Size;
+
+      -----------------
+      -- Write_Chunk --
+      -----------------
 
       procedure Write_Chunk (Chunk_Size : Unsigned_32) is
       begin
@@ -131,6 +147,10 @@ package body Audio.Wavefiles.Write is
       end if;
    end Write_Fmt_Chunk;
 
+   ----------------------
+   -- Write_Data_Chunk --
+   ----------------------
+
    procedure Write_Data_Chunk
      (WF : in out Wavefile)
    is
@@ -154,6 +174,10 @@ package body Audio.Wavefiles.Write is
       end Append_Chunk;
    end Write_Data_Chunk;
 
+   ----------------------------
+   -- Write_Until_Data_Start --
+   ----------------------------
+
    procedure Write_Until_Data_Start
      (WF          : in out Wavefile) is
    begin
@@ -161,6 +185,10 @@ package body Audio.Wavefiles.Write is
       Write_Fmt_Chunk (WF);
       Write_Data_Chunk (WF);
    end Write_Until_Data_Start;
+
+   ----------------------
+   -- Update_Data_Size --
+   ----------------------
 
    procedure Update_Data_Size
      (WF  : in out Wavefile)

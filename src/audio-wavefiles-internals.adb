@@ -33,6 +33,11 @@ with Audio.RIFF;
 package body Audio.Wavefiles.Internals is
 
    use Ada.Streams.Stream_IO;
+
+   ----------------
+   -- Skip_Bytes --
+   ----------------
+
    procedure Skip_Bytes
      (F     : in out Ada.Streams.Stream_IO.File_Type;
       Bytes :        Unsigned_32) is
@@ -41,6 +46,10 @@ package body Audio.Wavefiles.Internals is
                  Ada.Streams.Stream_IO.Index (F)
                  + Ada.Streams.Stream_IO.Count (Bytes));
    end Skip_Bytes;
+
+   ----------------------------------------
+   -- Set_File_Index_To_Chunk_Data_Start --
+   ----------------------------------------
 
    procedure Set_File_Index_To_Chunk_Data_Start
      (File              : Ada.Streams.Stream_IO.File_Type;
@@ -60,6 +69,10 @@ package body Audio.Wavefiles.Internals is
       Ada.Streams.Stream_IO.Set_Index (File, Chunk_Data_Index);
    end Set_File_Index_To_Chunk_Data_Start;
 
+   ---------------------
+   -- Number_Of_Bytes --
+   ---------------------
+
    function Number_Of_Bytes
      (Position          : Sample_Count;
       Channels_In_Total : Interfaces.Unsigned_16;
@@ -69,6 +82,10 @@ package body Audio.Wavefiles.Internals is
        (Long_Integer (Position)
         * (Long_Integer (To_Positive (Bits_Per_Sample)) / 8)
         * Long_Integer (Channels_In_Total)));
+
+   -----------------------
+   -- Number_Of_Samples --
+   -----------------------
 
    function Number_Of_Samples
      (Chunk_Size        : Long_Integer;

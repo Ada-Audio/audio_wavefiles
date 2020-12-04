@@ -56,6 +56,10 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO is
    function Saturate (PCM : PCM_Sample) return Wav_Sample
      with Inline;
 
+   --------------
+   -- Saturate --
+   --------------
+
    function Saturate (PCM : PCM_Sample) return Wav_Sample is
    begin
       if PCM > PCM_Sample (Wav_Sample'Last) then
@@ -67,6 +71,10 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO is
       end if;
    end Saturate;
 
+   -------------
+   -- Convert --
+   -------------
+
    procedure Convert (Wav :     Wav_MC_Sample;
                       PCM : out PCM_MC_Sample) is
    begin
@@ -74,6 +82,10 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO is
          PCM (I) := PCM_Sample (Wav (I));
       end loop;
    end Convert;
+
+   -------------
+   -- Convert --
+   -------------
 
    procedure Convert (PCM :     PCM_MC_Sample;
                       Wav : out Wav_MC_Sample) is
@@ -83,12 +95,20 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO is
       end loop;
    end Convert;
 
+   -------------
+   -- Convert --
+   -------------
+
    function Convert (Wav : Wav_MC_Sample) return PCM_MC_Sample is
    begin
       return PCM : PCM_MC_Sample (Wav'Range) do
          Convert (Wav, PCM);
       end return;
    end Convert;
+
+   -------------
+   -- Convert --
+   -------------
 
    function Convert (PCM : PCM_MC_Sample) return Wav_MC_Sample is
    begin
@@ -97,12 +117,20 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO is
       end return;
    end Convert;
 
+   ---------
+   -- Get --
+   ---------
+
    function Get (WF  : in out Wavefile) return PCM_MC_Sample is
       Wav : constant Wav_MC_Sample := Get (WF);
       PCM : constant PCM_MC_Sample := Convert (Wav);
    begin
       return PCM;
    end Get;
+
+   ---------
+   -- Get --
+   ---------
 
    procedure Get (WF   : in out Wavefile;
                   PCM  :    out PCM_MC_Sample) is
@@ -111,6 +139,10 @@ package body Audio.Wavefiles.Generic_Fixed_Wav_Float_PCM_IO is
       Get (WF, Wav);
       Convert (Wav, PCM);
    end Get;
+
+   ---------
+   -- Put --
+   ---------
 
    procedure Put (WF  : in out Wavefile;
                   PCM :        PCM_MC_Sample) is

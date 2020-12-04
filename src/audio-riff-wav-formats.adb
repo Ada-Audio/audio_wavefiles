@@ -35,6 +35,10 @@ package body Audio.RIFF.Wav.Formats is
 
    type Channel_Configuration_Integer is mod 2 ** Channel_Configuration_Size;
 
+   ------------------------
+   -- To_RIFF_Identifier --
+   ------------------------
+
    function To_RIFF_Identifier (FOURCC : FOURCC_String) return RIFF_Identifier
    is
    begin
@@ -47,6 +51,10 @@ package body Audio.RIFF.Wav.Formats is
       end if;
    end To_RIFF_Identifier;
 
+   --------------------
+   -- To_RIFF_Format --
+   --------------------
+
    function To_RIFF_Format (FOURCC : FOURCC_String) return RIFF_Format is
    begin
       if    FOURCC = "WAVE" then return RIFF_Format_Wave;
@@ -58,6 +66,10 @@ package body Audio.RIFF.Wav.Formats is
       else                       return RIFF_Format_Unknown;
       end if;
    end To_RIFF_Format;
+
+   ----------------------
+   -- To_Wav_Chunk_Tag --
+   ----------------------
 
    function To_Wav_Chunk_Tag (FOURCC : FOURCC_String) return Wav_Chunk_Tag is
    begin
@@ -93,6 +105,10 @@ package body Audio.RIFF.Wav.Formats is
       end if;
    end To_Wav_Chunk_Tag;
 
+   -------------
+   -- Default --
+   -------------
+
    function Default return Wave_Format_16 is
    begin
       return W : Wave_Format_16 do
@@ -106,6 +122,10 @@ package body Audio.RIFF.Wav.Formats is
       end return;
    end Default;
 
+   -------------
+   -- Default --
+   -------------
+
    overriding function Default return Wave_Format_18 is
    begin
       return W : Wave_Format_18 do
@@ -113,6 +133,10 @@ package body Audio.RIFF.Wav.Formats is
          W.Size := 0;
       end return;
    end Default;
+
+   -------------
+   -- Default --
+   -------------
 
    overriding function Default return Wave_Format_Extensible is
       use Audio.RIFF.Wav.GUIDs;
@@ -127,11 +151,19 @@ package body Audio.RIFF.Wav.Formats is
       end return;
    end Default;
 
+   ------------------------------
+   -- Reset_For_Wave_Format_16 --
+   ------------------------------
+
    procedure Reset_For_Wave_Format_16 (W : in out Wave_Format_Extensible) is
    begin
       W.Size := 0;
       Reset_For_Wave_Format_18 (W);
    end Reset_For_Wave_Format_16;
+
+   ------------------------------
+   -- Reset_For_Wave_Format_18 --
+   ------------------------------
 
    procedure Reset_For_Wave_Format_18 (W : in out Wave_Format_Extensible) is
       use Audio.RIFF.Wav.GUIDs;
@@ -141,6 +173,10 @@ package body Audio.RIFF.Wav.Formats is
       W.Sub_Format            := GUID_Undefined;
       W.Channel_Config        := Channel_Config_Empty;
    end Reset_For_Wave_Format_18;
+
+   -------------
+   -- To_GUID --
+   -------------
 
    function To_GUID (Format : Wav_Format_Tag) return GUID is
       use Audio.RIFF.Wav.GUIDs;
@@ -157,6 +193,10 @@ package body Audio.RIFF.Wav.Formats is
          when others                     => return GUID_Undefined;
       end case;
    end To_GUID;
+
+   -----------------------
+   -- To_Wav_Format_Tag --
+   -----------------------
 
    function To_Wav_Format_Tag (ID : GUID) return Wav_Format_Tag is
       use Audio.RIFF.Wav.GUIDs;
@@ -198,6 +238,10 @@ package body Audio.RIFF.Wav.Formats is
       end if;
    end To_Wav_Format_Tag;
 
+   -------------------
+   -- Is_Consistent --
+   -------------------
+
    function Is_Consistent
      (Channel_Config      : Channel_Configuration;
       Number_Of_Channels  : Positive) return Boolean
@@ -213,6 +257,10 @@ package body Audio.RIFF.Wav.Formats is
       return Number_Of_Channels = Counted_Channels;
    end Is_Consistent;
 
+   ----------------------------------
+   -- Should_Use_Extensible_Format --
+   ----------------------------------
+
    function Should_Use_Extensible_Format
      (Bit_Depth          : Wav_Bit_Depth;
       Number_Of_Channels : Positive) return Boolean is
@@ -226,16 +274,28 @@ package body Audio.RIFF.Wav.Formats is
       end if;
    end Should_Use_Extensible_Format;
 
+   -----------------
+   -- Block_Align --
+   -----------------
+
    function Block_Align
      (Bit_Depth          : Wav_Bit_Depth;
       Number_Of_Channels : Positive) return Unsigned_16 is
      (((To_Unsigned_16 (Bit_Depth) + 7) / 8)
       * Unsigned_16 (Number_Of_Channels));
 
+   ------------------------------
+   -- Average_Bytes_Per_Second --
+   ------------------------------
+
    function Average_Bytes_Per_Second
      (Block_Align        : Unsigned_16;
       Sample_Rate        : Wav_Sample_Rate) return Unsigned_32 is
      (Unsigned_32 (Block_Align) * To_Unsigned_32 (Sample_Rate));
+
+   ----------
+   -- Init --
+   ----------
 
    function Init
      (Bit_Depth          : Wav_Bit_Depth;
@@ -285,6 +345,10 @@ package body Audio.RIFF.Wav.Formats is
       end return;
    end Init;
 
+   ---------------------
+   -- Is_Float_Format --
+   ---------------------
+
    function Is_Float_Format
      (W : Wave_Format_Extensible) return Boolean
    is
@@ -293,6 +357,10 @@ package body Audio.RIFF.Wav.Formats is
       return W.Format_Tag = Wav_Format_IEEE_Float or
         W.Sub_Format = GUID_IEEE_Float;
    end Is_Float_Format;
+
+   --------------------------------
+   -- Read_Channel_Configuration --
+   --------------------------------
 
    procedure Read_Channel_Configuration
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -305,6 +373,10 @@ package body Audio.RIFF.Wav.Formats is
       Channel_Configuration_Integer'Read (Stream, V);
       Item := X;
    end Read_Channel_Configuration;
+
+   ---------------------------------
+   -- Write_Channel_Configuration --
+   ---------------------------------
 
    procedure Write_Channel_Configuration
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;

@@ -34,6 +34,10 @@ with Audio.RIFF.Wav.GUIDs; use Audio.RIFF.Wav.GUIDs;
 
 package body Audio.RIFF.Wav.Formats.Report is
 
+   -----------
+   -- Print --
+   -----------
+
    procedure Print (W : Wave_Format_Extensible) is
    begin
       Put_Line ("------------ WAVEFORMAT header  ------------");

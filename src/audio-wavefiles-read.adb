@@ -42,6 +42,10 @@ package body Audio.Wavefiles.Read is
    procedure Parse_Data_Chunk
      (WF : in out Wavefile);
 
+   ---------------------
+   -- Parse_Fmt_Chunk --
+   ---------------------
+
    procedure Parse_Fmt_Chunk
      (WF : in out Wavefile)
    is
@@ -116,6 +120,10 @@ package body Audio.Wavefiles.Read is
       end if;
    end Parse_Fmt_Chunk;
 
+   ----------------------
+   -- Parse_Data_Chunk --
+   ----------------------
+
    procedure Parse_Data_Chunk
      (WF : in out Wavefile)
    is
@@ -157,6 +165,10 @@ package body Audio.Wavefiles.Read is
       end if;
    end Parse_Data_Chunk;
 
+   ---------------------------
+   -- Read_Until_Data_Start --
+   ---------------------------
+
    procedure Read_Until_Data_Start
      (WF          : in out Wavefile)
    is
@@ -175,6 +187,10 @@ package body Audio.Wavefiles.Read is
       Parse_Data_Chunk (WF);
 
    end Read_Until_Data_Start;
+
+   ----------------------
+   -- Parse_Wav_Chunks --
+   ----------------------
 
    procedure Parse_Wav_Chunks
      (WF     : in out Wavefile)
@@ -235,6 +251,10 @@ package body Audio.Wavefiles.Read is
       --  Setting file index back to previous location
       Ada.Streams.Stream_IO.Set_Index (WF.File, Prev_File_Index);
    end Parse_Wav_Chunks;
+
+   ------------------------
+   -- Set_Current_Sample --
+   ------------------------
 
    procedure Set_Current_Sample
      (WF       : in out Wavefile;

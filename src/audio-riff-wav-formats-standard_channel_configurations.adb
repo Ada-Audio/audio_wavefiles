@@ -30,6 +30,10 @@
 
 package body Audio.RIFF.Wav.Formats.Standard_Channel_Configurations is
 
+   -----------------------------------
+   -- Guessed_Channel_Configuration --
+   -----------------------------------
+
    function Guessed_Channel_Configuration
      (Number_Of_Channels : Positive) return Channel_Configuration is
    begin

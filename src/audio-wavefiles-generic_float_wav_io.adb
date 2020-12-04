@@ -39,6 +39,10 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
                                   Wav :        Wav_MC_Sample)
      with Inline;
 
+   ------------------------
+   -- Read_Wav_MC_Sample --
+   ------------------------
+
    procedure Read_Wav_MC_Sample
      (WF  : in out Wavefile;
       Wav :    out Wav_MC_Sample)
@@ -73,6 +77,10 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
                        Prev_File_Index + Expected_Byte_IO);
    end Read_Wav_MC_Sample;
 
+   -------------------------
+   -- Write_Wav_MC_Sample --
+   -------------------------
+
    procedure Write_Wav_MC_Sample
      (WF  : in out Wavefile;
       Wav :        Wav_MC_Sample)
@@ -97,6 +105,10 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
                        Prev_File_Index + Expected_Byte_IO);
    end Write_Wav_MC_Sample;
 
+   ---------
+   -- Get --
+   ---------
+
    function Get (WF  : in out Wavefile) return Wav_MC_Sample
    is
       N_Ch   : constant Positive := Number_Of_Channels (WF);
@@ -113,11 +125,19 @@ package body Audio.Wavefiles.Generic_Float_Wav_IO is
       end return;
    end Get;
 
+   ---------
+   -- Get --
+   ---------
+
    procedure Get (WF  : in out Wavefile;
                   Wav :    out Wav_MC_Sample) is
    begin
       Read_Wav_MC_Sample (WF, Wav);
    end Get;
+
+   ---------
+   -- Put --
+   ---------
 
    procedure Put (WF  : in out Wavefile;
                   Wav :        Wav_MC_Sample) is
