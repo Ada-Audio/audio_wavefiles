@@ -13,7 +13,7 @@ jobs:
     - name: Set up GNAT toolchain
       run: >
         sudo apt-get update &&
-        sudo apt-get install gnat gprbuild &&
+        sudo apt-get install gnat-9 gprbuild &&
         sudo apt-get install wavbreaker
 
     - name: Verify generated source-code files
