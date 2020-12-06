@@ -26,7 +26,7 @@ supports reading and writing of wavefiles, including the following features:
 - Conversion between PCM buffer data type and wavefile data type.
      - Adaptations for different precisions are performed automatically.
 
-See CHANGELOG.md file for a comprehensive list of features.
+See the [CHANGELOG](CHANGELOG.md) file for a comprehensive list of features.
 
 
 License & Copyright
