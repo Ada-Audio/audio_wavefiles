@@ -13,7 +13,18 @@ Version 1.0.0
 1. Introduction
 ---------------
 
-This Package contains a Wavefile Reader & Writer written in Ada 2012.
+This Package contains a Wavefile Reader & Writer written in Ada 2012. It
+supports reading and writing of wavefiles, including the following features:
+
+- Mono, stereo and multichannel audio.
+- Audio samples with following bit depths:
+    - 16/24/32/64-bit PCM
+    - 32/64-bit floating-point PCM
+- Wave-Format-Extensible format (WAVEFORMATEXTENSIBLE)
+- Conversion between PCM buffer data type and wavefile data type.
+     - Adaptations for different precisions are performed automatically.
+
+See CHANGELOG.md file for a comprehensive list of features.
 
 2. License & Copyright
 ----------------------
@@ -29,21 +40,3 @@ This Package has been tested on the following compilers / platforms:
 - GNAT GPL 2015 for Linux
 
 The Package is expected to work on Windows and Mac platforms.
-
-3. Features
------------
-
-### Wavefile Features
-
-Reading and writing of wavefiles supporting following features:
-
-- Stereo and multichannel audio
-- Audio samples with following bit depths:
-    - 16-bit PCM
-    - 24-bit PCM
-    - 32-bit PCM
-- Wave-Format-Extensible (WAVEFORMATEXTENSIBLE)
-- Conversion between PCM buffer data type and wavefile data type.
-     - Adaptations for different precisions are performed automatically.
-
-See CHANGELOG.md file for a comprehensive list of features.
