@@ -1,5 +1,5 @@
-Wavefiles: Ada Wavefile Reader & Writer Package
-===============================================
+Ada Library for Wavefile I/O
+============================
 
 **Version 2.0.0**
 
