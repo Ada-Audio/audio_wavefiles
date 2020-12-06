@@ -39,12 +39,12 @@ project Quick_Wav_Data_Check is
    for Main use ("quick_wav_data_check.adb");
 
    package Ide is
-      for Vcs_Kind use "Git";
+      for Vcs_Kind use "git";
       for Documentation_Dir use "./doc";
    end Ide;
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnata", "-gnato", "-gnatVa", "-gnatwa", "-fstack-check", "-gnatyy", "-g", "-gnatQ");
+      for Default_Switches ("ada") use ("-gnata", "-gnato", "-gnatVa", "-gnatwa", "-fstack-check", "-gnaty3ACIM79Oabcdefhiklnprstux", "-g", "-gnatQ");
    end Compiler;
 
    package Linker is
@@ -54,5 +54,9 @@ project Quick_Wav_Data_Check is
    package Builder is
       for Default_Switches ("ada") use ("-g", "-s");
    end Builder;
+
+   package Pretty_Printer is
+      for Default_Switches ("ada") use ("-A0", "-A1", "-A2", "-A3", "-A4", "-A5", "-c4", "-c3", "--separate-loop-then");
+   end Pretty_Printer;
 
 end Quick_Wav_Data_Check;

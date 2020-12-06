@@ -1,31 +1,34 @@
--------------------------------------------------------------------------------
---
---                                WAVEFILES
---
---                         Quick Wave Data I/O Check
---
---  The MIT License (MIT)
---
---  Copyright (c) 2020 Gustavo A. Hoffmann
---
---  Permission is hereby granted, free of charge, to any person obtaining a
---  copy of this software and associated documentation files (the "Software"),
---  to deal in the Software without restriction, including without limitation
---  the rights to use, copy, modify, merge, publish, distribute, sublicense,
---  and / or sell copies of the Software, and to permit persons to whom the
---  Software is furnished to do so, subject to the following conditions:
---
---  The above copyright notice and this permission notice shall be included in
---  all copies or substantial portions of the Software.
---
---  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
---  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
---  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
---  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
---  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
---  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
---  DEALINGS IN THE SOFTWARE.
--------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+--                                                                          --
+--          THIS IS AN AUTOMATICALLY GENERATED FILE! DO NOT EDIT!           --
+--                                                                          --
+--                               WAVEFILES                                  --
+--                                                                          --
+--                         Quick Wave Data I/O Check                        --
+--                                                                          --
+--  The MIT License (MIT)                                                   --
+--                                                                          --
+--  Copyright (c) 2020 Gustavo A. Hoffmann                                  --
+--                                                                          --
+--  Permission is hereby granted, free of charge, to any person obtaining   --
+--  a copy of this software and associated documentation files (the         --
+--  "Software"), to deal in the Software without restriction, including     --
+--  without limitation the rights to use, copy, modify, merge, publish,     --
+--  distribute, sublicense, and / or sell copies of the Software, and to    --
+--  permit persons to whom the Software is furnished to do so, subject to   --
+--  the following conditions:                                               --
+--                                                                          --
+--  The above copyright notice and this permission notice shall be          --
+--  included in all copies or substantial portions of the Software.         --
+--                                                                          --
+--  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,         --
+--  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF      --
+--  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  --
+--  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY    --
+--  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,    --
+--  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE       --
+--  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                  --
+------------------------------------------------------------------------------
 
 with Ada.Text_IO;                          use Ada.Text_IO;
 with Ada.Strings.Fixed;                    use Ada.Strings.Fixed;
@@ -107,6 +110,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
                    10     => (-2#1.0#e-0),
                    others => 0.0);
 
+   type Bits_Per_Sample_List is array (Positive range <>) of Wav_Bit_Depth;
+   Test_Bits_Per_Sample : constant Bits_Per_Sample_List := (Bit_Depth_32,
+                                                            Bit_Depth_64);
+
    procedure Display_PCM_Vals
      (PCM_Vals : PCM_Buffer;
       Header   : String);
@@ -141,6 +148,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
    function Image (B : Wav_Bit_Depth) return String renames
      Audio.RIFF.Wav.Formats.Report.Image;
 
+   ----------------------
+   -- Display_PCM_Vals --
+   ----------------------
+
    procedure Display_PCM_Vals (PCM_Vals : PCM_Buffer;
                                Header   : String)
    is
@@ -172,6 +183,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
       end loop;
    end Display_PCM_Vals;
 
+   --------------------
+   -- Write_PCM_Vals --
+   --------------------
+
    procedure Write_PCM_Vals (WF       : in out Wavefile;
                              PCM_Vals : PCM_Buffer) is
       PCM_Buf : PCM_Buffer (1 .. Number_Of_Channels (WF));
@@ -184,9 +199,9 @@ package body Quick_Wav_Data_Checks.Float_Checks is
       end loop;
    end Write_PCM_Vals;
 
-   type Bits_Per_Sample_List is array (Positive range <>) of Wav_Bit_Depth;
-   Test_Bits_Per_Sample : constant Bits_Per_Sample_List := (Bit_Depth_32,
-                                                            Bit_Depth_64);
+   ------------------
+   -- Display_Info --
+   ------------------
 
    procedure Display_Info
      (WF     : Wavefile;
@@ -200,6 +215,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
       Display_Info (WF);
       Put_Line (Separator);
    end Display_Info;
+
+   --------------------
+   -- Write_Wavefile --
+   --------------------
 
    procedure Write_Wavefile
      (Wav_File_Name : String;
@@ -220,6 +239,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
 
       WF_Out.Close;
    end Write_Wavefile;
+
+   -------------------
+   -- Read_Wavefile --
+   -------------------
 
    procedure Read_Wavefile
      (Wav_File_Name :     String;
@@ -264,6 +287,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
       WF_In.Close;
    end Read_Wavefile;
 
+   --------------------
+   -- PCM_Data_Is_OK --
+   --------------------
+
    function PCM_Data_Is_OK
      (PCM_Ref, PCM_DUT : PCM_Buffer) return Boolean
    is
@@ -279,6 +306,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
       return Success;
 
    end PCM_Data_Is_OK;
+
+   --------------------
+   -- PCM_Data_Is_OK --
+   --------------------
 
    function PCM_Data_Is_OK
      (Test_Bits : Wav_Bit_Depth;
@@ -296,6 +327,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
             return False;
       end case;
    end PCM_Data_Is_OK;
+
+   ------------------------------------
+   -- Wav_IO_OK_For_Audio_Resolution --
+   ------------------------------------
 
    function Wav_IO_OK_For_Audio_Resolution
      (Test_Bits          : Wav_Bit_Depth;
@@ -323,6 +358,10 @@ package body Quick_Wav_Data_Checks.Float_Checks is
 
       return Success;
    end Wav_IO_OK_For_Audio_Resolution;
+
+   ---------------
+   -- Wav_IO_OK --
+   ---------------
 
    function Wav_IO_OK
      (Wav_Filename_Prefix : String) return Boolean

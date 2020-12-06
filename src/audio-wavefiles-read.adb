@@ -1,31 +1,32 @@
--------------------------------------------------------------------------------
---
---                                WAVEFILES
---
---                            Wavefile reading
---
---  The MIT License (MIT)
---
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
---
---  Permission is hereby granted, free of charge, to any person obtaining a
---  copy of this software and associated documentation files (the "Software"),
---  to deal in the Software without restriction, including without limitation
---  the rights to use, copy, modify, merge, publish, distribute, sublicense,
---  and / or sell copies of the Software, and to permit persons to whom the
---  Software is furnished to do so, subject to the following conditions:
---
---  The above copyright notice and this permission notice shall be included in
---  all copies or substantial portions of the Software.
---
---  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
---  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
---  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
---  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
---  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
---  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
---  DEALINGS IN THE SOFTWARE.
--------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+--                                                                          --
+--                               WAVEFILES                                  --
+--                                                                          --
+--                       Wavefile reading routines                          --
+--                                                                          --
+--  The MIT License (MIT)                                                   --
+--                                                                          --
+--  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann                          --
+--                                                                          --
+--  Permission is hereby granted, free of charge, to any person obtaining   --
+--  a copy of this software and associated documentation files (the         --
+--  "Software"), to deal in the Software without restriction, including     --
+--  without limitation the rights to use, copy, modify, merge, publish,     --
+--  distribute, sublicense, and / or sell copies of the Software, and to    --
+--  permit persons to whom the Software is furnished to do so, subject to   --
+--  the following conditions:                                               --
+--                                                                          --
+--  The above copyright notice and this permission notice shall be          --
+--  included in all copies or substantial portions of the Software.         --
+--                                                                          --
+--  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,         --
+--  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF      --
+--  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  --
+--  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY    --
+--  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,    --
+--  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE       --
+--  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                  --
+------------------------------------------------------------------------------
 
 with Ada.Text_IO;                  use Ada.Text_IO;
 with Interfaces;
@@ -40,6 +41,10 @@ package body Audio.Wavefiles.Read is
      (WF : in out Wavefile);
    procedure Parse_Data_Chunk
      (WF : in out Wavefile);
+
+   ---------------------
+   -- Parse_Fmt_Chunk --
+   ---------------------
 
    procedure Parse_Fmt_Chunk
      (WF : in out Wavefile)
@@ -115,6 +120,10 @@ package body Audio.Wavefiles.Read is
       end if;
    end Parse_Fmt_Chunk;
 
+   ----------------------
+   -- Parse_Data_Chunk --
+   ----------------------
+
    procedure Parse_Data_Chunk
      (WF : in out Wavefile)
    is
@@ -156,6 +165,10 @@ package body Audio.Wavefiles.Read is
       end if;
    end Parse_Data_Chunk;
 
+   ---------------------------
+   -- Read_Until_Data_Start --
+   ---------------------------
+
    procedure Read_Until_Data_Start
      (WF          : in out Wavefile)
    is
@@ -174,6 +187,10 @@ package body Audio.Wavefiles.Read is
       Parse_Data_Chunk (WF);
 
    end Read_Until_Data_Start;
+
+   ----------------------
+   -- Parse_Wav_Chunks --
+   ----------------------
 
    procedure Parse_Wav_Chunks
      (WF     : in out Wavefile)
@@ -234,6 +251,10 @@ package body Audio.Wavefiles.Read is
       --  Setting file index back to previous location
       Ada.Streams.Stream_IO.Set_Index (WF.File, Prev_File_Index);
    end Parse_Wav_Chunks;
+
+   ------------------------
+   -- Set_Current_Sample --
+   ------------------------
 
    procedure Set_Current_Sample
      (WF       : in out Wavefile;

@@ -1,3 +1,33 @@
+------------------------------------------------------------------------------
+--                                                                          --
+--                               WAVEFILES                                  --
+--                                                                          --
+--                         Wavefile benchmarking                            --
+--                                                                          --
+--  The MIT License (MIT)                                                   --
+--                                                                          --
+--  Copyright (c) 2020 Gustavo A. Hoffmann                                  --
+--                                                                          --
+--  Permission is hereby granted, free of charge, to any person obtaining   --
+--  a copy of this software and associated documentation files (the         --
+--  "Software"), to deal in the Software without restriction, including     --
+--  without limitation the rights to use, copy, modify, merge, publish,     --
+--  distribute, sublicense, and / or sell copies of the Software, and to    --
+--  permit persons to whom the Software is furnished to do so, subject to   --
+--  the following conditions:                                               --
+--                                                                          --
+--  The above copyright notice and this permission notice shall be          --
+--  included in all copies or substantial portions of the Software.         --
+--                                                                          --
+--  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,         --
+--  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF      --
+--  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  --
+--  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY    --
+--  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,    --
+--  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE       --
+--  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                  --
+------------------------------------------------------------------------------
+
 with Ada.Text_IO;                          use Ada.Text_IO;
 with Ada.Real_Time;                        use Ada.Real_Time;
 with Ada.Execution_Time;                   use Ada.Execution_Time;
@@ -34,6 +64,10 @@ package body Wavefile_Benchmarking is
                            Number_Samples        : Long_Long_Integer;
                            Sample_Rate           : Positive);
 
+   -------------------
+   -- Open_Wavefile --
+   -------------------
+
    procedure Open_Wavefile is
       Wav_In_File_Name  : constant String := "2ch_long_noise.wav";
       Wav_Out_File_Name : constant String := "dummy.wav";
@@ -47,11 +81,19 @@ package body Wavefile_Benchmarking is
       WF_Out.Create (Out_File, Wav_Out_File_Name);
    end Open_Wavefile;
 
+   --------------------
+   -- Close_Wavefile --
+   --------------------
+
    procedure Close_Wavefile is
    begin
       WF_In.Close;
       WF_Out.Close;
    end Close_Wavefile;
+
+   --------------------
+   -- kHz_Per_Sample --
+   --------------------
 
    function kHz_Per_Sample
      (Elapsed_Time          : Time_Span;
@@ -64,6 +106,10 @@ package body Wavefile_Benchmarking is
    begin
       return Time_Span_Conversions.To_kHz (Elapsed_Time, CPU_MHz, Factor);
    end kHz_Per_Sample;
+
+   ------------------
+   -- Display_Info --
+   ------------------
 
    procedure Display_Info (Elapsed_Time          : Time_Span;
                            CPU_MHz               : Float;
@@ -107,6 +153,10 @@ package body Wavefile_Benchmarking is
       New_Line;
    end Display_Info;
 
+   ---------------------
+   -- Benchm_CPU_Time --
+   ---------------------
+
    function Benchm_CPU_Time (CPU_MHz : Float) return Wavefile_Benchmark_kHz
    is
       Res                   : Wavefile_Benchmark_kHz;
@@ -134,7 +184,7 @@ package body Wavefile_Benchmarking is
 
       pragma Assert
         (WF_In.Format_Of_Wavefile.Bits_Per_Sample = Bit_Depth_16
-         and not WF_In.Format_Of_Wavefile.Is_Float_Format);
+         and then not WF_In.Format_Of_Wavefile.Is_Float_Format);
 
       if Display_Debug_Info then
          Put_Line ("========================================================");
@@ -217,6 +267,10 @@ package body Wavefile_Benchmarking is
 
       return Res;
    end Benchm_CPU_Time;
+
+   ---------------------
+   -- Benchm_CPU_Time --
+   ---------------------
 
    procedure Benchm_CPU_Time (CPU_MHz :     Float;
                               Results : out Wavefile_Benchmark_Infos) is

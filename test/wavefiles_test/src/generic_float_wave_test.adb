@@ -1,31 +1,34 @@
--------------------------------------------------------------------------------
---
---                                WAVEFILES
---
---                             Test application
---
---  The MIT License (MIT)
---
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann
---
---  Permission is hereby granted, free of charge, to any person obtaining a
---  copy of this software and associated documentation files (the "Software"),
---  to deal in the Software without restriction, including without limitation
---  the rights to use, copy, modify, merge, publish, distribute, sublicense,
---  and / or sell copies of the Software, and to permit persons to whom the
---  Software is furnished to do so, subject to the following conditions:
---
---  The above copyright notice and this permission notice shall be included in
---  all copies or substantial portions of the Software.
---
---  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
---  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
---  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
---  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
---  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
---  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
---  DEALINGS IN THE SOFTWARE.
--------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+--                                                                          --
+--          THIS IS AN AUTOMATICALLY GENERATED FILE! DO NOT EDIT!           --
+--                                                                          --
+--                               WAVEFILES                                  --
+--                                                                          --
+--                            Test application                              --
+--                                                                          --
+--  The MIT License (MIT)                                                   --
+--                                                                          --
+--  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann                          --
+--                                                                          --
+--  Permission is hereby granted, free of charge, to any person obtaining   --
+--  a copy of this software and associated documentation files (the         --
+--  "Software"), to deal in the Software without restriction, including     --
+--  without limitation the rights to use, copy, modify, merge, publish,     --
+--  distribute, sublicense, and / or sell copies of the Software, and to    --
+--  permit persons to whom the Software is furnished to do so, subject to   --
+--  the following conditions:                                               --
+--                                                                          --
+--  The above copyright notice and this permission notice shall be          --
+--  included in all copies or substantial portions of the Software.         --
+--                                                                          --
+--  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,         --
+--  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF      --
+--  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  --
+--  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY    --
+--  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,    --
+--  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE       --
+--  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                  --
+------------------------------------------------------------------------------
 
 with Ada.Text_IO;                          use Ada.Text_IO;
 
@@ -52,6 +55,10 @@ package body Generic_Float_Wave_Test is
 
    Verbose     : constant Boolean := False;
 
+   -----------------------
+   -- Display_Info_File --
+   -----------------------
+
    procedure Display_Info_File (File_In  : String) is
       WF_In       : Audio.Wavefiles.Wavefile;
    begin
@@ -59,6 +66,10 @@ package body Generic_Float_Wave_Test is
       Display_Info (WF_In);
       WF_In.Close;
    end Display_Info_File;
+
+   ---------------
+   -- Copy_File --
+   ---------------
 
    procedure Copy_File
      (File_In  : String;
@@ -105,6 +116,10 @@ package body Generic_Float_Wave_Test is
       WF_Out.Close;
 
    end Copy_File;
+
+   -------------------
+   -- Compare_Files --
+   -------------------
 
    procedure Compare_Files
      (File_Ref  : String;
@@ -157,6 +172,10 @@ package body Generic_Float_Wave_Test is
       Report_Comparison;
    end Compare_Files;
 
+   ----------------
+   -- Diff_Files --
+   ----------------
+
    procedure Diff_Files
      (File_Ref  : String;
       File_DUT  : String;
@@ -196,6 +215,10 @@ package body Generic_Float_Wave_Test is
       WF_DUT.Close;
       WF_Diff.Close;
    end Diff_Files;
+
+   ---------------
+   -- Mix_Files --
+   ---------------
 
    procedure Mix_Files
      (File_Ref  : String;
