@@ -66,5 +66,6 @@ with "wavefiles_lib.gpr";
 Using the Library
 -----------------
 
-For a list of source-code examples for various use-cases, please refer to the
+For a list of source-code examples for various use-cases — starting from the
+simplest ones to more complicated use-cases —, please refer to the
 [cookbook](cookbook/cookbook.md) file.
