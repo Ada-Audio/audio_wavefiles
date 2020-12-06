@@ -66,6 +66,21 @@ with "wavefiles_lib.gpr";
 Using the Library
 -----------------
 
+To use the library, you have to add a reference to the `Wavefiles` package to
+your source-code file:
+
+```
+with Audio.Wavefiles;
+```
+
+Also, you should instantiate at least one of the PCM I/O packages. To do that,
+you could reference, for example, the generic PCM I/O package for
+floating-point types:
+
+```
+with Audio.Wavefiles.Generic_Float_PCM_IO;
+```
+
 For a list of source-code examples for various use-cases — starting from the
 simplest ones to more complicated use-cases —, please refer to the
 [cookbook](cookbook/cookbook.md) file.
