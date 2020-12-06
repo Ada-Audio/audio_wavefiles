@@ -70,7 +70,17 @@ To use the library, you have to add a reference to the `Wavefiles` package to
 your source-code file:
 
 ```
-with Audio.Wavefiles;
+with Audio.Wavefiles; use Audio.Wavefiles;
+```
+
+Then, you can open and close a wavefile:
+
+```
+   WF            : Wavefile;
+begin
+   WF.Open (In_File, "test.wav");
+
+   WF.Close;
 ```
 
 Also, you should instantiate at least one of the PCM I/O packages. To do that,
@@ -79,6 +89,31 @@ floating-point types:
 
 ```
 with Audio.Wavefiles.Generic_Float_PCM_IO;
+use  Audio.Wavefiles.Generic_Float_PCM_IO;
+```
+
+You can then instantiate this package by writing, for example:
+
+```
+   type Float_Array is array (Positive range <>) of Float;
+
+   package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
+     (PCM_Sample    => Float,
+      Channel_Range => Positive,
+      PCM_MC_Sample => Float_Array);
+   use PCM_IO;
+```
+
+You can now read data from the wavefile:
+
+```
+      loop
+         declare
+            PCM_Buf : constant Float_Array := Get (WF);
+         begin
+            exit when WF.End_Of_File;
+         end;
+      end loop;
 ```
 
 For a list of source-code examples for various use-cases — starting from the
