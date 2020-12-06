@@ -45,6 +45,24 @@ This Package has been tested with following compilers and platforms:
 - GNAT Community 2020 for Linux, Windows and macOS.
 
 
+Setting Up the Library
+----------------------
+
+You can use GPRbuild to build the library:
+
+```
+gprbuild -P wavefiles_lib.gpr
+```
+
+However, since parts of the Wavefiles package are generic and therefore need to
+be instantiated, it's advisable to include this library into your project by
+adding the following line:
+
+```
+with "wavefiles_lib.gpr";
+```
+
+
 Using the Library
 -----------------
 
