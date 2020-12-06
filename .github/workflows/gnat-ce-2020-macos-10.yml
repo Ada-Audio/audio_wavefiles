@@ -1,6 +1,6 @@
 name: GNAT Community 2020 on macOS 10.15
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   build:

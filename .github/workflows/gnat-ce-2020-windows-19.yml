@@ -1,6 +1,6 @@
 name: GNAT Community 2020 on Windows Server 2019
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   build:
