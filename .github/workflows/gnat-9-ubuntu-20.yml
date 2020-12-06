@@ -1,10 +1,10 @@
-name: GNAT on Ubuntu (latest)
+name: GNAT 9 on Ubuntu 20.04
 
 on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
     - name: Checkout
@@ -13,7 +13,7 @@ jobs:
     - name: Set up GNAT toolchain
       run: >
         sudo apt-get update &&
-        sudo apt-get install gnat gprbuild &&
+        sudo apt-get install gnat-9 gprbuild &&
         sudo apt-get install wavbreaker
 
     - name: Verify generated source-code files
