@@ -1,6 +1,7 @@
 Wavefiles: Ada Wavefile Reader & Writer Package
 ===============================================
-Version 1.0.0
+
+**Version 2.0.0**
 
 ![GNAT 7 on Ubuntu 18.04](https://github.com/Ada-Audio/wavefiles/workflows/GNAT%207%20on%20Ubuntu%2018.04/badge.svg)
 ![GNAT 8 on Ubuntu 20.04](https://github.com/Ada-Audio/wavefiles/workflows/GNAT%208%20on%20Ubuntu%2020.04/badge.svg)
