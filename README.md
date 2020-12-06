@@ -23,8 +23,11 @@ supports reading and writing of wavefiles, including the following features:
     - 16/24/32/64-bit PCM
     - 32/64-bit floating-point PCM
 - Wave-Format-Extensible format (WAVEFORMATEXTENSIBLE)
-- Conversion between PCM buffer data type and wavefile data type.
-     - Adaptations for different precisions are performed automatically.
+
+This library also includes support for PCM buffers in floating-point and
+fixed-point formats, as well as the automatic conversion between the data types
+used for the PCM buffer and the wavefile, which might have different formats
+(floating-point vs. fixed-point) or precisions (e.g., 16 bits vs. 64 bits).
 
 See the [CHANGELOG](CHANGELOG.md) file for a comprehensive list of features.
 
