@@ -32,8 +32,9 @@ See the [CHANGELOG](CHANGELOG.md) file for a comprehensive list of features.
 License & Copyright
 -------------------
 
-This Package is available "as is" under MIT License. Unless stated otherwise,
-the copyright is held by Gustavo A. Hoffmann.
+As indicated in the [LICENSE](LICENSE) file, this Package is available "as is"
+under MIT License. Please refer to that file for all licensing conditions.
+Unless stated otherwise, the copyright is held by Gustavo A. Hoffmann.
 
 
 Supported Platforms
