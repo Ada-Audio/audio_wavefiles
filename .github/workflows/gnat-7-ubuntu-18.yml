@@ -1,4 +1,4 @@
-name: GNAT on Ubuntu 18.04
+name: GNAT 7 on Ubuntu 18.04
 
 on: [push, pull_request]
 

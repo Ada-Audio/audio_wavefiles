@@ -1,4 +1,4 @@
-name: GNAT on Ubuntu 20.04
+name: GNAT 9 on Ubuntu 20.04
 
 on: [push, pull_request]
 
