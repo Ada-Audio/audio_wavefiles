@@ -35,8 +35,8 @@ the copyright is held by Gustavo A. Hoffmann.
 2. Supported Platforms
 ----------------------
 
-This Package has been tested on the following compilers / platforms:
 
-- GNAT GPL 2015 for Linux
+This Package has been tested with following compilers and platforms:
 
-The Package is expected to work on Windows and Mac platforms.
+- GNAT FSF 7, 8, 9 and 10 for Linux;
+- GNAT Community 2020 for Linux, Windows and macOS.
