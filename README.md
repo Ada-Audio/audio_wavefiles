@@ -55,7 +55,7 @@ gprbuild -P wavefiles_lib.gpr
 ```
 
 However, since parts of the Wavefiles package are generic and therefore need to
-be instantiated, it's advisable to include this library into your project by
+be instantiated, it's advisable to include this library in your project by
 adding the following line:
 
 ```
