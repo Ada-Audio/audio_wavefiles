@@ -41,3 +41,9 @@ This Package has been tested with following compilers and platforms:
 
 - GNAT FSF 7, 8, 9 and 10 for Linux;
 - GNAT Community 2020 for Linux, Windows and macOS.
+
+Using the Library
+-----------------
+
+For a list of source-code examples for various use-cases, please refer to the
+[cookbook](cookbook/cookbook.md) file.
