@@ -11,6 +11,7 @@ Ada Library for Wavefile I/O
 ![GNAT Community 2020 on Windows Server 2019](https://github.com/Ada-Audio/wavefiles/workflows/GNAT%20Community%202020%20on%20Windows%20Server%202019/badge.svg)
 ![GNAT Community 2020 on macOS 10.15](https://github.com/Ada-Audio/wavefiles/workflows/GNAT%20Community%202020%20on%20macOS%2010.15/badge.svg)
 
+
 Introduction
 ------------
 
@@ -27,6 +28,7 @@ supports reading and writing of wavefiles, including the following features:
 
 See CHANGELOG.md file for a comprehensive list of features.
 
+
 License & Copyright
 -------------------
 
@@ -41,6 +43,7 @@ This Package has been tested with following compilers and platforms:
 
 - GNAT FSF 7, 8, 9 and 10 for Linux;
 - GNAT Community 2020 for Linux, Windows and macOS.
+
 
 Using the Library
 -----------------
