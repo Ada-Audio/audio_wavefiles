@@ -79,13 +79,13 @@ Using the Library
 To use the library, you have to add a reference to the `Wavefiles` package to
 your source-code file:
 
-```
+```ada
 with Audio.Wavefiles; use Audio.Wavefiles;
 ```
 
 Then, you can open and close a wavefile:
 
-```
+```ada
    WF            : Wavefile;
 begin
    WF.Open (In_File, "test.wav");
@@ -97,14 +97,14 @@ Also, you should instantiate at least one of the PCM I/O packages. To do that,
 you could reference, for example, the generic PCM I/O package for
 floating-point types:
 
-```
+```ada
 with Audio.Wavefiles.Generic_Float_PCM_IO;
 use  Audio.Wavefiles.Generic_Float_PCM_IO;
 ```
 
 You can then instantiate this package by writing, for example:
 
-```
+```ada
    type Float_Array is array (Positive range <>) of Float;
 
    package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
@@ -116,7 +116,7 @@ You can then instantiate this package by writing, for example:
 
 You can now read data from the wavefile:
 
-```
+```ada
       loop
          declare
             PCM_Buf : constant Float_Array := Get (WF);
