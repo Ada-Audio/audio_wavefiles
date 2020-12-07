@@ -29,6 +29,12 @@ fixed-point formats, as well as the automatic conversion between the data types
 used for the PCM buffer and the wavefile, which might have different formats
 (floating-point vs. fixed-point) or precisions (e.g., 16 bits vs. 64 bits).
 
+In addition, following features are available:
+
+- Support for parsing known GUIDs
+- Support for parsing RIFF chunks
+- Support for sample positioning and timing information
+
 See the [CHANGELOG](CHANGELOG.md) file for a comprehensive list of features.
 
 
