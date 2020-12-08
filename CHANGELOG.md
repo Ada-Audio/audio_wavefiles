@@ -157,7 +157,7 @@ Package implemented in Ada 2012.
         - 5.1-channel to stereo wavefile
         - 7.1.4-channel to 5.1-channel wavefile
     - Direct reading data from a wavefile without PCM conversion (for 16-bit
-      wavefile
+      wavefile)
     - Direct writing data to a wavefile without PCM conversion (for 32-bit
       floating-point wavefile)
     - Direct conversion of an 8-bit PCM wavefile to a 16-bit wavefile
