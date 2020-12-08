@@ -37,6 +37,9 @@ In addition, following features are available:
 
 See the [CHANGELOG](CHANGELOG.md) file for a comprehensive list of features.
 
+To contribute to this project, please refer to the guidelines described in the
+[CONTRIBUTING](CONTRIBUTING.md) file.
+
 
 License & Copyright
 -------------------
