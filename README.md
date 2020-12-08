@@ -15,7 +15,7 @@ Ada Library for Wavefile I/O
 Introduction
 ------------
 
-This Package contains a Wavefile Reader & Writer written in Ada 2012. It
+This Library contains a Wavefile Reader & Writer written in Ada 2012. It
 supports reading and writing of wavefiles, including the following features:
 
 - Mono, stereo and multichannel audio.
