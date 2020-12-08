@@ -178,13 +178,13 @@ You can then instantiate this package by writing, for example:
 You can now read data from the wavefile:
 
 ```ada
-      loop
-         declare
-            PCM_Buf : constant Float_Array := Get (WF);
-         begin
-            exit when WF.End_Of_File;
-         end;
-      end loop;
+   loop
+      declare
+         PCM_Buf : constant Float_Array := Get (WF);
+      begin
+         exit when WF.End_Of_File;
+      end;
+   end loop;
 ```
 
 For a list of source-code examples for various use-cases — starting from the
