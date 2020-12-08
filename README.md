@@ -58,18 +58,76 @@ This Package has been tested with following compilers and platforms:
 Setting Up the Library
 ----------------------
 
-You can use GPRbuild to build the library:
+### Using ALIRE
+
+You can retrieve this Library as a crate from
+[ALIRE](https://alire.ada.dev) (the Ada LIbrary REpository):
+
+```sh
+alr get audio_wavefiles
+```
+
+This Library depends on the `audio_base` crate. If you use the
+command-line above, all dependencies are automatically retrieved. However,
+you could retrieve that crate from [ALIRE](https://alire.ada.dev) as well
+using:
+
+```sh
+alr get audio_base
+```
+
+Then, you can build the Library (as a standalone library) with
+[ALIRE](https://alire.ada.dev) using the following command:
+
+```sh
+cd audio_wavefiles*
+
+alr build
+```
+
+Usually, however, you would like to use the Library in your project. You
+can do that by adding the dependency to your project by running this
+command from the root directory of your project:
+
+```sh
+alr with audio_wavefiles
+```
+
+Finally, you can build your project using [ALIRE](https://alire.ada.dev):
+
+```sh
+alr build
+```
+
+### Cloning the source-code
+
+Alternatively, you can clone the source-code of the Library and its
+dependencies using these commands from the root directory of your project:
+
+```sh
+mkdir deps
+
+(cd deps && git clone https://github.com/Ada-Audio/audio_base )
+(cd deps && git clone https://github.com/Ada-Audio/audio_wavefiles )
+```
+
+Then, you have to include the Library in your GPRbuild project by adding
+the following line:
 
 ```
-gprbuild -P wavefiles_lib.gpr
+with "audio_wavefiles.gpr";
 ```
 
-However, since parts of the Wavefiles package are generic and therefore need to
-be instantiated, it's advisable to include this library in your project by
-adding the following line:
+You can use GPRbuild to build your project with the Library. Don't forget
+to set the path to the GPRbuild projects using the environment variable
+`GPR_PROJECT_PATH`:
 
-```
-with "wavefiles_lib.gpr";
+
+```sh
+# Set path to audio_base and audio_wavefiles
+export GPR_PROJECT_PATH="$(cd deps/audio_base && pwd):$(cd deps/audio_wavefiles && pwd)"
+
+gprbuild
 ```
 
 
