@@ -3,5 +3,4 @@ bin
 lib
 obj
 deps
-_arch
 /*.wav
