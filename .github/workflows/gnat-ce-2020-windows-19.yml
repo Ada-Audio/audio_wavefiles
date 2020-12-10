@@ -26,8 +26,7 @@ jobs:
 
     - name: Install dependencies
       run: >
-        . ./scripts/install_deps.sh &&
-        echo "GPR_PROJECT_PATH=${GPR_PROJECT_PATH}" >> $GITHUB_ENV
+        ./scripts/install_deps.ps1
 
     - name: Build test for Wavefile Library
       run: gprbuild -P test/wavefiles_test/wavefiles_test.gpr
