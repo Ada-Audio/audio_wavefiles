@@ -29,6 +29,9 @@ jobs:
         sudo apt-get update &&
         sudo apt-get install wavbreaker
 
+    - name: Install dependencies
+      run: . ./scripts/install_deps.sh
+
     - name: Verify generated source-code files
       run: TEST=1 ./scripts/generate_src.sh
 

@@ -24,6 +24,9 @@ jobs:
         community_year: 2020
         install_dir: ./cached_gnat
 
+    - name: Install dependencies
+      run: . ./scripts/install_deps.sh
+
     - name: Build test for Wavefile Library
       run: gprbuild -P test/wavefiles_test/wavefiles_test.gpr
 
