@@ -1,3 +1,5 @@
+with "audio_base.gpr";
+
 library project Wavefiles_Lib is
 
    type Build_Type is
