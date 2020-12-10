@@ -1,6 +1,7 @@
-Wavefiles: Ada Wavefile Reader & Writer Package
-===============================================
-Version 1.0.0
+Ada Library for Wavefile I/O
+============================
+
+**Version 2.0.0**
 
 ![GNAT 7 on Ubuntu 18.04](https://github.com/Ada-Audio/wavefiles/workflows/GNAT%207%20on%20Ubuntu%2018.04/badge.svg)
 ![GNAT 8 on Ubuntu 20.04](https://github.com/Ada-Audio/wavefiles/workflows/GNAT%208%20on%20Ubuntu%2020.04/badge.svg)
@@ -10,84 +11,193 @@ Version 1.0.0
 ![GNAT Community 2020 on Windows Server 2019](https://github.com/Ada-Audio/wavefiles/workflows/GNAT%20Community%202020%20on%20Windows%20Server%202019/badge.svg)
 ![GNAT Community 2020 on macOS 10.15](https://github.com/Ada-Audio/wavefiles/workflows/GNAT%20Community%202020%20on%20macOS%2010.15/badge.svg)
 
-1. Introduction
----------------
 
-This Package contains a Wavefile Reader & Writer written in Ada 2012.
+Introduction
+------------
 
-2. License & Copyright
-----------------------
+This Library contains a Wavefile Reader & Writer written in Ada 2012. It
+supports reading and writing of wavefiles, including the following features:
 
-This Package is available "as is" under MIT License. Unless stated otherwise,
-the copyright is held by Gustavo A. Hoffmann.
-
-2. Supported Platforms
-----------------------
-
-This Package has been tested on the following compilers / platforms:
-
-- GNAT GPL 2015 for Linux
-
-The Package is expected to work on Windows and Mac platforms.
-
-3. Features
------------
-
-### Wavefile Features
-
-Reading and writing of wavefiles supporting following features:
-
-- Stereo and multichannel audio
+- Mono, stereo and multichannel audio.
 - Audio samples with following bit depths:
-    - 16-bit PCM
-    - 24-bit PCM
-    - 32-bit PCM
-- Wave-Format-Extensible (WAVEFORMATEXTENSIBLE)
-- Conversion between PCM buffer data type and wavefile data type.
-     - Adaptations for different precisions are performed automatically.
+    - 16/24/32/64-bit PCM
+    - 32/64-bit floating-point PCM
+- Wave-Format-Extensible format (WAVEFORMATEXTENSIBLE)
 
-### PCM Buffer Features
+This library also includes support for PCM buffers in floating-point and
+fixed-point formats, as well as the automatic conversion between the data types
+used for the PCM buffer and the wavefile, which might have different formats
+(floating-point vs. fixed-point) or precisions (e.g., 16 bits vs. 64 bits).
 
-- Built-in handling of PCM buffers
-    - The Wavefiles Package is a generic package that can be instantiated for
-      different formats of PCM buffers.
-    - When instantiating the generic package, the user must specify:
-        - The maximum number of samples that the buffer can contain
-        - The numerical data type for storing the PCM samples
-    - The numerical data type of the PCM samples can be:
-        - A floating-point type of arbitrary precision
-        - A fixed-point type of arbitrary precision
-    - When declaring an instance of the PCM buffer, the user must specify:
-        - The number of channels
+In addition, following features are available:
 
-- Support for operations on PCM buffers:
-    - "=", "*", "+", "-"
-    - Custom operations (using function Wavefiles.PCM_Buffers.Perform)
+- Support for parsing known GUIDs
+- Support for parsing RIFF chunks
+- Support for sample positioning and timing information
 
-4. Known Issues and Limitations
--------------------------------
+See the [CHANGELOG](CHANGELOG.md) file for a comprehensive list of features.
 
-### Wavefile Features
+To contribute to this project, please refer to the guidelines described in the
+[CONTRIBUTING](CONTRIBUTING.md) file.
 
-Following features are not currently supported:
 
-- Reading and writing of 8-bit PCM wavefiles
-- Reading and writing of wavefiles in floating-point format
+License & Copyright
+-------------------
 
-### PCM Buffer Features
+As indicated in the [LICENSE](LICENSE) file, this Package is available "as is"
+under MIT License. Please refer to that file for all licensing conditions.
+Unless stated otherwise, the copyright is held by Gustavo A. Hoffmann.
 
-- Data type conversion to be investigated and improved.
-    - Conversion of small negative values might be improved.
 
-### Documentation
+Supported Platforms
+-------------------
 
-- Extensive documentation and tutorials are missing.
-    - Please refer to the test folder for an example on how to use the Package.
+This Package has been tested with following compilers and platforms:
 
-### Testing
+- GNAT FSF 7, 8, 9 and 10 for Linux;
+- GNAT Community 2020 for Linux, Windows and macOS.
 
-- Unit test for the Package is missing.
-    - Just a test module for manual checks is currently available.
 
-- Testing of wavefiles in various formats is missing.
-- Testing of erroneous wavefiles is missing.
+Setting Up the Library
+----------------------
+
+### Using ALIRE
+
+You can retrieve this Library as a crate from
+[ALIRE](https://alire.ada.dev) (the Ada LIbrary REpository):
+
+```sh
+alr get audio_wavefiles
+```
+
+This Library depends on the `audio_base` crate. If you use the
+command-line above, all dependencies are automatically retrieved. However,
+you could retrieve that crate from [ALIRE](https://alire.ada.dev) as well
+using:
+
+```sh
+alr get audio_base
+```
+
+Then, you can build the Library (as a standalone library) with
+[ALIRE](https://alire.ada.dev) using the following command:
+
+```sh
+cd audio_wavefiles*
+
+alr build
+```
+
+Usually, however, you would like to use the Library in your project. Therefore,
+you need to add the Library as a dependency. You can do this by running this
+command from the root directory of your project:
+
+```sh
+alr with audio_wavefiles
+```
+
+Finally, you can build your project using [ALIRE](https://alire.ada.dev):
+
+```sh
+alr build
+```
+
+### Cloning the source-code
+
+Alternatively, you can clone the source-code of the Library and its
+dependencies using these commands from the root directory of your project:
+
+```sh
+mkdir deps
+
+(cd deps && git clone https://github.com/Ada-Audio/audio_base )
+(cd deps && git clone https://github.com/Ada-Audio/audio_wavefiles )
+```
+
+Then, you have to include the Library in your GPRbuild project by adding
+the following line:
+
+```
+with "audio_wavefiles.gpr";
+```
+
+You can use GPRbuild to build your project with the Library. Don't forget
+to set the path to the GPRbuild projects using the environment variable
+`GPR_PROJECT_PATH`:
+
+
+```sh
+# Set path to audio_base and audio_wavefiles
+export GPR_PROJECT_PATH="$(cd deps/audio_base && pwd):$(cd deps/audio_wavefiles && pwd)"
+
+gprbuild
+```
+
+
+Using the Library
+-----------------
+
+To use the library, you have to add a reference to the `Wavefiles` package to
+your source-code file:
+
+```ada
+with Audio.Wavefiles; use Audio.Wavefiles;
+```
+
+Then, you can open and close a wavefile:
+
+```ada
+   WF            : Wavefile;
+begin
+   WF.Open (In_File, "test.wav");
+
+   WF.Close;
+```
+
+Also, you should instantiate at least one of the PCM I/O packages. To do that,
+you could reference, for example, the generic PCM I/O package for
+floating-point types:
+
+```ada
+with Audio.Wavefiles.Generic_Float_PCM_IO;
+use  Audio.Wavefiles.Generic_Float_PCM_IO;
+```
+
+You can then instantiate this package by writing, for example:
+
+```ada
+   type Float_Array is array (Positive range <>) of Float;
+
+   package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
+     (PCM_Sample    => Float,
+      Channel_Range => Positive,
+      PCM_MC_Sample => Float_Array);
+   use PCM_IO;
+```
+
+You can now read data from the wavefile:
+
+```ada
+   loop
+      declare
+         PCM_Buf : constant Float_Array := Get (WF);
+      begin
+         exit when WF.End_Of_File;
+      end;
+   end loop;
+```
+
+For a list of source-code examples for various use-cases — starting from the
+simplest ones to more complicated use-cases —, please refer to the
+[cookbook](cookbook/cookbook.md) file.
+
+
+Roadmap
+-------
+
+These features are on the list for future versions of this Library:
+
+- Support for [Broadcast Wave Format](https://en.wikipedia.org/wiki/Broadcast_Wave_Format)
+- Support for [RF64](https://en.wikipedia.org/wiki/RF64)
+- Support for [Audio Definition Model](https://www.itu.int/rec/R-REC-BS.2076)
+- Support for [Serial Representation of the Audio Definition Model](https://www.itu.int/rec/R-REC-BS.2125)
