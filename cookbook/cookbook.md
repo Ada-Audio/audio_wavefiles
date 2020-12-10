@@ -153,7 +153,7 @@ begin
       Put_Line ("Errors:");
       for E in Errors'Range loop
          if Errors (E) then
-            Put_Line ("- " & Wavefile_Error_Codes'Image (E));
+            Put_Line ("- " & Wavefile_Error_Code'Image (E));
          end if;
       end loop;
    end if;
@@ -165,7 +165,7 @@ begin
       Put_Line ("Warnings:");
       for W in Warnings'Range loop
          if Warnings (W) then
-            Put_Line ("- " & Wavefile_Warning_Codes'Image (W));
+            Put_Line ("- " & Wavefile_Warning_Code'Image (W));
          end if;
       end loop;
    end if;
