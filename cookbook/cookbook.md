@@ -124,6 +124,58 @@ begin
 end Display_Errors_For_Wavefiles;
 ~~~~~~~~~~
 
+## Listing errors and warnings while handling wavefiles
+
+~~~~~~~~~~ada
+with Ada.Text_IO;            use Ada.Text_IO;
+
+with Audio.Wavefiles;        use Audio.Wavefiles;
+with Audio.Wavefiles.Report; use Audio.Wavefiles.Report;
+
+procedure List_Errors_For_Wavefiles is
+   WF            : Wavefile;
+   Wav_File_Name : constant String := "data/2ch_silence.wav";
+   Errors        : Wavefile_Errors;
+   Warnings      : Wavefile_Warnings;
+begin
+   WF.Open (In_File, Wav_File_Name);
+
+   --  Trying to open a file twice
+   --  This will be detected and indicated as an error
+   WF.Open (In_File, Wav_File_Name);
+
+   Errors   := WF.Errors;
+   Warnings := WF.Warnings;
+
+   if Errors = No_Wavefile_Errors then
+      Put_Line ("No errors!");
+   else
+      Put_Line ("Errors:");
+      for E in Errors'Range loop
+         if Errors (E) then
+            Put_Line ("- " & Wavefile_Error_Codes'Image (E));
+         end if;
+      end loop;
+   end if;
+   New_Line;
+
+   if Warnings = No_Wavefile_Warnings then
+      Put_Line ("No warnings!");
+   else
+      Put_Line ("Warnings:");
+      for W in Warnings'Range loop
+         if Warnings (W) then
+            Put_Line ("- " & Wavefile_Warning_Codes'Image (W));
+         end if;
+      end loop;
+   end if;
+   New_Line;
+
+   WF.Close;
+end List_Errors_For_Wavefiles;
+~~~~~~~~~~
+
+
 ## Displaying RIFF chunks of a wavefile
 
 ~~~~~~~~~~ada
