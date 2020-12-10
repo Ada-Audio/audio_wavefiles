@@ -130,7 +130,6 @@ end Display_Errors_For_Wavefiles;
 with Ada.Text_IO;            use Ada.Text_IO;
 
 with Audio.Wavefiles;        use Audio.Wavefiles;
-with Audio.Wavefiles.Report; use Audio.Wavefiles.Report;
 
 procedure List_Errors_For_Wavefiles is
    WF            : Wavefile;
