@@ -41,7 +41,7 @@ package Audio.Wavefiles is
 
    type File_Mode is new Ada.Streams.Stream_IO.File_Mode;
 
-   type Wavefile_Error_Codes is
+   type Wavefile_Error_Code is
      (Wavefile_Error_File_Not_Open,
       Wavefile_Error_File_Already_Open,
       Wavefile_Error_File_Too_Short,
@@ -51,14 +51,18 @@ package Audio.Wavefiles is
       Wavefile_Error_Unsupported_Bit_Depth,
       Wavefile_Error_Unsupported_Format_Size);
 
-   type Wavefile_Errors is array (Wavefile_Error_Codes) of Boolean
+   type Wavefile_Errors is array (Wavefile_Error_Code) of Boolean
      with Pack;
 
-   type Wavefile_Warning_Codes is
+   No_Wavefile_Errors : constant Wavefile_Errors := (others => False);
+
+   type Wavefile_Warning_Code is
      (Wavefile_Warning_Inconsistent_Channel_Mask);
 
-   type Wavefile_Warnings is array (Wavefile_Warning_Codes) of Boolean
+   type Wavefile_Warnings is array (Wavefile_Warning_Code) of Boolean
      with Pack;
+
+   No_Wavefile_Warnings : constant Wavefile_Warnings := (others => False);
 
    subtype Byte is Interfaces.Unsigned_8;
    type Byte_Array is array (Long_Integer range <>) of Byte;
@@ -115,6 +119,12 @@ package Audio.Wavefiles is
      with Inline, Pre => Mode (WF) = In_File;
 
    procedure Close (WF : in out Wavefile);
+
+   function Errors (WF : Wavefile) return Wavefile_Errors
+     with Inline;
+
+   function Warnings (WF : Wavefile) return Wavefile_Warnings
+     with Inline;
 
    procedure Set_Format_Of_Wavefile
      (WF     : in out Wavefile;
@@ -202,11 +212,11 @@ private
    --        "end of file" position after a call to Get.
 
    procedure Set_Error (WF         : in out Wavefile;
-                        Error_Code :        Wavefile_Error_Codes);
+                        Error_Code :        Wavefile_Error_Code);
    procedure Reset_Errors (WF      : in out Wavefile);
 
    procedure Set_Warning (WF           : in out Wavefile;
-                          Warning_Code :        Wavefile_Warning_Codes);
+                          Warning_Code :        Wavefile_Warning_Code);
    procedure Reset_Warnings (WF        : in out Wavefile);
 
    type Wavefile is tagged limited
@@ -226,5 +236,11 @@ private
 
    function Is_Open
      (WF : Wavefile) return Boolean is (WF.Is_Opened);
+
+   function Errors (WF : Wavefile) return Wavefile_Errors is
+     (WF.Errors);
+
+   function Warnings (WF : Wavefile) return Wavefile_Warnings is
+      (WF.Warnings);
 
 end Audio.Wavefiles;

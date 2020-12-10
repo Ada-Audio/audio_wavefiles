@@ -34,9 +34,9 @@ with Audio.RIFF.Wav.Formats.Report;
 
 package body Audio.Wavefiles.Report is
 
-   function To_String (Err : Wavefile_Error_Codes) return String;
+   function To_String (Err : Wavefile_Error_Code) return String;
 
-   function To_String (Err : Wavefile_Warning_Codes) return String;
+   function To_String (Err : Wavefile_Warning_Code) return String;
 
    ------------------
    -- Display_Info --
@@ -82,7 +82,7 @@ package body Audio.Wavefiles.Report is
    -- To_String --
    ---------------
 
-   function To_String (Err : Wavefile_Error_Codes) return String is
+   function To_String (Err : Wavefile_Error_Code) return String is
    begin
       case Err is
       when Wavefile_Error_File_Not_Open =>
@@ -108,7 +108,7 @@ package body Audio.Wavefiles.Report is
    -- To_String --
    ---------------
 
-   function To_String (Err : Wavefile_Warning_Codes) return String is
+   function To_String (Err : Wavefile_Warning_Code) return String is
    begin
       case Err is
       when Wavefile_Warning_Inconsistent_Channel_Mask =>
