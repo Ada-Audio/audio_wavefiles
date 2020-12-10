@@ -25,7 +25,9 @@ jobs:
         install_dir: ./cached_gnat
 
     - name: Install dependencies
-      run: . ./scripts/install_deps.sh
+      run: >
+        . ./scripts/install_deps.sh &&
+        echo "GPR_PROJECT_PATH=${GPR_PROJECT_PATH}" >> $GITHUB_ENV
 
     - name: Build test for Wavefile Library
       run: gprbuild -P test/wavefiles_test/wavefiles_test.gpr
