@@ -34,7 +34,7 @@ Package implemented in Ada 2012.
         - `Is_Supported_Format` (to assess whether the Library supports the
           specified RIFF format; useful for wavefile writing).
     - Added procedures:
-        - `Set_Format_Of_Wavefile`.
+        - `Set_Format_Of_Wavefile` (useful for wavefile writing).
 
 - Changed `Wavefile` data type to tagged record.
     - Updated code to use dot notation.
