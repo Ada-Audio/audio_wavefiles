@@ -470,7 +470,7 @@ package body Audio.Wavefiles is
    ---------------
 
    procedure Set_Error (WF         : in out Wavefile;
-                        Error_Code :        Wavefile_Error_Codes) is
+                        Error_Code :        Wavefile_Error_Code) is
    begin
       WF.Errors (Error_Code) := True;
    end Set_Error;
@@ -489,7 +489,7 @@ package body Audio.Wavefiles is
    -----------------
 
    procedure Set_Warning (WF           : in out Wavefile;
-                          Warning_Code :        Wavefile_Warning_Codes) is
+                          Warning_Code :        Wavefile_Warning_Code) is
    begin
       WF.Warnings (Warning_Code) := True;
    end Set_Warning;
