@@ -190,3 +190,14 @@ You can now read data from the wavefile:
 For a list of source-code examples for various use-cases — starting from the
 simplest ones to more complicated use-cases —, please refer to the
 [cookbook](cookbook/cookbook.md) file.
+
+
+Roadmap
+-------
+
+These features are on the list for future versions of this Library:
+
+- Support for [Broadcast Wave Format](https://en.wikipedia.org/wiki/Broadcast_Wave_Format)
+- Support for [RF64](https://en.wikipedia.org/wiki/RF64)
+- Support for [Audio Definition Model](https://www.itu.int/rec/R-REC-BS.2076)
+- Support for [Serial Representation of the Audio Definition Model](https://www.itu.int/rec/R-REC-BS.2125)
