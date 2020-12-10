@@ -1483,27 +1483,27 @@ with Ada.Text_IO;     use Ada.Text_IO;
 
 with Audio.Wavefiles; use Audio.Wavefiles;
 
-procedure Write_XML (Xml_File : File_Type;
-                     Data     : Byte_Array);
+procedure Write_Data_As_Text (Text_File : File_Type;
+                              Data      : Byte_Array);
 
-procedure Write_XML (Xml_File : File_Type;
-                     Data     : Byte_Array) is
+procedure Write_Data_As_Text (Text_File : File_Type;
+                              Data      : Byte_Array) is
 begin
    for B of Data loop
       declare
          C : Character with Address => B'Address;
       begin
-         Put (Xml_File, C);
+         Put (Text_File, C);
       end;
    end loop;
-end Write_XML;
+end Write_Data_As_Text;
 
 with Ada.Text_IO;            use Ada.Text_IO;
 
 with Audio.Wavefiles;        use Audio.Wavefiles;
 with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
 
-with Write_XML;
+with Write_Data_As_Text;
 
 procedure Extract_XML_Chunk is
    WF            : Wavefile;
@@ -1529,8 +1529,8 @@ begin
                           Success       => Success);
 
          if Success then
-            Write_XML (Xml_File,
-                       Chunk_Element_Data (WF, Chunk_Element));
+            Write_Data_As_Text (Xml_File,
+                                Chunk_Element_Data (WF, Chunk_Element));
          end if;
       end;
    end if;
