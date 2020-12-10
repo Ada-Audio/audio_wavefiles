@@ -29,9 +29,13 @@ jobs:
         ./scripts/install_deps.ps1
 
     - name: Build test for Wavefile Library
+      env:
+        GPR_PROJECT_PATH: .\deps\audio_base
       run: gprbuild -P test/wavefiles_test/wavefiles_test.gpr
 
     - name: Build Quick Wav-Data Check
+      env:
+        GPR_PROJECT_PATH: .\deps\audio_base
       run: gprbuild -P test/quick_wav_data_check/quick_wav_data_check.gpr
 
     - name: Run Quick Wav-Data Check
