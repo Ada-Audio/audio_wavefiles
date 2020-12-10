@@ -88,8 +88,8 @@ cd audio_wavefiles*
 alr build
 ```
 
-Usually, however, you would like to use the Library in your project. You
-can do that by adding the dependency to your project by running this
+Usually, however, you would like to use the Library in your project. Therefore,
+you need to add the Library as a dependency. You can do this by running this
 command from the root directory of your project:
 
 ```sh
