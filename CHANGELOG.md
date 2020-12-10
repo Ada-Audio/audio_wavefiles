@@ -23,18 +23,28 @@ Package implemented in Ada 2012.
       `Ada.Streams.Stream_IO` package.
     - Added support for appending wavefiles.
 
-- Added functions:
-    - `End_Of_File`;
-    - `Is_Open`;
-    - `Name` (for file name);
-    - `Sample_Rate` (to retrieve sampling rate of a wavefile);
-    - `Number_Of_Channels` (of a wavefile).
+- Improved API of the `Audio.Wavefiles` package.
+    - Added functions:
+        - `End_Of_File`;
+        - `Is_Open`;
+        - `Name` (to the retrieve the file name);
+        - `Sample_Rate` (to retrieve the sampling rate of a wavefile);
+        - `Number_Of_Channels` (of a wavefile);
+        - `Format_Of_Wavefile` (to retrieve the complete RIFF format);
+        - `Is_Supported_Format` (to assess whether the Library supports the
+          specified RIFF format; useful for wavefile writing).
+    - Added procedures:
+        - `Set_Format_Of_Wavefile`.
 
 - Changed `Wavefile` data type to tagged record.
     - Updated code to use dot notation.
 
+- Included package for common data types.
+    - See `Audio.Wavefiles.Data_Types` package.
+
 - Replaced exception-based error handling by error and warning *codes*.
     - Added enumerations for error and warning codes.
+        - See `Wavefile_Error_Codes` and `Wavefile_Warning_Codes` types.
     - Changed procedures to track errors instead of raising exceptions.
 
 - Improved consistency checks.
@@ -57,11 +67,21 @@ Package implemented in Ada 2012.
 
 - Added support for RIFF chunk parsing.
     - Added support for identifying all known chunk formats.
+        - Known chunks are listed in `Audio.RIFF.Wav.Formats`.
     - Added support for reading multiple chunks.
+        - Added `Get_RIFF_Info` to retrieve information about all RIFF chunks
+          from a wavefile.
+        - Added `Get_First_Chunk` procedure to identify location of a chunk
+          in the wavefile based on a chunk tag.
+        - Added `Chunk_Element_Data` function to read data of a chunk.
+            - The returned data is stored in an array of bytes (`Byte_Array`
+              type).
     - Added support for listing chunks found in a wavefile.
+        - See `Display_Info` procedure for `RIFF_Information` type.
 
 - Added support for globally unique identifiers (GUIDs).
     - Added support for identifying all known GUIDs.
+        - Known GUIDs are listed in `Audio.RIFF.Wav.GUIDs`.
 
 - Improved support for handling of RIFF wave format.
     - Split `RIFF` package into `Audio.RIFF`, `Audio.RIFF.Wav` and
