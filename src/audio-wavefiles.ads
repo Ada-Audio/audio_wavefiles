@@ -54,11 +54,15 @@ package Audio.Wavefiles is
    type Wavefile_Errors is array (Wavefile_Error_Codes) of Boolean
      with Pack;
 
+   No_Wavefile_Errors : constant Wavefile_Errors := (others => false);
+
    type Wavefile_Warning_Codes is
      (Wavefile_Warning_Inconsistent_Channel_Mask);
 
    type Wavefile_Warnings is array (Wavefile_Warning_Codes) of Boolean
      with Pack;
+
+   No_Wavefile_Warnings : constant Wavefile_Warnings := (others => false);
 
    subtype Byte is Interfaces.Unsigned_8;
    type Byte_Array is array (Long_Integer range <>) of Byte;
@@ -115,6 +119,12 @@ package Audio.Wavefiles is
      with Inline, Pre => Mode (WF) = In_File;
 
    procedure Close (WF : in out Wavefile);
+
+   function Errors (WF : Wavefile) return Wavefile_Errors
+     with Inline;
+
+   function Warnings (WF : Wavefile) return Wavefile_Warnings
+     with Inline;
 
    procedure Set_Format_Of_Wavefile
      (WF     : in out Wavefile;
@@ -226,5 +236,11 @@ private
 
    function Is_Open
      (WF : Wavefile) return Boolean is (WF.Is_Opened);
+
+   function Errors (WF : Wavefile) return Wavefile_Errors is
+     (WF.Errors);
+
+   function Warnings (WF : Wavefile) return Wavefile_Warnings is
+      (WF.Warnings);
 
 end Audio.Wavefiles;
