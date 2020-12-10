@@ -44,7 +44,7 @@ Package implemented in Ada 2012.
 
 - Replaced exception-based error handling by error and warning *codes*.
     - Added enumerations for error and warning codes.
-        - See `Wavefile_Error_Codes` and `Wavefile_Warning_Codes` types and
+        - See `Wavefile_Error_Code` and `Wavefile_Warning_Code` types and
           `Errors` and `Warnings` functions.
     - Changed procedures to track errors instead of raising exceptions.
 
