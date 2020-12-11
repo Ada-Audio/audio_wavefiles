@@ -92,6 +92,16 @@ cookbook_check "PREPARATIONS" "(sed)" ""
 gnatchop -wr cookbook.ada ./src >& ./log/gnatchop.log
 cookbook_check "PREPARATIONS" "(gnatchop)" "./log/gnatchop.log"
 
+# Set GPR environment variable
+AUDIO_WAVEFILES_PATH=$(cd .. && pwd)
+if [ -z "$GPR_PROJECT_PATH" ]
+then
+    export GPR_PROJECT_PATH=${AUDIO_WAVEFILES_PATH}
+else
+    export GPR_PROJECT_PATH="${GPR_PROJECT_PATH}:${AUDIO_WAVEFILES_PATH}"
+fi
+echo "GPR_PROJECT_PATH = $GPR_PROJECT_PATH" >& ./log/gprbuild_env.log
+
 # Build application for each source-code file
 gprbuild ./cookbook.gpr  >& ./log/gprbuild.log
 cookbook_check "PREPARATIONS" "(gprbuild)" "./log/gprbuild.log"
@@ -195,6 +205,6 @@ then
     done
 fi
 
-cleanup_data
+# cleanup_data
 
 exit $TEST_EXIT_CODE

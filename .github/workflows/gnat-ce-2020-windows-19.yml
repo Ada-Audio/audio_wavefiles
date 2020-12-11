@@ -1,6 +1,6 @@
 name: GNAT Community 2020 on Windows Server 2019
 
-on: [pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
@@ -24,10 +24,18 @@ jobs:
         community_year: 2020
         install_dir: ./cached_gnat
 
+    - name: Install dependencies
+      run: >
+        ./scripts/install_deps.ps1
+
     - name: Build test for Wavefile Library
+      env:
+        GPR_PROJECT_PATH: .\deps\audio_base
       run: gprbuild -P test/wavefiles_test/wavefiles_test.gpr
 
     - name: Build Quick Wav-Data Check
+      env:
+        GPR_PROJECT_PATH: .\deps\audio_base
       run: gprbuild -P test/quick_wav_data_check/quick_wav_data_check.gpr
 
     - name: Run Quick Wav-Data Check

@@ -16,6 +16,11 @@ jobs:
         sudo apt-get install gnat-7 gprbuild &&
         sudo apt-get install wavbreaker
 
+    - name: Install dependencies
+      run: >
+        . ./scripts/install_deps.sh &&
+        echo "GPR_PROJECT_PATH=${GPR_PROJECT_PATH}" >> $GITHUB_ENV
+
     - name: Verify generated source-code files
       run: TEST=1 ./scripts/generate_src.sh
 
