@@ -1,6 +1,6 @@
 with "audio_base.gpr";
 
-library project Wavefiles_Lib is
+library project Audio_Wavefiles is
 
    type Build_Type is
       ("DEBUG", "RELEASE");
@@ -49,4 +49,4 @@ library project Wavefiles_Lib is
       for Switches ("ada") use ("-Es");
    end Binder;
 
-end Wavefiles_Lib;
+end Audio_Wavefiles;

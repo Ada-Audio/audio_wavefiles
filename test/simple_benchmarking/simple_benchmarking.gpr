@@ -1,4 +1,4 @@
-with "../../wavefiles_lib.gpr";
+with "audio_wavefiles.gpr";
 
 project Simple_Benchmarking is
 

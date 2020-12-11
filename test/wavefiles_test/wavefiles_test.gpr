@@ -1,4 +1,4 @@
-with "../../wavefiles_lib.gpr";
+with "audio_wavefiles.gpr";
 
 project Wavefiles_Test is
 
@@ -30,4 +30,3 @@ project Wavefiles_Test is
    end Pretty_Printer;
 
 end Wavefiles_Test;
-
