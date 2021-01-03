@@ -8,7 +8,7 @@
 --                                                                          --
 --  The MIT License (MIT)                                                   --
 --                                                                          --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann                          --
+--  Copyright (c) 2015 -- 2021 Gustavo A. Hoffmann                          --
 --                                                                          --
 --  Permission is hereby granted, free of charge, to any person obtaining   --
 --  a copy of this software and associated documentation files (the         --
@@ -30,7 +30,7 @@
 --  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                  --
 ------------------------------------------------------------------------------
 
-generic
+private generic
    type Wav_Sample is delta <>;
    type Channel_Range is (<>);
    type Wav_MC_Sample is array (Channel_Range range <>) of Wav_Sample;
