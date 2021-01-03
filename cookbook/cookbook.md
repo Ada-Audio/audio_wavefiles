@@ -175,7 +175,7 @@ end List_Errors_For_Wavefiles;
 ~~~~~~~~~~
 
 
-## Displaying RIFF chunks of a wavefile
+## Displaying the RIFF chunks of a wavefile
 
 ~~~~~~~~~~ada
 with Audio.Wavefiles;        use Audio.Wavefiles;
@@ -274,7 +274,7 @@ begin
 end Read_Display_Wavefile_Data;
 ~~~~~~~~~~
 
-## Writing mono wavefile with silence
+## Writing a mono wavefile with silence
 
 ~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
@@ -327,7 +327,7 @@ begin
 end Write_Mono_Silence_Wavefile;
 ~~~~~~~~~~
 
-## Writing stereo wavefile with sine tone
+## Writing a stereo wavefile with sine tones
 
 ~~~~~~~~~~ada
 with Audio.Wavefiles; use Audio.Wavefiles;
@@ -412,7 +412,7 @@ begin
 end Write_Stereo_Sine_Wavefile;
 ~~~~~~~~~~
 
-## Writing 5.1-channel wavefile with sine tone
+## Writing a 5.1-channel wavefile with sine tones
 
 ~~~~~~~~~~ada
 with Audio.Wavefiles; use Audio.Wavefiles;
@@ -509,7 +509,7 @@ begin
 end Write_5_1_Channel_Sine_Wavefile;
 ~~~~~~~~~~
 
-## Writing 7.1.4-channel wavefile with sine tone
+## Writing a 7.1.4-channel wavefile with sine tones
 
 ~~~~~~~~~~ada
 with Audio.Wavefiles; use Audio.Wavefiles;
@@ -611,7 +611,7 @@ begin
 end Write_7_1_4_Channel_Sine_Wavefile;
 ~~~~~~~~~~
 
-## Display channel configuration of a wavefile
+## Displaying the channel configuration of a wavefile
 
 ~~~~~~~~~~ada
 with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
@@ -688,7 +688,7 @@ begin
 end Display_Channel_Config;
 ~~~~~~~~~~
 
-## Append wavefile
+## Appending a wavefile
 
 ~~~~~~~~~~ada
 with Ada.Directories;
@@ -737,7 +737,7 @@ end Append_Wavefile;
 ~~~~~~~~~~
 
 
-## Copy complete wavefile
+## Copying a complete wavefile
 
 ~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
@@ -792,7 +792,7 @@ Alternatively:
 ```
 
 
-## Copy complete wavefile using fixed-point buffer
+## Copying a complete wavefile using fixed-point buffer
 
 ~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
@@ -833,7 +833,7 @@ begin
 end Copy_Wavefile_Using_Fixed_Point_Buffer;
 ~~~~~~~~~~
 
-## Copy parts of wavefile multiple times
+## Copying parts of a wavefile multiple times
 
 ~~~~~~~~~~ada
 with Audio.Wavefiles; use Audio.Wavefiles;
@@ -921,7 +921,7 @@ begin
 end Copy_Parts_Of_Wavefile;
 ~~~~~~~~~~
 
-## Convert PCM wavefile to 32-bit floating-point PCM wavefile
+## Converting a PCM wavefile to a 32-bit floating-point PCM wavefile
 
 ~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
@@ -967,7 +967,7 @@ begin
 end Convert_Fixed_To_Float_Wavefile;
 ~~~~~~~~~~
 
-## Downmix stereo wavefile to mono wavefile
+## Downmixing a stereo wavefile to a mono wavefile
 
 ~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
@@ -1023,7 +1023,7 @@ begin
 end Downmix_Stereo_To_Mono_Wavefile;
 ~~~~~~~~~~
 
-## Downmix 5.1-channel wavefile to stereo wavefile
+## Downmixing a 5.1-channel wavefile to a stereo wavefile
 
 ~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
@@ -1097,7 +1097,7 @@ begin
 end Downmix_5_1_To_2_0_Wavefile;
 ~~~~~~~~~~
 
-## Downmix 7.1.4-channel wavefile to 5.1-channel wavefile
+## Downmixing a 7.1.4-channel wavefile to a 5.1-channel wavefile
 
 ~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
@@ -1178,7 +1178,7 @@ begin
 end Downmix_7_1_4_To_5_1_Wavefile;
 ~~~~~~~~~~
 
-## Direct copy complete wavefile without PCM buffer conversion
+## Direct copying a complete wavefile without PCM buffer conversion
 
 ~~~~~~~~~~ada
 with Audio.Wavefiles;            use Audio.Wavefiles;
@@ -1222,7 +1222,7 @@ begin
 end Direct_Copy_Wavefile;
 ~~~~~~~~~~
 
-## Direct copy complete floating-point wavefile without PCM buffer conversion
+## Direct copying a complete floating-point wavefile without PCM buffer conversion
 
 ~~~~~~~~~~ada
 with Audio.Wavefiles;            use Audio.Wavefiles;
@@ -1265,7 +1265,7 @@ begin
 end Direct_Copy_Float_Wavefile;
 ~~~~~~~~~~
 
-## Convert 8-bit wavefile to 16-bit wavefile
+## Converting a 8-bit wavefile to a 16-bit wavefile
 
 ~~~~~~~~~~ada
 with Ada.Text_IO;                use Ada.Text_IO;
@@ -1360,7 +1360,7 @@ begin
 end Convert_8_Bit_To_16_Bit_Wavefile;
 ~~~~~~~~~~
 
-## Read complete wavefile into memory (channel-interleaved data)
+## Reading a complete wavefile into memory (channel-interleaved data)
 
 ~~~~~~~~~~ada
 with Ada.Text_IO;
@@ -1430,7 +1430,7 @@ begin
 end Read_To_Memory_Channel_Interleaved;
 ~~~~~~~~~~
 
-## Read complete wavefile into memory (data per channel)
+## Reading a complete wavefile into memory (data per channel)
 
 ~~~~~~~~~~ada
 with Ada.Text_IO;
@@ -1520,7 +1520,7 @@ begin
 end Read_To_Memory_Per_Channel;
 ~~~~~~~~~~
 
-## Extract iXML chunk from a wavefile
+## Extracting the iXML chunk from a wavefile
 
 ~~~~~~~~~~ada
 
