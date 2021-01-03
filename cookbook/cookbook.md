@@ -1,5 +1,6 @@
 # Cookbook
 
+
 ## Opening & closing a wavefile for reading
 
 ~~~~~~~~~~ada
@@ -44,6 +45,7 @@ begin
 
 end Open_Close_Wavefile_For_Reading;
 ~~~~~~~~~~
+
 
 ## Opening & closing a wavefile for writing
 
@@ -98,6 +100,7 @@ begin
 end Open_Close_Wavefile_For_Writing;
 ~~~~~~~~~~
 
+
 ## Displaying errors and warnings while handling wavefiles
 
 ~~~~~~~~~~ada
@@ -123,6 +126,7 @@ begin
    WF.Close;
 end Display_Errors_For_Wavefiles;
 ~~~~~~~~~~
+
 
 ## Listing errors and warnings while handling wavefiles
 
@@ -197,6 +201,7 @@ begin
    WF.Close;
 end Display_RIFF_Chunks;
 ~~~~~~~~~~
+
 
 ## Reading data from a wavefile
 
@@ -274,6 +279,7 @@ begin
 end Read_Display_Wavefile_Data;
 ~~~~~~~~~~
 
+
 ## Writing a mono wavefile with silence
 
 ~~~~~~~~~~ada
@@ -326,6 +332,7 @@ begin
    end if;
 end Write_Mono_Silence_Wavefile;
 ~~~~~~~~~~
+
 
 ## Writing a stereo wavefile with sine tones
 
@@ -411,6 +418,7 @@ begin
    end if;
 end Write_Stereo_Sine_Wavefile;
 ~~~~~~~~~~
+
 
 ## Writing a 5.1-channel wavefile with sine tones
 
@@ -508,6 +516,7 @@ begin
    end if;
 end Write_5_1_Channel_Sine_Wavefile;
 ~~~~~~~~~~
+
 
 ## Writing a 7.1.4-channel wavefile with sine tones
 
@@ -611,6 +620,7 @@ begin
 end Write_7_1_4_Channel_Sine_Wavefile;
 ~~~~~~~~~~
 
+
 ## Displaying the channel configuration of a wavefile
 
 ~~~~~~~~~~ada
@@ -687,6 +697,7 @@ begin
    WF.Close;
 end Display_Channel_Config;
 ~~~~~~~~~~
+
 
 ## Appending a wavefile
 
@@ -833,6 +844,7 @@ begin
 end Copy_Wavefile_Using_Fixed_Point_Buffer;
 ~~~~~~~~~~
 
+
 ## Copying parts of a wavefile multiple times
 
 ~~~~~~~~~~ada
@@ -921,6 +933,7 @@ begin
 end Copy_Parts_Of_Wavefile;
 ~~~~~~~~~~
 
+
 ## Converting a PCM wavefile to a 32-bit floating-point PCM wavefile
 
 ~~~~~~~~~~ada
@@ -966,6 +979,7 @@ begin
    WF_Out.Close;
 end Convert_Fixed_To_Float_Wavefile;
 ~~~~~~~~~~
+
 
 ## Downmixing a stereo wavefile to a mono wavefile
 
@@ -1022,6 +1036,7 @@ begin
    WF_Out.Close;
 end Downmix_Stereo_To_Mono_Wavefile;
 ~~~~~~~~~~
+
 
 ## Downmixing a 5.1-channel wavefile to a stereo wavefile
 
@@ -1096,6 +1111,7 @@ begin
    WF_Out.Close;
 end Downmix_5_1_To_2_0_Wavefile;
 ~~~~~~~~~~
+
 
 ## Downmixing a 7.1.4-channel wavefile to a 5.1-channel wavefile
 
@@ -1178,6 +1194,7 @@ begin
 end Downmix_7_1_4_To_5_1_Wavefile;
 ~~~~~~~~~~
 
+
 ## Direct copying a complete wavefile without PCM buffer conversion
 
 ~~~~~~~~~~ada
@@ -1222,6 +1239,7 @@ begin
 end Direct_Copy_Wavefile;
 ~~~~~~~~~~
 
+
 ## Direct copying a complete floating-point wavefile without PCM buffer conversion
 
 ~~~~~~~~~~ada
@@ -1264,6 +1282,7 @@ begin
    WF_Out.Close;
 end Direct_Copy_Float_Wavefile;
 ~~~~~~~~~~
+
 
 ## Converting a 8-bit wavefile to a 16-bit wavefile
 
@@ -1360,6 +1379,7 @@ begin
 end Convert_8_Bit_To_16_Bit_Wavefile;
 ~~~~~~~~~~
 
+
 ## Reading a complete wavefile into memory (channel-interleaved data)
 
 ~~~~~~~~~~ada
@@ -1429,6 +1449,7 @@ begin
    WF_In.Close;
 end Read_To_Memory_Channel_Interleaved;
 ~~~~~~~~~~
+
 
 ## Reading a complete wavefile into memory (data per channel)
 
@@ -1519,6 +1540,7 @@ begin
    WF_In.Close;
 end Read_To_Memory_Per_Channel;
 ~~~~~~~~~~
+
 
 ## Extracting the iXML chunk from a wavefile
 
