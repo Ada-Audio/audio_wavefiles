@@ -6,7 +6,7 @@
 --                                                                          --
 --  The MIT License (MIT)                                                   --
 --                                                                          --
---  Copyright (c) 2020 Gustavo A. Hoffmann                                  --
+--  Copyright (c) 2020 -- 2021 Gustavo A. Hoffmann                          --
 --                                                                          --
 --  Permission is hereby granted, free of charge, to any person obtaining   --
 --  a copy of this software and associated documentation files (the         --
@@ -28,13 +28,14 @@
 --  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                  --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;                          use Ada.Text_IO;
-with Ada.Real_Time;                        use Ada.Real_Time;
-with Ada.Execution_Time;                   use Ada.Execution_Time;
+with Ada.Text_IO;                use Ada.Text_IO;
+with Ada.Real_Time;              use Ada.Real_Time;
+with Ada.Execution_Time;         use Ada.Execution_Time;
+with Audio.Wavefiles;            use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types; use Audio.Wavefiles.Data_Types;
+with Audio.RIFF.Wav.Formats;     use Audio.RIFF.Wav.Formats;
+
 with Audio.Wavefiles.Generic_Direct_Fixed_Wav_IO;
-with Audio.Wavefiles;                      use Audio.Wavefiles;
-with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
-with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
 
 with Time_Span_Conversions;
 with Write_Random_Noise_Wavefile;
