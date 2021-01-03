@@ -31,10 +31,9 @@
 with Ada.Text_IO;                          use Ada.Text_IO;
 with Ada.Real_Time;                        use Ada.Real_Time;
 with Ada.Execution_Time;                   use Ada.Execution_Time;
-
+with Audio.Wavefiles.Generic_Direct_Fixed_Wav_IO;
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
-with Audio.Wavefiles.Generic_Fixed_Wav_IO;
 with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
 
 with Time_Span_Conversions;
@@ -166,7 +165,7 @@ package body Wavefile_Benchmarking is
 
       Sample_Rate           : Positive;
 
-      package Wav_IO is new Audio.Wavefiles.Generic_Fixed_Wav_IO
+      package Wav_IO is new Audio.Wavefiles.Generic_Direct_Fixed_Wav_IO
         (Wav_Sample    => Wav_Fixed_16,
          Channel_Range => Positive,
          Wav_MC_Sample => Wav_Buffer_Fixed_16);
