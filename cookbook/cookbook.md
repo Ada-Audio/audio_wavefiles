@@ -1181,10 +1181,11 @@ end Downmix_7_1_4_To_5_1_Wavefile;
 ## Direct copy complete wavefile without PCM buffer conversion
 
 ~~~~~~~~~~ada
-with Audio.Wavefiles;                      use Audio.Wavefiles;
-with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
+with Audio.Wavefiles;            use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types; use Audio.Wavefiles.Data_Types;
+with Audio.RIFF.Wav.Formats;     use Audio.RIFF.Wav.Formats;
+
 with Audio.Wavefiles.Generic_Direct_Fixed_Wav_IO;
-with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
 
 procedure Direct_Copy_Wavefile is
    Wav_In_File_Name  : constant String := "ref/2ch_sine.wav";
@@ -1224,10 +1225,11 @@ end Direct_Copy_Wavefile;
 ## Direct copy complete floating-point wavefile without PCM buffer conversion
 
 ~~~~~~~~~~ada
-with Audio.Wavefiles;                      use Audio.Wavefiles;
-with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
+with Audio.Wavefiles;            use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types; use Audio.Wavefiles.Data_Types;
+with Audio.RIFF.Wav.Formats;     use Audio.RIFF.Wav.Formats;
+
 with Audio.Wavefiles.Generic_Direct_Float_Wav_IO;
-with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
 
 procedure Direct_Copy_Float_Wavefile is
    Wav_In_File_Name  : constant String := "ref/2ch_float_sine.wav";
@@ -1266,12 +1268,13 @@ end Direct_Copy_Float_Wavefile;
 ## Convert 8-bit wavefile to 16-bit wavefile
 
 ~~~~~~~~~~ada
-with Ada.Text_IO;                          use Ada.Text_IO;
+with Ada.Text_IO;                use Ada.Text_IO;
 
-with Audio.Wavefiles;                      use Audio.Wavefiles;
-with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
+with Audio.Wavefiles;            use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types; use Audio.Wavefiles.Data_Types;
+with Audio.RIFF.Wav.Formats;     use Audio.RIFF.Wav.Formats;
+
 with Audio.Wavefiles.Generic_Direct_Fixed_Wav_IO;
-with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
 
 procedure Convert_8_Bit_To_16_Bit_Wavefile is
 
