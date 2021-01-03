@@ -1181,10 +1181,11 @@ end Downmix_7_1_4_To_5_1_Wavefile;
 ## Direct copy complete wavefile without PCM buffer conversion
 
 ~~~~~~~~~~ada
-with Audio.Wavefiles;                      use Audio.Wavefiles;
-with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
-with Audio.Wavefiles.Generic_Fixed_Wav_IO;
-with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
+with Audio.Wavefiles;            use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types; use Audio.Wavefiles.Data_Types;
+with Audio.RIFF.Wav.Formats;     use Audio.RIFF.Wav.Formats;
+
+with Audio.Wavefiles.Generic_Direct_Fixed_Wav_IO;
 
 procedure Direct_Copy_Wavefile is
    Wav_In_File_Name  : constant String := "ref/2ch_sine.wav";
@@ -1201,11 +1202,8 @@ begin
 
    loop
       Copy_Wav_MC_Sample : declare
-         pragma Assert
-           (WF_In.Format_Of_Wavefile.Bits_Per_Sample = Bit_Depth_16
-            and then not WF_In.Format_Of_Wavefile.Is_Float_Format);
 
-         package Wav_IO is new Audio.Wavefiles.Generic_Fixed_Wav_IO
+         package Wav_IO is new Audio.Wavefiles.Generic_Direct_Fixed_Wav_IO
            (Wav_Sample    => Wav_Fixed_16,
             Channel_Range => Wav_Buffer_Range,
             Wav_MC_Sample => Wav_Buffer_Fixed_16);
@@ -1227,10 +1225,11 @@ end Direct_Copy_Wavefile;
 ## Direct copy complete floating-point wavefile without PCM buffer conversion
 
 ~~~~~~~~~~ada
-with Audio.Wavefiles;                      use Audio.Wavefiles;
-with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
-with Audio.Wavefiles.Generic_Float_Wav_IO;
-with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
+with Audio.Wavefiles;            use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types; use Audio.Wavefiles.Data_Types;
+with Audio.RIFF.Wav.Formats;     use Audio.RIFF.Wav.Formats;
+
+with Audio.Wavefiles.Generic_Direct_Float_Wav_IO;
 
 procedure Direct_Copy_Float_Wavefile is
    Wav_In_File_Name  : constant String := "ref/2ch_float_sine.wav";
@@ -1247,11 +1246,8 @@ begin
 
    loop
       Copy_Wav_MC_Sample : declare
-         pragma Assert
-           (WF_In.Format_Of_Wavefile.Bits_Per_Sample = Bit_Depth_32
-            and then WF_In.Format_Of_Wavefile.Is_Float_Format);
 
-         package Wav_IO is new Audio.Wavefiles.Generic_Float_Wav_IO
+         package Wav_IO is new Audio.Wavefiles.Generic_Direct_Float_Wav_IO
            (Wav_Sample    => Wav_Float_32,
             Channel_Range => Wav_Buffer_Range,
             Wav_MC_Sample => Wav_Buffer_Float_32);
@@ -1272,22 +1268,23 @@ end Direct_Copy_Float_Wavefile;
 ## Convert 8-bit wavefile to 16-bit wavefile
 
 ~~~~~~~~~~ada
-with Ada.Text_IO;                          use Ada.Text_IO;
+with Ada.Text_IO;                use Ada.Text_IO;
 
-with Audio.Wavefiles;                      use Audio.Wavefiles;
-with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
-with Audio.Wavefiles.Generic_Fixed_Wav_IO;
-with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
+with Audio.Wavefiles;            use Audio.Wavefiles;
+with Audio.Wavefiles.Data_Types; use Audio.Wavefiles.Data_Types;
+with Audio.RIFF.Wav.Formats;     use Audio.RIFF.Wav.Formats;
+
+with Audio.Wavefiles.Generic_Direct_Fixed_Wav_IO;
 
 procedure Convert_8_Bit_To_16_Bit_Wavefile is
 
-   package Wav_IO_8 is new Audio.Wavefiles.Generic_Fixed_Wav_IO
+   package Wav_IO_8 is new Audio.Wavefiles.Generic_Direct_Fixed_Wav_IO
      (Wav_Sample    => Wav_Unsigned_Fixed_8,
       Channel_Range => Wav_Buffer_Range,
       Wav_MC_Sample => Wav_Buffer_Unsigned_Fixed_8);
    use Wav_IO_8;
 
-   package Wav_IO_16 is new Audio.Wavefiles.Generic_Fixed_Wav_IO
+   package Wav_IO_16 is new Audio.Wavefiles.Generic_Direct_Fixed_Wav_IO
      (Wav_Sample    => Wav_Fixed_16,
       Channel_Range => Wav_Buffer_Range,
       Wav_MC_Sample => Wav_Buffer_Fixed_16);
@@ -1318,9 +1315,6 @@ begin
                    & Sample_Count'Image (WF_In.Current_Sample) & ".");
 
          Convert_Wav_MC_Sample : declare
-            pragma Assert
-              (WF_In.Format_Of_Wavefile.Bits_Per_Sample = Bit_Depth_8
-               and then not WF_In.Format_Of_Wavefile.Is_Float_Format);
 
             Wav_Buf_In  : Wav_Buffer_Unsigned_Fixed_8
                             (1 .. WF_In.Number_Of_Channels);

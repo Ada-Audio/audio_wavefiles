@@ -137,6 +137,9 @@ package Audio.Wavefiles is
    function Number_Of_Channels
      (W : Wavefile) return Positive;
 
+   function Bit_Depth
+     (W : Wavefile) return Wav_Bit_Depth;
+
    function Sample_Rate
      (W : Wavefile) return Wav_Sample_Rate;
 

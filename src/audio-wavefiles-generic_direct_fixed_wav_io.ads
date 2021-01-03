@@ -30,23 +30,34 @@
 --  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                  --
 ------------------------------------------------------------------------------
 
-private generic
-   type Wav_Sample is digits <>;
+generic
+   type Wav_Sample is delta <>;
    type Channel_Range is (<>);
    type Wav_MC_Sample is array (Channel_Range range <>) of Wav_Sample;
-package Audio.Wavefiles.Generic_Float_Wav_IO is
+package Audio.Wavefiles.Generic_Direct_Fixed_Wav_IO is
+
+   function Wav_Format_Matches (WF : Wavefile) return Boolean
+     with Ghost;
 
    function Get (WF  : in out Wavefile) return Wav_MC_Sample
-     with Inline, Pre => Mode (WF) = In_File;
+     with Inline, Pre => Mode (WF) = In_File
+                         and then Wav_Format_Matches (WF);
 
    procedure Get (WF  : in out Wavefile;
                   Wav :    out Wav_MC_Sample)
-     with Inline, Pre => Mode (WF) = In_File;
+     with Inline, Pre => Mode (WF) = In_File
+                         and then Wav_Format_Matches (WF);
 
    procedure Put (WF  : in out Wavefile;
                   Wav :        Wav_MC_Sample)
      with Inline,
           Pre => Mode (WF) = Out_File
-                 and Wav'Length >= Number_Of_Channels (WF);
+                 and then Wav'Length >= Number_Of_Channels (WF)
+                 and then Wav_Format_Matches (WF);
+private
 
-end Audio.Wavefiles.Generic_Float_Wav_IO;
+   function Wav_Format_Matches (WF : Wavefile) return Boolean is
+     (To_Positive (WF.Bit_Depth) = Wav_Sample'Size
+      and then not WF.Format_Of_Wavefile.Is_Float_Format);
+
+end Audio.Wavefiles.Generic_Direct_Fixed_Wav_IO;

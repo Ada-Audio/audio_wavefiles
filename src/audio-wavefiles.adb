@@ -266,6 +266,14 @@ package body Audio.Wavefiles is
    function Number_Of_Channels
      (W : Wavefile) return Positive is (Positive (W.Wave_Format.Channels));
 
+   ---------------
+   -- Bit_Depth --
+   ---------------
+
+   function Bit_Depth
+     (W : Wavefile) return Wav_Bit_Depth is
+     (W.Wave_Format.Bits_Per_Sample);
+
    -----------------
    -- Sample_Rate --
    -----------------

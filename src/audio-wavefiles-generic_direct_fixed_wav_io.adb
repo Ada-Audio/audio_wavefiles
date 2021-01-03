@@ -30,23 +30,40 @@
 --  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                  --
 ------------------------------------------------------------------------------
 
-private generic
-   type Wav_Sample is digits <>;
-   type Channel_Range is (<>);
-   type Wav_MC_Sample is array (Channel_Range range <>) of Wav_Sample;
-package Audio.Wavefiles.Generic_Float_Wav_IO is
+with Audio.Wavefiles.Generic_Fixed_Wav_IO;
 
-   function Get (WF  : in out Wavefile) return Wav_MC_Sample
-     with Inline, Pre => Mode (WF) = In_File;
+package body Audio.Wavefiles.Generic_Direct_Fixed_Wav_IO is
+
+   package Wav_IO is new Audio.Wavefiles.Generic_Fixed_Wav_IO
+     (Wav_Sample    => Wav_Sample,
+      Channel_Range => Channel_Range,
+      Wav_MC_Sample => Wav_MC_Sample);
+
+   ---------
+   -- Get --
+   ---------
+
+   function Get (WF  : in out Wavefile) return Wav_MC_Sample is
+     (Wav_IO.Get (WF));
+
+   ---------
+   -- Get --
+   ---------
 
    procedure Get (WF  : in out Wavefile;
-                  Wav :    out Wav_MC_Sample)
-     with Inline, Pre => Mode (WF) = In_File;
+                  Wav :    out Wav_MC_Sample) is
+   begin
+      Wav_IO.Get (WF, Wav);
+   end Get;
+
+   ---------
+   -- Put --
+   ---------
 
    procedure Put (WF  : in out Wavefile;
-                  Wav :        Wav_MC_Sample)
-     with Inline,
-          Pre => Mode (WF) = Out_File
-                 and Wav'Length >= Number_Of_Channels (WF);
+                  Wav :        Wav_MC_Sample) is
+   begin
+      Wav_IO.Put (WF, Wav);
+   end Put;
 
-end Audio.Wavefiles.Generic_Float_Wav_IO;
+end Audio.Wavefiles.Generic_Direct_Fixed_Wav_IO;
