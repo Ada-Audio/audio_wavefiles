@@ -625,14 +625,15 @@ end Write_7_1_4_Channel_Sine_Wavefile;
 ~~~~~~~~~~ada
 with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
 
-procedure Display (Channel_Config : Channel_Configuration);
+procedure Display_Channel_Config_Name (Channel_Config : Channel_Configuration);
 
 with Ada.Text_IO;            use Ada.Text_IO;
 
 with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
 use  Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
 
-procedure Display (Channel_Config : Channel_Configuration) is
+procedure Display_Channel_Config_Name
+  (Channel_Config : Channel_Configuration) is
 begin
    if Channel_Config = Channel_Config_1_0 then
       Put_Line ("1.0 channels (mono)");
@@ -667,7 +668,7 @@ begin
    else
       Put_Line ("WARNING: configuration is not listed!");
    end if;
-end Display;
+end Display_Channel_Config_Name;
 ~~~~~~~~~~
 
 
@@ -678,7 +679,7 @@ with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
 with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
 use  Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
 
-with Display;
+with Display_Channel_Config_Name;
 
 procedure Display_Channel_Config is
    WF            : Wavefile;
@@ -692,7 +693,7 @@ begin
            Guessed_Channel_Configuration
              (WF.Number_Of_Channels);
       begin
-         Display (Channel_Config);
+         Display_Channel_Config_Name (Channel_Config);
       end;
    end if;
 
