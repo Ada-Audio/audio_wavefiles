@@ -35,41 +35,21 @@ colorlinks: true
 ## Opening & closing a wavefile for reading
 
 ~~~~~~~~~~ada
---
--------------------------------------------------------------------------------
---
---  Opening & closing a wavefile for reading
---
--------------------------------------------------------------------------------
---
 with Ada.Text_IO;     use Ada.Text_IO;
 
 with Audio.Wavefiles; use Audio.Wavefiles;
 
 procedure Open_Close_Wavefile_For_Reading is
-   WF            : Wavefile;
-   Wav_File_Name : constant String := "data/2ch_silence.wav";
+   WF : Wavefile;
 begin
-   --
-   --  Opening the wavefile
-   --
-   WF.Open (In_File, Wav_File_Name);
+   WF.Open (In_File, "data/2ch_silence.wav");
 
-   --
-   --  Verifying that the wavefile is opened
-   --
    if WF.Is_Open then
       Put_Line ("File is open!");
    end if;
 
-   --
-   --  Closing the wavefile
-   --
    WF.Close;
 
-   --
-   --  Verifying that the wavefile is closed
-   --
    if not WF.Is_Open then
       Put_Line ("File is closed!");
    end if;
@@ -81,49 +61,26 @@ end Open_Close_Wavefile_For_Reading;
 ## Opening & closing a wavefile for writing
 
 ~~~~~~~~~~ada
---
--------------------------------------------------------------------------------
---
---  Opening & closing a wavefile for writing with CD quality
---
--------------------------------------------------------------------------------
---
 with Ada.Text_IO;            use Ada.Text_IO;
 
 with Audio.Wavefiles;        use Audio.Wavefiles;
 with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
 
 procedure Open_Close_Wavefile_For_Writing is
-   WF            : Wavefile;
-   Wav_File_Name : constant String := "out/test.wav";
+   WF : Wavefile;
 begin
-   --
-   --  Set format of the wavefile
-   --
    WF.Set_Format_Of_Wavefile (Init (Bit_Depth          => Bit_Depth_16,
                                     Sample_Rate        => Sample_Rate_44100,
                                     Number_Of_Channels => 2,
                                     Use_Float          => False));
-   --
-   --  Create the wavefile
-   --
-   WF.Create (Out_File, Wav_File_Name);
+   WF.Create (Out_File, "out/test.wav");
 
-   --
-   --  Verifying that the wavefile is opened
-   --
    if WF.Is_Open then
       Put_Line ("File is open!");
    end if;
 
-   --
-   --  Closing the wavefile
-   --
    WF.Close;
 
-   --
-   --  Verifying that the wavefile is closed
-   --
    if not WF.Is_Open then
       Put_Line ("File is closed!");
    end if;
