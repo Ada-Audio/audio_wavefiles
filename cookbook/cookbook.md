@@ -194,7 +194,7 @@ end Display_RIFF_Chunks;
 ## Reading data from a wavefile
 
 ~~~~~~~~~~ada
-with Audio.Wavefiles;                      use Audio.Wavefiles;
+with Audio.Wavefiles; use Audio.Wavefiles;
 
 procedure Put_Time (Item : Wavefile_Time_In_Seconds);
 
@@ -208,7 +208,9 @@ begin
    Time_Text_IO.Put (Item, Fore => 3, Aft => 6, Exp => 0);
    Put_Line (" seconds.");
 end Put_Time;
+~~~~~~~~~~
 
+~~~~~~~~~~ada
 with Ada.Text_IO;                          use Ada.Text_IO;
 
 with Audio.Wavefiles;                      use Audio.Wavefiles;
@@ -376,7 +378,10 @@ begin
 
    end loop;
 end Write_Stereo_Sine_Tone;
+~~~~~~~~~~
 
+
+~~~~~~~~~~ada
 with Audio.Wavefiles;        use Audio.Wavefiles;
 with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
 
@@ -468,7 +473,10 @@ begin
 
    end loop;
 end Write_5_1_Channel_Sine_Tone;
+~~~~~~~~~~
 
+
+~~~~~~~~~~ada
 with Audio.Wavefiles;        use Audio.Wavefiles;
 with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
 
@@ -570,7 +578,10 @@ begin
 
    end loop;
 end Write_7_1_4_Channel_Sine_Tone;
+~~~~~~~~~~
 
+
+~~~~~~~~~~ada
 with Audio.Wavefiles;        use Audio.Wavefiles;
 with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
 
@@ -657,7 +668,10 @@ begin
       Put_Line ("WARNING: configuration is not listed!");
    end if;
 end Display;
+~~~~~~~~~~
 
+
+~~~~~~~~~~ada
 with Audio.Wavefiles;        use Audio.Wavefiles;
 with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
 
@@ -853,7 +867,10 @@ begin
                          & ")");
 
 end Display_Time_Info;
+~~~~~~~~~~
 
+
+~~~~~~~~~~ada
 with Audio.Wavefiles;                      use Audio.Wavefiles;
 with Audio.Wavefiles.Data_Types;           use Audio.Wavefiles.Data_Types;
 with Audio.Wavefiles.Generic_Float_PCM_IO;
@@ -1551,7 +1568,6 @@ end Read_To_Memory_Per_Channel;
 ## Extracting the iXML chunk from a wavefile
 
 ~~~~~~~~~~ada
-
 with Ada.Text_IO;     use Ada.Text_IO;
 
 with Audio.Wavefiles; use Audio.Wavefiles;
@@ -1570,7 +1586,10 @@ begin
       end;
    end loop;
 end Write_Data_As_Text;
+~~~~~~~~~~
 
+
+~~~~~~~~~~ada
 with Ada.Text_IO;            use Ada.Text_IO;
 
 with Audio.Wavefiles;        use Audio.Wavefiles;
