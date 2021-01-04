@@ -1524,7 +1524,7 @@ begin
 
             Samples_Last : constant Long_Long_Integer :=
                              Long_Long_Integer'Min (Samples'Last,
-                                                       Last_Sample_To_Display);
+                                                    Last_Sample_To_Display);
          begin
             Put_Line ("Channel #" & Positive'Image (Channel_Index));
             for Sample_Count in Samples'First .. Samples_Last loop
