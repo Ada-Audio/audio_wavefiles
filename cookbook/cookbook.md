@@ -4,7 +4,7 @@ subtitle: Cookbook
 description: Recipes for the Ada Wavefile Library with explanation.
 lang: en-US
 author: Gustavo A. Hoffmann
-date: 2021-01-04
+date: 2021-01
 version: 2.0.0
 keywords:
 - Ada language
