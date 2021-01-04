@@ -1,5 +1,5 @@
-Ada Library for Wavefile I/O
-============================
+Ada Wavefile Library
+====================
 
 **Version 2.0.0**
 

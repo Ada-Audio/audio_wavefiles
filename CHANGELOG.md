@@ -1,6 +1,6 @@
 # CHANGELOG
 
-This is the changelog of the Wavefiles Package, a Wavefile Reader & Writer
+This is the changelog of the Ada Wavefile Library, a Wavefile Reader & Writer
 Package implemented in Ada 2012.
 
 ## 2.0.0, released on 2020-12-xx
