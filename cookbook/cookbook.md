@@ -796,7 +796,7 @@ end Copy_Wavefile;
 
 Alternatively:
 
-```
+```ada
       Copy_PCM_MC_Sample : declare
          --  ...
 
