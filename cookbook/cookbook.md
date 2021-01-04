@@ -779,6 +779,8 @@ begin
             PCM_MC_Sample => Wav_Buffer_Float_64);
          use PCM_IO;
 
+         pragma Assert (Wav_Buffer_Range'First = 1);
+
          PCM_Buf : Wav_Buffer_Float_64 (1 .. WF_In.Number_Of_Channels);
       begin
          Get (WF_In,  PCM_Buf);
