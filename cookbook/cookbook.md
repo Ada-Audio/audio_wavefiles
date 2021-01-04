@@ -1405,10 +1405,13 @@ begin
    WF_In.Open (In_File, Wav_In_File_Name);
 
    Read_To_Memory : declare
-      pragma Assert (Wav_Buffer_Range'First = 1);
 
-      subtype Wav_Bounded_Buffer_Float_32 is
-        Wav_Buffer_Float_32 (1 .. WF_In.Number_Of_Channels);
+      subtype WF_In_Channels is Wav_Buffer_Range range
+        Wav_Buffer_Range'First .. WF_In.Number_Of_Channels
+                                  + Wav_Buffer_Range'First - 1;
+
+      subtype Bounded_Wav_Buffer_Float_32 is
+        Wav_Buffer_Float_32 (WF_In_Channels);
 
       package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
         (PCM_Sample    => Wav_Float_32,
@@ -1417,7 +1420,7 @@ begin
       use PCM_IO;
 
       type PCM_Container is array (Long_Long_Integer range <>) of
-        Wav_Bounded_Buffer_Float_32;
+        Bounded_Wav_Buffer_Float_32;
 
       PCM_Data : PCM_Container (WF_In.First_Sample .. WF_In.Last_Sample);
 
@@ -1432,10 +1435,10 @@ begin
 
       Display_Some_Samples : declare
 
-         procedure Display_Sample (MC_Sample    : Wav_Bounded_Buffer_Float_32;
+         procedure Display_Sample (MC_Sample    : Bounded_Wav_Buffer_Float_32;
                                    Sample_Count : Long_Long_Integer);
 
-         procedure Display_Sample (MC_Sample    : Wav_Bounded_Buffer_Float_32;
+         procedure Display_Sample (MC_Sample    : Bounded_Wav_Buffer_Float_32;
                                    Sample_Count : Long_Long_Integer)
          is
             use Ada.Text_IO;
@@ -1499,9 +1502,11 @@ begin
       type PCM_Container is array (Positive range <>) of
         Bounded_Channel_PCM_Data;
 
-      pragma Assert (Wav_Buffer_Range'First = 1);
+      subtype WF_In_Channels is Wav_Buffer_Range range
+        Wav_Buffer_Range'First .. WF_In.Number_Of_Channels
+                                  + Wav_Buffer_Range'First - 1;
 
-      PCM_Data : PCM_Container (1 .. WF_In.Number_Of_Channels);
+      PCM_Data : PCM_Container (WF_In_Channels);
 
    begin
       for Sample_Count in Bounded_Channel_PCM_Data'Range loop
