@@ -280,6 +280,7 @@ with Audio.Wavefiles.Generic_Float_PCM_IO;
 with Audio.RIFF.Wav.Formats;               use Audio.RIFF.Wav.Formats;
 
 procedure Write_Mono_Silence_Wavefile is
+
    package PCM_IO is new Audio.Wavefiles.Generic_Float_PCM_IO
      (PCM_Sample    => Wav_Float_32,
       Channel_Range => Wav_Buffer_Range,
