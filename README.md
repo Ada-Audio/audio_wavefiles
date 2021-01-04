@@ -189,7 +189,7 @@ You can now read data from the wavefile:
 
 For a list of source-code examples for various use-cases — starting from the
 simplest ones to more complicated use-cases —, please refer to the
-[cookbook](cookbook/cookbook.md) file.
+[cookbook](cookbook/README.md).
 
 
 Roadmap
