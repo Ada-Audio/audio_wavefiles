@@ -1,3 +1,34 @@
+---
+title: Ada Wavefile Library
+subtitle: Cookbook
+description: Recipes for the Ada Wavefile Library with explanation.
+lang: en-US
+author: Gustavo A. Hoffmann
+date: 2021-01-04
+version: 2.0.0
+keywords:
+- Ada language
+- Audio
+- Wavefile
+header-includes:
+    - \usepackage{fancyhdr}
+    - \pagestyle{fancy}
+    - \fancyhead[LE,RO]{\title}
+    - \usepackage{pmboxdraw}
+    - \fvset{fontsize=\small}
+monobackgroundcolor: grey
+papersize: a4
+margin-left: 3cm
+margin-right: 2cm
+margin-top: 2.5cm
+margin-bottom: 2.5cm
+toc: yes
+link-citations: true
+colorlinks: true
+---
+
+\pagebreak
+
 # Cookbook
 
 
