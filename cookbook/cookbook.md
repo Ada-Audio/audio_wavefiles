@@ -1397,6 +1397,8 @@ begin
    WF_In.Open (In_File, Wav_In_File_Name);
 
    Read_To_Memory : declare
+      pragma Assert (Wav_Buffer_Range'First = 1);
+
       subtype Wav_Bounded_Buffer_Float_32 is
         Wav_Buffer_Float_32 (1 .. WF_In.Number_Of_Channels);
 
@@ -1488,6 +1490,8 @@ begin
 
       type PCM_Container is array (Positive range <>) of
         Bounded_Channel_PCM_Data;
+
+      pragma Assert (Wav_Buffer_Range'First = 1);
 
       PCM_Data : PCM_Container (1 .. WF_In.Number_Of_Channels);
 
