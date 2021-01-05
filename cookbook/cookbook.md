@@ -227,37 +227,6 @@ end List_Errors_For_Wavefiles;
 
 \pagebreak
 
-## Displaying the RIFF chunks of a wavefile
-
-We can use the `Wavefiles` package to identify the RIFF chunks of a wavefile
-and extract data from them. In this example, we call the `Get_RIFF_Info`
-procedure to get the RIFF information and store it in the `RIFF_Info` object.
-We then call `Display_Info` procedure to display detailed information about
-each RIFF chunk found in the wavefile.
-
-~~~~~~~~~~ada
-with Audio.Wavefiles;        use Audio.Wavefiles;
-with Audio.Wavefiles.Report; use Audio.Wavefiles.Report;
-
-procedure Display_RIFF_Chunks is
-   WF            : Wavefile;
-   Wav_File_Name : constant String := "data/2ch_silence.wav";
-   RIFF_Info     : RIFF_Information;
-begin
-   WF.Open (In_File, Wav_File_Name);
-
-   if WF.Is_Open then
-      WF.Get_RIFF_Info (RIFF_Info);
-
-      Display_Info (RIFF_Info);
-   end if;
-
-   WF.Close;
-end Display_RIFF_Chunks;
-~~~~~~~~~~
-
-
-\pagebreak
 
 ## Reading data from a wavefile
 
@@ -589,7 +558,6 @@ end Write_Stereo_Sine_Wavefile;
 
 ## Writing a 5.1-channel wavefile with sine tones
 
-
 This example is similar to
 [the previous one](#writing-a-stereo-wavefile-with-sine-tones), but we're now
 creating a 5.1-channel wavefile instead. Because of the increased number of
@@ -845,105 +813,6 @@ end Write_7_1_4_Channel_Sine_Wavefile;
 
 \pagebreak
 
-## Displaying the channel configuration of a wavefile
-
-In this example, we use the `Guessed_Channel_Configuration` function to guess
-the channel configuration of a wavefile based on the number of channels.
-Although this function delivers the correct result in many cases, it might be
-inappropriate for some corner cases. This is due to the fact that multiple
-channel configurations (such as 5.1-channel and 6.0-channel configurations)
-have the same number of channels (6 channels) — in this particular case,
-`Guessed_Channel_Configuration` selects the 5.1-channel configuration because
-it is more commonly used than the 6.0-channel configuration.
-
-We start with the implementation of an auxiliary procedure that displays the
-channel configuration name (`Display_Channel_Config_Name`).
-
-~~~~~~~~~~ada
-with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
-
-procedure Display_Channel_Config_Name (Channel_Config : Channel_Configuration);
-
-with Ada.Text_IO;            use Ada.Text_IO;
-
-with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
-use  Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
-
-procedure Display_Channel_Config_Name
-  (Channel_Config : Channel_Configuration) is
-begin
-   if Channel_Config = Channel_Config_1_0 then
-      Put_Line ("1.0 channels (mono)");
-   elsif Channel_Config = Channel_Config_2_0 then
-      Put_Line ("2.0 channels (stereo)");
-   elsif Channel_Config = Channel_Config_3_0 then
-      Put_Line ("3.0 channels");
-   elsif Channel_Config = Channel_Config_4_0 then
-      Put_Line ("4.0 channels (quad)");
-   elsif Channel_Config = Channel_Config_5_0 then
-      Put_Line ("5.0 channels");
-   elsif Channel_Config = Channel_Config_5_1 then
-      Put_Line ("5.1 channels");
-   elsif Channel_Config = Channel_Config_7_0 then
-      Put_Line ("7.0 channels");
-   elsif Channel_Config = Channel_Config_7_1 then
-      Put_Line ("7.1 channels");
-   elsif Channel_Config = Channel_Config_7_1_BC then
-      Put_Line ("7.1 channels + back channel");
-   elsif Channel_Config = Channel_Config_5_1_2 then
-      Put_Line ("5.1.2 channels");
-   elsif Channel_Config = Channel_Config_5_1_4 then
-      Put_Line ("5.1.4 channels");
-   elsif Channel_Config = Channel_Config_7_0_4 then
-      Put_Line ("7.0.4 channels");
-   elsif Channel_Config = Channel_Config_7_1_2 then
-      Put_Line ("7.1.2 channels");
-   elsif Channel_Config = Channel_Config_7_1_4 then
-      Put_Line ("7.1.4 channels");
-   elsif Channel_Config = Channel_Config_Empty then
-      Put_Line ("Unknown configuration");
-   else
-      Put_Line ("WARNING: configuration is not listed!");
-   end if;
-end Display_Channel_Config_Name;
-~~~~~~~~~~
-
-In the `Display_Channel_Config` procedure, we open a wavefile and call the
-`Guessed_Channel_Configuration` function with the number of channels of the
-wavefile. The function returns a channel configuration (`Channel_Config`),
-which we display with the call to `Display_Channel_Config_Name`.
-
-~~~~~~~~~~ada
-with Audio.Wavefiles;        use Audio.Wavefiles;
-with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
-
-with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
-use  Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
-
-with Display_Channel_Config_Name;
-
-procedure Display_Channel_Config is
-   WF            : Wavefile;
-   Wav_File_Name : constant String := "ref/7_1_4ch_sine.wav";
-begin
-   WF.Open (In_File, Wav_File_Name);
-
-   if WF.Is_Open then
-      declare
-         Channel_Config : constant Channel_Configuration :=
-           Guessed_Channel_Configuration
-             (WF.Number_Of_Channels);
-      begin
-         Display_Channel_Config_Name (Channel_Config);
-      end;
-   end if;
-
-   WF.Close;
-end Display_Channel_Config;
-~~~~~~~~~~
-
-
-\pagebreak
 
 ## Appending a wavefile
 
@@ -2056,6 +1925,142 @@ begin
 
    WF_In.Close;
 end Read_To_Memory_Per_Channel;
+~~~~~~~~~~
+
+
+\pagebreak
+
+# Display Wavefile Information
+
+## Displaying the channel configuration of a wavefile
+
+In this example, we use the `Guessed_Channel_Configuration` function to guess
+the channel configuration of a wavefile based on the number of channels.
+Although this function delivers the correct result in many cases, it might be
+inappropriate for some corner cases. This is due to the fact that multiple
+channel configurations (such as 5.1-channel and 6.0-channel configurations)
+have the same number of channels (6 channels) — in this particular case,
+`Guessed_Channel_Configuration` selects the 5.1-channel configuration because
+it is more commonly used than the 6.0-channel configuration.
+
+We start with the implementation of an auxiliary procedure that displays the
+channel configuration name (`Display_Channel_Config_Name`).
+
+~~~~~~~~~~ada
+with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
+
+procedure Display_Channel_Config_Name (Channel_Config : Channel_Configuration);
+
+with Ada.Text_IO;            use Ada.Text_IO;
+
+with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
+use  Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
+
+procedure Display_Channel_Config_Name
+  (Channel_Config : Channel_Configuration) is
+begin
+   if Channel_Config = Channel_Config_1_0 then
+      Put_Line ("1.0 channels (mono)");
+   elsif Channel_Config = Channel_Config_2_0 then
+      Put_Line ("2.0 channels (stereo)");
+   elsif Channel_Config = Channel_Config_3_0 then
+      Put_Line ("3.0 channels");
+   elsif Channel_Config = Channel_Config_4_0 then
+      Put_Line ("4.0 channels (quad)");
+   elsif Channel_Config = Channel_Config_5_0 then
+      Put_Line ("5.0 channels");
+   elsif Channel_Config = Channel_Config_5_1 then
+      Put_Line ("5.1 channels");
+   elsif Channel_Config = Channel_Config_7_0 then
+      Put_Line ("7.0 channels");
+   elsif Channel_Config = Channel_Config_7_1 then
+      Put_Line ("7.1 channels");
+   elsif Channel_Config = Channel_Config_7_1_BC then
+      Put_Line ("7.1 channels + back channel");
+   elsif Channel_Config = Channel_Config_5_1_2 then
+      Put_Line ("5.1.2 channels");
+   elsif Channel_Config = Channel_Config_5_1_4 then
+      Put_Line ("5.1.4 channels");
+   elsif Channel_Config = Channel_Config_7_0_4 then
+      Put_Line ("7.0.4 channels");
+   elsif Channel_Config = Channel_Config_7_1_2 then
+      Put_Line ("7.1.2 channels");
+   elsif Channel_Config = Channel_Config_7_1_4 then
+      Put_Line ("7.1.4 channels");
+   elsif Channel_Config = Channel_Config_Empty then
+      Put_Line ("Unknown configuration");
+   else
+      Put_Line ("WARNING: configuration is not listed!");
+   end if;
+end Display_Channel_Config_Name;
+~~~~~~~~~~
+
+In the `Display_Channel_Config` procedure, we open a wavefile and call the
+`Guessed_Channel_Configuration` function with the number of channels of the
+wavefile. The function returns a channel configuration (`Channel_Config`),
+which we display with the call to `Display_Channel_Config_Name`.
+
+~~~~~~~~~~ada
+with Audio.Wavefiles;        use Audio.Wavefiles;
+with Audio.RIFF.Wav.Formats; use Audio.RIFF.Wav.Formats;
+
+with Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
+use  Audio.RIFF.Wav.Formats.Standard_Channel_Configurations;
+
+with Display_Channel_Config_Name;
+
+procedure Display_Channel_Config is
+   WF            : Wavefile;
+   Wav_File_Name : constant String := "ref/7_1_4ch_sine.wav";
+begin
+   WF.Open (In_File, Wav_File_Name);
+
+   if WF.Is_Open then
+      declare
+         Channel_Config : constant Channel_Configuration :=
+           Guessed_Channel_Configuration
+             (WF.Number_Of_Channels);
+      begin
+         Display_Channel_Config_Name (Channel_Config);
+      end;
+   end if;
+
+   WF.Close;
+end Display_Channel_Config;
+~~~~~~~~~~
+
+
+\pagebreak
+
+# RIFF Chunks
+
+## Displaying the RIFF chunks of a wavefile
+
+We can use the `Wavefiles` package to identify the RIFF chunks of a wavefile
+and extract data from them. In this example, we call the `Get_RIFF_Info`
+procedure to get the RIFF information and store it in the `RIFF_Info` object.
+We then call `Display_Info` procedure to display detailed information about
+each RIFF chunk found in the wavefile.
+
+~~~~~~~~~~ada
+with Audio.Wavefiles;        use Audio.Wavefiles;
+with Audio.Wavefiles.Report; use Audio.Wavefiles.Report;
+
+procedure Display_RIFF_Chunks is
+   WF            : Wavefile;
+   Wav_File_Name : constant String := "data/2ch_silence.wav";
+   RIFF_Info     : RIFF_Information;
+begin
+   WF.Open (In_File, Wav_File_Name);
+
+   if WF.Is_Open then
+      WF.Get_RIFF_Info (RIFF_Info);
+
+      Display_Info (RIFF_Info);
+   end if;
+
+   WF.Close;
+end Display_RIFF_Chunks;
 ~~~~~~~~~~
 
 
