@@ -1,0 +1,43 @@
+name: GNAT 9 on Ubuntu 20.04
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up GNAT toolchain
+      run: >
+        sudo apt-get update &&
+        sudo apt-get install gnat-9 gprbuild &&
+        sudo apt-get install wavbreaker
+
+    - name: Install dependencies
+      run: >
+        . ./scripts/install_deps.sh &&
+        echo "GPR_PROJECT_PATH=${GPR_PROJECT_PATH}" >> $GITHUB_ENV
+
+    - name: Verify generated source-code files
+      run: TEST=1 ./scripts/generate_src.sh
+
+    - name: Build test for Wavefile Library
+      run: gprbuild -P test/wavefiles_test/wavefiles_test.gpr
+
+    - name: Build Quick Wav-Data Check
+      run: gprbuild -P test/quick_wav_data_check/quick_wav_data_check.gpr
+
+    - name: Run Quick Wav-Data Check
+      run: ./test/quick_wav_data_check/bin/quick_wav_data_check "$(date +"%Y%m%d-%H%M%S")_"
+
+    - name: Build & check Cookbook
+      run: ./scripts/test_cookbook.sh
+
+    - name: Build & run Simple Benchmarking
+      run: >
+        gprclean -r -P test/simple_benchmarking/simple_benchmarking.gpr &&
+        gprbuild -P test/simple_benchmarking/simple_benchmarking.gpr -XWAVEFILES_BUILD_MODE=RELEASE &&
+        ./scripts/simple_benchmarking.sh

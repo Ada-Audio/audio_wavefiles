@@ -1,0 +1,42 @@
+name: GNAT Community 2020 on Windows Server 2019
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: windows-2019
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Check cached GNAT toolchain
+      uses: actions/cache@v2
+      with:
+        path: ./cached_gnat
+        key: ${{ runner.os }}-gnat-ce-2020
+
+    - name: Set up GNAT toolchain
+      uses: ada-actions/toolchain@ce2020
+      with:
+        distrib: community
+        target: native
+        community_year: 2020
+        install_dir: ./cached_gnat
+
+    - name: Install dependencies
+      run: >
+        ./scripts/install_deps.ps1
+
+    - name: Build test for Wavefile Library
+      env:
+        GPR_PROJECT_PATH: .\deps\audio_base
+      run: gprbuild -P test/wavefiles_test/wavefiles_test.gpr
+
+    - name: Build Quick Wav-Data Check
+      env:
+        GPR_PROJECT_PATH: .\deps\audio_base
+      run: gprbuild -P test/quick_wav_data_check/quick_wav_data_check.gpr
+
+    - name: Run Quick Wav-Data Check
+      run: ./test/quick_wav_data_check/bin/quick_wav_data_check "$(date +"%Y%m%d-%H%M%S")_"
