@@ -44,7 +44,7 @@ To contribute to this project, please refer to the guidelines described in the
 License & Copyright
 -------------------
 
-As indicated in the [LICENSE](LICENSE) file, this Package is available "as is"
+As indicated in the [LICENSE](LICENSE) file, this Library is available "as is"
 under MIT License. Please refer to that file for all licensing conditions.
 Unless stated otherwise, the copyright is held by Gustavo A. Hoffmann.
 
@@ -52,7 +52,7 @@ Unless stated otherwise, the copyright is held by Gustavo A. Hoffmann.
 Supported Platforms
 -------------------
 
-This Package has been tested with following compilers and platforms:
+This Library has been tested with following compilers and platforms:
 
 - GNAT FSF 7, 8, 9 and 10 for Linux;
 - GNAT Community 2020 for Linux, Windows and macOS.
@@ -112,6 +112,13 @@ mkdir deps
 
 (cd deps && git clone https://github.com/Ada-Audio/audio_base )
 (cd deps && git clone https://github.com/Ada-Audio/audio_wavefiles )
+```
+
+Another method is to use git submodules:
+
+```sh
+git submodule add https://github.com/Ada-Audio/audio_base ./deps/audio_base
+git submodule add https://github.com/Ada-Audio/audio_wavefiles ./deps/audio_wavefiles
 ```
 
 Then, you have to include the Library in your GPRbuild project by adding
