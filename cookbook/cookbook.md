@@ -72,6 +72,8 @@ end Open_Close_Wavefile_For_Reading;
 ~~~~~~~~~~
 
 
+\pagebreak
+
 ## Opening & closing a wavefile for writing
 
 This example shows how to open a wavefile for writing. First, we declare an
@@ -122,6 +124,8 @@ end Open_Close_Wavefile_For_Writing;
 ~~~~~~~~~~
 
 
+\pagebreak
+
 ## Displaying errors and warnings while handling wavefiles
 
 We may encounter errors and warnings while handling wavefiles. In this
@@ -159,6 +163,8 @@ begin
 end Display_Errors_For_Wavefiles;
 ~~~~~~~~~~
 
+
+\pagebreak
 
 ## Listing errors and warnings while handling wavefiles
 
@@ -219,6 +225,8 @@ end List_Errors_For_Wavefiles;
 ~~~~~~~~~~
 
 
+\pagebreak
+
 ## Displaying the RIFF chunks of a wavefile
 
 We can use the `Wavefiles` package to identify the RIFF chunks of a wavefile
@@ -248,6 +256,8 @@ begin
 end Display_RIFF_Chunks;
 ~~~~~~~~~~
 
+
+\pagebreak
 
 ## Reading data from a wavefile
 
@@ -397,6 +407,8 @@ end Read_Display_Wavefile_Data;
 ~~~~~~~~~~
 
 
+\pagebreak
+
 ## Writing a mono wavefile with silence
 
 This example shows how to write PCM data to a short wavefile of 0.1 seconds. To
@@ -468,6 +480,8 @@ begin
 end Write_Mono_Silence_Wavefile;
 ~~~~~~~~~~
 
+
+\pagebreak
 
 ## Writing a stereo wavefile with sine tones
 
@@ -570,6 +584,8 @@ begin
 end Write_Stereo_Sine_Wavefile;
 ~~~~~~~~~~
 
+
+\pagebreak
 
 ## Writing a 5.1-channel wavefile with sine tones
 
@@ -705,6 +721,8 @@ end Write_5_1_Channel_Sine_Wavefile;
 ~~~~~~~~~~
 
 
+\pagebreak
+
 ## Writing a 7.1.4-channel wavefile with sine tones
 
 This example is similar to
@@ -825,6 +843,8 @@ end Write_7_1_4_Channel_Sine_Wavefile;
 ~~~~~~~~~~
 
 
+\pagebreak
+
 ## Displaying the channel configuration of a wavefile
 
 In this example, we use the `Guessed_Channel_Configuration` function to guess
@@ -923,6 +943,8 @@ end Display_Channel_Config;
 ~~~~~~~~~~
 
 
+\pagebreak
+
 ## Appending a wavefile
 
 We can use the library to append PCM data to an existing wavefile. In this
@@ -988,6 +1010,8 @@ begin
 end Append_Wavefile;
 ~~~~~~~~~~
 
+
+\pagebreak
 
 ## Copying a complete wavefile
 
@@ -1061,6 +1085,8 @@ is how the `Copy_PCM_MC_Sample` block would look like:
 ```
 
 
+\pagebreak
+
 ## Copying a complete wavefile using fixed-point buffer
 
 This example is very similar to the
@@ -1113,6 +1139,8 @@ begin
 end Copy_Wavefile_Using_Fixed_Point_Buffer;
 ~~~~~~~~~~
 
+
+\pagebreak
 
 ## Copying parts of a wavefile multiple times
 
@@ -1224,6 +1252,8 @@ end Copy_Parts_Of_Wavefile;
 ~~~~~~~~~~
 
 
+\pagebreak
+
 ## Converting a PCM wavefile to a 32-bit floating-point PCM wavefile
 
 This example is very similar to a
@@ -1294,6 +1324,8 @@ end Convert_Fixed_To_Float_Wavefile;
 ~~~~~~~~~~
 
 
+\pagebreak
+
 ## Downmixing a stereo wavefile to a mono wavefile
 
 This example shows how to downmix a stereo wavefile to a mono wavefile. In
@@ -1360,6 +1392,8 @@ begin
 end Downmix_Stereo_To_Mono_Wavefile;
 ~~~~~~~~~~
 
+
+\pagebreak
 
 ## Downmixing a 5.1-channel wavefile to a stereo wavefile
 
@@ -1455,6 +1489,8 @@ end Downmix_5_1_To_2_0_Wavefile;
 ~~~~~~~~~~
 
 
+\pagebreak
+
 ## Downmixing a 7.1.4-channel wavefile to a 5.1-channel wavefile
 
 This example is very similar to the
@@ -1543,6 +1579,8 @@ end Downmix_7_1_4_To_5_1_Wavefile;
 ~~~~~~~~~~
 
 
+\pagebreak
+
 ## Direct copying a complete wavefile without PCM buffer conversion
 
 Most examples from this document make uses of a PCM buffer to interface with
@@ -1612,6 +1650,8 @@ end Direct_Copy_Wavefile;
 ~~~~~~~~~~
 
 
+\pagebreak
+
 ## Direct copying a complete floating-point wavefile without PCM buffer conversion
 
 This example is similar to the
@@ -1661,6 +1701,8 @@ begin
 end Direct_Copy_Float_Wavefile;
 ~~~~~~~~~~
 
+
+\pagebreak
 
 ## Converting a 8-bit wavefile to a 16-bit wavefile
 
@@ -1772,6 +1814,8 @@ end Convert_8_Bit_To_16_Bit_Wavefile;
 ~~~~~~~~~~
 
 
+\pagebreak
+
 ## Reading a complete wavefile into memory (channel-interleaved data)
 
 In previous examples, we were declaring small PCM buffers to store just a
@@ -1881,6 +1925,8 @@ begin
 end Read_To_Memory_Channel_Interleaved;
 ~~~~~~~~~~
 
+
+\pagebreak
 
 ## Reading a complete wavefile into memory (data per channel)
 
@@ -2012,6 +2058,8 @@ begin
 end Read_To_Memory_Per_Channel;
 ~~~~~~~~~~
 
+
+\pagebreak
 
 ## Extracting the iXML chunk from a wavefile
 
