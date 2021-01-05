@@ -153,8 +153,8 @@ begin
    Display_Errors (WF);
    Display_Warnings (WF);
 
-   --  Trying to open a file twice
-   --  This will be detected and indicated as an error
+   --  Trying to open a file twice:
+   --  this will be detected and indicated as an error.
    WF.Open (In_File, Wav_File_Name);
 
    Display_Errors (WF);
