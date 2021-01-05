@@ -22,7 +22,7 @@ supports reading and writing of wavefiles, including the following features:
 - Audio samples with following bit depths:
     - 16/24/32/64-bit PCM
     - 32/64-bit floating-point PCM
-- Wave-Format-Extensible format (WAVEFORMATEXTENSIBLE)
+- Wave-Format-Extensible format (WAVE_FORMAT_EXTENSIBLE)
 
 This library also includes support for PCM buffers in floating-point and
 fixed-point formats, as well as the automatic conversion between the data types

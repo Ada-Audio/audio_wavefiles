@@ -202,7 +202,7 @@ Reading and writing of wavefiles supporting following features:
     - 16-bit PCM
     - 24-bit PCM
     - 32-bit PCM
-- Wave-Format-Extensible (WAVEFORMATEXTENSIBLE)
+- Wave-Format-Extensible (WAVE_FORMAT_EXTENSIBLE)
 - Conversion between PCM buffer data type and wavefile data type.
      - Adaptations for different precisions are performed automatically.
 
