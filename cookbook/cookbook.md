@@ -29,8 +29,7 @@ colorlinks: true
 
 \pagebreak
 
-# Cookbook
-
+# Opening & closing wavefiles
 
 ## Opening & closing a wavefile for reading
 
@@ -125,6 +124,8 @@ end Open_Close_Wavefile_For_Writing;
 
 
 \pagebreak
+
+# Errors and warnings
 
 ## Displaying errors and warnings while handling wavefiles
 
@@ -227,6 +228,7 @@ end List_Errors_For_Wavefiles;
 
 \pagebreak
 
+# Reading PCM data
 
 ## Reading data from a wavefile
 
@@ -377,6 +379,8 @@ end Read_Display_Wavefile_Data;
 
 
 \pagebreak
+
+# Writing PCM data
 
 ## Writing a mono wavefile with silence
 
@@ -813,6 +817,7 @@ end Write_7_1_4_Channel_Sine_Wavefile;
 
 \pagebreak
 
+# Reading and Writing PCM data
 
 ## Appending a wavefile
 
@@ -1195,6 +1200,8 @@ end Convert_Fixed_To_Float_Wavefile;
 
 \pagebreak
 
+# Downmixing Wavefiles
+
 ## Downmixing a stereo wavefile to a mono wavefile
 
 This example shows how to downmix a stereo wavefile to a mono wavefile. In
@@ -1450,6 +1457,8 @@ end Downmix_7_1_4_To_5_1_Wavefile;
 
 \pagebreak
 
+# Direct Copying Wavefiles
+
 ## Direct copying a complete wavefile without PCM buffer conversion
 
 Most examples from this document make uses of a PCM buffer to interface with
@@ -1684,6 +1693,8 @@ end Convert_8_Bit_To_16_Bit_Wavefile;
 
 
 \pagebreak
+
+# Reading Wavefiles to Memory
 
 ## Reading a complete wavefile into memory (channel-interleaved data)
 
