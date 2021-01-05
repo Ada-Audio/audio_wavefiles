@@ -1959,10 +1959,11 @@ In this example, we use the `Guessed_Channel_Configuration` function to guess
 the channel configuration of a wavefile based on the number of channels.
 Although this function delivers the correct result in many cases, it might be
 inappropriate for some corner cases. This is due to the fact that multiple
-channel configurations (such as 5.1-channel and 6.0-channel configurations)
-have the same number of channels (6 channels) — in this particular case,
-`Guessed_Channel_Configuration` selects the 5.1-channel configuration because
-it is more commonly used than the 6.0-channel configuration.
+channel configurations may have the same number of channels. For example, both
+5.1-channel and 6.0-channel configurations have the same number of channels:
+6 channels. In this particular case, `Guessed_Channel_Configuration` selects
+the 5.1-channel configuration because it is more commonly used than the
+6.0-channel configuration.
 
 We start with the implementation of an auxiliary procedure that displays the
 channel configuration name (`Display_Channel_Config_Name`).
