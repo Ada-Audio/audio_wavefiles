@@ -2142,16 +2142,16 @@ to the output file.
 We start by opening the input wavefile and creating an output XML file. We then
 call the `Get_RIFF_Info` procedure to retrieve the RIFF information from the
 wavefile, which we store in the `RIFF_Info` object. We then call the
-`Get_First_Chunk` procedure and pass as arguments:
+`Find_First_Chunk` procedure and pass as arguments:
 
 - the chunks from the RIFF information object (`RIFF_Info.Chunks`) and
 
 - the chunk type we're looking for (`Wav_Chunk_IXML` in this case).
 
-The output parameter `Success` of the `Get_First_Chunk` procedure indicates
-whether a chunk has been found in the wavefile. If it was, then basic
-information about the chunk is available in the output parameter
-`Chunk_Element`.
+The `Find_First_Chunk` procedure has an output parameter called `Found`. The
+`Success` component of `Found` indicates whether a chunk has been found in the
+wavefile. If it was, then basic information about the chunk is available in the
+`Chunk_Element` component.
 
 We can then retrieve the actual chunk data from the wavefile by calling the
 `Chunk_Element_Data` function and passing the `Chunk_Element` object. This
@@ -2186,17 +2186,15 @@ begin
       WF.Get_RIFF_Info (RIFF_Info);
 
       declare
-         Chunk_Element  : Wav_Chunk_Element;
-         Success        : Boolean;
+         Found : Wav_Chunk_Element_Found;
       begin
-         Get_First_Chunk (Chunks        => RIFF_Info.Chunks,
-                          Chunk_Tag     => Wav_Chunk_IXML,
-                          Chunk_Element => Chunk_Element,
-                          Success       => Success);
+         Find_First_Chunk (Chunks    => RIFF_Info.Chunks,
+                           Chunk_Tag => Wav_Chunk_IXML,
+                           Found     => Found);
 
-         if Success then
+         if Found.Success then
             Write_Data_As_Text (Xml_File,
-                                Chunk_Element_Data (WF, Chunk_Element));
+                                Chunk_Element_Data (WF, Found.Chunk_Element));
          end if;
       end;
    end if;
