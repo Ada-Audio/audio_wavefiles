@@ -1000,6 +1000,8 @@ begin
             PCM_MC_Sample => Wav_Buffer_Fixed_16);
          use PCM_IO;
 
+         pragma Assert (Wav_Buffer_Range'First = 1);
+
          PCM_Buf : Wav_Buffer_Fixed_16 (1 .. WF_In.Number_Of_Channels);
       begin
          Get (WF_In,  PCM_Buf);
@@ -1108,6 +1110,8 @@ begin
                PCM_MC_Sample => Wav_Buffer_Float_64);
             use PCM_IO;
 
+            pragma Assert (Wav_Buffer_Range'First = 1);
+
             PCM_Buf : Wav_Buffer_Float_64 (1 .. WF_In.Number_Of_Channels);
          begin
             Get (WF_In,  PCM_Buf);
@@ -1184,6 +1188,8 @@ begin
             PCM_MC_Sample => Wav_Buffer_Float_32);
          use PCM_IO;
 
+         pragma Assert (Wav_Buffer_Range'First = 1);
+
          PCM_Buf : Wav_Buffer_Float_32 (1 .. WF_In.Number_Of_Channels);
       begin
          Get (WF_In,  PCM_Buf);
@@ -1247,6 +1253,8 @@ begin
             Channel_Range => Wav_Buffer_Range,
             PCM_MC_Sample => Wav_Buffer_Float_64);
          use PCM_IO;
+
+         pragma Assert (Wav_Buffer_Range'First = 1);
 
          PCM_Buf_In  : Wav_Buffer_Float_64 (1 .. WF_In.Number_Of_Channels);
          PCM_Buf_Out : Wav_Buffer_Float_64 (1 .. 1);
@@ -1513,6 +1521,8 @@ begin
             Channel_Range => Wav_Buffer_Range,
             Wav_MC_Sample => Wav_Buffer_Fixed_16);
          use Wav_IO;
+
+         pragma Assert (Wav_Buffer_Range'First = 1);
 
          Wav_Buf : Wav_Buffer_Fixed_16 (1 .. WF_In.Number_Of_Channels);
       begin
