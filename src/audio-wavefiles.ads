@@ -6,7 +6,7 @@
 --                                                                          --
 --  The MIT License (MIT)                                                   --
 --                                                                          --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann                          --
+--  Copyright (c) 2015 -- 2021 Gustavo A. Hoffmann                          --
 --                                                                          --
 --  Permission is hereby granted, free of charge, to any person obtaining   --
 --  a copy of this software and associated documentation files (the         --
@@ -87,10 +87,20 @@ package Audio.Wavefiles is
 
    subtype Wav_Chunk_Elements is Wav_Chunk_Element_Vectors.Vector;
 
-   procedure Get_First_Chunk (Chunks         :     Wav_Chunk_Elements;
-                              Chunk_Tag      :     Wav_Chunk_Tag;
-                              Chunk_Element  : out Wav_Chunk_Element;
-                              Success        : out Boolean);
+   type Wav_Chunk_Element_Found (Success : Boolean := False) is
+      record
+         case Success is
+            when False =>
+               null;
+            when True  =>
+               Chunk_Element : Wav_Chunk_Element;
+         end case;
+      end record;
+
+   procedure Find_First_Chunk
+     (Chunks    :     Wav_Chunk_Elements;
+      Chunk_Tag :     Wav_Chunk_Tag;
+      Found     : out Wav_Chunk_Element_Found);
 
    type RIFF_Information is
       record

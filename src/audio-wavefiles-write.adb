@@ -6,7 +6,7 @@
 --                                                                          --
 --  The MIT License (MIT)                                                   --
 --                                                                          --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann                          --
+--  Copyright (c) 2015 -- 2021 Gustavo A. Hoffmann                          --
 --                                                                          --
 --  Permission is hereby granted, free of charge, to any person obtaining   --
 --  a copy of this software and associated documentation files (the         --
@@ -211,20 +211,18 @@ package body Audio.Wavefiles.Write is
 
       --  Update/finalize RIFF tag of data chunk
       Update_Data_Chunk : declare
-         Chunk_Element : Wav_Chunk_Element;
-         Success       : Boolean;
+         Found : Wav_Chunk_Element_Found;
       begin
-         Get_First_Chunk (Chunks        => WF.RIFF_Info.Chunks,
-                          Chunk_Tag     => Wav_Chunk_Data,
-                          Chunk_Element => Chunk_Element,
-                          Success       => Success);
+         Find_First_Chunk (Chunks    => WF.RIFF_Info.Chunks,
+                           Chunk_Tag => Wav_Chunk_Data,
+                           Found     => Found);
 
-         if not Success then
+         if not Found.Success then
             WF.Set_Error (Wavefile_Error_Data_Chuck_Not_Found);
             return;
          else
             Ada.Streams.Stream_IO.Set_Index (WF.File,
-                                             Chunk_Element.Start_Index);
+                                             Found.Chunk_Element.Start_Index);
             Chunk_Header.ID   := "data";
             Chunk_Header.Size := Size;
 

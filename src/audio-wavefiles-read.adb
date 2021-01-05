@@ -6,7 +6,7 @@
 --                                                                          --
 --  The MIT License (MIT)                                                   --
 --                                                                          --
---  Copyright (c) 2015 -- 2020 Gustavo A. Hoffmann                          --
+--  Copyright (c) 2015 -- 2021 Gustavo A. Hoffmann                          --
 --                                                                          --
 --  Permission is hereby granted, free of charge, to any person obtaining   --
 --  a copy of this software and associated documentation files (the         --
@@ -53,22 +53,20 @@ package body Audio.Wavefiles.Read is
 
       use type Ada.Streams.Stream_IO.Count;
 
-      Chunk_Element  : Wav_Chunk_Element;
-      Success        : Boolean;
+      Found : Wav_Chunk_Element_Found;
    begin
-      Get_First_Chunk (Chunks        => WF.RIFF_Info.Chunks,
-                       Chunk_Tag     => Wav_Chunk_Fmt,
-                       Chunk_Element => Chunk_Element,
-                       Success       => Success);
+      Find_First_Chunk (Chunks    => WF.RIFF_Info.Chunks,
+                        Chunk_Tag => Wav_Chunk_Fmt,
+                        Found     => Found);
 
-      if not Success then
+      if not Found.Success then
          WF.Set_Error (Wavefile_Error_Format_Chuck_Not_Found);
          return;
       else
          Set_File_Index_To_Chunk_Data_Start (WF.File,
-                                             Chunk_Element.Start_Index);
+                                             Found.Chunk_Element.Start_Index);
 
-         case Chunk_Element.Size is
+         case Found.Chunk_Element.Size is
             when Wave_Format_Chunk_Size'Enum_Rep (Wave_Format_16_Size) =>
                Wave_Format_16'Read (WF.File_Access,
                                     Wave_Format_16 (WF.Wave_Format));
@@ -115,7 +113,7 @@ package body Audio.Wavefiles.Read is
          if Verbose then
             Wavefiles.Report.Display_Info (WF);
             Put_Line ("fmt chunk size: " & Long_Integer'Image
-                      (Chunk_Element.Size));
+                      (Found.Chunk_Element.Size));
          end if;
       end if;
    end Parse_Fmt_Chunk;
@@ -129,36 +127,34 @@ package body Audio.Wavefiles.Read is
    is
       Verbose : constant Boolean := False;
 
-      Chunk_Element  : Wav_Chunk_Element;
-      Success        : Boolean;
+      Found : Wav_Chunk_Element_Found;
    begin
-      Get_First_Chunk (Chunks        => WF.RIFF_Info.Chunks,
-                       Chunk_Tag     => Wav_Chunk_Data,
-                       Chunk_Element => Chunk_Element,
-                       Success       => Success);
+      Find_First_Chunk (Chunks        => WF.RIFF_Info.Chunks,
+                        Chunk_Tag     => Wav_Chunk_Data,
+                        Found         => Found);
 
-      if not Success then
+      if not Found.Success then
          WF.Set_Error (Wavefile_Error_Data_Chuck_Not_Found);
          return;
       else
          Set_File_Index_To_Chunk_Data_Start (WF.File,
-                                             Chunk_Element.Start_Index);
+                                             Found.Chunk_Element.Start_Index);
 
          if Verbose then
-            Put_Line ("RIFF Tag: " & Chunk_Element.ID);
+            Put_Line ("RIFF Tag: " & Found.Chunk_Element.ID);
          end if;
 
          WF.Sample_Pos :=
            (Current => First_Sample_Count,
             Total   =>
               Number_Of_Samples
-                (Chunk_Size        => Chunk_Element.Size,
+                (Chunk_Size        => Found.Chunk_Element.Size,
                  Channels_In_Total => WF.Wave_Format.Channels,
                  Bits_Per_Sample   => WF.Wave_Format.Bits_Per_Sample));
 
          if Verbose then
             Put_Line ("Data chunk size: "
-                      & Long_Integer'Image (Chunk_Element.Size));
+                      & Long_Integer'Image (Found.Chunk_Element.Size));
             Put_Line ("Num samples: "
                       & Sample_Count'Image (WF.Sample_Pos.Total));
          end if;
@@ -260,21 +256,19 @@ package body Audio.Wavefiles.Read is
      (WF       : in out Wavefile;
       Position :        Sample_Count)
    is
-      Chunk_Element  : Wav_Chunk_Element;
-      Success        : Boolean;
+      Found : Wav_Chunk_Element_Found;
    begin
-      Get_First_Chunk (Chunks        => WF.RIFF_Info.Chunks,
-                       Chunk_Tag     => Wav_Chunk_Data,
-                       Chunk_Element => Chunk_Element,
-                       Success       => Success);
+      Find_First_Chunk (Chunks    => WF.RIFF_Info.Chunks,
+                        Chunk_Tag => Wav_Chunk_Data,
+                        Found     => Found);
 
-      if not Success then
+      if not Found.Success then
          WF.Set_Error (Wavefile_Error_Data_Chuck_Not_Found);
          return;
       else
          Set_File_Index_To_Chunk_Data_Start
            (File              => WF.File,
-            Chunk_Start_Index => Chunk_Element.Start_Index,
+            Chunk_Start_Index => Found.Chunk_Element.Start_Index,
             Position_In_Chunk => Number_Of_Bytes
               (Position          => Position - WF.First_Sample,
                Channels_In_Total => WF.Wave_Format.Channels,
