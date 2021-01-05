@@ -27,7 +27,7 @@ supports reading and writing of wavefiles, including the following features:
 This library also includes support for PCM buffers in floating-point and
 fixed-point formats, as well as the automatic conversion between the data types
 used for the PCM buffer and the wavefile, which might have different formats
-(floating-point vs. fixed-point) or precisions (e.g., 16 bits vs. 64 bits).
+(floating-point or fixed-point) or precisions (e.g., 16 bits or 64 bits).
 
 In addition, following features are available:
 
