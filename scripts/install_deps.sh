@@ -7,7 +7,7 @@ then
     echo "Using existing audio_base component"
 else
     mkdir -p deps
-    (cd deps && git clone --branch feature/20200910-refactoring https://github.com/Ada-Audio/audio_base )
+    (cd deps && git clone --branch release/1.0 https://github.com/Ada-Audio/audio_base )
 fi
 
 export AUDIO_BASE_PATH="$(cd deps/audio_base && pwd)"
