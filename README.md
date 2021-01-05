@@ -114,6 +114,13 @@ mkdir deps
 (cd deps && git clone https://github.com/Ada-Audio/audio_wavefiles )
 ```
 
+Another method is to use git submodules:
+
+```sh
+git submodule add https://github.com/Ada-Audio/audio_base ./deps/audio_base
+git submodule add https://github.com/Ada-Audio/audio_wavefiles ./deps/audio_wavefiles
+```
+
 Then, you have to include the Library in your GPRbuild project by adding
 the following line:
 
