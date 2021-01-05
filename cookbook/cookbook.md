@@ -29,6 +29,23 @@ colorlinks: true
 
 \pagebreak
 
+# Preface
+
+This *cookbook* contains a collection of source-code examples for various
+use-cases. It starts with very simple examples, but soon evolves to more
+complicated use-cases. The document provides an overview of the capabilities of
+the Wavefile Library, and you can read it as a tutorial.
+
+The goals of this document are twofold: we want to introduce the library to
+developers using relevant source-code examples. Therefore, each section has a
+small explanation that describes the most important aspects of the source-code
+example. At the same, we want to implement the examples in such a way that the
+occasional reader may reuse them in their own application with as few changes
+as possible.
+
+
+\pagebreak
+
 # Opening & closing wavefiles
 
 ## Opening & closing a wavefile for reading
