@@ -649,7 +649,7 @@ them to the output wavefile.
 
 Because we're now using a multichannel configuration, we should set the correct
 channel configuration of the output wavefile. We do this by initializing the
-channel configuration element of the *wave format*
+channel configuration element of the wavefile format
 (`Wave_Format.Channel_Config`) before calling the `Set_Format_Of_Wavefile`
 procedure. Note that we're using the 5.1-channel configuration
 (`Channel_Config_5_1`) defined in the
@@ -773,7 +773,7 @@ end Write_7_1_4_Channel_Sine_Tone;
 
 The `Write_7_1_4_Channel_Sine_Wavefile` procedure contains the implementation
 of the main application. Note that we now use the 7.1.4-channel configuration
-(`Channel_Config_7_1_4`) for the channel configuration of the *wave format*
+(`Channel_Config_7_1_4`) for the channel configuration of the wavefile format
 (`Wave_Format.Channel_Config`).
 
 ~~~~~~~~~~ada
