@@ -5,7 +5,7 @@ long-description = """
 This crate contains Ada packages for wavefile I/O.
 """
 name = "audio_wavefiles"
-version = "2.0.0-rc.2"
+version = "2.0.0"
 website="https://github.com/Ada-Audio/audio_wavefiles"
 licenses = ["MIT"]
 authors=["Gustavo A. Hoffmann"]
