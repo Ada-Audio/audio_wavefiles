@@ -167,7 +167,7 @@ And run it with this command:
 Using the Library
 -----------------
 
-To use the library, you have to add a reference to the `Wavefiles` package to
+To use the Library, you have to add a reference to the `Wavefiles` package to
 your source-code file:
 
 ```ada
