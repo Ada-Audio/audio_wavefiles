@@ -61,47 +61,6 @@ This Library has been tested with following compilers and platforms:
 Setting Up the Library
 ----------------------
 
-### Using ALIRE
-
-You can retrieve this Library as a crate from
-[ALIRE](https://alire.ada.dev) (the Ada LIbrary REpository):
-
-```sh
-alr get audio_wavefiles
-```
-
-This Library depends on the `audio_base` crate. If you use the
-command-line above, all dependencies are automatically retrieved. However,
-you could retrieve that crate from [ALIRE](https://alire.ada.dev) as well
-using:
-
-```sh
-alr get audio_base
-```
-
-Then, you can build the Library (as a standalone library) with
-[ALIRE](https://alire.ada.dev) using the following command:
-
-```sh
-cd audio_wavefiles*
-
-alr build
-```
-
-Usually, however, you would like to use the Library in your project. Therefore,
-you need to add the Library as a dependency. You can do this by running this
-command from the root directory of your project:
-
-```sh
-alr with audio_wavefiles
-```
-
-Finally, you can build your project using [ALIRE](https://alire.ada.dev):
-
-```sh
-alr build
-```
-
 ### Cloning the source-code
 
 Alternatively, you can clone the source-code of the Library and its
@@ -138,6 +97,62 @@ to set the path to the GPRbuild projects using the environment variable
 export GPR_PROJECT_PATH="$(cd deps/audio_base && pwd):$(cd deps/audio_wavefiles && pwd)"
 
 gprbuild
+```
+
+### Using ALIRE
+
+If you're using [ALIRE](https://alire.ada.dev) (the Ada LIbrary REpository),
+this section shows how you can integrate the Library to your project using the
+ALIRE environment. These are the prerequisites:
+
+1. You have cloned the source-code of the Library and its dependencies using
+   one of the methods described above.
+
+2. You have initialized your project for ALIRE (using `alr init --bin` or
+   similar).
+
+You can now integrate the Library and its dependencies to the ALIRE
+environment using these commands:
+
+```sh
+alr with audio_base      --use $(cd deps/audio_base      && pwd)
+alr with audio_wavefiles --use $(cd deps/audio_wavefiles && pwd)
+```
+
+For the remaining of this section, we'll assume that your ALIRE project is
+called `wavefile_test`. Just replace this name with the actual name of your
+project wherever it's appropriate.
+
+Now, let's say you have the following main application in
+`./src/wavefile_test.adb`:
+
+```ada
+with Ada.Text_IO;     use Ada.Text_IO;
+with Audio.Wavefiles; use Audio.Wavefiles;
+
+procedure Wavefile_Test is
+   WF : Wavefile;
+begin
+   WF.Create (Out_File, "test.wav");
+
+   if WF.Is_Open then
+      Put_Line ("Created output wavefile.");
+
+      WF.Close;
+   end if;
+end Wavefile_Test;
+```
+
+You can build the project using ALIRE:
+
+```
+alr build
+```
+
+And run it with this command:
+
+```
+./alire/build/bin/wavefile_test
 ```
 
 
