@@ -61,51 +61,10 @@ This Library has been tested with following compilers and platforms:
 Setting Up the Library
 ----------------------
 
-### Using ALIRE
-
-You can retrieve this Library as a crate from
-[ALIRE](https://alire.ada.dev) (the Ada LIbrary REpository):
-
-```sh
-alr get audio_wavefiles
-```
-
-This Library depends on the `audio_base` crate. If you use the
-command-line above, all dependencies are automatically retrieved. However,
-you could retrieve that crate from [ALIRE](https://alire.ada.dev) as well
-using:
-
-```sh
-alr get audio_base
-```
-
-Then, you can build the Library (as a standalone library) with
-[ALIRE](https://alire.ada.dev) using the following command:
-
-```sh
-cd audio_wavefiles*
-
-alr build
-```
-
-Usually, however, you would like to use the Library in your project. Therefore,
-you need to add the Library as a dependency. You can do this by running this
-command from the root directory of your project:
-
-```sh
-alr with audio_wavefiles
-```
-
-Finally, you can build your project using [ALIRE](https://alire.ada.dev):
-
-```sh
-alr build
-```
-
 ### Cloning the source-code
 
-Alternatively, you can clone the source-code of the Library and its
-dependencies using these commands from the root directory of your project:
+You can clone the source-code of the Library and its dependencies using these
+commands from the root directory of your project:
 
 ```sh
 mkdir deps
@@ -114,6 +73,9 @@ mkdir deps
 (cd deps && git clone https://github.com/Ada-Audio/audio_wavefiles )
 ```
 
+Note that you can use the `--branch` option to retrieve a specific version —
+for example: `--branch 2.0.0`.
+
 Another method is to use git submodules:
 
 ```sh
@@ -121,8 +83,13 @@ git submodule add https://github.com/Ada-Audio/audio_base ./deps/audio_base
 git submodule add https://github.com/Ada-Audio/audio_wavefiles ./deps/audio_wavefiles
 ```
 
-Then, you have to include the Library in your GPRbuild project by adding
-the following line:
+### Integration with your project
+
+This section describes how to manually integrate the Library into your GPRbuild
+project. If you're using ALIRE, please refer to the next section.
+
+You can include the Library in your GPRbuild project by adding the following
+line:
 
 ```
 with "audio_wavefiles.gpr";
@@ -140,11 +107,67 @@ export GPR_PROJECT_PATH="$(cd deps/audio_base && pwd):$(cd deps/audio_wavefiles 
 gprbuild
 ```
 
+### Using ALIRE
+
+If you're using [ALIRE](https://alire.ada.dev) (the Ada LIbrary REpository),
+this section shows how you can integrate the Library to your project using the
+ALIRE environment. These are the prerequisites:
+
+1. You have cloned the source-code of the Library and its dependencies using
+   one of the methods described above.
+
+2. You have initialized your project for ALIRE (using `alr init --bin` or
+   similar).
+
+You can now integrate the Library and its dependencies to the ALIRE
+environment using these commands:
+
+```sh
+alr with audio_base      --use $(cd deps/audio_base      && pwd)
+alr with audio_wavefiles --use $(cd deps/audio_wavefiles && pwd)
+```
+
+For the remaining of this section, we'll assume that your ALIRE project is
+called `wavefile_test`. Just replace this name with the actual name of your
+project wherever it's appropriate.
+
+Now, let's say you have the following main application in
+`./src/wavefile_test.adb`:
+
+```ada
+with Ada.Text_IO;     use Ada.Text_IO;
+with Audio.Wavefiles; use Audio.Wavefiles;
+
+procedure Wavefile_Test is
+   WF : Wavefile;
+begin
+   WF.Create (Out_File, "test.wav");
+
+   if WF.Is_Open then
+      Put_Line ("Created output wavefile.");
+
+      WF.Close;
+   end if;
+end Wavefile_Test;
+```
+
+You can build the project using ALIRE:
+
+```
+alr build
+```
+
+And run it with this command:
+
+```
+./alire/build/bin/wavefile_test
+```
+
 
 Using the Library
 -----------------
 
-To use the library, you have to add a reference to the `Wavefiles` package to
+To use the Library, you have to add a reference to the `Wavefiles` package to
 your source-code file:
 
 ```ada
@@ -170,7 +193,7 @@ with Audio.Wavefiles.Generic_Float_PCM_IO;
 use  Audio.Wavefiles.Generic_Float_PCM_IO;
 ```
 
-You can then instantiate this package by reading, for example:
+You can then instantiate this package for reading, for example:
 
 ```ada
    type Float_Array is array (Positive range <>) of Float;

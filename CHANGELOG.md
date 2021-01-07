@@ -3,7 +3,7 @@
 This is the changelog of the Ada Wavefile Library, a Wavefile Reader & Writer
 Package implemented in Ada 2012.
 
-## 2.0.0, released on 2021-01-xx
+## 2.0.0, released on 2021-01-07
 
 - Major refactoring of all packages of the Library.
 
