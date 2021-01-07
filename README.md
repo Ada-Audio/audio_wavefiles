@@ -63,8 +63,8 @@ Setting Up the Library
 
 ### Cloning the source-code
 
-Alternatively, you can clone the source-code of the Library and its
-dependencies using these commands from the root directory of your project:
+You can clone the source-code of the Library and its dependencies using these
+commands from the root directory of your project:
 
 ```sh
 mkdir deps
