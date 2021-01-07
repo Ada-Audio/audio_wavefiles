@@ -193,7 +193,7 @@ with Audio.Wavefiles.Generic_Float_PCM_IO;
 use  Audio.Wavefiles.Generic_Float_PCM_IO;
 ```
 
-You can then instantiate this package by reading, for example:
+You can then instantiate this package for reading, for example:
 
 ```ada
    type Float_Array is array (Positive range <>) of Float;
