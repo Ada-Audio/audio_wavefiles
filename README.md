@@ -83,6 +83,8 @@ git submodule add https://github.com/Ada-Audio/audio_base ./deps/audio_base
 git submodule add https://github.com/Ada-Audio/audio_wavefiles ./deps/audio_wavefiles
 ```
 
+### Integration with your project
+
 This section describes how to manually integrate the Library into your GPRbuild
 project. If you're using ALIRE, please refer to the next section.
 
