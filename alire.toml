@@ -13,3 +13,6 @@ maintainers = ["gusthoff@gusthoff.com"]
 maintainers-logins = ["gusthoff"]
 project-files = ["audio_wavefiles.gpr"]
 tags = ["audio", "riff", "wavefiles"]
+
+[[depends-on]]
+audio_base = "~1.0"
