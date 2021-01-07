@@ -73,6 +73,9 @@ mkdir deps
 (cd deps && git clone https://github.com/Ada-Audio/audio_wavefiles )
 ```
 
+Note that you can use the `--branch` option to retrieve a specific version —
+for example: `--branch 2.0.0`.
+
 Another method is to use git submodules:
 
 ```sh
