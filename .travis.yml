@@ -1,0 +1,28 @@
+env:
+  global:
+    - TOOLS_DIR=$HOME/build_tools
+    - GNAT_INSTALLER_PATH=$TOOLS_DIR/gnat-2020-20200818-x86_64-linux-bin
+    - GNAT_PATH=$TOOLS_DIR/gnat-2020-x86_64-linux-bin
+
+language: minimal
+
+os:
+  - linux
+
+dist: focal
+
+cache:
+  directories:
+  - $HOME/build_tools
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get -y install wavbreaker
+
+install: ./.travis/gnat_community_install.sh
+
+jobs:
+  include:
+  - name: "Run all tests"
+    script:
+      - ./.travis/travis_run.sh

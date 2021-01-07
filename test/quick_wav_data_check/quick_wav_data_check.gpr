@@ -1,0 +1,62 @@
+-------------------------------------------------------------------------------
+--
+--                                WAVEFILES
+--
+--                         Quick Wave Data I/O Check
+--
+--  The MIT License (MIT)
+--
+--  Copyright (c) 2020 Gustavo A. Hoffmann
+--
+--  Permission is hereby granted, free of charge, to any person obtaining a
+--  copy of this software and associated documentation files (the "Software"),
+--  to deal in the Software without restriction, including without limitation
+--  the rights to use, copy, modify, merge, publish, distribute, sublicense,
+--  and / or sell copies of the Software, and to permit persons to whom the
+--  Software is furnished to do so, subject to the following conditions:
+--
+--  The above copyright notice and this permission notice shall be included in
+--  all copies or substantial portions of the Software.
+--
+--  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+--  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+--  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+--  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+--  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+--  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+--  DEALINGS IN THE SOFTWARE.
+-------------------------------------------------------------------------------
+
+with "audio_wavefiles.gpr";
+
+project Quick_Wav_Data_Check is
+
+   for Source_Dirs use ("src/**");
+   for Object_Dir use "./obj";
+   for Exec_Dir use "./bin";
+   for Create_Missing_Dirs use "True";
+
+   for Main use ("quick_wav_data_check.adb");
+
+   package Ide is
+      for Vcs_Kind use "git";
+      for Documentation_Dir use "./doc";
+   end Ide;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnata", "-gnato", "-gnatVa", "-gnatwa", "-fstack-check", "-gnaty3ACIM79Oabcdefhiklnprstux", "-g", "-gnatQ");
+   end Compiler;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g");
+   end Linker;
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g", "-s");
+   end Builder;
+
+   package Pretty_Printer is
+      for Default_Switches ("ada") use ("-A0", "-A1", "-A2", "-A3", "-A4", "-A5", "-c4", "-c3", "--separate-loop-then");
+   end Pretty_Printer;
+
+end Quick_Wav_Data_Check;

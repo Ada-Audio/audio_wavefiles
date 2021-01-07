@@ -1,0 +1,52 @@
+with "audio_base.gpr";
+
+library project Audio_Wavefiles is
+
+   type Build_Type is
+      ("DEBUG", "RELEASE");
+   Build : Build_Type := external ("WAVEFILES_BUILD_MODE", external ("BUILD", "DEBUG"));
+
+   for Source_Dirs use ("src/**");
+   for Object_Dir use "./obj";
+   for Create_Missing_Dirs use "True";
+   for Library_Name use "wavefiles";
+   for Library_Dir use "lib";
+   for Library_Version use "2.0.0";
+
+   type Library_Type_Type is ("relocatable", "static", "static-pic");
+   Library_Type : Library_Type_Type :=
+     external ("WAVEFILES_LIBRARY_TYPE",
+               external ("LIBRARY_TYPE", "static"));
+   for Library_Kind use Library_Type;
+
+   package Ide is
+      for Vcs_Kind use "git";
+      for Documentation_Dir use "./doc";
+   end Ide;
+
+   package Builder is
+      for Switches ("ada") use ("-j0", "-g");
+   end Builder;
+
+   package Compiler is
+
+      case Build is
+
+         when "DEBUG" =>
+            for Switches ("ada") use ("-g", "-O0", "-gnata", "-gnato", "-fstack-check", "-gnatVa", "-gnatwa", "-gnaty3ACIM79Oabcdefhiklnprstux");
+
+         when "RELEASE" =>
+            for Switches ("Ada") use ("-O2", "-gnatn", "-gnatwa");
+            for Switches ("ada") use ("-g", "-O0", "-gnata", "-gnato", "-fstack-check", "-gnatVa", "-gnatwa", "-gnaty3ACIM79Oabcdefhiklnprstux");
+      end case;
+   end Compiler;
+
+   package Pretty_Printer is
+      for Default_Switches ("ada") use ("-A0", "-A1", "-A2", "-A3", "-A4", "-A5", "-c4", "-c3", "--separate-loop-then");
+   end Pretty_Printer;
+
+   package Binder is
+      for Switches ("ada") use ("-Es");
+   end Binder;
+
+end Audio_Wavefiles;

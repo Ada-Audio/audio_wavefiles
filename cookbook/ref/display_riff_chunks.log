@@ -1,0 +1,18 @@
+---- RIFF Chunks Information ----
+Id:          RIFF_IDENTIFIER_STANDARD
+Format:      RIFF_FORMAT_WAVE
+Chunk count:  2
+
+- ID:           fmt 
+  Internal tag: WAV_CHUNK_FMT
+  Size:          16
+  Start index:   13
+  Consolidated: TRUE
+
+- ID:           data
+  Internal tag: WAV_CHUNK_DATA
+  Size:          176
+  Start index:   37
+  Consolidated: TRUE
+
+---------------------------------

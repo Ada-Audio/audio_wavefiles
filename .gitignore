@@ -1,0 +1,9 @@
+bin
+lib
+obj
+deps
+/*.wav
+
+# Alire
+alire
+alire.lock
