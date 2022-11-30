@@ -85,12 +85,11 @@ package body Audio.Wavefiles.Write is
 
       function Chunk_Size (Format_Size : Unsigned_16) return Unsigned_32 is
       begin
-         if Format_Size = 0 then
-            return Wave_Format_Chunk_Size'Enum_Rep (Wave_Format_18_Size);
-         else
-            return Wave_Format_Chunk_Size'Enum_Rep
-              (Wave_Format_Extensible_Size);
-         end if;
+         return
+           (if Format_Size = 0 then
+              Wave_Format_Chunk_Size'Enum_Rep (Wave_Format_18_Size)
+            else Wave_Format_Chunk_Size'Enum_Rep
+                (Wave_Format_Extensible_Size));
       end Chunk_Size;
 
       -----------------

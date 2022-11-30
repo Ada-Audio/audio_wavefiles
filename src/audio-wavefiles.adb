@@ -206,13 +206,9 @@ package body Audio.Wavefiles is
      (WF : in out Wavefile) return Boolean
    is
    begin
-      if End_Of_File (WF.Sample_Pos) or
-        Ada.Streams.Stream_IO.End_Of_File (WF.File)
-      then
-         return True;
-      else
-         return False;
-      end if;
+      return
+        End_Of_File (WF.Sample_Pos) or
+        Ada.Streams.Stream_IO.End_Of_File (WF.File);
    end End_Of_File;
 
    -----------
@@ -304,14 +300,9 @@ package body Audio.Wavefiles is
    function Is_Supported_Format (W : Wave_Format_Extensible)
                                  return Boolean is
    begin
-      if not (W.Sub_Format = GUID_Undefined
-              or W.Sub_Format = GUID_PCM
-              or W.Sub_Format = GUID_IEEE_Float)
-      then
-         return False;
-      end if;
-
-      return True;
+      return
+        W.Sub_Format = GUID_Undefined or W.Sub_Format = GUID_PCM or
+        W.Sub_Format = GUID_IEEE_Float;
    end Is_Supported_Format;
 
    -------------------
