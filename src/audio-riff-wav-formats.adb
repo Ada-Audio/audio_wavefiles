@@ -367,8 +367,8 @@ package body Audio.RIFF.Wav.Formats is
       Item   : out Channel_Configuration)
    is
       V : Channel_Configuration_Integer;
-      X : Channel_Configuration;
-      for X'Address use V'Address;
+      X : Channel_Configuration with
+        Address => V'Address;
    begin
       Channel_Configuration_Integer'Read (Stream, V);
       Item := X;
@@ -383,8 +383,8 @@ package body Audio.RIFF.Wav.Formats is
       Item   : Channel_Configuration)
    is
       V : Channel_Configuration_Integer;
-      X : Channel_Configuration;
-      for X'Address use V'Address;
+      X : Channel_Configuration with
+        Address => V'Address;
    begin
       X := Item;
       Channel_Configuration_Integer'Write (Stream, V);
