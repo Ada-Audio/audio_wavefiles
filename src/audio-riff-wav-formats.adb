@@ -354,8 +354,9 @@ package body Audio.RIFF.Wav.Formats is
    is
       use Audio.RIFF.Wav.GUIDs;
    begin
-      return W.Format_Tag = Wav_Format_IEEE_Float or
-        W.Sub_Format = GUID_IEEE_Float;
+      return
+        W.Format_Tag = Wav_Format_IEEE_Float
+        or else W.Sub_Format = GUID_IEEE_Float;
    end Is_Float_Format;
 
    --------------------------------
