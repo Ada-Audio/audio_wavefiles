@@ -301,8 +301,8 @@ package body Audio.Wavefiles is
                                  return Boolean is
    begin
       return
-        W.Sub_Format = GUID_Undefined or W.Sub_Format = GUID_PCM or
-        W.Sub_Format = GUID_IEEE_Float;
+        W.Sub_Format = GUID_Undefined or else W.Sub_Format = GUID_PCM
+        or else W.Sub_Format = GUID_IEEE_Float;
    end Is_Supported_Format;
 
    -------------------
