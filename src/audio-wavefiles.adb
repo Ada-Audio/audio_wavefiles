@@ -300,9 +300,7 @@ package body Audio.Wavefiles is
    function Is_Supported_Format (W : Wave_Format_Extensible)
                                  return Boolean is
    begin
-      return
-        W.Sub_Format = GUID_Undefined or else W.Sub_Format = GUID_PCM
-        or else W.Sub_Format = GUID_IEEE_Float;
+      return W.Sub_Format in GUID_Undefined | GUID_PCM | GUID_IEEE_Float;
    end Is_Supported_Format;
 
    -------------------
